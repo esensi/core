@@ -1,6 +1,7 @@
 {
     "name": "emersonmedia/alba",
-    "description": "ALBA Core and Common Modules Package",
+    "description": "ALBA Core Modules and Components",
+    "keywords": ["emersonmedia", "alba", "laravel", "core", "user"],
     "authors": [
         {
             "name": "Emerson Media, LP.",

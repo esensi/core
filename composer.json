@@ -1,0 +1,28 @@
+{
+    "name": "emersonmedia/alba",
+    "description": "ALBA Core and Common Modules Package",
+    "authors": [
+        {
+            "name": "Emerson Media, LP.",
+            "email": "wishlist@emersonmedia.com"
+        },
+        {
+            "name": "Bexar Creative, Inc.",
+            "email": "web@bexarcreative.com"
+        }
+    ],
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.0.*"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations"
+        ],
+        "psr-0": {
+            "Alba": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}

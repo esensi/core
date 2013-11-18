@@ -1,4 +1,4 @@
-<?php namespace Alba\Core;
+<?php namespace Alba\Core\Controllers;
 
 use View;
 use Illuminate\Routing\Controllers\Controller;

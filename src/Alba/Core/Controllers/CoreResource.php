@@ -1,4 +1,4 @@
-<?php namespace Alba\Core;
+<?php namespace Alba\Core\Controllers;
 
 use Controller;
 use Input;

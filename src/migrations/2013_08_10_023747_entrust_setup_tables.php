@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
 
 class EntrustSetupTables extends Migration {
@@ -13,17 +14,24 @@ class EntrustSetupTables extends Migration {
         // Creates the roles table
         Schema::create('roles', function($table)
         {
+            // Add table columns
             $table->increments('id');
             $table->string('name', 32)->unique();
             $table->timestamps();
+
+            // Add table indexes and foreign keys
+            $table->index('name');
         });
 
-        // Creates the assigned_roles (Many-to-Many relation) table
+        // Creates the user to roles pivot table
         Schema::create('assigned_roles', function($table)
         {
+            // Add table columns
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->integer('role_id')->unsigned();
+            
+            // Add table indexes and foreign keys
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');; // assumes a users table
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
         });
@@ -31,19 +39,26 @@ class EntrustSetupTables extends Migration {
         // Creates the permissions table
         Schema::create('permissions', function($table)
         {
+            // Add table columns
             $table->increments('id');
-            $table->string('name', 32);
+            $table->string('name', 32)->unique();
             $table->string('display_name', 32);
             $table->timestamps();
+
+            // Add table indexes and foreign keys
+            $table->index('name');
         });
 
-        // Creates the permission_role (Many-to-Many relation) table
+        // Creates the permission to role pivot table
         Schema::create('permission_role', function($table)
         {
+            // Add table columns
             $table->increments('id');
             $table->integer('permission_id')->unsigned();
             $table->integer('role_id')->unsigned();
-            $table->foreign('permission_id')->references('id')->on('permissions')->onDelete('cascade'); // assumes a users table
+            
+            // Add table indexes and foreign keys
+            $table->foreign('permission_id')->references('id')->on('permissions')->onDelete('cascade');
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
         });
     }

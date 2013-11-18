@@ -2,14 +2,22 @@
 
 namespace Alba\User\Controllers;
 
+use Carbon\Carbon;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\View;
+
 use Alba\Core\Controllers\CoreController;
 use Alba\Core\Utils\ProcessResponse;
 use Alba\Core\Utils\ViewMessage;
 use Alba\User\Models\User;
 use Alba\User\Models\Name;
 use Alba\User\Repositories\Contracts\UserRepositoryInterface;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Mail;
 
 /**
  * Controller for user interactions from a web interface
@@ -75,7 +83,7 @@ class UsersController extends CoreController {
         }
         
         // User will need to be active and not blocked
-        $credentials = array_merge($account, ['activated' => true, 'blocked' => false]);
+        $credentials = array_merge($account, ['active' => true, 'blocked' => false]);
 
         // Check the credentials with a real login
         if(!Auth::attempt($credentials))
@@ -189,7 +197,7 @@ class UsersController extends CoreController {
             App::abort(404, 'User not found!');
         }
 
-        $this->layout->content = View::make('users.show', commpact('user'));
+        $this->layout->content = View::make('users.show', compact('user'));
     }
     
 

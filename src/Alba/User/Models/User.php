@@ -105,6 +105,14 @@ class User extends Ardent implements UserInterface {
 
 
     /**
+     * 
+     */
+    public function tokens() {
+        return $this->belongsToMany('Alba\User\Models\Token');
+    }
+
+
+    /**
      * Returns the validation rules for the password
      * @return array
      */

@@ -17,6 +17,7 @@ use Alba\Core\Utils\ProcessResponse;
 use Alba\Core\Utils\ViewMessage;
 use Alba\User\Models\User;
 use Alba\User\Models\Name;
+use Alba\User\Controllers\TokensResource;
 use Alba\User\Repositories\Contracts\UserRepositoryInterface;
 
 /**
@@ -38,6 +39,9 @@ class UsersController extends CoreController {
      */
     protected $userRepo;
 
+
+    protected $tokensResource;
+
     
     /**
      * Inject dependencies
@@ -49,6 +53,7 @@ class UsersController extends CoreController {
     {
         // @todo make ViewMessage a dependency injection
         $this->userRepo = $userRepo;
+        $this->tokensResource = new TokensResource(); //@todo: change to injection
     }
 
 
@@ -385,11 +390,12 @@ class UsersController extends CoreController {
         }
 
         //generate activation token
-        // @todo use laravel to generate this token value
-        $token = $user->generateActivationToken();
+        $token = $this->tokensResource->generateToken('activation');
+        //set user with token
+        $user->tokens()->attach($token->id);
 
         //generate activation URL
-        $activationUrl = route('users.requestActivationPassword', ['token' => $token]);
+        $activationUrl = route('users.requestActivationPassword', ['token' => $token->token]);
 
         //current date
         $now = new Carbon();

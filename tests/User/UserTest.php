@@ -1,6 +1,6 @@
 <?php
 
-use Mockery;
+use \Mockery;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 

@@ -50,7 +50,7 @@ Route::group(['prefix' => 'api'], function(){
 | Here is where you can register all of the routes for the administrative
 | interface part of the application. It is recommended that the
 | administration implement the API routes so as to be a light-weight UI
-| for the exsting functionality of the of the API.
+| for the existing functionality of the of the API.
 |
 */
 

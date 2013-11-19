@@ -18,7 +18,7 @@ class AlbaServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('emersonmedia/alba','Alba');
+		$this->package('emersonmedia/alba','alba', __DIR__.'/..');
 	}
 
 	/**

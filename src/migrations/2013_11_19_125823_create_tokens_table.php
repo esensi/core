@@ -17,9 +17,10 @@ class CreateTokensTable extends Migration {
 		{
             // Add table columns
             $table->increments('id');
-            $table->string('type', 10);
+            $table->string('type', 32);
             $table->string('token', 256);
-            $table->timestamps();
+            $table->timestamp('created_at');
+            $table->timestamp('expires_at')->nullable();
 
             // Add table indexes and foreign keys
             $table->index('token');

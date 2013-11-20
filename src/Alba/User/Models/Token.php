@@ -1,7 +1,10 @@
 <?php namespace Alba\User\Models;
 
 use Ardent;
-use Alba\Core\Utils\StringUtils;
+
+use Carbon\Carbon;
+
+use Illuminate\Support\Facades\Log;
 
 
 class Token extends Ardent {
@@ -27,24 +30,34 @@ class Token extends Ardent {
      */
     public $forceEntityHydrationFromInput = false;
 
-    protected $hidden = array('*');
+    
+    protected $fillable = ['expires_at', 'type', 'token'];
 
 
     public static $rules = [
         'token' => 'required|max:256',
-        'type' => 'required|max:10',
+        'type' => 'required|max:32',
     ];
 
+    public $timestamps = false;
 
-    /**
-     * Creates a new instance of token
-     * @param string $type Token type
-     */
-    public function __construct($type) {
-        //@todo: validate type
-        $this->token = StringUtils::generateGuid(false);
-        $this->type = $type;
+
+    public function beforeSave()
+    {
+
+        //It seems that validation executes first, so this is never executed
+        //it would throw the validation error first
+        if ($this->token == null) {
+            $this->token = StringUtils::generateGuid(false);
+        }
+
+        if ($this->created_at == null) {
+            $this->created_at = new Carbon();
+        }
+
     }
 
+
+    
 
 }

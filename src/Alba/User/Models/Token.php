@@ -31,8 +31,8 @@ class Token extends Ardent {
 
 
     public static $rules = [
-        'token' => 'required',
-        'type' => 'required',
+        'token' => 'required|max:256',
+        'type' => 'required|max:10',
     ];
 
 

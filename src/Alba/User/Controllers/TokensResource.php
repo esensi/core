@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Log;
 class TokensResource extends CoreResource {
 
 
+    /*public function __construct(Token $token) {
+        //@todo change this to injection via IoC
+        $this->token = $token;
+    }*/
+
+
     /**
      * Creates a new token for the specified type, and
      * stores it
@@ -20,10 +26,6 @@ class TokensResource extends CoreResource {
         //@todo: validate and handle errors
 
         $token = new Token($type);
-        
-        Log::info('TOKEN: ' . print_r($token, true));
-
-        //@errors being handled as Exception or returning ProcessResponse for returning errors???
         $token->save();
         
         return $token;

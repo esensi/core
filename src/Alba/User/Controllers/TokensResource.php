@@ -1,12 +1,12 @@
 <?php namespace Alba\User\Controllers;
 
 
-use Alba\Core\Controllers\CoreResource;
 use Alba\User\Models\Token;
 
-use Illuminate\Support\Facades\Log;
+//use Illuminate\Support\Facades\Log;
 
-class TokensResource extends CoreResource {
+//@todo: this should now implement the ResourceInterface!!!
+class TokensResource {
 
 
     /*public function __construct(Token $token) {

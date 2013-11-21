@@ -53,7 +53,7 @@ class CoreResource extends CoreController implements ResourceInterface {
 		$rules = $this->resource->rulesForStoring;
 		if(!$this->resource->fill($attributes)->save($rules))
 		{
-			$this->throwException('Object could not be stored: '. implode(PHP_EOL.'- ',$this->resource->errors()->all()) );
+			$this->throwException('Object could not be stored: '.implode(' ', $object->errors()->all()) );
 		}
 		return $this->resource;
 	}
@@ -88,7 +88,7 @@ class CoreResource extends CoreController implements ResourceInterface {
 		$rules = $object->rulesForUpdating;
 		if(!$object->fill($attributes)->save($rules))
 		{
-			$this->throwException('Object could not be updated: '. implode(PHP_EOL.'- ',$this->resource->errors()->all()) );
+			$this->throwException('Object could not be updated: '.implode(' ', $object->errors()->all()) );
 		}
 		return $object;
 	}

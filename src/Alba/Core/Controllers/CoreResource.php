@@ -35,7 +35,7 @@ class CoreResource extends CoreController implements ResourceInterface {
 	 * Display a listing of the resource.
 	 *
 	 * @param array $params to overload
-	 * @return Collection
+	 * @return Illuminate\Database\Eloquent\Collection
 	 */
 	public function index($params = [])
 	{
@@ -46,24 +46,23 @@ class CoreResource extends CoreController implements ResourceInterface {
 	 * Store a newly created resource in storage.
 	 *
 	 * @param array $attributes to fill on the object
-	 * @return User
+	 * @return Illuminate\Database\Eloquent\Model
 	 */
 	public function store($attributes)
 	{
-		$rules = $this->resource->rulesforStoring;
-		$object = $this->resource->fill($attributes);
-		if(!$object->save($rules))
+		$rules = $this->resource->rulesForStoring;
+		if(!$this->resource->fill($attributes)->save($rules))
 		{
-			$this->throwException('Object could not be stored.');
+			$this->throwException('Object could not be stored: '. implode(PHP_EOL.'- ',$this->resource->errors()->all()) );
 		}
-		return $object;
+		return $this->resource;
 	}
 
 	/**
 	 * Display the specified resource.
 	 *
 	 * @param int $id of object
-	 * @return User
+	 * @return Illuminate\Database\Eloquent\Model
 	 */
 	public function show($id)
 	{
@@ -80,17 +79,16 @@ class CoreResource extends CoreController implements ResourceInterface {
 	 *
 	 * @param int $id of object to update
 	 * @param array $attributes to fill on the object
-	 * @return User
+	 * @return Illuminate\Database\Eloquent\Model
 	 */
 	public function update($id, $attributes)
 	{
 		$object = $this->show($id);
 
-		$rules = $this->resource->rulesForUpdating;
-		$object->fill($attributes);
-		if(!$object->save($rules))
+		$rules = $object->rulesForUpdating;
+		if(!$object->fill($attributes)->save($rules))
 		{
-			$this->throwException('Object could not be updated.');
+			$this->throwException('Object could not be updated: '. implode(PHP_EOL.'- ',$this->resource->errors()->all()) );
 		}
 		return $object;
 	}

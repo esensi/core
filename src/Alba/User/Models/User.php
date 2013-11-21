@@ -33,7 +33,7 @@ class User extends Ardent implements UserInterface {
      * @var array
      */
     public static $rules = [
-        'email' => 'required|email|max:128|unique:users', //IMPORTANT: keep unique rule at the end
+        'email' => ['required', 'email', 'max:128', 'unique:users'], //IMPORTANT: keep unique rule at the end
     ];
 
     /**

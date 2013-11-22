@@ -21,7 +21,7 @@ class ResourceException extends \Exception {
 
     /**
      * Returns the messageBag property
-     * @return Illuminate\Support\MessageBag
+     * @return mixed
      */
     public function getMessageBag()
     {

@@ -534,29 +534,13 @@ class UsersController extends CoreController {
      */
     private function processRequestPasswordReset($inputData) {
 
-        //get email and validate        
-        $rules = [
-            'email' => 'required|email'
-        ];
+        $user = $this->usersResource->requestPasswordReset($inputData);
 
-        $validator = Validator::make($inputData, $rules);
-        if ($validator->fails()) {
-            return new ProcessResponse(false, $validator->errors(), ViewMessage::DANGER);            
-        }
-
-        //search the user by email address
-        $email = $inputData['email'];
-        $user = $this->userRepo->findByEmail($email);
-
-        if ((!$user) || ($user && !$user->isRequestPasswordResetAllowed()) ) {
-            return new ProcessResponse(false, 'No valid user account with that email could be found.', ViewMessage::WARNING);            
-        }
-
-        //generate password reset token
-        $token = $user->generatePasswordResetToken();
+        //if all is ok, get the passwordReset token and send email...
+        $token = $user->getPasswordResetToken();
 
         //generate password reset URL
-        $passwordResetUrl = route('users.passwordResetInit', ['token' => $token]);
+        $passwordResetUrl = route('users.passwordResetInit', ['token' => $token->token]);
 
         //current date
         $now = new Carbon();
@@ -641,17 +625,12 @@ class UsersController extends CoreController {
      */
     public function passwordResetInit($token) {
 
-        //search user by reset pass token
-        $user = $this->userRepo->findByPasswordResetToken($token);
-        if (!$user) {
-            Log::warning('User NOT found by reset password token: ' . $token);
-            return View::make('users.requestPasswordResetBadToken');
-        }
-
-        //validate if password reset is allowed
-        $ttl = Config::get('app.resetPasswordTokenTtlHours', 24);
-        if (!$user->isPasswordResetAllowed($token, $user->email, $ttl)) {
-            Log::warning('User reset password token expired!: ' . $token);
+        try 
+        {
+            $user = $this->usersResource->showByPasswordResetToken($token);
+        } 
+        catch (UsersResourceException $e)
+        {
             return View::make('users.requestPasswordResetBadToken');
         }
 
@@ -674,38 +653,14 @@ class UsersController extends CoreController {
     public function passwordReset($token) {
 
 
-        //get user by token
-        $user = $this->userRepo->findByPasswordResetToken($token);
-        if (!$user) {
-            return Redirect::route('users.passwordResetInit', ['token' => $token])->withInput()
-                ->with('message', new ViewMessage(ViewMessage::DANGER, 
-                    'The token and/or email do not match to a valid password reset request.')
-                );
-        }
-
-        //validate form input
-        $rules = $user->getPasswordRules();
-        $rules = array_merge($rules, array(
-            'email' => 'required|email'
+        $user = $this->usersResource->resetPassword(array_merge(
+                array('token' => $token),
+                Input::all()
             ));
-        $validator = Validator::make(Input::all(), $rules);
-        if ($validator->fails()) {
-            return Redirect::route('users.passwordResetInit', ['token' => $token])->withInput()
-                ->with('message', new ViewMessage(ViewMessage::DANGER, $validator->errors())
-                );
-        }
 
-        //try to set password...
-        $ttl = Config::get('app.resetPasswordTokenTtlHours');
-        if (!$user->resetPassword($token, Input::get('email'), Input::get('password'), $ttl)) {
-            return Redirect::route('users.passwordResetInit', ['token' => $token])->withInput()
-                ->with('message', new ViewMessage(ViewMessage::DANGER, 
-                    'The token and/or email do not match to a valid password reset request.')
-                );
-        }
-
+        //@todo: This should be a redirect, to avoid possible double submitions        
         $this->layout->content = View::make('users.passwordReset');
-
+        
     }
 
 

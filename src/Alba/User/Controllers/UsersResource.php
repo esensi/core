@@ -102,14 +102,18 @@ class UsersResource implements ResourceInterface {
             throw new UsersResourceException('No valid user account with that email could be found.', 'UsersResource::requestActivation - Error 2');   
         }
 
-        //@todo: handle transaction here?
+        DB::transaction(function() use ($user)
+        {
+            //generate activation token        
+            $token = $this->tokensResource->generateToken(Token::TYPE_ACTIVATION);
+            //set user with token
+            $user->tokens()->attach($token->id);    
 
-        //generate activation token        
-        $token = $this->tokensResource->generateToken('activation');
-        //set user with token
-        $user->tokens()->attach($token->id);
+            //Log::info("Generated token ID: " . $token->id);
+            
+            //@todo: check if a token already exists for this user, and only keep the last one
 
-        Log::info("Generated token ID: " . $token->id);
+        });
         
         return $user;
 
@@ -180,6 +184,121 @@ class UsersResource implements ResourceInterface {
             $this->tokensResource->destroyByToken($inputData['token']);
 
         });
+
+        return $user;
+
+    }
+
+
+
+    /** 
+     * Process the password reset request, validating the email, generating
+     * a new password request token. 
+     *
+     * @param array $inputData Data containing the email of user to rquest activation
+     * @return User
+     * @throws UsersResourceException If an error ocurs
+     */
+    public function requestPasswordReset($inputData) {
+
+        $rules = $this->user->getRequestPasswordResetRules();
+        $validator = Validator::make($inputData, $rules);
+        if ($validator->fails()) {
+            throw new UsersResourceException($validator->errors(), 'UsersResource::requestPasswordReset - Error 1');
+        }
+
+        //search the user by email address
+        $email = $inputData['email'];
+        $user = $this->user->whereEmail($email)->first();
+        if ((!$user) || ($user && !$user->isRequestPasswordResetAllowed()) ) {
+            throw new UsersResourceException('No valid user account with that email could be found.', 'UsersResource::requestActivation - Error 2');   
+        }
+
+        DB::transaction(function() use ($user)
+        {
+
+            //generate activation token
+            $token = $this->tokensResource->generateToken(Token::TYPE_PASS_RESET);
+            //set user with token
+            $user->tokens()->attach($token->id);
+
+            //Log::info("Generated token ID: " . $token->id);
+
+            //@todo: check if a token already exists for this user, and only keep the last one
+
+        });
+
+        return $user;
+
+    }
+
+
+
+    /**
+     * Searches the user by the password reset token, verifying that it hasn't expired.
+     * 
+     * @param string $token The password reset token
+     * @return User
+     * @throws UsersResourceException If an error ocurs
+     */
+    public function showByPasswordResetToken($token) {
+
+        $user = $this->user->wherePasswordResetToken($token)->first();
+        if (!$user) 
+        {
+            Log::info("password token not found");
+            throw new UsersResourceException('The password reset token is not found!');
+        }
+
+        //validate token
+        $ttl = Config::get('app.activationTokenTtlHours', 24);
+        if (!$user->isPasswordResetAllowed($token, null, $ttl))
+        {
+            Log::info("password token reset not allowed");
+            throw new UsersResourceException('The password reset token has expired!');
+        }
+
+        return $user;
+
+    }
+
+
+
+    /**
+     * Tries to reset the password of a user
+     * 
+     * @return User
+     * @throws UsersResourceException If an error ocurs
+     */
+    public function resetPassword($inputData)
+    {
+
+        //validate form input
+        $rules = $this->user->getResetPasswordRules();
+        $validator = Validator::make($inputData, $rules);
+        if ($validator->fails()) {
+            throw new UsersResourceException($validator->errors());
+        }
+
+        $user = $this->user->wherePasswordResetToken($inputData['token'])->first();
+        if (!$user) 
+        {         
+            throw new UsersResourceException('The token and/or email do not match to a valid password reset request.');
+        }        
+
+        DB::transaction(function() use ($user, $inputData)
+        {
+            //try to set password...
+            $ttl = Config::get('app.resetPasswordTokenTtlHours');
+            if (!$user->resetPassword($inputData['token'], $inputData['email'], $inputData['password'], $ttl)) 
+            {
+                throw new UsersResourceException('The token and/or email do not match to a valid password reset request.');            
+            }
+
+            //delete token
+            $this->tokensResource->destroyByToken($inputData['token']);
+
+        });        
 
         return $user;
 

@@ -29,20 +29,20 @@ class User extends Ardent implements UserInterface {
      */
     protected $table = 'users';
 
+
+    //@todo: all this rules get repeated, and there are isntance methods to return them to 
+    //Resources. Find a better way to do this.
+
     /**
      * The attribute rules that Ardent will validate against
-     *
+     * 
      * @var array
      */
     public static $rules = [
         'email' => 'required|email|max:128|unique:users', //IMPORTANT: keep unique rule at the end
     ];
 
-    /**
-     * Aditional ruleset for using as needed
-     * 
-     * @var array
-     */
+    
     public static $passwordRules = [
         'password' => 'required|alpha_num|between:4,256|confirmed',
         'password_confirmation' => 'required|alpha_num|between:4,256'
@@ -56,6 +56,19 @@ class User extends Ardent implements UserInterface {
 
     public static $activateRules = [
         'token' => 'required|alpha_num',
+        'password' => 'required|alpha_num|between:4,256|confirmed',
+        'password_confirmation' => 'required|alpha_num|between:4,256'
+    ];
+
+
+    public static $requestPasswordResetRules = [
+        'email' => 'required|email'
+    ];
+
+
+    public static $resetPasswordRules = [
+        'token' => 'required|alpha_num',
+        'email' => 'required|email',  
         'password' => 'required|alpha_num|between:4,256|confirmed',
         'password_confirmation' => 'required|alpha_num|between:4,256'
     ];
@@ -158,6 +171,22 @@ class User extends Ardent implements UserInterface {
 
 
     /**
+     * Returns the validation rules for request password reset process
+     * @return array
+     */
+    public function getRequestPasswordResetRules()
+    {
+        return self::$requestPasswordResetRules;
+    }
+
+
+    public function getResetPasswordRules() 
+    {
+        return self::$resetPasswordRules;
+    }
+
+
+    /**
      * Returns a string with the full name of the user
      * 
      * @param  string $format Format pattern. Added for future use.
@@ -172,7 +201,7 @@ class User extends Ardent implements UserInterface {
      * Returns the user who has the activation token indicated
      * @param  [type] $query [description]
      * @param string $token The activation token
-     * @return User
+     * @return Illuminate\Database\Query\Builder
      */
     public function scopeWhereActivationToken($query, $token) {
 
@@ -190,21 +219,44 @@ class User extends Ardent implements UserInterface {
     }
 
 
+    /**
+     * Returns the user who has the password reset token indicated
+     * @param  [type] $query [description]
+     * @param string $token The password reset token
+     * @return Illuminate\Database\Query\Builder
+     */
+    public function scopeWherePasswordResetToken($query, $token) {
+        return $query
+            ->select('users.*') //this should be here, so it gets the correct id field
+            ->join('token_user', 'users.id', '=', 'token_user.user_id')
+            ->join('tokens', 'tokens.id', '=', 'token_user.token_id')
+            ->where('tokens.type', '=', Token::TYPE_PASS_RESET)
+            ->where('tokens.token', '=', $token);
+    }
+
+
     /** 
      * Returns the current activation token of the user
      * @return Token
      */
     public function getActivationToken() {
-
         return $this->tokens()
-            ->where('type', '=', 'activation')
+            ->where('type', '=', Token::TYPE_ACTIVATION)
             ->orderBy('created_at', 'desc')
             ->first();
-
-        //Log::info("QUERY 1:" . print_r(DB::getQueryLog(), true));
-
     }
 
+
+    /** 
+     * Returns the current password reset token of the user
+     * @return Token
+     */
+    public function getPasswordResetToken() {
+        return $this->tokens()
+            ->where('type', '=', Token::TYPE_PASS_RESET)
+            ->orderBy('created_at', 'desc')
+            ->first();
+    }
 
     /**
      * Checks if this user is allowedto login. Currently must be active 
@@ -419,9 +471,6 @@ class User extends Ardent implements UserInterface {
 
         //check the token
         $activationToken = $this->getActivationToken();
-
-        Log::info("QUERY 1:" . print_r(DB::getQueryLog(), true));
-
         if ($token !== $activationToken->token) {
             //Log::info('Token is different: ' . $token . ' <> ' . $this->activation_token);
             return false;
@@ -449,27 +498,39 @@ class User extends Ardent implements UserInterface {
      * @param integer $ttlHours time to live to check agains the create_at date
      * @return boolean True if can reset password
      */
-    public function isPasswordResetAllowed($token, $email, $ttlHours = 24) {
+    public function isPasswordResetAllowed($token, $email = null, $ttlHours = 24) {
 
-        if (!$this->isRequestPasswordResetAllowed()) {
+        if (!$this->isRequestPasswordResetAllowed()) 
+        {
+            //Log::info("A");
             return false;
         }
 
         //check email
-        if ($email !== $this->email) {
-            return false;
+        if ($email) 
+        {
+            if ($email !== $this->email) 
+            {
+                //Log::info("B: " . $email . " " . $this->email);
+                return false;
+            }
         }
 
         //check token
-        if ($token !== $this->password_reset_token) {
+        $passResetToken = $this->getPasswordResetToken();
+        if ($token !== $passResetToken->token) 
+        {
+            //Log::info("C");
             return false;
         }
 
         //validate time to live
         $now = new Carbon();
-        $tokenTime = new Carbon($this->password_reset_token_created_at);
+        $tokenTime = new Carbon($passResetToken->created_at);
         $diffHours = $now->diffInHours($tokenTime);
-        if ($diffHours > $ttlHours) {            
+        if ($diffHours > $ttlHours) 
+        {  
+            //Log::info("D");          
             return false;
         }
 
@@ -555,34 +616,6 @@ class User extends Ardent implements UserInterface {
 
 
     /**
-     * Generates a new activation token, saving it with a new timestamp.
-     * 
-     * @return string Activation token
-     */
-    public function generateActivationToken() {
-        $token = StringUtils::generateGuid(false);
-        $this->activation_token = $token;
-        $this->activation_token_created_at = new Carbon();
-        $this->saveUpdate();
-        return $token;
-    }
-
-
-    /**
-     * Generates a new password reset token, saving it with a new timestamp
-     * 
-     * @return string Password reset token
-     */
-    public function generatePasswordResetToken() {
-        $token = StringUtils::generateGuid(false);
-        $this->password_reset_token = $token;
-        $this->password_reset_token_created_at = new Carbon();
-        $this->saveUpdate();
-        return $token;
-    }
-
-
-    /**
      * It changes the password of the user to the one indicated.
      * It hashes the password, updates the timestamp and saves the
      * info in the user record.
@@ -601,9 +634,7 @@ class User extends Ardent implements UserInterface {
         }
 
         $this->password = Hash::make($newPlainPassword);
-        $this->last_pass_update_at = new Carbon();
-        $this->password_reset_token = null;
-        $this->password_reset_token_created_at = null;
+        $this->password_updated_at = new Carbon();
         $this->saveUpdate();
 
         return true;

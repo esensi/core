@@ -53,7 +53,7 @@ class CoreResource extends CoreController implements ResourceInterface {
 		$rules = $this->resource->rulesForStoring;
 		if(!$this->resource->fill($attributes)->save($rules))
 		{
-			$this->throwException('Object could not be stored: '.implode(' ', $object->errors()->all()) );
+			$this->throwException(Lang::get('alba::resource.failed.store', ['message' => implode(' ', $object->errors()->all()) ]));
 		}
 		return $this->resource;
 	}
@@ -69,7 +69,7 @@ class CoreResource extends CoreController implements ResourceInterface {
 		$object = $this->resource->find($id);
 		if(!$object)
 		{
-			$this->throwException('Object could not be found.');
+			$this->throwException(Lang::get('alba::resource.failed.show'));
 		}
 		return $object;
 	}
@@ -88,7 +88,7 @@ class CoreResource extends CoreController implements ResourceInterface {
 		$rules = $object->rulesForUpdating;
 		if(!$object->fill($attributes)->save($rules))
 		{
-			$this->throwException('Object could not be updated: '.implode(' ', $object->errors()->all()) );
+			$this->throwException(Lang::get('alba::resource.failed.update', ['message' => implode(' ', $object->errors()->all()) ]));
 		}
 		return $object;
 	}
@@ -109,7 +109,7 @@ class CoreResource extends CoreController implements ResourceInterface {
 		
 		if(!$result)
 		{
-			$this->throwException('Object could not be deleted.');
+			$this->throwException(Lang::get('alba::resource.failed.destroy'));
 		}
 
 		return $result;

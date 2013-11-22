@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
@@ -18,6 +19,8 @@ use Alba\Core\Utils\ViewMessage;
 use Alba\User\Models\User;
 use Alba\User\Models\Name;
 use Alba\User\Controllers\TokensResource;
+use Alba\User\Controllers\UsersResource;
+use Alba\User\Controllers\UsersResourceException;
 use Alba\User\Repositories\Contracts\UserRepositoryInterface;
 
 /**
@@ -33,13 +36,22 @@ class UsersController extends CoreController {
      */
     protected $layout = 'layouts.default';
 
+    /**
+     * The UsersResource controller
+     * @var Alba\User\Controllers\UsersResource;
+     */
+    protected $usersResource;
+
     
     /**
      * The repository used for user interactions
      */
     protected $userRepo;
 
-
+    /**
+     * The TokensResource controller, used to handle tokens
+     * @var Alba\User\Controllers\TokensResource;
+     */
     protected $tokensResource;
 
     
@@ -49,11 +61,15 @@ class UsersController extends CoreController {
      * @param UserRepositoryInterface $userRepo
      * @return void
      */
-    public function __construct(UserRepositoryInterface $userRepo)
+    public function __construct(
+        UserRepositoryInterface $userRepo, 
+        UsersResource $usersResource,
+        TokensResource $tokensResource)
     {
         // @todo make ViewMessage a dependency injection
         $this->userRepo = $userRepo;
-        $this->tokensResource = new TokensResource(); //@todo: change to injection
+        $this->usersResource = $usersResource;
+        $this->tokensResource = $tokensResource;
     }
 
 
@@ -372,27 +388,10 @@ class UsersController extends CoreController {
      */
     private function processRequestActivation($inputData) {
 
-        //get email and validate
-        // @todo move rules to User model
-        $rules = [
-            'email' => 'required|email'
-        ];
-        $validator = Validator::make($inputData, $rules);
-        if ($validator->fails()) {
-            return new ProcessResponse(false, $validator->errors(), 'danger'); // @todo make ProcessResponse a dependency injection
-        }
+        $user = $this->usersResource->requestActivation($inputData);
 
-        //search the user by email address
-        $email = $inputData['email'];
-        $user = $this->userRepo->findByEmail($email);
-        if ((!$user) || ($user && !$user->isRequestActivationAllowed()) ) {
-            return new ProcessResponse(false, 'No valid user account with that email could be found.', 'warning'); // @todo make ProcessResponse a dependency injection, move to language file
-        }
-
-        //generate activation token
-        $token = $this->tokensResource->generateToken('activation');
-        //set user with token
-        $user->tokens()->attach($token->id);
+        //if all is ok, get the activation token and send email...
+        $token = $user->getActivationToken();
 
         //generate activation URL
         $activationUrl = route('users.requestActivationPassword', ['token' => $token->token]);
@@ -436,17 +435,9 @@ class UsersController extends CoreController {
     public function requestActivationAdmin($id) {
 
         $input = Input::all(); // @todo this should only pass what's strictly needed using Input::only()
+        
+        //now if the method executes without exception, it will always be success
         $resp = $this->processRequestActivation($input);
-        if ($resp->isError()) {
-            if ($resp->getHolder() === 'warning') {
-                $type = ViewMessage::WARNING;
-            } else {
-                $type = ViewMessage::DANGER;
-            }
-            return Redirect::route('users.show')->withInput()->with('message', 
-                new ViewMessage($type, $resp->getMessage()) // @todo make ViewMessage a dependency injection
-            );
-        }
 
         // @todo remove the passing of data into the message... just for debugging
         return Redirect::route('users.show', ['id' => $id])->with('message',
@@ -465,19 +456,12 @@ class UsersController extends CoreController {
 
         // @todo don't return a mixed response such as Redirect or void
         $input = Input::all(); // @todo this should only pass what's strictly needed using Input::only()
+        
+        //now if the method executes without exception, it will always be success
         $resp = $this->processRequestActivation($input);
-        if ($resp->isError()) {
-            if ($resp->getHolder() === 'warning') {
-                $type = ViewMessage::WARNING;
-            } else {
-                $type = ViewMessage::DANGER;
-            }
-            return Redirect::route('users.requestActivationInit')->withInput()->with('message', 
-                new ViewMessage($type, $resp->getMessage()) // @todo make ViewMessage a dependency injection
-            );
-        }
 
         // @todo remove the data pased to the view, just done for debugging... 
+        
         // @todo this could end up getting a double submission since it isn't redirected
         $this->layout->content = View::make('users.requestActivation')->with($resp->getHolder());
 
@@ -494,17 +478,10 @@ class UsersController extends CoreController {
      */
     public function requestActivationPassword($token) {
 
-        //search user by token
-        $user = $this->userRepo->findByToken($token);
-        if (!$user) {
-            Log::warning('User NOT found');
-            return View::make('users.requestActivationPasswordBadToken');
-        }
-
-        //validate token
-        $ttl = Config::get('app.activationTokenTtlHours', 24);
-        if (!$user->isActivateAllowed($token, $ttl)) {
-            Log::warning('Activation NOT allowed');
+        //get user by token
+        try {
+            $user  = $this->usersResource->showByActivationToken($token);
+        } catch (UsersResourceException $e) {
             return View::make('users.requestActivationPasswordBadToken');
         }
 
@@ -523,29 +500,12 @@ class UsersController extends CoreController {
      */
     public function activate($token) {
 
-        //search user by token
-        $user = $this->userRepo->findByToken($token);
-        if (!$user) {
-            Log::warning('User NOT found');
-            return View::make('users.requestActivationPasswordBadToken');
-        }
+        $user = $this->usersResource->activate(array_merge(
+                array('token' => $token),
+                Input::all()
+            ));
 
-        //get passwords and validate
-        // @todo move the validation to the user model
-        $rules = $user->getPasswordRules();        
-        $validator = Validator::make(Input::all(), $rules);        
-        if ($validator->fails()) {
-            return Redirect::route('users.requestActivationPassword', ['token' => $token])
-                ->with('message', new ViewMessage(ViewMessage::DANGER, $validator->messages())); // @todo make ViewMessage a dependency injection
-        }
-
-        //try to activate the user account
-        $ttl = Config::get('app.activationTokenTtlHours', 24);
-        if (!$user->activate($token, Input::get('password'), $ttl)) {
-            return Redirect::route('users.requestActivationPassword', ['token' => $token])
-                ->with('message', new ViewMessage(ViewMessage::DANGER, 'User account not activated due to internal problems. Please contact a system administrator if the problem persists.')); // @todo make ViewMessage a dependency injection, move to language file
-        }
-
+        //@todo: This should be a redirect, to avoid possible double submitions
         //account activated!
         $this->layout->content = View::make('users.activate');
 

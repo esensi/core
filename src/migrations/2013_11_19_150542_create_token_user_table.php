@@ -15,11 +15,12 @@ class CreateTokenUserTable extends Migration {
 		Schema::create('token_user', function(Blueprint $table)
 		{
             // Add table columns
-            $table->increments('id');
+            //$table->increments('id');
             $table->integer('token_id')->unsigned();
             $table->integer('user_id')->unsigned();
 
             // Add table indexes and foreign keys
+            $table->primary(array('token_id', 'user_id'));
             $table->foreign('token_id')->references('id')->on('tokens')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 

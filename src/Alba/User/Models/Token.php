@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Log;
 
 class Token extends Ardent {
 
+    const TYPE_ACTIVATION = 'activation';
+    const TYPE_PASS_RESET = 'pass_reset';
+
     /**
      * The database table used by the model.
      *
@@ -43,13 +46,7 @@ class Token extends Ardent {
 
 
     public function beforeSave()
-    {
-
-        //It seems that validation executes first, so this is never executed
-        //it would throw the validation error first
-        if ($this->token == null) {
-            $this->token = StringUtils::generateGuid(false);
-        }
+    {      
 
         if ($this->created_at == null) {
             $this->created_at = new Carbon();

@@ -4,10 +4,12 @@ namespace Alba\User\Models;
 
 use Ardent;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Auth\UserInterface;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Zizaco\Entrust\HasRole;
+
 
 use Alba\Core\Utils\StringUtils;
 
@@ -45,6 +47,19 @@ class User extends Ardent implements UserInterface {
         'password' => 'required|alpha_num|between:4,256|confirmed',
         'password_confirmation' => 'required|alpha_num|between:4,256'
     ];
+
+
+    public static $requestActivationRules = [
+        'email' => 'required|email'
+    ];
+
+
+    public static $activateRules = [
+        'token' => 'required|alpha_num',
+        'password' => 'required|alpha_num|between:4,256|confirmed',
+        'password_confirmation' => 'required|alpha_num|between:4,256'
+    ];
+
 
     /**
      * Auto hydrate Ardent model based on input (new models)
@@ -112,12 +127,33 @@ class User extends Ardent implements UserInterface {
     }
 
 
+
     /**
      * Returns the validation rules for the password
      * @return array
      */
-    public function getPasswordRules() {
+    public function getPasswordRules() 
+    {
         return self::$passwordRules;
+    }
+
+    /**
+     * Returns the validation rules for the request activation process
+     * @return array
+     */
+    public function getRequestActivationRules() 
+    {
+        return self::$requestActivationRules;
+    }
+
+
+    /**
+     * Returns the validation rules for activate process
+     * @return array
+     */
+    public function getActivateRules() 
+    {
+        return self::$activateRules;
     }
 
 
@@ -129,6 +165,44 @@ class User extends Ardent implements UserInterface {
      */
     public function getFullName($format = null) {
         return $this->name->getFullName($format);
+    }
+
+
+    /**
+     * Returns the user who has the activation token indicated
+     * @param  [type] $query [description]
+     * @param string $token The activation token
+     * @return User
+     */
+    public function scopeWhereActivationToken($query, $token) {
+
+        /*$result = $query
+            ->where('id', '=', 18)->first();*/
+
+        return $query
+            ->select('users.*') //this should be here, so it gets the correct id field
+            ->join('token_user', 'users.id', '=', 'token_user.user_id')
+            ->join('tokens', 'tokens.id', '=', 'token_user.token_id')
+            ->where('tokens.type', '=', Token::TYPE_ACTIVATION)
+            ->where('tokens.token', '=', $token);
+            //first() //not do this here!!! nor get()
+
+    }
+
+
+    /** 
+     * Returns the current activation token of the user
+     * @return Token
+     */
+    public function getActivationToken() {
+
+        return $this->tokens()
+            ->where('type', '=', 'activation')
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        //Log::info("QUERY 1:" . print_r(DB::getQueryLog(), true));
+
     }
 
 
@@ -344,14 +418,18 @@ class User extends Ardent implements UserInterface {
         }
 
         //check the token
-        if ($token !== $this->activation_token) {
+        $activationToken = $this->getActivationToken();
+
+        Log::info("QUERY 1:" . print_r(DB::getQueryLog(), true));
+
+        if ($token !== $activationToken->token) {
             //Log::info('Token is different: ' . $token . ' <> ' . $this->activation_token);
             return false;
         }
 
         //validate time to live
         $now = new Carbon();
-        $tokenTime = new Carbon($this->activation_token_created_at);
+        $tokenTime = new Carbon($activationToken->created_at); //@todo: change this login to start using the expires_at field
         $diffHours = $now->diffInHours($tokenTime);
         if ($diffHours > $ttlHours) {
             //Log::info('Time to live expired! Diff: ' . $diffHours);
@@ -430,28 +508,35 @@ class User extends Ardent implements UserInterface {
      * @param int $ttlHours Time to live in hours of the current token.
      * @return boolean True if the user has been activated, false otherwise.
      */
-    public function activate($token, $newPassword, $ttlHours = 24) {
+    public function activate($token, $newPassword, $ttlHours = 24) 
+    {
 
         //validate activation
-        if (!$this->isActivateAllowed($token, $ttlHours)) {
+        if (!$this->isActivateAllowed($token, $ttlHours)) 
+        {
             return false;
         }
 
         //TODO: validate password when is decided how to handle it
         /*if (!$this->validatePassword($newPassword)) {
             return false;
-        }*/
+        }*/       
 
-        //everything ok, activate account:        
-        $this->active = true;
-        $this->activated_at = new Carbon();
-        $this->activation_token = null;
-        $this->activation_token_created_at = null;
-        $this->password = Hash::make($newPassword);
-        $this->password_updated_at = new Carbon();
-        $this->saveUpdate();
-        
-        return true;
+        $activationToken = $this->getActivationToken();
+        if ($activationToken) 
+        {
+            //everything ok, activate account:        
+            $this->active = true;
+            $this->activated_at = new Carbon();
+            $this->password = Hash::make($newPassword);
+            $this->password_updated_at = new Carbon();
+            $this->saveUpdate();
+            return true;
+        } 
+        else
+        {
+            return false;
+        }        
 
     }
 

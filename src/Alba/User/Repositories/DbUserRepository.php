@@ -39,7 +39,30 @@ class DbUserRepository implements UserRepositoryInterface {
 
 
     public function findByToken($token) {
-        return User::where('activation_token', $token)->first();
+        //return User::where('activation_token', $token)->first();
+
+        $user = DB::table('users')
+            ->join('token_user', 'users.id', '=', 'token_user.user_id')
+            ->join('tokens', 'tokens.id', '=', 'token_user.token_id')
+            ->where('tokens.type', '=', 'activation')
+            ->where('tokens.token', '=', $token)
+            ->select('users.id')
+            ->first();
+
+        /*$queries = DB::getQueryLog();        
+        Log::info("Query: " . print_r(end($queries), true));
+        Log::info("User: " . print_r($user, true));*/
+
+        if ($user) {
+            //Log::info("User id: " . $user->id);
+            $user = User::find($user->id);
+            /*$queries = DB::getQueryLog();        
+            Log::info("2nd Query: " . print_r(end($queries), true));
+            Log::info("2nd User: " . print_r($user, true));*/
+            return $user;
+        } else {
+            return null;
+        }
     }
 
 
@@ -54,7 +77,7 @@ class DbUserRepository implements UserRepositoryInterface {
         $user = new User();
         $user->email = $data['email'];
         //users are created deactivated with no password
-        $user->activated = false;
+        $user->active = false;
         $user->blocked = false;
         if (!$user->validate()) {
             Log::info("Errors in user!");

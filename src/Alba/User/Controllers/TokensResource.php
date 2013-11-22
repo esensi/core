@@ -3,18 +3,28 @@
 
 use Alba\Core\Contracts\ResourceInterface;
 use Alba\Core\Utils\StringUtils;
+use Alba\Core\Exceptions\ResourceException;
+
 use Alba\User\Models\Token;
 
 //use Illuminate\Support\Facades\Log;
 
-//@todo: this should now implement the ResourceInterface!!!
+
+class TokensResourceException extends ResourceException {}
+
 class TokensResource implements ResourceInterface {
 
 
-    /*public function __construct(Token $token) {
-        //@todo change this to injection via IoC
+    /**
+     * The Token model
+     * @var Alba\User\Models\Token
+     */
+    protected $token;
+
+
+    public function __construct(Token $token) {        
         $this->token = $token;
-    }*/
+    }
 
 
     /**
@@ -31,18 +41,14 @@ class TokensResource implements ResourceInterface {
     public function store($attributes)
     {
 
-        $token = new Token();
-        $token->fill($attributes);
-        if (!$token->save()) {
-            //errors
-            //throw new TokenStoreException();
-            $str = '';
-            foreach ($token->errors()->all('- :message') as $message) {
-                $str .= $message . "\n";
-            }
-            throw new \Exception("There were some errors trying to save the token: \n $str");
+        $this->token->fill($attributes);
+        if (!$this->token->save()) {            
+            throw new TokensResourceException(
+                $this->token->errors(),
+                "There were some errors trying to save the token."
+            );
         }
-        return $token;
+        return $this->token;
 
     }
 
@@ -69,6 +75,31 @@ class TokensResource implements ResourceInterface {
     public function destroy($id, $force)
     {
 
+        $token = Token::find($id);
+        if (!$token) {
+            return false;
+        }
+
+        $token->delete();
+
+        return true;
+
+    }
+
+
+    /**
+     * Searches the token specified, and deletes it
+     * @param string $token The token string to search and delete
+     * @param [type] $force [description]
+     * @return bool Whether it deleted the token or not
+     */
+    public function destroyByToken($token, $force = false) {
+        $token = $this->token->whereToken($token)->first();
+        if (!$token) {
+            return false;
+        }
+        $token->delete();
+        return true;
     }
 
 

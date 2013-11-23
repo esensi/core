@@ -12,7 +12,7 @@ class CoreResource extends CoreController implements ResourceInterface {
      * 
      * @var Illuminate\Database\Eloquent\Model;
      */
-    protected $resource;
+    protected $model;
 
 	/**
      * The exception to be thrown
@@ -28,7 +28,17 @@ class CoreResource extends CoreController implements ResourceInterface {
      */
 	public function __construct()
 	{
-		$this->resource = new Eloquent;
+		$this->model = new Eloquent;
+	}
+
+	/**
+	 * Get the resource model used
+	 *
+	 * @return Illuminate\Database\Eloquent\Model
+	 */
+	public function getModel()
+	{
+		return $this->model;
 	}
 
 	/**
@@ -39,7 +49,7 @@ class CoreResource extends CoreController implements ResourceInterface {
 	 */
 	public function index($params = [])
 	{
-		return $this->resource->all();
+		return $this->model->all();
 	}
 
 	/**
@@ -50,12 +60,12 @@ class CoreResource extends CoreController implements ResourceInterface {
 	 */
 	public function store($attributes)
 	{
-		$rules = $this->resource->rulesForStoring;
-		if(!$this->resource->fill($attributes)->save($rules))
+		$rules = $this->model->rulesForStoring;
+		if(!$this->model->fill($attributes)->save($rules))
 		{
-			$this->throwException(Lang::get('alba::resource.failed.store', ['message' => implode(' ', $object->errors()->all()) ]));
+			$this->throwException(Lang::get('alba::resource.failed.store', ['message' => implode(' ', $this->model->errors()->all()) ]));
 		}
-		return $this->resource;
+		return $this->model;
 	}
 
 	/**
@@ -66,7 +76,7 @@ class CoreResource extends CoreController implements ResourceInterface {
 	 */
 	public function show($id)
 	{
-		$object = $this->resource->find($id);
+		$object = $this->model->find($id);
 		if(!$object)
 		{
 			$this->throwException(Lang::get('alba::resource.failed.show'));

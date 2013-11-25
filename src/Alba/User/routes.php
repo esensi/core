@@ -84,9 +84,6 @@ Route::group(['prefix' => 'admin'], function(){
 		Route::get('/', [ 'as' => 'admin.permissions.index', 'uses' => 'Alba\User\Controllers\PermissionsAdminController@index' ]);
 	});
 
-	// Admin Login/out
-	Route::get('/login', [ 'as' => 'admin.users.login', 'uses' => 'Alba\User\Controllers\UsersAdminController@login' ]);
-	Route::any('/logout', [ 'as' => 'admin.users.logout', 'uses' => 'Alba\User\Controllers\UsersAdminController@logout' ]);
 });
 
 /*
@@ -100,7 +97,12 @@ Route::group(['prefix' => 'admin'], function(){
 |
 */
 
-Route::get('/forgot-password', [ 'as' => 'forgot-password', 'uses' => 'Alba\User\Controllers\UsersController@forgotPassword' ]);
-Route::get('/login', [ 'as' => 'login', 'uses' => 'Alba\User\Controllers\UsersController@login' ]);
-Route::any('/logout', [ 'as' => 'logout', 'uses' => 'Alba\User\Controllers\UsersController@logout' ]);
-Route::get('/register', [ 'as' => 'register', 'uses' => 'Alba\User\Controllers\UsersController@register' ]);
+Route::post('/set-password', [ 'as' => 'users.save-password', 'uses' => 'Alba\User\Controllers\UsersController@savePassword' ]);
+Route::get('/set-password/{token}', [ 'as' => 'users.set-password', 'uses' => 'Alba\User\Controllers\UsersController@setPassword' ])->where('token','[a-zA-Z0-9]+');
+Route::post('/forgot-password', [ 'as' => 'users.reset-password', 'uses' => 'Alba\User\Controllers\UsersController@resetPassword' ]);
+Route::get('/forgot-password', [ 'as' => 'users.forgot-password', 'uses' => 'Alba\User\Controllers\UsersController@forgotPassword' ]);
+Route::post('/login', [ 'as' => 'users.login', 'uses' => 'Alba\User\Controllers\UsersController@login' ]);
+Route::get('/login', [ 'as' => 'users.signin', 'uses' => 'Alba\User\Controllers\UsersController@signin' ]);
+Route::any('/logout', [ 'as' => 'users.logout', 'uses' => 'Alba\User\Controllers\UsersController@logout' ]);
+Route::post('/register', [ 'as' => 'users.register', 'uses' => 'Alba\User\Controllers\UsersController@register' ]);
+Route::get('/register', [ 'as' => 'users.signup', 'uses' => 'Alba\User\Controllers\UsersController@signup' ]);

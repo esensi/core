@@ -1,15 +1,13 @@
-<?php
+<?php namespace Alba\User\Seeders;
 
-namespace Alba\User\Seeders;
-
-use Alba\Core\Seeders\CoreSeeder;
+use Alba\Core\Seeders\Seeder;
 
 use Alba\User\Models\Permission;
 
 use Illuminate\Support\Facades\DB;
 
 
-class PermissionsTableSeeder extends CoreSeeder {
+class PermissionsTableSeeder extends Seeder {
 
     public function run() {
 

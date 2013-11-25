@@ -15,7 +15,6 @@ class CreateTokenUserTable extends Migration {
 		Schema::create('token_user', function(Blueprint $table)
 		{
             // Add table columns
-            //$table->increments('id');
             $table->integer('token_id')->unsigned();
             $table->integer('user_id')->unsigned();
 

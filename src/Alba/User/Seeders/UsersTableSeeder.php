@@ -1,8 +1,6 @@
-<?php
+<?php namespace Alba\User\Seeders;
 
-namespace Alba\User\Seeders;
-
-use Alba\Core\Seeders\CoreSeeder;
+use Alba\Core\Seeders\Seeder;
 
 use Carbon\Carbon;
 
@@ -13,7 +11,7 @@ use Alba\User\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class UsersTableSeeder extends CoreSeeder {
+class UsersTableSeeder extends Seeder {
     
 
     public function run() {

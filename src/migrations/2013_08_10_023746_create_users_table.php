@@ -16,7 +16,7 @@ class CreateUsersTable extends Migration {
 		{
             // Add table columns
             $table->increments('id');
-            $table->string('email', 128)->unique();           
+            $table->string('email', 128)->unique();
             $table->string('password', 256)->nullable();
             $table->boolean('active')->default(false);
             $table->boolean('blocked')->default(false);
@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration {
             $table->softDeletes();
             $table->timestamp('activated_at')->nullable();
 			$table->timestamp('password_updated_at')->nullable();
-            $table->timestamp('authenticated_at')->nullable();            
+            $table->timestamp('authenticated_at')->nullable();
 
             // Add table indexes and foreign keys
             $table->index('email');

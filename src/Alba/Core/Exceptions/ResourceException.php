@@ -12,7 +12,7 @@ class ResourceException extends \Exception {
 
 
 
-    public function __construct($messageBag, $message = null)
+    public function __construct($messageBag = null, $message = null)
     {
         parent::__construct($message);
         $this->messageBag = $messageBag;

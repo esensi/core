@@ -4,9 +4,12 @@ use Alba\Core\Contracts\ResourceInterface;
 use Alba\Core\Utils\StringUtils;
 use Alba\Core\Exceptions\ResourceException;
 
+use Alba\User\Models\Name;
+use Alba\User\Models\Role;
 use Alba\User\Models\Token;
 use Alba\User\Models\User;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
@@ -19,6 +22,12 @@ class UsersResource implements ResourceInterface {
 
 
     /**
+     * Default user roles to set to new users
+     * @var array
+     */
+    public static $defaultUserRoles = ['user'];
+
+    /**
      * The User model
      * @var Alba\User\Models\User
      */
@@ -26,11 +35,30 @@ class UsersResource implements ResourceInterface {
 
 
 
-    public function __construct(User $user, TokensResource $tokensResource) {
+    public function __construct(User $user, Name $name, TokensResource $tokensResource) {
         $this->user = $user;
+        $this->name = $name;
         $this->tokensResource = $tokensResource;
     }
 
+
+    /**
+     * Returns an array with the attributes that must be sent to the store method
+     * @return array
+     */
+    public function getAttributesForStoring()
+    {
+        return array_keys(array_merge($this->name->rulesForStoring, $this->user->rulesForStoring));
+    }
+
+    /**
+     * Returns an array with the attributes that must be sent to the login method
+     * @return array
+     */
+    public function getAttributesForLogin()
+    {
+        return array_keys($this->user->rulesForLogin);
+    }
 
 
     /**
@@ -39,6 +67,8 @@ class UsersResource implements ResourceInterface {
     public function index($params = []) 
     {
 
+        return $this->user->all();
+
     }
 
     /**
@@ -46,7 +76,66 @@ class UsersResource implements ResourceInterface {
      */
     public function store($attributes)
     {
-        
+
+        //take user info from data and validate
+        $user = new User();
+        $user->email = $attributes['email'];
+        //users are created deactivated and with no password
+        $user->active = false;
+        $user->blocked = false;
+        if (!$user->validate($this->user->rulesForStoring)) {
+            throw new UsersResourceException($user->errors());          
+        }
+
+        //take name info from data and validate
+        $name = new Name();
+        $name->title = $attributes['title'];
+        $name->first_name = $attributes['first_name'];
+        $name->middle_name = $attributes['middle_name'];
+        $name->last_name = $attributes['last_name'];
+        $name->suffix = $attributes['suffix'];
+        //validate first without checking user, so we don't have to save the user first
+        if (!$name->validate($this->name->rulesForNameOnly)) {
+            throw new UsersResourceException($name->errors());            
+        }
+                
+        //get default Roles to attach to a new user
+        $roles = Role::whereIn('name', self::$defaultUserRoles)->get();
+
+        //user and name are correct... save them!
+        try 
+        {
+            DB::transaction(function() use ($user, $name, $roles) {
+                
+                if (!$user->save($this->user->rulesForStoring)) {
+                    throw new UsersResourceException($user->errors());                    
+                }
+                
+                //attach Roles to user
+                foreach ($roles as $role) {
+                    $user->attachRole($role);
+                }                
+
+                $name->user()->associate($user);
+                
+                //Log::info("Saving name...");
+                if (!$name->save($this->name->rulesForStoring)) {
+                    throw new UsersResourceException($name->errors());
+                }
+
+            });
+        } 
+        catch (UsersResourceException $e) 
+        {
+            throw $e;            
+        }
+        catch (\Exception $e) 
+        {
+            throw new UsersResourceException('There was an unexpected error trying to save the user. Please contact a system administrator if this error persists.');
+        }
+
+        return $user;
+
     }
 
     /**
@@ -54,7 +143,11 @@ class UsersResource implements ResourceInterface {
      */
     public function show($id)
     {
-
+        $user = $this->user->find($id);
+        if (!$user) {
+            throw new UsersResourceException('The user was not found!');            
+        }
+        return $user;
     }
 
     /**
@@ -63,7 +156,80 @@ class UsersResource implements ResourceInterface {
     public function update($id, $attributes)
     {
 
+        //search user
+        $user = $this->show($id);
+
+        //take user info and validate
+        $userChanged = false;
+        if (isset($attributes['email'])) {
+            $userChanged = true;
+            $user->email = $attributes['email'];
+        }
+
+        if ($userChanged) {
+            if (!$user->validate($user->rulesForUpdate)) {
+                throw new UsersResourceException($user->errors());
+            }
+        }
+
+        //take name info from form and validate
+        $nameChanged = false;
+        $name = $user->name;
+        if (isset($attributes['title'])) {
+            $nameChanged = true;
+            $name->title = $attributes['title'];
+        }
+        if (isset($attributes['first_name'])) {
+            $nameChanged = true;
+            $name->first_name = $attributes['first_name'];    
+        }        
+        if (isset($attributes['middle_name'])) {
+            $nameChanged = true;
+            $name->middle_name = $attributes['middle_name'];    
+        }        
+        if (isset($attributes['last_name'])) {
+            $nameChanged = true;
+            $name->last_name = $attributes['last_name'];    
+        }        
+        if (isset($attributes['suffix'])) {
+            $nameChanged = true;
+            $name->suffix = $attributes['suffix'];    
+        }
+        
+        if ($nameChanged) {
+            if (!$name->validate($name->rulesForStoring)) {
+                throw new UsersResourceException($name->errors());                
+            }
+        }
+        
+        //user and name are correct... save them!
+        try {
+            DB::transaction(function() use ($user, $name, $userChanged, $nameChanged) {
+                
+                if ($userChanged) {
+                    if (!$user->save($user->rulesForUpdate)) {                    
+                        throw new UsersResourceException($user->errors());
+                    }
+                }
+                if ($nameChanged) {
+                    if (!$name->save($name->rulesForStoring)) {
+                        throw new UsersResourceException($name->errors());
+                    }
+                }
+
+            });
+        } 
+        catch (UsersResourceException $e) {
+            throw $e;
+        }
+        catch (\Exception $e) {
+            throw new UsersResourceException('There was an unexpected error trying to update the user. Please contact a system administrator if this error persists.');
+        }        
+
+        return $user;
+
     }
+
 
     /**
      * @see ResourceInterface::destroy
@@ -72,6 +238,55 @@ class UsersResource implements ResourceInterface {
     public function destroy($id, $force)
     {
 
+    }
+
+
+    /**
+     * Process login attempt for a user
+     * 
+     * @return User
+     * @throws UsersResourceException If an error occurs or login not allowed.
+     */
+    public function login($inputData) 
+    {
+        
+        // Get the account inputs needed for authentication
+        $validator = Validator::make($inputData, $this->user->rulesForLogin);
+        if ($validator->fails())
+        {
+            throw new UsersResourceException($validator->messages());
+        }
+
+        // Validate the credentials with a fake attempt
+        if (!Auth::validate($inputData))
+        {
+            throw new UsersResourceException('Your email and/or password are incorrect!');                        
+        }
+        
+        // User will need to be active and not blocked
+        $credentials = array_merge($inputData, ['active' => true, 'blocked' => false]);
+
+        // Check the credentials with a real login
+        if(!Auth::attempt($credentials))
+        {
+            $message = Auth::getProvider()->retrieveByCredentials($inputData)->getLoginAllowedMessage(); // @todo find another way to compute the messages or show a more generic one
+            throw new UsersResourceException($message);
+        }
+
+        // Log authentication
+        // @todo this should be bound as a listener on auth.login
+        Auth::user()->doLoginActions();
+                
+        return Auth::user();
+    }
+
+
+    /**
+     * Logs the user out
+     * 
+     */
+    public function logout() {
+        Auth::logout();
     }
 
 
@@ -89,7 +304,8 @@ class UsersResource implements ResourceInterface {
      */
     public function requestActivation($inputData) {
         
-        $rules = $this->user->getRequestActivationRules();
+        //$rules = $this->user->getRequestActivationRules();
+        $rules = $this->user->rulesForRequestActivation;
         $validator = Validator::make($inputData, $rules);
         if ($validator->fails()) {
             throw new UsersResourceException($validator->errors(), 'UsersResource::requestActivation - Error 1');
@@ -155,7 +371,8 @@ class UsersResource implements ResourceInterface {
      */
     public function activate($inputData) {
 
-        $rules = $this->user->getActivateRules();
+        //$rules = $this->user->getActivateRules();
+        $rules = $this->user->rulesForActivate;
         $validator = Validator::make($inputData, $rules);
         if ($validator->fails()) {
             throw new UsersResourceException($validator->errors(), 'UsersResource::activate - Error 1');
@@ -201,7 +418,8 @@ class UsersResource implements ResourceInterface {
      */
     public function requestPasswordReset($inputData) {
 
-        $rules = $this->user->getRequestPasswordResetRules();
+        //$rules = $this->user->getRequestPasswordResetRules();
+        $rules = $this->user->rulesForRequestPasswordReset;
         $validator = Validator::make($inputData, $rules);
         if ($validator->fails()) {
             throw new UsersResourceException($validator->errors(), 'UsersResource::requestPasswordReset - Error 1');
@@ -274,7 +492,8 @@ class UsersResource implements ResourceInterface {
     {
 
         //validate form input
-        $rules = $this->user->getResetPasswordRules();
+        //$rules = $this->user->getResetPasswordRules();
+        $rules = $this->user->rulesForResetPassword;
         $validator = Validator::make($inputData, $rules);
         if ($validator->fails()) {
             throw new UsersResourceException($validator->errors());

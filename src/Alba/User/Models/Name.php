@@ -23,13 +23,24 @@ class Name extends Ardent {
      * @var array
      */
     public static $rules = [
-        'title' => 'max:10',
-        'first_name' => 'required|max:100',
-        'middle_name' => 'max:100',
-        'last_name' => 'required|max:100',
-        'suffix' => 'max:10',
-        'user' => 'exists:users'
+        'title' => ['max:10'],
+        'first_name' => ['required', 'max:100'],
+        'middle_name' => ['max:100'],
+        'last_name' => ['required', 'max:100'],
+        'suffix' => ['max:10'],
+        'user' => ['exists:users']
     ];
+
+
+    public function getRulesForStoringAttribute()
+    {
+        return self::$rules;
+    }
+
+    public function getRulesForNameOnlyAttribute()
+    {
+        return array_only(self::$rules, array('title', 'first_name', 'middle_name', 'last_name', 'suffix'));
+    }
 
 
     /**
@@ -56,12 +67,12 @@ class Name extends Ardent {
      * Validates name with basic ruleset
      * @return boolean Whether the validation succedeed or not
      */
-    public function validateBasic() {
+    /*public function validateBasic() {
         //remove the user constraint on validation rules
         $newRules = array_merge(array(), self::$rules);
         unset($newRules['user']);
         return $this->validate($newRules);
-    }
+    }*/
 
 
     /**

@@ -144,7 +144,7 @@ class UserTest extends TestCase {
     
     public function testActivateChangesAttributesCorrectly() {
 
-        $user = Mockery::mock('Alba\User\Models\User[isActivateAllowed, getActivationToken, saveUpdate]');
+        $user = Mockery::mock('Alba\User\Models\User[isActivateAllowed, getActivationToken, save]');
         $user->shouldReceive('isActivateAllowed')->once()->andReturn(true);
         $token = new Token();
         $token->token = 'token';
@@ -154,7 +154,7 @@ class UserTest extends TestCase {
         $user->activated_at = null;
         $user->password = null;
         $user->password_updated_at = null;        
-        $user->shouldReceive('saveUpdate')->once();
+        $user->shouldReceive('save')->once();
 
         $actual = $user->activate('token', 'password', 24);
         $this->assertTrue($actual);
@@ -171,10 +171,10 @@ class UserTest extends TestCase {
     
     public function testDeactivateWhenUserAlreadyDeactivated() {
         
-        $user = Mockery::mock('Alba\User\Models\User[saveUpdate]');
+        $user = Mockery::mock('Alba\User\Models\User[save]');
         $user->active = false;
         $user->activated_at = null;
-        $user->shouldReceive('saveUpdate')->never();
+        $user->shouldReceive('save')->never();
 
         $user->deactivate();
         $this->assertFalse($user->active);
@@ -185,12 +185,12 @@ class UserTest extends TestCase {
 
     public function testDeactivateChangesAttributesCorrectly() {
 
-        $user = Mockery::mock('Alba\User\Models\User[saveUpdate]');
+        $user = Mockery::mock('Alba\User\Models\User[save]');
         $user->active = true;
         $whenActual = Carbon::create(2000, 01, 01, 0, 0, 0);
         $whenNotExpect = Carbon::create(2000, 01, 01, 0, 0, 0); //Carbon doesn't implement the __clone() method right!
         $user->activated_at = $whenActual;
-        $user->shouldReceive('saveUpdate')->once();
+        $user->shouldReceive('save')->once();
 
         $user->deactivate();
         $this->assertFalse($user->active);
@@ -309,7 +309,7 @@ class UserTest extends TestCase {
 
     public function testResetPasswordChangesAttributesCorrectly() {
 
-        $user = Mockery::mock('Alba\User\Models\User[isPasswordResetAllowed, saveUpdate]');
+        $user = Mockery::mock('Alba\User\Models\User[isPasswordResetAllowed, save]');
         $user->shouldReceive('isPasswordResetAllowed')->once()->andReturn(true);
         $oldPass = 'oldPass';
         $newPass = 'newPass';
@@ -318,7 +318,7 @@ class UserTest extends TestCase {
         $token = new Token();
         $token->token = 'token';
         $token->created_at = new Carbon();        
-        $user->shouldReceive('saveUpdate')->once();
+        $user->shouldReceive('save')->once();
 
         $this->assertTrue($user->resetPassword('token', 'email@domain.com', $newPass, 24));
         $this->assertTrue(Hash::check($newPass, $user->password));

@@ -41,7 +41,7 @@ class TokensResource implements ResourceInterface {
     {
 
         $this->token->fill($attributes);
-        if (!$this->token->save()) {            
+        if (!$this->token->save($this->token->rulesForStoring)) {            
             throw new TokensResourceException(
                 $this->token->errors(),
                 "There were some errors trying to save the token."

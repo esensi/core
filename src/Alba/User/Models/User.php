@@ -120,7 +120,7 @@ class User extends Ardent implements UserInterface {
      * Many-to-Many relations with Role
      */
     public function roles() {
-        return $this->belongsToMany('Alba\User\Models\Role', 'assigned_roles');
+        return $this->belongsToMany('Alba\User\Models\Role', 'assigned_roles', 'user_id', 'role_id');
     }
 
     /**

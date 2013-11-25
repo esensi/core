@@ -16,6 +16,17 @@ class Resource extends Controller implements ResourceInterface {
     protected $model;
 
 	/**
+     * The default attributes for searching
+     * 
+     * @var array $defaults
+     */
+    protected $defaults = [
+    	'order' => 'id',
+    	'sort' => 'asc',
+    	'max' => 25,
+    ];
+
+	/**
      * The exception to be thrown
      * 
      * @var Alba\Core\Exceptions\ResourceException;
@@ -30,16 +41,7 @@ class Resource extends Controller implements ResourceInterface {
 	public function __construct()
 	{
 		$this->model = new Eloquent;
-	}
-
-	/**
-	 * Get the resource model used
-	 *
-	 * @return Illuminate\Database\Eloquent\Model
-	 */
-	public function getModel()
-	{
-		return $this->model;
+		$this->setDefaults($this->defaults);
 	}
 
 	/**
@@ -50,7 +52,33 @@ class Resource extends Controller implements ResourceInterface {
 	 */
 	public function index($params = [])
 	{
-		return $this->model->all();
+		// Overload the defaults with params
+		if ( !empty($params) )
+			$this->setDefaults($params);
+
+		// Add full-text query on Model::$searchable columns
+		if( !empty($this->keyword) )
+		{
+			$keyword = $this->keyword;
+			$fields = $this->model->searchable;
+			$this->where = function( $query ) use ($keyword, $fields)
+	            {
+	                foreach($fields as $field)
+	                {
+						$query->orWhere($field, 'LIKE', '%' . $keyword . '%');
+	                }
+	            };
+		}
+
+		// Build new query with relationships
+		$query = $this->model->newQuery();
+		if ( $this->loadRelationships )
+			$query->with($this->loadRelationships);
+		
+		// Paginate the results
+		return $query->where($this->where)
+			->orderBy($this->order, $this->sort)
+			->paginate($this->max);
 	}
 
 	/**
@@ -126,6 +154,49 @@ class Resource extends Controller implements ResourceInterface {
 		return $result;
 	}
 
+	/**
+	 * Get the resource model used
+	 *
+	 * @return Illuminate\Database\Eloquent\Model
+	 */
+	public function getModel()
+	{
+		return $this->model;
+	}
+
+	/**
+	 * Set the default attributes for searching
+	 *
+	 * @param array $defaults
+	 * @return void
+	 */
+	protected function setDefaults(array $defaults)
+	{
+		// Overload the attributes
+		foreach( $defaults as $default => $value )
+		{
+			// Only assign values that exist
+			if( $value )
+			{
+				$this->{$default} = $value;
+				$this->defaults[$default] = $value;
+			}
+
+			// Otherwise assign the existing default
+			elseif ( isset($this->defaults[$default]) )
+			{
+				$this->{$default} = $this->defaults[$default];
+			}
+		}
+
+		// Makes sure $this->where is a closure
+		if ( !isset($this->where) )
+			$this->where = function(){};
+
+		// Make sure the sort order is lowercase
+		$this->sort = strtolower($this->sort);
+	}
+	
 	/**
 	 * Throw an exception for this resource
 	 *

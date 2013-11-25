@@ -49,52 +49,45 @@ class NameTest extends TestCase {
         $this->name->first_name = null; //
         $this->name->middle_name = null;
         $this->name->last_name = null; //
-        $this->name->suffix = null;
-        $this->assertFalse($this->name->validateBasic());
+        $this->name->suffix = null;        
+        $this->assertFalse($this->name->validate($this->name->rulesForNameOnly));
 
         $this->name->title = null;
         $this->name->first_name = 'asdasd';
         $this->name->middle_name = null;
         $this->name->last_name = null; //
         $this->name->suffix = null;
-        $this->assertFalse($this->name->validateBasic());
+        $this->assertFalse($this->name->validate($this->name->rulesForNameOnly));
 
         $this->name->title = null;
         $this->name->first_name = null; //
         $this->name->middle_name = null;
         $this->name->last_name = 'asdsad';
         $this->name->suffix = null;
-        $this->assertFalse($this->name->validateBasic());
+        $this->assertFalse($this->name->validate($this->name->rulesForNameOnly));
 
         $this->name->title = '01234567891011'; //
         $this->name->first_name = 'asdsad';
         $this->name->middle_name = null;
         $this->name->last_name = 'asdasd';
         $this->name->suffix = null;
-        $this->assertFalse($this->name->validateBasic());
+        $this->assertFalse($this->name->validate($this->name->rulesForNameOnly));
 
         $this->name->title = '012345678910';
         $this->name->first_name = 'asdsad';
         $this->name->middle_name = null;
         $this->name->last_name = 'asdasd';
         $this->name->suffix = '1234567891011'; //
-        $this->assertFalse($this->name->validateBasic());
+        $this->assertFalse($this->name->validate($this->name->rulesForNameOnly));
 
         $this->name->title = '0123456789';
         $this->name->first_name = 'asdsad';
         $this->name->middle_name = null;
         $this->name->last_name = 'asdasd';
         $this->name->suffix = '0123456789';
-        $this->assertTrue($this->name->validateBasic());
+        $this->assertTrue($this->name->validate($this->name->rulesForNameOnly));
 
     }
 
-
-    public function testValidate() {
-
-        $this->markTestIncomplete();
-        //TODO: this should check against an existing DB user        
-
-    }
 
 }

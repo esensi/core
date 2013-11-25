@@ -39,7 +39,7 @@ class Name extends Ardent {
 
     public function getRulesForNameOnlyAttribute()
     {
-        return array_only(self::$rules, 'title', 'first_name', 'middle_name', 'last_name', 'suffix');
+        return array_only(self::$rules, array('title', 'first_name', 'middle_name', 'last_name', 'suffix'));
     }
 
 

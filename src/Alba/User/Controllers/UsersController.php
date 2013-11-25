@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
 
-use Alba\Core\Controllers\CoreController;
+use Alba\Core\Controllers\Controller;
 use Alba\Core\Utils\ProcessResponse;
 use Alba\Core\Utils\ViewMessage;
 use Alba\User\Models\User;
@@ -28,7 +28,7 @@ use Alba\User\Repositories\Contracts\UserRepositoryInterface;
  *
  * @author diego <diego@emersonmedia.com>
  */
-class UsersController extends CoreController {
+class UsersController extends Controller {
 
     
     /**

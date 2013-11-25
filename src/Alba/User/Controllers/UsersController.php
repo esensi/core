@@ -1,6 +1,4 @@
-<?php
-
-namespace Alba\User\Controllers;
+<?php namespace Alba\User\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
@@ -62,7 +60,7 @@ class UsersController extends CoreController {
      * @return void
      */
     public function __construct(
-        UserRepositoryInterface $userRepo, 
+        UserRepositoryInterface $userRepo,         
         UsersResource $usersResource,
         TokensResource $tokensResource)
     {
@@ -73,54 +71,18 @@ class UsersController extends CoreController {
     }
 
 
+    
     /**
      * Process login attempt for a user
      * @return Redirect
      */
     public function login() {
 
-        // Get the rules for validating the form data
-        // @todo move to User model
-        $rules = [
-            'email' => 'required|email',
-            'password' => 'required',
-        ];
+        $user = $this->usersResource->login(Input::only($this->usersResource->getAttributesForLogin()));
 
-        // Get the account inputs needed for authentication
-        $account = Input::only(array_keys($rules));
-        $validator = Validator::make($account, $rules);
-        if ($validator->fails())
-        {
-            return Redirect::route('index')
-                ->with('message', new ViewMessage(ViewMessage::DANGER, $validator->messages())); // @todo make ViewMessage a dependency injection
-        }
-
-        // Validate the credentials with a fake attempt
-        if (!Auth::validate($account))
-        {
-            return Redirect::route('index')->with('message', 
-                new ViewMessage(ViewMessage::DANGER, 'Your email and/or password are incorrect!') // @todo move to a language file
-            );
-        }
-        
-        // User will need to be active and not blocked
-        $credentials = array_merge($account, ['active' => true, 'blocked' => false]);
-
-        // Check the credentials with a real login
-        if(!Auth::attempt($credentials))
-        {
-            $message = Auth::getProvider()->retrieveByCredentials($account)->getLoginAllowedMessage(); // @todo find another way to compute the messages or show a more generic one
-            return Redirect::route('index')->with('message',
-                new ViewMessage(ViewMessage::DANGER, $message) // @todo make ViewMessage a dependency injection
-            );
-        }
-
-        // Log authentication
-        // @todo this should be bound as a listener on auth.login
-        Auth::user()->doLoginActions();
-        
-        // Redirect to the intended URL or default to the dashboard
+        // If login is ok, redirect to the intended URL or default to the dashboard
         return Redirect::intended(route('dashboard.index'));
+
     }
 
 
@@ -143,7 +105,7 @@ class UsersController extends CoreController {
      */
     public function index() {
 
-        $users = $this->userRepo->all(); // @todo this should be paginated and the paginator returned to the view too
+        $users = $this->usersResource->index(); // @todo this should be paginated and the paginator returned to the view too
 
         $data = ['users' => $users];
         $this->layout->content = View::make('users.index', $data);
@@ -168,20 +130,13 @@ class UsersController extends CoreController {
      */
     public function store() {
            
-        $input = Input::all(); // @todo this should only pass what's strictly needed using Input::only()
-        $repoResponse = $this->userRepo->store($input);
-
-        if ($repoResponse->isFailure()) {
-            return Redirect::route('users.create')->withInput()->with('message', 
-                new ViewMessage(ViewMessage::DANGER, $repoResponse->getMessage()) // @todo make ViewMessage a dependency injection
-            );
-        }
+        $user = $this->usersResource->store(Input::only($this->usersResource->getAttributesForStoring()));
 
         // send activation email?
         // @todo don't use mixed case variables when dealing with HTML but rather snake_cased
-        if ($input['sendEmail'] == 'true') {
+        if (Input::get('send_email') == 'true') {
             
-            $resp = $this->processRequestActivation($input);
+            $resp = $this->processRequestActivation(Input::all());
             if ($resp->isSuccess()) {
                 $type = ViewMessage::SUCCESS;
                 // @todo remove the debug info
@@ -209,15 +164,8 @@ class UsersController extends CoreController {
      * @return void
      */
     public function show($id) {
-
         // Find the user
-        // @todo Using the find method should throw a ModelNotFoundException which should be caught to show a proper 404 page
-        $user = $this->userRepo->find($id);
-        if ($user === null)
-        {
-            App::abort(404, 'User not found!');
-        }
-
+        $user = $this->usersResource->show($id);        
         $this->layout->content = View::make('users.show', compact('user'));
     }
     
@@ -229,16 +177,8 @@ class UsersController extends CoreController {
      * @return void
      */
     public function edit($id) {
-
-        // Find the user
-        // @todo Using the find method should throw a ModelNotFoundException which should be caught to show a proper 404 page
-        // @todo could probably reuse the show method
-        $user = $this->userRepo->find($id);
-        if ($user === null)
-        {
-            App::abort(404, 'User not found!');
-        }
-
+        // Find the user        
+        $user = $this->usersResource->show($id);
         $this->layout->content = View::make('users.edit', compact('user'));
     }
 
@@ -253,13 +193,7 @@ class UsersController extends CoreController {
         // @todo what about security here?
 
         $input = Input::all(); // @todo this should only pass what's strictly needed using Input::only()
-        $repoResponse = $this->userRepo->update($id, $input);
-
-        if ($repoResponse->isFailure()) {
-            return Redirect::route('users.edit', ['id' => $id])->withInput()->with('message', 
-                new ViewMessage(ViewMessage::DANGER, $repoResponse->getMessage()) // @todo make ViewMessage a dependency injection
-            );
-        }
+        $user = $this->usersResource->update($id, $input);
 
         return Redirect::route('users.show', ['id' => $id])->with('message', 
             new ViewMessage(ViewMessage::SUCCESS, 'User successfully saved!') // @todo make ViewMessage a dependency injection, move to language file

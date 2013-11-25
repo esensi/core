@@ -24,12 +24,12 @@ class DbUserRepository implements UserRepositoryInterface {
 
 
     public function all() {
-        return User::all();
+        //return User::all();
     }
 
 
     public function find($id) {
-        return User::find($id);
+        //return User::find($id);
     }
 
 
@@ -72,6 +72,8 @@ class DbUserRepository implements UserRepositoryInterface {
 
 
     public function store($data) {
+
+        /*
 
         //take user info from data and validate
         $user = new User();
@@ -131,13 +133,13 @@ class DbUserRepository implements UserRepositoryInterface {
 
 
         return new ProcessResponse(true);
-
+        */
     }
 
 
 
     public function update($id, $data) {
-
+/*
         //search user
         $user = $this->find($id);
         if (!$user) {
@@ -210,7 +212,7 @@ class DbUserRepository implements UserRepositoryInterface {
         }        
 
         return new ProcessResponse(true);
-
+*/
     }
 
 

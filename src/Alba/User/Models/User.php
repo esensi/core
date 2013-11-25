@@ -1,17 +1,16 @@
-<?php
+<?php namespace Alba\User\Models;
 
-namespace Alba\User\Models;
+use Alba\Core\Utils\StringUtils;
 
-use LaravelBook\Ardent\Ardent;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Auth\UserInterface;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use LaravelBook\Ardent\Ardent;
 use Zizaco\Entrust\HasRole;
 
 
-use Alba\Core\Utils\StringUtils;
 
 /**
  * User model class
@@ -38,40 +37,88 @@ class User extends Ardent implements UserInterface {
      * 
      * @var array
      */
-    public static $rules = [
+    //public static $rules = [
+    public static $rulesForEmailStoring = [
         'email' => ['required', 'email', 'max:128', 'unique:users'], //IMPORTANT: keep unique rule at the end
+    ];
+    
+    public static $rulesForEmail = [
+        'email' => ['required', 'email']
+    ];
+
+    //public static $passwordRules = [
+    public static $rulesForPassword = [
+        'password' => ['required', 'alpha_num', 'between:4,256', 'confirmed'],
+        'password_confirmation' => ['required', 'alpha_num', 'between:4,256']
+    ];
+
+    public static $rulesForPasswordLogin = [
+        'password' => ['required']
     ];
 
     
-    public static $passwordRules = [
-        'password' => 'required|alpha_num|between:4,256|confirmed',
-        'password_confirmation' => 'required|alpha_num|between:4,256'
-    ];
+    public function getRulesForStoringAttribute()
+    {
+        return self::$rulesForEmailStoring;
+    }
 
+    public function getRulesForUpdateAttribute()
+    {
+        //clone the rules array
+        $rules = array_merge(array(), self::$rulesForEmailStoring);
+        //add exception for the unique constraint
+        $key = array_search('unique:users', $rules['email']);
+        //Log::info("KEY: $key");
+        $rules['email'][$key] = 'unique:users,email,' . $this->id;
+        return $rules;
+    }
 
-    public static $requestActivationRules = [
-        'email' => 'required|email'
-    ];
+    public function getRulesForPasswordAttribute()
+    {
+        return self::$rulesForPassword;
+    }
 
+    public function getRulesForRequestActivationAttribute()
+    {
+        return self::$rulesForEmail;
+    }
 
-    public static $activateRules = [
+    public function getRulesForActivateAttribute()
+    {
+        return array_merge(Token::$rulesForToken, self::$rulesForPassword);
+    }
+
+    public function getRulesForRequestPasswordResetAttribute()
+    {
+        return self::$rulesForEmail;
+    }
+
+    public function getRulesForResetPasswordAttribute()
+    {
+        return array_merge(Token::$rulesForToken, self::$rulesForEmail, self::$rulesForPassword);
+    }
+
+    public function getRulesForLoginAttribute()
+    {
+        return array_merge(self::$rulesForEmail, self::$rulesForPasswordLogin);
+    }
+
+    /*public static $activateRules = [
         'token' => 'required|alpha_num',
         'password' => 'required|alpha_num|between:4,256|confirmed',
         'password_confirmation' => 'required|alpha_num|between:4,256'
     ];
 
-
     public static $requestPasswordResetRules = [
         'email' => 'required|email'
     ];
-
 
     public static $resetPasswordRules = [
         'token' => 'required|alpha_num',
         'email' => 'required|email',  
         'password' => 'required|alpha_num|between:4,256|confirmed',
         'password_confirmation' => 'required|alpha_num|between:4,256'
-    ];
+    ];*/
 
 
     /**
@@ -145,45 +192,45 @@ class User extends Ardent implements UserInterface {
      * Returns the validation rules for the password
      * @return array
      */
-    public function getPasswordRules() 
+    /*public function getPasswordRules() 
     {
         return self::$passwordRules;
-    }
+    }*/
 
     /**
      * Returns the validation rules for the request activation process
      * @return array
      */
-    public function getRequestActivationRules() 
+    /*public function getRequestActivationRules() 
     {
         return self::$requestActivationRules;
-    }
+    }*/
 
 
     /**
      * Returns the validation rules for activate process
      * @return array
      */
-    public function getActivateRules() 
+    /*public function getActivateRules() 
     {
         return self::$activateRules;
-    }
+    }*/
 
 
     /**
      * Returns the validation rules for request password reset process
      * @return array
      */
-    public function getRequestPasswordResetRules()
+    /*public function getRequestPasswordResetRules()
     {
         return self::$requestPasswordResetRules;
-    }
+    }*/
 
 
-    public function getResetPasswordRules() 
+    /*public function getResetPasswordRules() 
     {
         return self::$resetPasswordRules;
-    }
+    }*/
 
 
     /**
@@ -336,7 +383,7 @@ class User extends Ardent implements UserInterface {
     public function doLoginActions() {
         Log::info("Updating last login date...");
         $this->authenticated_at = new Carbon();
-        if (!$this->saveUpdate()) {
+        if (!$this->save($this->rulesForUpdate)) {
             Log::warning("Couldn't update last login date!");
         }
     }
@@ -393,34 +440,14 @@ class User extends Ardent implements UserInterface {
     }
 
 
-    /**
-     * Returns the validation rules to use for an update.
-     * @return array Validation rules
-     */
-    public function getRulesForUpdate() {
-        //clone the rules array
-        $rules = array_merge(array(), self::$rules);
-        $rules['email'] .= ',email,' . $this->id;
-        return $rules;
-    }
-
 
     /**
      * Validates the current User instance, but skiping it in the unique constraint
+     * 
      * @return boolean Whether validation passes or not
      */
     public function validateUpdate() {
-        return $this->validate($this->getRulesForUpdate());
-    }
-
-
-    /**
-     * Saves the User when updating, taking into cosideration to use the
-     * update rules
-     * @return boolean Wheter it updated successfully or not
-     */
-    public function saveUpdate() {
-        return $this->save($this->getRulesForUpdate());
+        return $this->validate($this->rulesForUpdate);
     }
 
 
@@ -433,7 +460,7 @@ class User extends Ardent implements UserInterface {
         if (!$this->blocked) {
             //Log::info('Blocking!');
             $this->blocked = true;
-            $this->saveUpdate();
+            $this->save($this->rulesForUpdate);
         }
     }
 
@@ -447,7 +474,7 @@ class User extends Ardent implements UserInterface {
         if ($this->blocked) {
             //Log::info('Unblocking!');
             $this->blocked = false;
-            $this->saveUpdate();
+            $this->save($this->rulesForUpdate);
         }
     }
 
@@ -591,7 +618,7 @@ class User extends Ardent implements UserInterface {
             $this->activated_at = new Carbon();
             $this->password = Hash::make($newPassword);
             $this->password_updated_at = new Carbon();
-            $this->saveUpdate();
+            $this->save($this->rulesForUpdate);
             return true;
         } 
         else
@@ -610,7 +637,7 @@ class User extends Ardent implements UserInterface {
         if ($this->active) {
             $this->active = false;
             $this->activated_at = new Carbon();
-            $this->saveUpdate();
+            $this->save($this->rulesForUpdate);
         }
     }
 
@@ -635,7 +662,7 @@ class User extends Ardent implements UserInterface {
 
         $this->password = Hash::make($newPlainPassword);
         $this->password_updated_at = new Carbon();
-        $this->saveUpdate();
+        $this->save($this->rulesForUpdate);
 
         return true;
 

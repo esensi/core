@@ -37,12 +37,28 @@ class Token extends Ardent {
     protected $fillable = ['expires_at', 'type', 'token'];
 
 
-    public static $rules = [
-        'token' => 'required|max:256',
-        'type' => 'required|max:32',
+    public $timestamps = false;
+
+
+    public static $rulesForToken = [
+        'token' => ['required', 'max:256']
     ];
 
-    public $timestamps = false;
+    public static $rulesForType = [        
+        'type' => ['required', 'max:32']
+    ];
+
+    
+    public function getRulesForStoringAttribute()
+    {
+        return array_merge(self::$rulesForToken, self::$rulesForType);
+    }
+
+    public function getRulesForTokenAttribute()
+    {
+        return self::$rulesForToken;
+    }
+   
 
 
     public function beforeSave()
@@ -54,6 +70,24 @@ class Token extends Ardent {
 
     }
 
+
+
+    /**
+     * Override of the save method to set the corrent rules if none are
+     * passed to the save method
+     * 
+     * @see Ardent::save
+     */
+    //Problems with $customMessages = null... throws exception of not being an array in Ardent
+    /*public function save(array $rules = null, array $customMessages = null, 
+        array $options = null, \Closure $beforeSave = null, \Closure $afterSave = null) 
+    {
+        if ($rules == null)
+        {
+            $rules = $this->rulesForStoring;
+        }
+        return parent::save($rules, $customMessages, $options, $beforeSave, $afterSave);
+    }*/
 
     
 

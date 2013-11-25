@@ -9,7 +9,6 @@ use Alba\User\Models\Token;
 
 //use Illuminate\Support\Facades\Log;
 
-
 class TokensResourceException extends ResourceException {}
 
 class TokensResource implements ResourceInterface {
@@ -89,6 +88,7 @@ class TokensResource implements ResourceInterface {
 
     /**
      * Searches the token specified, and deletes it
+     * 
      * @param string $token The token string to search and delete
      * @param [type] $force [description]
      * @return bool Whether it deleted the token or not
@@ -106,6 +106,7 @@ class TokensResource implements ResourceInterface {
     /**
      * Creates a new token for the specified type, and
      * stores it.
+     * 
      * @param string $type Token type
      * @return Token The new generated token
      */

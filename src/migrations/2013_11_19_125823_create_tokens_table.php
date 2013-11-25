@@ -24,6 +24,7 @@ class CreateTokensTable extends Migration {
 
             // Add table indexes and foreign keys
             $table->index('token');
+            $table->index('type');
             $table->index(['type', 'token'], 'type_token');
 
 		});

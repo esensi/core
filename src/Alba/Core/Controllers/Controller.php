@@ -1,9 +1,9 @@
 <?php namespace Alba\Core\Controllers;
 
-use View;
-use Illuminate\Routing\Controllers\Controller;
+use Illuminate\Support\Facades\View;
+use Illuminate\Routing\Controllers\Controller as LaravelController;
 
-class CoreController extends Controller {
+class Controller extends LaravelController {
 
 	/**
 	 * Setup the layout used by the controller.

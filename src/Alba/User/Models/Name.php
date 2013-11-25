@@ -2,7 +2,7 @@
 
 namespace Alba\User\Models;
 
-use Ardent;
+use LaravelBook\Ardent\Ardent;
 use Illuminate\Support\Facades\Log;
 
 class Name extends Ardent {

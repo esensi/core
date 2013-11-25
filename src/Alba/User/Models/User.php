@@ -2,7 +2,7 @@
 
 namespace Alba\User\Models;
 
-use Ardent;
+use LaravelBook\Ardent\Ardent;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Auth\UserInterface;

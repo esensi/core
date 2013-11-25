@@ -1,9 +1,9 @@
 <?php namespace Alba\Core\Seeders;
 
-use Eloquent;
-use Seeder;
+use Illuminate\Database\Eloquent\Model as Eloquent;
+use Illuminate\Database\Seeder as LaravelSeeder;
 
-class CoreSeeder extends Seeder {
+class Seeder extends LaravelSeeder {
 
 	/**
 	 * Run before the database seeds.

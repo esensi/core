@@ -1,11 +1,12 @@
 <?php namespace Alba\Core\Controllers;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Database\Eloquent\Model as Eloquent;
 use Alba\Core\Contracts\ResourceInterface;
-use Alba\Core\Controllers\CoreController;
-use Alba\Core\Controllers\CoreResourceException;
+use Alba\Core\Controllers\Controller;
+use Alba\Core\Exceptions\ResourceException;
 
-class CoreResource extends CoreController implements ResourceInterface {
+class Resource extends Controller implements ResourceInterface {
 
 	/**
      * The resource model
@@ -17,9 +18,9 @@ class CoreResource extends CoreController implements ResourceInterface {
 	/**
      * The exception to be thrown
      * 
-     * @var Alba\Core\Controllers\CoreResourceException;
+     * @var Alba\Core\Exceptions\ResourceException;
      */
-    protected $exception = 'CoreResourceException';
+    protected $exception = 'ResourceException';
 
     /**
      * Inject dependencies
@@ -128,13 +129,14 @@ class CoreResource extends CoreController implements ResourceInterface {
 	/**
 	 * Throw an exception for this resource
 	 *
+	 * @param mixed $messageBag
 	 * @param string $message
 	 * @param long $code
 	 * @param Exception $previous exception
 	 * @return void
 	 */
-	public function throwException($message = null, $code = 0, Exception $previous = null)
+	public function throwException($messageBag = null, $message = null, $code = 0, Exception $previous = null)
 	{
-		throw new $this->exception($message, $code, $previous);
+		throw new $this->exception($messageBag, $message, $code, $previous);
 	}
 }

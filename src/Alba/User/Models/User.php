@@ -73,6 +73,13 @@ class User extends Ardent implements UserInterface {
     protected $hidden = ['password'];
 
     /**
+     * The attributes that can never be filled
+     *
+     * @var array
+     */
+    protected $guarded = ['*'];
+
+    /**
      * The attributes that can be safely filled
      *
      * @var array

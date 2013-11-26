@@ -41,15 +41,23 @@ class UsersResource extends Resource {
     protected $name;
 
     /**
+     * The Role model
+     *
+     * @var Alba\User\Models\Role
+     */
+    protected $role;
+
+    /**
      * Inject dependencies
      *
      * @var Alba\User\Models\User $user
      * @var Alba\User\Models\Name $name
      * @var Alba\User\Controllers\TokensResource $tokensResource
      */
-    public function __construct(User $user, Name $name, TokensResource $tokensResource) {
+    public function __construct(User $user, Name $name, Role $role, TokensResource $tokensResource) {
         $this->model = $user;
         $this->name = $name;
+        $this->role = $role;
         $this->tokensResource = $tokensResource;
 
         // Bind auth.login event listener
@@ -156,60 +164,47 @@ class UsersResource extends Resource {
      */
     public function store($attributes)
     {
-        // Validate user
-        $user = new User();
-        $user->fill($attributes);
+        // Create the user
+        $user = $this->model;
+        $user->fill(array_only($attributes, $user->getFillable());
         $user->active = false; // new users should not be active
         $user->blocked = false; // new users should not be blocked
-        if (!$user->validate($this->model->rulesForStoring))
-        {
-            $this->throwException($user->errors());
-        }
 
-        // Validate name
-        $name = new Name();
-        $name->fill($attributes);
-        if (!$name->validate($this->name->rulesForNameOnly))
-        {
-            $this->throwException($name->errors());
-        }
+        // Create the name
+        $name = $this->name;
+        $name->fill(array_only($attributes, $name->getFillable());
                 
         // Get default Roles to attach to a new user
-        $roles = Role::whereIn('name', $this->model->defaultRoles)->get();
+        $role = $this->role;
+        $roles = $role::whereIn('name', $this->model->defaultRoles)->get();
 
         // Now save the user and name
-        try 
+        try
         {
             // Use a transaction so everything fails if one fails
             DB::transaction(function() use ($user, $name, $roles)
             {
-                // Save the user first
-                if (!$user->save($this->model->rulesForStoring))
+                // Save the user
+                if (!$user->save($user->rulesForStoring))
                 {
-                    $this->throwException($user->errors());
+                    $this->throwException($user->errors(), Lang::get('alba::user.failed.store'));
                 }
                 
                 // Attach Roles to user
-                foreach ($roles as $role) {
-                    $user->attachRole($role);
-                }                
+                $user->attachRoles($role);
 
                 // Save name with relationship to user
                 $name->user()->associate($user);
-                if (!$name->save($this->name->rulesForStoring))
+                if (!$name->save($name->rulesForStoring))
                 {
-                    $this->throwException($name->errors());
+                    $this->throwException($name->errors(), Lang::get('alba::user.failed.store'));
                 }
 
             });
         }
-        catch (UsersResourceException $e)
+        catch (Exception $e)
         {
-            throw $e;
-        }
-        catch (Exception $e) 
-        {
-            $this->throwException('There was an unexpected error trying to save the user. Please contact a system administrator if this error persists.');
+            $this->throwException($e->getMessage());
         }
 
         return $user;
@@ -221,65 +216,43 @@ class UsersResource extends Resource {
      */
     public function update($id, $attributes)
     {
-        // Find user
-        $user = $this->show($id);
-
         // Update user attributes
-        $user->fill($attributes);
-        $userIsDirty = count($user->getDirty());
-        if ($userIsDirty)
-        {
-            if (!$user->validate($user->rulesForUpdate))
-            {
-                $this->throwException($user->errors());
-            }
-        }
+        $user = $this->show($id);
+        $user->fill(array_only($attributes, $user->getFillable());
 
         // Update name attributes
         $name = $user->name;
-        $name->fill($attributes);
-        $nameIsDirty = count($name->getDirty());
-        if ($nameIsDirty)
-        {
-            if (!$name->validate($name->rulesForStoring))
-            {
-                $this->throwException($name->errors());
-            }
-        }
+        $name->fill(array_only($attributes, $name->getFillable());
         
         // Now save the user and name
         try
         {
             // Use a transaction so everything fails if one fails
-            DB::transaction(function() use ($user, $name, $userIsDirty, $nameIsDirty)
+            DB::transaction(function() use ($user, $name)
             {
                 
                 // Update user if it's changed
-                if ($userIsDirty)
+                if ( count($user->isDirty()) )
                 {
                     if (!$user->save($user->rulesForUpdate))
                     {
-                        $this->throwException($user->errors());
+                        $this->throwException($user->errors(), Lang::get('alba::user.failed.update');
                     }
                 }
                 
                 // Update user if it's changed
-                if ($nameIsDirty)
+                if ( count($name->isDirty()) )
                 {
                     if (!$name->save($name->rulesForStoring))
                     {
-                        $this->throwException($name->errors());
+                        $this->throwException($name->errors(), Lang::get('alba::user.failed.update');
                     }
                 }
             });
         } 
-        catch (UsersResourceException $e)
-        {
-            throw $e;
-        }
         catch (Exception $e)
         {
-            throw new UsersResourceException('There was an unexpected error trying to update the user. Please contact a system administrator if this error persists.');
+            $this->throwException($e->getMessage());
         }
 
         return $user;

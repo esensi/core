@@ -21,6 +21,13 @@ class UsersAdminController extends Controller {
     protected $resources;
 
     /**
+     * The APIs injected
+     * 
+     * @var array
+     */
+    protected $apis;
+
+    /**
      * Inject dependencies
      *
      * @todo make ViewMessage a dependency injection

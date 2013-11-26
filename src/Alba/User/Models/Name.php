@@ -26,6 +26,11 @@ class Name extends Ardent {
         'user' => ['exists:users']
     ];
 
+    /**
+     * The attributes that can be safely filled
+     *
+     * @var array
+     */
     protected $fillable = ['title', 'first_name', 'middle_name', 'last_name', 'suffix'];
 
     /**

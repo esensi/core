@@ -368,7 +368,7 @@ class User extends Ardent implements UserInterface {
      */
     public function getActivationTokenAttribute()
     {
-        return $this->getTypeTokens(Token::TYPE_ACTIVATION);
+        return $this->getTypeToken(Token::TYPE_ACTIVATION);
     }
 
     /** 

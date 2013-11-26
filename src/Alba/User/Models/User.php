@@ -77,7 +77,7 @@ class User extends Ardent implements UserInterface {
      *
      * @var array
      */
-    protected $fillable = ['email', 'password', 'password_confirmation', 'password_updated_at', 'activated_at', 'authenticated_at'];
+    protected $fillable = ['email', 'password', 'active', 'blocked', 'password_confirmation', 'password_updated_at', 'activated_at', 'authenticated_at'];
 
     /**
      * The attributes that can be full-text searched

@@ -21,15 +21,35 @@ class UsersAdminController extends Controller {
     protected $resources;
 
     /**
+     * The APIs injected
+     * 
+     * @var array
+     */
+    protected $apis;
+
+    /**
      * Inject dependencies
      *
-     * @param Alba\User\Controllers\UsersResource $user;
+     * @todo make ViewMessage a dependency injection
+     * @param UsersResource $user
      * @return void
      */
-	public function __construct(UsersResource $user)
-	{
-		$this->resources['user'] = $user;
-	}
+    public function __construct(UsersResource $user, UsersApiController $userApi)
+    {
+        $this->resources['user'] = $user;
+        $this->apis['user'] = $userApi;
+    }
+        
+    /**
+     * Display a listing of the resource.
+     *
+     * @return void
+     */
+    public function index()
+    {
+        $paginator = $this->apis['user']->index();
+        $this->layout->content = View::make('alba::users.index', $paginator);
+    }
 
     /**
      * Show sign in page

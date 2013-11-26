@@ -35,9 +35,16 @@ class UsersController extends Controller {
     /**
      * The resources injected
      * 
-     * @var array;
+     * @var array
      */
     protected $resources;
+
+    /**
+     * The APIs injected
+     * 
+     * @var array
+     */
+    protected $apis;
 
     /**
      * Inject dependencies
@@ -46,9 +53,10 @@ class UsersController extends Controller {
      * @param UsersResource $user
      * @return void
      */
-    public function __construct(UsersResource $user)
+    public function __construct(UsersResource $user, UsersApiController $userApi)
     {
         $this->resources['user'] = $user;
+        $this->apis['user'] = $userApi;
     }
         
     /**
@@ -58,10 +66,8 @@ class UsersController extends Controller {
      */
     public function index()
     {
-        $params = Input::only('max', 'order', 'sort', 'keyword');
-        $paginator = $this->resources['user']->index();
-
-        $this->layout->content = View::make('users.index', $paginator);
+        $paginator = $this->apis['user']->index();
+        $this->layout->content = View::make('alba::users.index', $paginator);
     }
 
     /**

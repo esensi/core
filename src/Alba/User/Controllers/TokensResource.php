@@ -79,7 +79,7 @@ class TokensResource extends Resource {
         $attributes = [
             'type' => $type,
             'token' => StringUtils::generateGuid(false), // @todo replace with a hash based on $user like Laravel's ReminderInterface
-            'expires_at' => Carbon::now()->addHours($ttlHours);
+            'expires_at' => Carbon::now()->addHours($ttlHours)
             ];
         return $this->store($attributes);
     }

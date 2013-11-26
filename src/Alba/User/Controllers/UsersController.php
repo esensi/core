@@ -109,8 +109,7 @@ class UsersController extends Controller {
     public function store()
     {
         // Save the user
-        $rules = array_merge($this->resources['user']->getModel()->rulesForStoring, $this->resources['user']->getModel('name')->rulesForStoring);
-        $attributes = Input::only(array_keys($rules));
+        $attributes = Input::all();
         $user = $this->resources['user']->store($attributes);
 
         // Two-step activation
@@ -154,7 +153,7 @@ class UsersController extends Controller {
     {
         // @todo what about security here?
 
-        $attributes = Input::all(); // @todo this should only pass what's strictly needed using Input::only()
+        $attributes = Input::all();
         $user = $this->resources['user']->update($id, $attributes);
 
         return Redirect::route('users.show', ['id' => $id])

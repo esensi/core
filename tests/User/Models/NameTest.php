@@ -12,7 +12,7 @@ class NameTest extends TestCase {
     }
 
 
-    public function testGetFullName() {
+    public function testFormatName() {
         
         $this->name->title = 'Mr';
         $this->name->first_name = 'First';
@@ -21,23 +21,23 @@ class NameTest extends TestCase {
         $this->name->suffix = 'PhD';
 
         $expect = 'Mr First Middle Last PhD';
-        $actual = $this->name->getFullName('T F M L S');
+        $actual = $this->name->formatName('T F M L S');
         $this->assertEquals($expect, $actual, "'$expect' <> '$actual'");
 
         $expect = 'Mr First Last';
-        $actual = $this->name->getFullName('T F L');
+        $actual = $this->name->formatName('T F L');
         $this->assertEquals($expect, $actual, "'$expect' <> '$actual'");
 
         $expect = 'Mr Last PhD';
-        $actual = $this->name->getFullName('T L S');
+        $actual = $this->name->formatName('T L S');
         $this->assertEquals($expect, $actual, "'$expect' <> '$actual'");
 
         $expect = 'First Last';
-        $actual = $this->name->getFullName('F L');
+        $actual = $this->name->formatName('F L');
         $this->assertEquals($expect, $actual, "'$expect' <> '$actual'");
 
-        $expect = 'Mr First Middle Last PhD';
-        $actual = $this->name->getFullName();
+        $expect = 'First Last';
+        $actual = $this->name->formatName();
         $this->assertEquals($expect, $actual, "'$expect' <> '$actual'");
 
     }

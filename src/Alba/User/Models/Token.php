@@ -51,13 +51,21 @@ class Token extends Ardent {
     public $timestamps = false;
 
     /**
+     * The attributes that can be full-text searched
+     *
+     * @var array
+     */
+    public $searchable = ['type'];
+
+    /**
      * The attribute rules that Ardent will validate against
      * 
      * @var array
      */
     public static $rules = [
         'token' => ['required', 'max:256'],
-        'type' => ['required', 'max:32']
+        'type' => ['required', 'max:32'],
+        'expires_at' => ['required', 'date'],
     ];
 
     /**
@@ -65,7 +73,7 @@ class Token extends Ardent {
      * 
      * @var array
      */
-    public static $rulesForStoring = ['token', 'type'];
+    public static $rulesForStoring = ['token', 'type', 'expires_at'];
 
     /**
      * Rules needed for storing
@@ -76,16 +84,6 @@ class Token extends Ardent {
     {
         return array_only(self::$rules, self::$rulesForStoring);
     }
-
-    /**
-     * Rules needed for token
-     * 
-     * @return array
-     */
-    public function getRulesForTokenAttribute()
-    {
-        return array_only(self::$rules, ['token']);
-    }
    
     /**
      * Stuff to do before saving the model
@@ -94,10 +92,9 @@ class Token extends Ardent {
      */
     public function beforeSave()
     {
-
         if ($this->created_at == null)
         {
-            $this->created_at = new Carbon();
+            $this->created_at = Carbon::now();
         }
     }
 

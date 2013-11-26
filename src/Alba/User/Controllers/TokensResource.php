@@ -1,9 +1,11 @@
 <?php namespace Alba\User\Controllers;
 
+use Carbon\Carbon;
+use Illuminate\Auth\UserInterface;
+use Illuminate\Support\Facades\Config;
 use Alba\Core\Controllers\Resource;
-use Alba\Core\Utils\StringUtils;
 use Alba\Core\Exceptions\ResourceException;
-
+use Alba\Core\Utils\StringUtils;
 use Alba\User\Models\Token;
 
 class TokensResourceException extends ResourceException {}
@@ -20,7 +22,8 @@ class TokensResource extends Resource {
     /**
      * Inject dependencies
      **/
-    public function __construct(Token $token) {        
+    public function __construct(Token $token)
+    {        
         $this->model = $token;
     }
 
@@ -31,44 +34,54 @@ class TokensResource extends Resource {
      * @param boolean $force delete
      * @return bool
      */
-    public function destroyByToken($token, $force = false) {
-
+    public function destroyByToken($token, $force = false)
+    {
         $query = $this->model->whereToken($token);
         return ($force) ? $query->forceDelete() : $query->delete();
     }
 
     /**
-     * Creates a new token for the specified type, and
-     * stores it.
+     * Creates a new activation type token.
+     * 
+     * @param UserInterface $user
+     * @return Token
+     */
+    public function createNewActivation(UserInterface $user)
+    {
+        $model = $this->getModel();
+        $ttlHours = Config::get('alba::user.tokens.activation.ttl', null);
+        return $this->createNew($model::TYPE_ACTIVATION, $user, $ttlHours);
+    }
+
+    /**
+     * Creates a new password reset type token.
+     * 
+     * @param UserInterface $user
+     * @return Token
+     */
+    public function createNewPasswordReset(UserInterface $user)
+    {
+        $model = $this->getModel();
+        $ttlHours = Config::get('alba::user.tokens.password_reset.ttl', null);
+        return $this->createNew($model::TYPE_PASS_RESET, $user, $ttlHours);
+    }
+
+    /**
+     * Generate a new token and store it with its type.
      * 
      * @param string $type
-     * @return Toke
-     */
-    public function generateByType($type)
-    {
-        return $this->store(['type' => $type, 'token' => StringUtils::generateGuid(false)]);
-    }
-
-    /**
-     * Generates a new activation type token
-     * 
+     * @param UserInterface $user
      * @return Token
      */
-    public function generateActivation()
+    public function createNew($type, UserInterface $user, $ttlHours = null)
     {
-        $model = $this->getModel();
-        return $this->generateByType($model::TYPE_ACTIVATION);
-    }
-
-    /**
-     * Generates a new password reset type token
-     * 
-     * @return Token
-     */
-    public function generatePasswordReset()
-    {
-        $model = $this->getModel();
-        return $this->generateByType($model::TYPE_PASS_RESET);
+        $ttlHours = is_null($ttlHours) ? Config::get('alba::user.tokens.ttl', 24) : $ttlHours;
+        $attributes = [
+            'type' => $type,
+            'token' => StringUtils::generateGuid(false), // @todo replace with a hash based on $user like Laravel's ReminderInterface
+            'expires_at' => Carbon::now()->addHours($ttlHours);
+            ];
+        return $this->store($attributes);
     }
 
 }

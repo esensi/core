@@ -272,42 +272,42 @@ class UsersResource extends Resource {
     }
 
     /**
-     * Checks the user supplied email to see if corresponds to an
-     * account that can be activated... if that's the case, it generates
-     * a new activation token for that user.
+     * Find the user by email and attempts to create a new
+     * activation token for the user. Optionally it sends an
+     * activation email to the user.
      *
-     * @param array $inputData Data containing the email of user to rquest activation
-     * @return User The user who's account has been asked to activate
-     * @throws UsersResourceException If an error ocurs
+     * @param string $email of user
+     * @param boolean $sendEmail
+     * @return User
+     * @throws UsersResourceException
      */
-    public function requestActivation($inputData) {
+    public function resetActivation($email, $sendEmail = true)
+    {
+        $user = $this->showByEmail($email);
         
-        $rules = $this->model->rulesForRequestActivation;
-        $validator = Validator::make($inputData, $rules);
-        if ($validator->fails())
+        // Check if user is allowed to activate
+        if (!$user->isActivationAllowed())
         {
-            $this->throwException($validator->errors(), 'UsersResource::requestActivation - Error 1');
-        }
-
-        //search the user by email address
-        $email = $inputData['email'];
-        $user = $this->model->whereEmail($email)->first();
-        if (!$user || ($user && !$user->isRequestActivationAllowed()) )
-        {
-            $this->throwException('No valid user account with that email could be found.', 'UsersResource::requestActivation - Error 2');   
+            $this->throwException(Lang::get('alba::user.failed.activation_not_allowed.'));
         }
 
         DB::transaction(function() use ($user)
         {
-            // Generate activation token        
-            $token = $this->tokensResource->generateActivation();
+            // @todo: remove all existing activation tokens from user
 
-            // Set user with token
-            $user->tokens()->attach($token->id);  
-            
-            //@todo: check if a token already exists for this user, and only keep the last one
+            // Generate activation token
+            $activationToken = $this->tokensResource->createNewActivation($user);
+
+            // Attach token to user
+            $user->tokens()->attach($activationToken->id);
         });
         
+        // Send activation email to user
+        if( $sendEmail )
+        {
+            $this->emailActivation($user, $activationToken->token);
+        }
+
         return $user;
     }
 
@@ -319,7 +319,8 @@ class UsersResource extends Resource {
      * @return User
      * @throws UsersResourceException
      */
-    public function activate($inputData) {
+    public function activate($token, $newPassword = [])
+    {
 
         $rules = $this->model->rulesForActivate;
         $validator = Validator::make($inputData, $rules);
@@ -358,7 +359,8 @@ class UsersResource extends Resource {
      * @return User
      * @throws UsersResourceException
      */
-    public function requestPasswordReset($inputData) {
+    public function requestPasswordReset($inputData)
+    {
 
         $rules = $this->model->rulesForRequestPasswordReset;
         $validator = Validator::make($inputData, $rules);

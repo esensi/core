@@ -73,13 +73,6 @@ class User extends Ardent implements UserInterface {
     protected $hidden = ['password'];
 
     /**
-     * The attributes that can never be filled
-     *
-     * @var array
-     */
-    protected $guarded = ['*'];
-
-    /**
      * The attributes that can be safely filled
      *
      * @var array
@@ -404,7 +397,7 @@ class User extends Ardent implements UserInterface {
      * 
      * @return boolean
      */
-    public function isRequestActivationAllowed()
+    public function isActivationAllowed()
     {
         return !$this->active && !$this->blocked;
     }

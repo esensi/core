@@ -370,13 +370,9 @@ class UsersController extends Controller {
     private function processRequestActivation($inputData)
     {
         // Get the user and token
-        $user = $this->resources['user']->requestActivation($attributes);
-        $token = $user->activationToken->token;
+        $user = $this->resources['user']->resetActivation($inputData['email']);
 
-        // Send the password reset link via email
-        $this->resources['user']->emailActivation($user, $token);
-
-        // @todo remove the data pased to the view, just done for debugging...        
+        // @todo remove the data pased to the view, just done for debugging... 
         return new ProcessResponse(true, null, $data);
     }
 

@@ -77,7 +77,7 @@ class User extends Ardent implements UserInterface {
      *
      * @var array
      */
-    protected $fillable = ['email', 'title', 'first_name', 'middle_name', 'last_name', 'suffix'];
+    protected $fillable = ['email'];
 
     /**
      * The attributes that can be full-text searched
@@ -91,7 +91,7 @@ class User extends Ardent implements UserInterface {
      *
      * @var array
      */
-    public static $defaultRoles = ['user'];
+    public $defaultRoles = ['user'];
 
     /**
      * The attribute rules that Ardent will validate against

@@ -232,7 +232,7 @@ class UsersResource extends Resource {
             {
                 
                 // Update user if it's changed
-                if ( count($user->isDirty()) )
+                if ( count($user->getDirty()) )
                 {
                     if (!$user->save($user->rulesForUpdate))
                     {
@@ -241,7 +241,7 @@ class UsersResource extends Resource {
                 }
                 
                 // Update user if it's changed
-                if ( count($name->isDirty()) )
+                if ( count($name->getDirty()) )
                 {
                     if (!$name->save($name->rulesForStoring))
                     {

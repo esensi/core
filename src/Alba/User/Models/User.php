@@ -281,18 +281,34 @@ class User extends Ardent implements UserInterface {
     /**
      * Returns the user who has the password reset token indicated
      *
-     * @param  Illuminate\Database\Query\Builder $query
+     * @param Illuminate\Database\Query\Builder $query
      * @param string $token
+     * @param boolean $isExpired
      * @return Illuminate\Database\Query\Builder
      */
-    public function scopeWherePasswordResetToken($query, $token)
+    public function scopeWherePasswordResetToken($query, $token, $isExpired = null)
     {
-        return $query
-            ->select('users.*') //this should be here, so it gets the correct id field
+        // Get the user with token
+        $query->select('users.*')
             ->join('token_user', 'users.id', '=', 'token_user.user_id')
             ->join('tokens', 'tokens.id', '=', 'token_user.token_id')
             ->where('tokens.type', '=', Token::TYPE_PASS_RESET)
             ->where('tokens.token', '=', $token);
+
+        // Return only expired tokens
+        if ( $isExpired === true )
+        {
+            $query->where('tokens.expires_at', '<', Carbon::now());
+        }
+
+        // Return only valid tokens
+        elseif ( $isExpired === false)
+        {
+            $query->where('tokens.expires_at', '>=', Carbon::now());
+        }
+
+        return $query;
+
     }
 
     /**

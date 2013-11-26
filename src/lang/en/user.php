@@ -14,8 +14,10 @@ return array(
 
 	'failed' => array(
 		'validate' => 'User could not be found matching those credentials.',
-		'auth' => 'User could not be logged in.',
+		'authenticate' => 'User could not be logged in.',
 		'show_by_email' => 'User could not be found matching this email address.',
+		'show_by_activation_token' => 'Activation token could not be found or is expired.',
+		'show_by_password_reset_token' => 'Password reset token could not be found or is expired.',
 	),
 
 	'subject' => array(

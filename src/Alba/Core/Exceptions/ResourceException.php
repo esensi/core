@@ -26,6 +26,15 @@ class ResourceException extends Exception {
      */
     public function __construct($messageBag = null, $message = null, $code = 0, Exception $previous = null)
     {
+        // Convert a messageBag to a string if missing a message
+        if(is_null($message))
+        {
+            $message = $messageBag;
+            if(!is_string($message))
+            {
+                $message = $messageBag->__toString();
+            }
+        }
         parent::__construct($message, $code, $previous);
         $this->messageBag = $messageBag;
     }

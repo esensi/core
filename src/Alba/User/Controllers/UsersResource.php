@@ -54,7 +54,7 @@ class UsersResource extends Resource {
 
         // Bind auth.login event listener
         Event::listen('auth.login', function(User $user, $remember){
-            $user->authenticated_at = new Carbon();
+            $user->authenticated_at = Carbon::now();
             return $user->updateUniques();
         });
     }
@@ -69,24 +69,17 @@ class UsersResource extends Resource {
      */
     public function authenticate($credentials, $extras = [], $remember = false)
     {
-        // Validate the input data
-        $validator = Validator::make($credentials, $this->model->rulesForLogin);
-        if ($validator->fails())
-        {
-            $this->throwNew($validator->messages());
-        }
-
         // Validate the credentials with a fake attempt
         if (!Auth::validate($credentials))
         {
-            $this->throwException(null, Lang::get('alba::user.failed.validate'));
+            $this->throwException(Lang::get('alba::user.failed.validate'));
         }
         
         // User will need to be active and not blocked
         // Check the credentials with a real login
         if (!Auth::attempt(array_merge($credentials, $extras), $remember))
         {
-            $this->throwException(null, Lang::get('alba::user.failed.auth'));
+            $this->throwException(Lang::get('alba::user.failed.authenticate'));
         }
 
         return Auth::user();
@@ -107,14 +100,13 @@ class UsersResource extends Resource {
      *
      * @param string $email address
      * @return Model
-     * 
      */
     public function showByEmail($email)
     {
         $object = $this->model->whereEmail($email)->first();
         if(!$object)
         {
-            $this->throwException(null, Lang::get('alba::user.failed.show_by_email'));
+            $this->throwException(Lang::get('alba::user.failed.show_by_email'));
         }
         return $object;
     }
@@ -123,22 +115,17 @@ class UsersResource extends Resource {
      * Find the user by the activation token, verifying that it hasn't expired.
      * 
      * @param string $token
+     * @param boolean $isExpired
      * @return User
      * @throws UsersResourceException
      */
-    public function showByActivationToken($token) {
+    public function showByActivationToken($token, $isExpired) {
 
-        $object = $this->model->whereActivationToken($token)->first();
+        // Get the user with the matching token
+        $object = $this->model->whereActivationToken($token, $isExpired)->first();
         if (!$object)
         {
-            $this->throwException('The activation token is not found!');
-        }
-
-        // Make sure token is still valid
-        $ttl = Config::get('app.activationTokenTtlHours', 24);
-        if (!$object->isActivateAllowed($token, $ttl))
-        {
-            $this->throwException('The activation token has expired!');
+            $this->throwException(Lang::get('alba::user.failed.show_by_activation_token'));
         }
 
         return $object;
@@ -148,23 +135,17 @@ class UsersResource extends Resource {
      * Find the user by the password reset token, verifying that it hasn't expired.
      * 
      * @param string $token
+     * @param boolean $isExpired
      * @return User
      * @throws UsersResourceException
      */
-    public function showByPasswordResetToken($token) {
+    public function showByPasswordResetToken($token, $isExpired = false) {
 
         // Get the user with the matching token
-        $object = $this->model->wherePasswordResetToken($token)->first();
-        if (!$object) 
+        $object = $this->model->wherePasswordResetToken($token, $isExpired)->first();
+        if (!$object)
         {
-            $this->throwException('The password reset token is not found!');
-        }
-
-        // Make sure token is still valid
-        $ttl = Config::get('app.activationTokenTtlHours', 24);
-        if (!$object->isPasswordResetAllowed($token, null, $ttl))
-        {
-            $this->throwException('The password reset token has expired!');
+            $this->throwException(Lang::get('alba::user.failed.show_by_password_reset_token'));
         }
 
         return $object;
@@ -250,7 +231,7 @@ class UsersResource extends Resource {
         {
             if (!$user->validate($user->rulesForUpdate))
             {
-                $this->throwNew($user->errors());
+                $this->throwException($user->errors());
             }
         }
 
@@ -262,7 +243,7 @@ class UsersResource extends Resource {
         {
             if (!$name->validate($name->rulesForStoring))
             {
-                $this->throwNew($name->errors());
+                $this->throwException($name->errors());
             }
         }
         
@@ -278,7 +259,7 @@ class UsersResource extends Resource {
                 {
                     if (!$user->save($user->rulesForUpdate))
                     {
-                        $this->throwNew($user->errors());
+                        $this->throwException($user->errors());
                     }
                 }
                 
@@ -287,7 +268,7 @@ class UsersResource extends Resource {
                 {
                     if (!$name->save($name->rulesForStoring))
                     {
-                        $this->throwNew($name->errors());
+                        $this->throwException($name->errors());
                     }
                 }
             });
@@ -332,7 +313,7 @@ class UsersResource extends Resource {
         $validator = Validator::make($inputData, $rules);
         if ($validator->fails())
         {
-            $this->throwNew($validator->errors(), 'UsersResource::requestActivation - Error 1');
+            $this->throwException($validator->errors(), 'UsersResource::requestActivation - Error 1');
         }
 
         //search the user by email address
@@ -340,7 +321,7 @@ class UsersResource extends Resource {
         $user = $this->model->whereEmail($email)->first();
         if (!$user || ($user && !$user->isRequestActivationAllowed()) )
         {
-            $this->throwNew('No valid user account with that email could be found.', 'UsersResource::requestActivation - Error 2');   
+            $this->throwException('No valid user account with that email could be found.', 'UsersResource::requestActivation - Error 2');   
         }
 
         DB::transaction(function() use ($user)

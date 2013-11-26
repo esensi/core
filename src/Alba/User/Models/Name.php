@@ -26,6 +26,8 @@ class Name extends Ardent {
         'user' => ['exists:users']
     ];
 
+    protected $fillable = ['title', 'first_name', 'middle_name', 'last_name', 'suffix'];
+
     /**
      * Subset of $rules' keys
      *

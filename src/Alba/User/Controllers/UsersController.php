@@ -108,36 +108,16 @@ class UsersController extends Controller {
      */
     public function store()
     {
+        // Save the user
         $rules = array_merge($this->resources['user']->getModel()->rulesForStoring, $this->resources['user']->getModel('name')->rulesForStoring);
         $attributes = Input::only(array_keys($rules));
         $user = $this->resources['user']->store($attributes);
 
-        $type = ViewMessage::SUCCESS;
-        $message = 'The user was successfully created!';
+        // Two-step activation
+        $this->resources['user']->resetActivation($user->email, true);
 
-        // Send activation email
-        if (Input::get('send_email') == 'true')
-        {
-            
-            $args = Input::all(); // @todo we should limit this to what is actualy needed
-            $resp = $this->processRequestActivation($args);
-            if ($resp->isSuccess())
-            {
-                // @todo remove the debug info
-                // @todo move to language file
-                $message = 'The user was successfully created, and the activation email was sent! ' .
-                    'DEBUG = <pre>' . print_r($resp->getHolder(), true) . '</pre>';
-            }
-            else
-            {
-                $type = ViewMessage::WARNING;
-                $message = 'The user was successfully created, BUT the activation email couldn\'t be sent.
-                    Please try to send it again from the users details page.';
-            }
-
-        }
-
-        return Redirect::route('users.index')->with('message', new ViewMessage($type, $message)); // @todo make ViewMessage a dependency injection
+        return Redirect::route('users.show', ['id' => $user->id])
+            ->with('message', Lang::get('alba::user.success.store'));
     }
 
     /**
@@ -281,84 +261,73 @@ class UsersController extends Controller {
         $newPassword = Input::only('password', 'password_confirmation');
         $token = Input::get('token');
         $user = $this->resources['user']->setPassword($token, $newPassword);
+
         return Redirect::route('index')
             ->with('message', Lang::get('alba::user.success.set_password'));
     }
 
     /**
-     * Blocks the specified user 
+     * Blocks the specified user
      * 
-     * @param  integer $id User id to block
-     * @return Response
+     * @param integer $id
+     * @return Redirect
      */
     public function block($id)
     {
         // @todo what about security here?
 
-        // Find the user
-        $user = $this->userResource->show($id);
+        $user = $this->resources['user']->block($id);
 
-        // Block the user
-        // @todo add conditional error handling
-        $user->block();
-        
-        return Redirect::route('users.show', ['id' => $id])->with('message', 
-                new ViewMessage(ViewMessage::WARNING, 'User blocked!') // @todo make ViewMessage a dependency injection, move to language file
-            );
+        return Redirect::route('users.show', ['id' => $id])
+            ->with('message', Lang::get('alba::user.success.block'));
     }
 
     /**
      * Unblocks the specified user 
      * 
-     * @param  integer $id User id to unblock
+     * @param integer $id
      * @return Redirect
      */
     public function unblock($id)
     {
         // @todo what about security here?
 
-        // Find the user
-        $user = $this->userResource->show($id);
-
-        // Unblock the user
-        // @todo add conditional error handling
-        $user->unblock();
+        $user = $this->resources['user']->unblock($id);
         
-        return Redirect::route('users.show', ['id' => $id])->with('message', 
-                new ViewMessage(ViewMessage::SUCCESS, 'User unblocked!') // @todo make ViewMessage a dependency injection, move to language file
-            );
+        return Redirect::route('users.show', ['id' => $id])
+            ->with('message', Lang::get('alba::user.success.unblock'));
     }
 
     /**
-     * Deactivates the specified user 
+     * Activate the user that bears the token.
+     * Optionally it saves a new password too.
      * 
-     * @param  integer $id User id to deactivate
-     * @return Response
+     * @param string $token
+     * @return Redirect
+     */
+    public function activate($token)
+    {
+        $newPassword = Input::has('password') ? Input::only('password', 'password_confirmation') : null;
+        $user = $this->resources['user']->activate($token, $newPassword);
+
+        return Redirect::route('users.show', ['id' => $id])
+            ->with('message', Lang::get('alba::user.success.activate'));
+    }
+
+    /**
+     * Deactivates the specified user
+     * 
+     * @param integer $id
+     * @return Redirect
      */
     public function deactivate($id)
     {
         // @todo what about security here?
 
-        // Find the user
-        $user = $this->userResource->show($id);
+        $user = $this->resources['user']->deactivate($id);
         
-        // Deactivate the user
-        // @todo add conditional error handling
-        $user->deactivate();
-        
-        return Redirect::route('users.show', ['id' => $id])->with('message', 
-                new ViewMessage(ViewMessage::WARNING, 'User deactivated!') // @todo make ViewMessage a dependency injection, move to language file
-            );
-    }
-
-    /**
-     * Shows the register page for user with deactivated accounts
-     *
-     * @return void
-     */
-    public function requestActivationInit()
-    {
-        $this->layout->content = View::make('users.requestActivationInit');
+        return Redirect::route('users.show', ['id' => $id])
+            ->with('message', Lang::get('alba::user.success.deactivate'));
     }
 
     /**
@@ -440,21 +409,6 @@ class UsersController extends Controller {
         {
             $this->layout->contet = View::make('users.requestActivationPasswordBadToken');
         }
-    }
-
-    /**
-     * Activate the user that bears the token
-     * 
-     * @param  string $token
-     * @return void
-     */
-    public function activate($token)
-    {
-        $newPassword = Input::has('password') ? Input::only('password', 'password_confirmation') : null;
-        $user = $this->resources['user']->activate($token, $newPassword);
-
-        //@todo: This should be a redirect, to avoid possible double submitions account activated!
-        $this->layout->content = View::make('users.activate');
     }
 
     /**

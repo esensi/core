@@ -131,6 +131,13 @@ class User extends Ardent implements UserInterface {
     public static $rulesForActivating = ['active', 'activated_at'];
 
     /**
+     * The attribute rules used by block()
+     * 
+     * @var array
+     */
+    public static $rulesForBlocking = ['block'];
+
+    /**
      * The attribute rules used by savePassword()
      * 
      * @var array
@@ -475,46 +482,6 @@ class User extends Ardent implements UserInterface {
     }
 
     /**
-     * Validates the current User instance, but skipping it in the unique constraint
-     * 
-     * @return boolean
-     */
-    public function validateUpdate()
-    {
-        return $this->validate($this->rulesForUpdate);
-    }
-
-    /**
-     * Blocks the user
-     *
-     * @return void
-     */
-    public function block()
-    {
-
-        if (!$this->blocked)
-        {
-            $this->blocked = true;
-            $this->save($this->rulesForUpdate);
-        }
-    }
-
-    /**
-     * Unblocks the user
-     *
-     * @return void
-     */
-    public function unblock()
-    {
-        
-        if ($this->blocked)
-        {
-            $this->blocked = false;
-            $this->save($this->rulesForUpdate);
-        }
-    }
-
-    /**
      * Vaidates if the user can be activated with the data provided. 
      * It validates that the token provided matches the current one, and also 
      * that the hours passed since the generation of the actual token is less 
@@ -595,15 +562,13 @@ class User extends Ardent implements UserInterface {
     }
 
     /**
-     * Activates the user.
+     * Activates the user
      *
      * @return boolean
      */
     public function activate()
     {
-        $this->active = true;
-        $this->activated_at = Carbon::now();
-        return $this->save($this->rulesForActivating);
+        return $this->setActive(true);
     }
 
     /**
@@ -613,9 +578,52 @@ class User extends Ardent implements UserInterface {
      */
     public function deactivate()
     {
-        $this->active = false;
+        return $this->setActive(false);
+    }
+
+    /**
+     * Save active status
+     *
+     * @param boolean $active status
+     * @return boolean
+     */
+    public function setActive($active = true)
+    {
+        $this->active = $active;
         $this->activated_at = Carbon::now();
         return $this->save($this->rulesForActivating);
+    }
+
+    /**
+     * Blocks the user
+     *
+     * @return boolean
+     */
+    public function block()
+    {
+        return $this->setBlocked(true);
+    }
+
+    /**
+     * Unblocks the user
+     *
+     * @return boolean
+     */
+    public function unblock()
+    {   
+        return $this->setBlocked(false);
+    }
+
+    /**
+     * Save blocked status
+     *
+     * @param boolean $blocked status
+     * @return boolean
+     */
+    public function setBlocked($blocked = true)
+    {
+        $this->blocked = $blocked;
+        return $this->save($this->rulesForBlocking);
     }
 
     /**

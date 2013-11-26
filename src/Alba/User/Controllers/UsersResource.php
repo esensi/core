@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Event;
-
+use Illuminate\Auth\UserInterface;
 
 class UsersResourceException extends ResourceException {}
 
@@ -312,43 +312,59 @@ class UsersResource extends Resource {
     }
 
     /**
-     * Find the user account using the token, validate the password.
-     * If everything is ok, set password and activate account
+     * Email activation link to user
      *
-     * @param array $inputData
+     * @param UserInterface $object
+     * @param string $token
+     * @return Mail
+     * 
+     */
+    public function emailActivation(UserInterface $object, $token)
+    {
+        $templates = ['emails.html.users.activation', 'emails.text.users.activation'];
+        $data = ['user' => $object->toArray(), 'token' => $token];
+        return Mail::send($templates, $data, function($message) use ($object)
+        {
+            $message->to($object->email, $object->fullName)
+                ->subject(Lang::get('alba::user.subject.activation'));
+        });
+    }
+
+    /**
+     * Find ther user by activation token then activate the user.
+     * Optionally set a new password
+     *
+     * @param string $token
+     * @param array $newPassword
      * @return User
      * @throws UsersResourceException
      */
     public function activate($token, $newPassword = [])
     {
-
-        $rules = $this->model->rulesForActivate;
-        $validator = Validator::make($inputData, $rules);
-        if ($validator->fails())
-        {
-            $this->throwException($validator->errors(), 'UsersResource::activate - Error 1');
-        }
-
         // Get the user by the activation token
-        $user = $this->showByActivationToken($inputData['token']);
+        $object = $this->showByActivationToken($token);
 
         // Activate the user
-        DB::transaction(function() use ($user, $inputData)
+        DB::transaction(function() use ($object)
         {
             // Activate user
-            $ttl = Config::get('app.activationTokenTtlHours', 24);
-            if (!$user->activate($inputData['token'], $inputData['password'], $ttl))
+            if (!$object->activate())
             {
-                $this->throwException('User account not activated due to internal problems. Please contact a system administrator if the problem persists.', 'UsersResource::activate - Error 3');
+                $this->throwException(Lang::get('alba::user.failed.activate'));
             }
 
             // Delete activation token
-            $token = $user->activationToken;
+            $token = $object->activationToken;
             $token->delete();
-
         });
 
-        return $user;
+        // Update the password at the same time
+        if( !empty($newPassword) )
+        {
+            $object->savePassword($newPassword);
+        }
+
+        return $object;
     }
 
     /** 
@@ -387,25 +403,6 @@ class UsersResource extends Resource {
         });
 
         return $user;
-    }
-
-    /**
-     * Email activation link to user
-     *
-     * @param UserInterface $object
-     * @param string $token
-     * @return Mail
-     * 
-     */
-    public function emailActivation(UserInterface $object, $token)
-    {
-        $templates = ['emails.html.users.activation', 'emails.text.users.activation'];
-        $data = ['user' => $object->toArray(), 'token' => $token];
-        return Mail::send($templates, $data, function($message) use ($object)
-        {
-            $message->to($object->email, $object->fullName)
-                ->subject(Lang::get('alba::user.subject.activation'));
-        });
     }
 
     /**

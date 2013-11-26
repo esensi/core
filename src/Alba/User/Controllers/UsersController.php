@@ -435,24 +435,18 @@ class UsersController extends Controller {
     }
 
     /**
-     * Search the user account using the token, validate the password.
-     * If everything is ok, set password and activate account
+     * Activate the user that bears the token
      * 
-     * @param  string $token [description]
-     * @return Redirect, View, or void
+     * @param  string $token
+     * @return void
      */
     public function activate($token)
     {
-        $attributes = array_merge(
-                array('token' => $token),
-                Input::all()
-            );
-        $user = $this->resources['user']->activate($attributes);
+        $newPassword = Input::has('password') ? Input::only('password', 'password_confirmation') : null;
+        $user = $this->resources['user']->activate($token, $newPassword);
 
-        //@todo: This should be a redirect, to avoid possible double submitions
-        //account activated!
+        //@todo: This should be a redirect, to avoid possible double submitions account activated!
         $this->layout->content = View::make('users.activate');
-
     }
 
     /**

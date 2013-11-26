@@ -603,32 +603,15 @@ class User extends Ardent implements UserInterface {
     }
 
     /**
-     * Activates the user. Must provide the activation token and a new password.
-     * It validates the activation first.
+     * Activates the user.
      *
-     * @param string $token
-     * @param string $newPassword (plain text)
-     * @param int $ttlHours
      * @return boolean
      */
-    public function activate($token, $newPassword, $ttlHours = 24) 
-    {
-
-        // Validate activation
-        if (!$this->isActivateAllowed($token, $ttlHours)) 
-        {
-            return false;
-        }
-
-        // Token not found
-        if (! $this->getActivationToken) 
-            return false;
-       
+    public function activate()
+    {       
         // Activate account
         $this->active = true;
-        $this->activated_at = new Carbon();
-        $this->password = $newPassword;
-        $this->password_updated_at = new Carbon();
+        $this->activated_at = Carbon::now();
         return $this->save($this->rulesForUpdate);
     }
 
@@ -646,27 +629,16 @@ class User extends Ardent implements UserInterface {
     }
 
     /**
-     * It changes the password of the user to the one indicated.
-     * It hashes the password, updates the timestamp and saves the
-     * info in the user record.
+     * Saves the model with a new password.
      *
-     * @param string $token
-     * @param string $email
-     * @param string $newPassword (plain text)
-     * @param int $ttlHours
+     * @param array $newPassword
      * @return boolean
      */
-    public function resetPassword($token, $email, $newPassword, $ttlHours = 24)
+    public function savePassword($newPassword)
     {
-
-        // Check if reset is allowed
-        if (!$this->isPasswordResetAllowed($token, $email, $ttlHours)) {
-            return false;
-        }
-
         // Save new password
-        $this->password = $newPassword;
-        $this->password_updated_at = new Carbon();
+        $this->fill($newPassword);
+        $this->password_updated_at = Carbon::now();
         return $this->save($this->rulesForUpdate);
     }
 

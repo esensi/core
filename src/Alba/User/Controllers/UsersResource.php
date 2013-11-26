@@ -12,12 +12,15 @@ use Alba\User\Models\Token;
 use Alba\User\Models\User;
 use Alba\User\Controllers\TokensResource;
 
+use Carbon\Carbon;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Event;
+
 
 class UsersResourceException extends ResourceException {}
 
@@ -50,7 +53,7 @@ class UsersResource extends Resource {
         $this->tokensResource = $tokensResource;
 
         // Bind auth.login event listener
-        Event::listen('auth.login', function(UserInterface $user, $remember){
+        Event::listen('auth.login', function(User $user, $remember){
             $user->authenticated_at = new Carbon();
             return $user->updateUniques();
         });

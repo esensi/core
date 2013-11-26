@@ -475,15 +475,17 @@ class User extends Ardent implements UserInterface {
             return false;
         }
 
+        $activationToken = $this->activationToken;
+
         // Check the token
-        if ($token !== $this->activationToken->token)
+        if ($token !== $activationToken->token)
         {
             return false;
         }
 
         // Validate time to live
         $now = new Carbon();
-        $tokenTime = new Carbon($this->activationToken->created_at); //@todo: change this login to start using the expires_at field
+        $tokenTime = new Carbon($activationToken->created_at); //@todo: change this login to start using the expires_at field
         $diffHours = $now->diffInHours($tokenTime);
         if ($diffHours > $ttlHours)
         {
@@ -515,15 +517,17 @@ class User extends Ardent implements UserInterface {
             return false;
         }
 
+        $passwordResetToken = $this->passwordResetToken;
+
         // Check token
-        if ($token != $this->passwordResetToken->token) 
+        if ($token != $passwordResetToken->token) 
         {
             return false;
         }
 
         //validate time to live
         $now = new Carbon();
-        $tokenTime = new Carbon($this->passwordResetToken->created_at);
+        $tokenTime = new Carbon($passwordResetToken->created_at);
         $diffHours = $now->diffInHours($tokenTime);
         if ($diffHours > $ttlHours) 
         { 

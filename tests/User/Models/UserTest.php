@@ -48,18 +48,7 @@ class UserTest extends TestCase {
 
     }
 
-
-    public function testGetFullName() {
-        
-        $nameMock = Mockery::mock('Alba\User\Models\Name');        
-        $this->user->name = $nameMock;
-        
-        $expect = 'My Nice Name';
-        $nameMock->shouldReceive('getFullName')->once()->andReturn($expect);
-        $this->assertEquals('My Nice Name', $this->user->getFullName());
-
-    }
-
+    
 
     //Tests for method isRequestActivationAllowed()
     
@@ -98,11 +87,11 @@ class UserTest extends TestCase {
 
     public function testIsActivateAllowedWhenTokenDifferent() {
 
-        $user = Mockery::mock('Alba\User\Models\User[isRequestActivationAllowed, getActivationToken]');        
+        $user = Mockery::mock('Alba\User\Models\User[isRequestActivationAllowed, getActivationTokenAttribute]');
         $user->shouldReceive('isRequestActivationAllowed')->once()->andReturn(true);
         $token = new Token();
         $token->token = 'token';
-        $user->shouldReceive('getActivationToken')->once()->andReturn($token);
+        $user->shouldReceive('getActivationTokenAttribute')->once()->andReturn($token);
         
         $this->assertFalse($user->isActivateAllowed('tokendifferent', 24));
 
@@ -111,14 +100,14 @@ class UserTest extends TestCase {
     
     public function testIsActivateAllowedWhenTtlExpired() {
 
-        $user = Mockery::mock('Alba\User\Models\User[isRequestActivationAllowed, getActivationToken]');
-        $user->shouldReceive('isRequestActivationAllowed')->once()->andReturn(true);        
+        $user = Mockery::mock('Alba\User\Models\User[isRequestActivationAllowed, getActivationTokenAttribute]');
+        $user->shouldReceive('isRequestActivationAllowed')->once()->andReturn(true);
         $token = new Token();
         $token->token = 'token';
         $twoDaysAgo = new Carbon();
         $twoDaysAgo->subDays(2);
         $token->created_at = $twoDaysAgo;
-        $user->shouldReceive('getActivationToken')->once()->andReturn($token);
+        $user->shouldReceive('getActivationTokenAttribute')->once()->andReturn($token);
         
         $this->assertFalse($user->isActivateAllowed('token', 24));
 
@@ -127,12 +116,12 @@ class UserTest extends TestCase {
 
     public function testIsActivateAllowedWhenOk() {
 
-        $user = Mockery::mock('Alba\User\Models\User[isRequestActivationAllowed, getActivationToken]');
+        $user = Mockery::mock('Alba\User\Models\User[isRequestActivationAllowed, getActivationTokenAttribute]');
         $user->shouldReceive('isRequestActivationAllowed')->once()->andReturn(true);
         $token = new Token();
         $token->token = 'token';
         $token->create_at = new Carbon();
-        $user->shouldReceive('getActivationToken')->once()->andReturn($token);
+        $user->shouldReceive('getActivationTokenAttribute')->once()->andReturn($token);
 
         $this->assertTrue($user->isActivateAllowed('token', 24));
 
@@ -144,17 +133,17 @@ class UserTest extends TestCase {
     
     public function testActivateChangesAttributesCorrectly() {
 
-        $user = Mockery::mock('Alba\User\Models\User[isActivateAllowed, getActivationToken, save]');
+        $user = Mockery::mock('Alba\User\Models\User[isActivateAllowed, getActivationTokenAttribute]');
         $user->shouldReceive('isActivateAllowed')->once()->andReturn(true);
         $token = new Token();
         $token->token = 'token';
         $token->create_at = new Carbon();
-        $user->shouldReceive('getActivationToken')->once()->andReturn($token);
+        $user->shouldReceive('getActivationTokenAttribute')->once()->andReturn($token);
         $user->active = false;
         $user->activated_at = null;
         $user->password = null;
         $user->password_updated_at = null;        
-        $user->shouldReceive('save')->once();
+        //$user->shouldReceive('save')->once()->andReturn(true);
 
         $actual = $user->activate('token', 'password', 24);
         $this->assertTrue($actual);
@@ -174,11 +163,10 @@ class UserTest extends TestCase {
         $user = Mockery::mock('Alba\User\Models\User[save]');
         $user->active = false;
         $user->activated_at = null;
-        $user->shouldReceive('save')->never();
+        $user->shouldReceive('save')->once()->andReturn(false);
 
         $user->deactivate();
         $this->assertFalse($user->active);
-        $this->assertNull($user->activated_at);
 
     }
 
@@ -250,12 +238,12 @@ class UserTest extends TestCase {
 
     public function testIsPasswordResetAllowedWhenTokenDifferent() { 
 
-        $user = Mockery::mock('Alba\User\Models\User[isRequestPasswordResetAllowed, getPasswordResetToken]');
+        $user = Mockery::mock('Alba\User\Models\User[isRequestPasswordResetAllowed, getPasswordResetTokenAttribute]');
         $user->shouldReceive('isRequestPasswordResetAllowed')->once()->andReturn(true);
         $token = new Token();
         $token->token = 'token';
         $token->created_at = new Carbon();
-        $user->shouldReceive('getPasswordResetToken')->once()->andReturn($token);
+        $user->shouldReceive('getPasswordResetTokenAttribute')->once()->andReturn($token);
         $user->email = 'email@domain.com';
 
         $this->assertFalse($user->isPasswordResetAllowed('tokendifferent', 'email@domain.com', 24));
@@ -265,14 +253,14 @@ class UserTest extends TestCase {
 
     public function testIsPasswordResetAllowedWhenTtlExpired() {
 
-        $user = Mockery::mock('Alba\User\Models\User[isRequestPasswordResetAllowed, getPasswordResetToken]');
+        $user = Mockery::mock('Alba\User\Models\User[isRequestPasswordResetAllowed, getPasswordResetTokenAttribute]');
         $user->shouldReceive('isRequestPasswordResetAllowed')->once()->andReturn(true);        
         $token = new Token();
         $token->token = 'token';
         $twoDaysAgo = new Carbon();
         $twoDaysAgo->subDays(2);
         $token->created_at = $twoDaysAgo;
-        $user->shouldReceive('getPasswordResetToken')->once()->andReturn($token);
+        $user->shouldReceive('getPasswordResetTokenAttribute')->once()->andReturn($token);
         $user->email = 'email@domain.com';        
 
         $this->assertFalse($user->isPasswordResetAllowed('token', 'email@domain.com', 24));
@@ -282,12 +270,12 @@ class UserTest extends TestCase {
 
     public function testIsPasswordResetAllowedWhenOk() {
 
-        $user = Mockery::mock('Alba\User\Models\User[isRequestPasswordResetAllowed, getPasswordResetToken]');
+        $user = Mockery::mock('Alba\User\Models\User[isRequestPasswordResetAllowed, getPasswordResetTokenAttribute]');
         $user->shouldReceive('isRequestPasswordResetAllowed')->once()->andReturn(true);
         $token = new Token();
         $token->token = 'token';
         $token->created_at = new Carbon();
-        $user->shouldReceive('getPasswordResetToken')->once()->andReturn($token);
+        $user->shouldReceive('getPasswordResetTokenAttribute')->once()->andReturn($token);
         $user->email = 'email@domain.com';
         
         $this->assertTrue($user->isPasswordResetAllowed('token', 'email@domain.com', 24));
@@ -309,7 +297,7 @@ class UserTest extends TestCase {
 
     public function testResetPasswordChangesAttributesCorrectly() {
 
-        $user = Mockery::mock('Alba\User\Models\User[isPasswordResetAllowed, save]');
+        $user = Mockery::mock('Alba\User\Models\User[isPasswordResetAllowed]');
         $user->shouldReceive('isPasswordResetAllowed')->once()->andReturn(true);
         $oldPass = 'oldPass';
         $newPass = 'newPass';
@@ -318,7 +306,7 @@ class UserTest extends TestCase {
         $token = new Token();
         $token->token = 'token';
         $token->created_at = new Carbon();        
-        $user->shouldReceive('save')->once();
+        //$user->shouldReceive('save')->once();
 
         $this->assertTrue($user->resetPassword('token', 'email@domain.com', $newPass, 24));
         $this->assertTrue(Hash::check($newPass, $user->password));

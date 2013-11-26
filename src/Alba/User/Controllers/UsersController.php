@@ -462,12 +462,8 @@ class UsersController extends Controller {
      */
     private function processRequestPasswordReset($attributes)
     {
-        // Get the user and token
-        $user = $this->resources['user']->requestPasswordReset($attributes);
-        $token = $user->passwordResetToken->token;
-
-        // Send the password reset link via email
-        $this->resources['user']->emailPasswordReset($user, $token);
+        // Generate a new user password token and send user a password reset email
+        $user = $this->resources['user']->resetPassword($attributes['email']);
 
         // @todo remove the data pased to the view, just done for debugging...        
         return new ProcessResponse(true, null, $data);

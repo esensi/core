@@ -283,32 +283,32 @@ class UsersResource extends Resource {
      */
     public function resetActivation($email, $sendEmail = true)
     {
-        $user = $this->showByEmail($email);
+        $object = $this->showByEmail($email);
         
         // Check if user is allowed to activate
-        if (!$user->isActivationAllowed())
+        if (!$object->isActivationAllowed())
         {
             $this->throwException(Lang::get('alba::user.failed.activation_not_allowed.'));
         }
 
-        DB::transaction(function() use ($user)
+        DB::transaction(function() use ($object)
         {
             // @todo: remove all existing activation tokens from user
 
             // Generate activation token
-            $activationToken = $this->tokensResource->createNewActivation($user);
+            $activationToken = $this->tokensResource->createNewActivation($object);
 
             // Attach token to user
-            $user->tokens()->attach($activationToken->id);
+            $object->tokens()->attach($activationToken->id);
         });
         
         // Send activation email to user
         if( $sendEmail )
         {
-            $this->emailActivation($user, $activationToken->token);
+            $this->emailActivation($object, $activationToken->token);
         }
 
-        return $user;
+        return $object;
     }
 
     /**
@@ -371,41 +371,43 @@ class UsersResource extends Resource {
     }
 
     /** 
-     * Process the password reset request, validating the email, generating
-     * a new password request token. 
+     * Find the user by email and attempts to create a new
+     * password reset token for the user. Optionally it sends
+     * password reset email to the user. 
      *
-     * @param array $inputData
+     * @param string $email
+     * @param boolean $sendEmail
      * @return User
      * @throws UsersResourceException
      */
-    public function requestPasswordReset($inputData)
+    public function resetPassword($email, $sendEmail = true)
     {
-
-        $rules = $this->model->rulesForRequestPasswordReset;
-        $validator = Validator::make($inputData, $rules);
-        if ($validator->fails()) {
-            $this->throwException($validator->errors(), 'UsersResource::requestPasswordReset - Error 1');
-        }
-
-        // Find user by the email address
-        $email = $inputData['email'];
-        $user = $this->model->whereEmail($email)->first();
-        if ((!$user) || ($user && !$user->isRequestPasswordResetAllowed()) ) {
-            $this->throwException('No valid user account with that email could be found.', 'UsersResource::requestActivation - Error 2');   
-        }
-
-        DB::transaction(function() use ($user)
+        $object = $this->showByEmail($email);
+        
+        // Check if user is allowed to activate
+        if (!$object->isPasswordResetAllowed())
         {
-            // Generate activation token
-            $token = $this->tokensResource->generatePasswordReset();
-            
-            // Set user with token
-            $user->tokens()->attach($token->id);
+            $this->throwException(Lang::get('alba::user.failed.password_reset_not_allowed.'));
+        }
 
-            //@todo: check if a token already exists for this user, and only keep the last one
+        DB::transaction(function() use ($object)
+        {
+            // @todo: remove all existing password reset tokens from user
+
+            // Generate password reset token
+            $resetToken = $this->tokensResource->createNewPasswordReset($object);
+
+            // Attach token to user
+            $object->tokens()->attach($resetToken->id);
         });
+        
+        // Send password reset email to user
+        if( $sendEmail )
+        {
+            $this->emailPasswordReset($object, $resetToken->token);
+        }
 
-        return $user;
+        return $object;
     }
 
     /**
@@ -416,7 +418,7 @@ class UsersResource extends Resource {
      * @return void
      * 
      */
-    public function emailResetPassword(UserInterface $object, $token)
+    public function emailPasswordReset(UserInterface $object, $token)
     {
         $templates = ['emails.html.users.reset-password', 'emails.text.users.reset-password'];
         $data = ['user' => $object->toArray(), 'token' => $token];
@@ -428,39 +430,33 @@ class UsersResource extends Resource {
     }
 
     /**
-     * Tries to reset the password of a user
-     * 
+     * Find ther user by password reset token then save
+     * new password for user.
+     *
+     * @param string $token
+     * @param array $newPassword
      * @return User
      * @throws UsersResourceException
      */
-    public function resetPassword($inputData)
+    public function setPassword($token, $newPassword = [])
     {
-        //validate form input
-        $rules = $this->model->rulesForResetPassword;
-        $validator = Validator::make($inputData, $rules);
-        if ($validator->fails())
-        {
-            $this->throwException($validator->errors());
-        }
-
         // Get the user by the password reset token
-        $user = $this->showByPasswordResetToken($inputData['token']);
+        $object = $this->showByPasswordResetToken($token);
 
-        DB::transaction(function() use ($user, $inputData)
+        // Save the new password
+        DB::transaction(function() use ($object, $newPassword)
         {
-            // Reset the password
-            $ttl = Config::get('app.resetPasswordTokenTtlHours');
-            if (!$user->resetPassword($inputData['token'], $inputData['email'], $inputData['password'], $ttl)) 
+            if($object->savePassword($newPassword))
             {
-                $this->throwException('The token and/or email do not match to a valid password reset request.');            
+                $this->throwException($object->errors(), Lang::get('alba::user.failed.update_password'));
             }
 
-            // Delete the password reset token
-            $token = $user->passwordResetToken;
+            // Delete password reset token
+            $token = $object->passwordResetToken;
             $token->delete();
-        });        
+        });
 
-        return $user;
+        return $object;
     }
 
 }

@@ -215,7 +215,7 @@ class UsersController extends Controller {
     public function login()
     {
         // Log user in
-        $credentials = Input::only(array_keys($this->resources['user']->getModel()->rulesForLogin));
+        $credentials = Input::only(['email', 'password']);
         $extras = ['active' => true, 'blocked' => false];
         $remember = Input::get('remember', false);
         $user = $this->resources['user']->authenticate($credentials, $credentials, $remember);

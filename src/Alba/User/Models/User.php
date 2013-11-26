@@ -190,16 +190,6 @@ class User extends Ardent implements UserInterface {
     {
         return array_merge(Token::$rulesForToken, self::$rulesForEmail, self::$rulesForPassword);
     }
-    
-    /**
-     * Rules needed for validating login
-     * 
-     * @return array
-     */
-    public function getRulesForLoginAttribute()
-    {
-        return array_merge(self::$rulesForEmail, self::$rulesForPasswordLogin);
-    }
 
     /**
      * Get the unique identifier for the user.

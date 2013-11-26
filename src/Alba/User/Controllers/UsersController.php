@@ -251,7 +251,7 @@ class UsersController extends Controller {
     }
 
     /**
-     * Save user password and redirect user to index page
+     * Save user password and redirect user to profile page
      *
      * @return Redirect
      */
@@ -261,7 +261,7 @@ class UsersController extends Controller {
         $token = Input::get('token');
         $user = $this->resources['user']->setPassword($token, $newPassword);
 
-        return Redirect::route('index')
+        return Redirect::route('users.show', ['id' => $user->id])
             ->with('message', Lang::get('alba::user.success.set_password'));
     }
 

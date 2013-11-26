@@ -1,18 +1,14 @@
 <?php namespace Alba\User\Seeders;
 
-use Alba\Core\Seeders\Seeder;
-
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Alba\Core\Seeders\Seeder;
 use Alba\User\Models\Name;
 use Alba\User\Models\Role;
 use Alba\User\Models\User;
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-
 class UsersTableSeeder extends Seeder {
-    
 
     public function run() {
 
@@ -35,7 +31,7 @@ class UsersTableSeeder extends Seeder {
             [
                 'user' => [            
                     "email" => "admin@app.dev",
-                    "password" => Hash::make("password"), // @todo this should be an Ardent secure field
+                    "password" => 'password',
                     "blocked" => false,
                     "active" => true,
                     'activated_at' => new Carbon(), // @todo this should be a beforeSave hook
@@ -54,7 +50,7 @@ class UsersTableSeeder extends Seeder {
             [
                 'user' => [            
                     "email" => "user@app.dev",
-                    "password" => Hash::make("password"), // @todo this should be an Ardent secure field
+                    "password" => 'password',
                     "blocked" => false,
                     "active" => true, 
                     'activated_at' => new Carbon(), // @todo this should be a beforeSave hook

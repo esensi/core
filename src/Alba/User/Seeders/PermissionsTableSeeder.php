@@ -1,11 +1,8 @@
 <?php namespace Alba\User\Seeders;
 
 use Alba\Core\Seeders\Seeder;
-
 use Alba\User\Models\Permission;
-
 use Illuminate\Support\Facades\DB;
-
 
 class PermissionsTableSeeder extends Seeder {
 
@@ -34,9 +31,7 @@ class PermissionsTableSeeder extends Seeder {
                 $this->saveOrFail($permission);
             }
         });
-
         
-
         $this->afterRun();
 
     }

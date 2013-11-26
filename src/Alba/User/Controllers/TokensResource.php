@@ -1,121 +1,72 @@
 <?php namespace Alba\User\Controllers;
 
-
-use Alba\Core\Contracts\ResourceInterface;
+use Alba\Core\Controllers\Resource;
 use Alba\Core\Utils\StringUtils;
 use Alba\Core\Exceptions\ResourceException;
 
 use Alba\User\Models\Token;
 
-//use Illuminate\Support\Facades\Log;
-
 class TokensResourceException extends ResourceException {}
 
-class TokensResource implements ResourceInterface {
-
+class TokensResource extends Resource {
+    
+    /**
+     * The exception to be thrown
+     * 
+     * @var Alba\Core\Exceptions\ResourceException;
+     */
+    protected $exception = 'TokensResourceException';
 
     /**
-     * The Token model
-     * @var Alba\User\Models\Token
-     */
-    protected $token;
-
-
+     * Inject dependencies
+     **/
     public function __construct(Token $token) {        
-        $this->token = $token;
-    }
-
-
-    /**
-     * @see ResourceInterface::index
-     */
-    public function index($params = []) 
-    {
-
+        $this->model = $token;
     }
 
     /**
-     * @see ResourceInterface::store
-     */
-    public function store($attributes)
-    {
-
-        $this->token->fill($attributes);
-        if (!$this->token->save($this->token->rulesForStoring)) {            
-            throw new TokensResourceException(
-                $this->token->errors(),
-                "There were some errors trying to save the token."
-            );
-        }
-        return $this->token;
-
-    }
-
-    /**
-     * @see ResourceInterface::show
-     */
-    public function show($id)
-    {
-
-    }
-
-    /**
-     * @see ResourceInterface::update
-     */
-    public function update($id, $attributes)
-    {
-
-    }
-
-    /**
-     * @see ResourceInterface::destroy
+     * Deletes the token by it's token value
      * 
-     */
-    public function destroy($id, $force)
-    {
-
-        $token = Token::find($id);
-        if (!$token) {
-            return false;
-        }
-
-        $token->delete();
-
-        return true;
-
-    }
-
-
-    /**
-     * Searches the token specified, and deletes it
-     * 
-     * @param string $token The token string to search and delete
-     * @param [type] $force [description]
-     * @return bool Whether it deleted the token or not
+     * @param string $token
+     * @param boolean $force delete
+     * @return bool
      */
     public function destroyByToken($token, $force = false) {
-        $token = $this->token->whereToken($token)->first();
-        if (!$token) {
-            return false;
-        }
-        $token->delete();
-        return true;
-    }
 
+        $query = $this->model->whereToken($token);
+        return ($force) ? $query->forceDelete() : $query->delete();
+    }
 
     /**
      * Creates a new token for the specified type, and
      * stores it.
      * 
-     * @param string $type Token type
-     * @return Token The new generated token
+     * @param string $type
+     * @return Toke
      */
-    public function generateToken($type)
+    public function generateByType($type)
     {
-
         return $this->store(['type' => $type, 'token' => StringUtils::generateGuid(false)]);
-
     }
 
+    /**
+     * Generates a new activation type token
+     * 
+     * @return Token
+     */
+    public function generateActivation()
+    {
+        return $this->generateByType($this->model::TYPE_ACTIVATION);
+    }
+
+    /**
+     * Generates a new password reset type token
+     * 
+     * @return Token
+     */
+    public function generatePasswordReset()
+    {
+        return $this->generateByType($this->model::TYPE_PASS_RESET);
+    }
 
 }

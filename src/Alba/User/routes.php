@@ -40,6 +40,15 @@ Route::group(['prefix' => 'api'], function(){
 		Route::post('/', [ 'as' => 'api.permission.store', 'uses' => 'Alba\User\Controllers\PermissionsApiController@store' ]);
 		Route::get('/', [ 'as' => 'api.permission.index', 'uses' => 'Alba\User\Controllers\PermissionsApiController@index' ]);
 	});
+
+	// Tokens API Routes
+	Route::group(['prefix' => 'token'], function(){
+		Route::delete('/{id}', [ 'as' => 'api.token.destroy', 'uses' => 'Alba\User\Controllers\TokensApiController@destroy' ])->where('id', '[0-9]+');
+		Route::put('/{id}', [ 'as' => 'api.token.update', 'uses' => 'Alba\User\Controllers\TokensApiController@update' ])->where('id', '[0-9]+');
+		Route::get('/{id}', [ 'as' => 'api.token.show', 'uses' => 'Alba\User\Controllers\TokensApiController@show' ])->where('id', '[0-9]+');
+		Route::post('/', [ 'as' => 'api.token.store', 'uses' => 'Alba\User\Controllers\TokensApiController@store' ]);
+		Route::get('/', [ 'as' => 'api.token.index', 'uses' => 'Alba\User\Controllers\TokensApiController@index' ]);
+	});
 });
 
 /*
@@ -56,7 +65,7 @@ Route::group(['prefix' => 'api'], function(){
 
 Route::group(['prefix' => 'admin'], function(){
 	
-	// User API Routes
+	// User Admin Routes
 	Route::group(['prefix' => 'users'], function(){
 		Route::get('/create', [ 'as' => 'admin.users.create', 'uses' => 'Alba\User\Controllers\UsersAdminController@create' ]);
 		Route::get('/search', [ 'as' => 'admin.users.search', 'uses' => 'Alba\User\Controllers\UsersAdminController@search' ]);
@@ -66,7 +75,7 @@ Route::group(['prefix' => 'admin'], function(){
 		Route::get('/', [ 'as' => 'admin.users.index', 'uses' => 'Alba\User\Controllers\UsersAdminController@index' ]);
 	});
 
-	// Roles API Routes
+	// Roles Admin Routes
 	Route::group(['prefix' => 'roles'], function(){
 		Route::get('/create', [ 'as' => 'admin.roles.create', 'uses' => 'Alba\User\Controllers\RolesAdminController@create' ]);
 		Route::get('/search', [ 'as' => 'admin.roles.search', 'uses' => 'Alba\User\Controllers\RolesAdminController@search' ]);
@@ -75,13 +84,22 @@ Route::group(['prefix' => 'admin'], function(){
 		Route::get('/', [ 'as' => 'admin.roles.index', 'uses' => 'Alba\User\Controllers\RolesAdminController@index' ]);
 	});
 
-	// Permissions API Routes
+	// Permissions Admin Routes
 	Route::group(['prefix' => 'permissions'], function(){
 		Route::get('/create', [ 'as' => 'admin.permissions.create', 'uses' => 'Alba\User\Controllers\PermissionsAdminController@create' ]);
 		Route::get('/search', [ 'as' => 'admin.permissions.search', 'uses' => 'Alba\User\Controllers\PermissionsAdminController@search' ]);
 		Route::get('/{id}/edit', [ 'as' => 'admin.permissions.edit', 'uses' => 'Alba\User\Controllers\PermissionsAdminController@edit' ])->where('id', '[0-9]+');
 		Route::get('/{id}', [ 'as' => 'admin.permissions.show', 'uses' => 'Alba\User\Controllers\PermissionsAdminController@show' ])->where('id', '[0-9]+');
 		Route::get('/', [ 'as' => 'admin.permissions.index', 'uses' => 'Alba\User\Controllers\PermissionsAdminController@index' ]);
+	});
+
+	// Tokens Admin Routes
+	Route::group(['prefix' => 'tokens'], function(){
+		Route::get('/create', [ 'as' => 'admin.tokens.create', 'uses' => 'Alba\User\Controllers\TokensAdminController@create' ]);
+		Route::get('/search', [ 'as' => 'admin.tokens.search', 'uses' => 'Alba\User\Controllers\TokensAdminController@search' ]);
+		Route::get('/{id}/edit', [ 'as' => 'admin.tokens.edit', 'uses' => 'Alba\User\Controllers\TokensAdminController@edit' ])->where('id', '[0-9]+');
+		Route::get('/{id}', [ 'as' => 'admin.tokens.show', 'uses' => 'Alba\User\Controllers\TokensAdminController@show' ])->where('id', '[0-9]+');
+		Route::get('/', [ 'as' => 'admin.tokens.index', 'uses' => 'Alba\User\Controllers\TokensAdminController@index' ]);
 	});
 
 });

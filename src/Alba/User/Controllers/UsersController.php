@@ -16,7 +16,6 @@ use Alba\Core\Utils\ProcessResponse;
 use Alba\Core\Utils\ViewMessage;
 use Alba\User\Models\User;
 use Alba\User\Models\Name;
-use Alba\User\Controllers\TokensResource;
 use Alba\User\Controllers\UsersResource;
 use Alba\User\Controllers\UsersResourceException;
 use Alba\User\Repositories\Contracts\UserRepositoryInterface;
@@ -28,76 +27,29 @@ use Alba\User\Repositories\Contracts\UserRepositoryInterface;
  */
 class UsersController extends Controller {
 
-    
     /**
      * The layout that should be used for responses.
      */
     protected $layout = 'layouts.default';
 
     /**
-     * The UsersResource controller
-     * @var Alba\User\Controllers\UsersResource;
+     * The resource controllers
+     *
+     * @var array;
      */
-    protected $usersResource;
+    protected $resources = [];
 
-    
-    /**
-     * The repository used for user interactions
-     */
-    protected $userRepo;
-
-    /**
-     * The TokensResource controller, used to handle tokens
-     * @var Alba\User\Controllers\TokensResource;
-     */
-    protected $tokensResource;
-
-    
     /**
      * Inject dependencies
-     *
+     * @todo make ViewMessage a dependency injection
      * @param UserRepositoryInterface $userRepo
      * @return void
      */
-    public function __construct(
-        UserRepositoryInterface $userRepo,         
-        UsersResource $usersResource,
-        TokensResource $tokensResource)
+    public function __construct(UsersResource $usersResource)
     {
-        // @todo make ViewMessage a dependency injection
-        $this->userRepo = $userRepo;
-        $this->usersResource = $usersResource;
-        $this->tokensResource = $tokensResource;
+        $this->resources['user'] = $usersResource;
     }
-
-
-    
-    /**
-     * Process login attempt for a user
-     * @return Redirect
-     */
-    public function login() {
-
-        $user = $this->usersResource->login(Input::only($this->usersResource->getAttributesForLogin()));
-
-        // If login is ok, redirect to the intended URL or default to the dashboard
-        return Redirect::intended(route('dashboard.index'));
-
-    }
-
-
-
-    /**
-     * Logs the user out of the application and redirects to the home page
-     * @return Redirect
-     */
-    public function logout() {
-        Auth::logout();
-        return Redirect::route('index');
-    }
-
-
-    
+        
     /**
      * Display a listing of the resource.
      *
@@ -105,13 +57,11 @@ class UsersController extends Controller {
      */
     public function index() {
 
-        $users = $this->usersResource->index(); // @todo this should be paginated and the paginator returned to the view too
+        $params = Input::only('max', 'order', 'sort', 'keyword');
+        $paginator = $this->resources['user']->index();
 
-        $data = ['users' => $users];
-        $this->layout->content = View::make('users.index', $data);
-
+        $this->layout->content = View::make('users.index', $paginator);
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -122,34 +72,40 @@ class UsersController extends Controller {
         $this->layout->content = View::make('users.create');
     }
 
-
     /**
      * Store a newly created resource in storage.
      *
      * @return Redirect
      */
     public function store() {
-           
-        $user = $this->usersResource->store(Input::only($this->usersResource->getAttributesForStoring()));
+        
+        $rules = array_merge($this->resources['user']->getModel()->rulesForStoring, $this->resources['user']->getModel('name')->rulesForStoring);
+        $attributes = Input::only(array_keys($rules));
+        $user = $this->resources['user']->store($attributes);
 
-        // send activation email?
-        // @todo don't use mixed case variables when dealing with HTML but rather snake_cased
-        if (Input::get('send_email') == 'true') {
+        $type = ViewMessage::SUCCESS;
+        $message = 'The user was successfully created!';
+
+        // Send activation email
+        if (Input::get('send_email') == 'true')
+        {
             
-            $resp = $this->processRequestActivation(Input::all());
-            if ($resp->isSuccess()) {
-                $type = ViewMessage::SUCCESS;
+            $args = Input::all(); // @todo we should limit this to what is actualy needed
+            $resp = $this->processRequestActivation($args);
+            if ($resp->isSuccess())
+            {
                 // @todo remove the debug info
+                // @todo move to language file
                 $message = 'The user was successfully created, and the activation email was sent! ' .
                     'DEBUG = <pre>' . print_r($resp->getHolder(), true) . '</pre>';
-            } else {
+            }
+            else
+            {
                 $type = ViewMessage::WARNING;
-                $message = 'The user was successfully created, BUT the activation email couldn\'t be sent. Please try to send it again from the users details page.';
+                $message = 'The user was successfully created, BUT the activation email couldn\'t be sent.
+                    Please try to send it again from the users details page.';
             }
 
-        } else {
-            $type = ViewMessage::SUCCESS;
-            $message = 'The user was successfully created!';
         }
 
         return Redirect::route('users.index')->with('message', new ViewMessage($type, $message)); // @todo make ViewMessage a dependency injection
@@ -164,8 +120,8 @@ class UsersController extends Controller {
      * @return void
      */
     public function show($id) {
-        // Find the user
-        $user = $this->usersResource->show($id);        
+
+        $user = $this->resources['user']->show($id);        
         $this->layout->content = View::make('users.show', compact('user'));
     }
     
@@ -177,8 +133,8 @@ class UsersController extends Controller {
      * @return void
      */
     public function edit($id) {
-        // Find the user        
-        $user = $this->usersResource->show($id);
+        
+        $user = $this->resources['user']->show($id);
         $this->layout->content = View::make('users.edit', compact('user'));
     }
 
@@ -192,12 +148,12 @@ class UsersController extends Controller {
 
         // @todo what about security here?
 
-        $input = Input::all(); // @todo this should only pass what's strictly needed using Input::only()
-        $user = $this->usersResource->update($id, $input);
+        $attributes = Input::all(); // @todo this should only pass what's strictly needed using Input::only()
+        $user = $this->resources['user']->update($id, $attributes);
 
         return Redirect::route('users.show', ['id' => $id])->with('message', 
-            new ViewMessage(ViewMessage::SUCCESS, 'User successfully saved!') // @todo make ViewMessage a dependency injection, move to language file
-        );
+                new ViewMessage(ViewMessage::SUCCESS, 'User successfully saved!') // @todo make ViewMessage a dependency injection, move to language file
+            );
         
     }
 
@@ -212,6 +168,32 @@ class UsersController extends Controller {
         // @todo what about security here?
     }
 
+    /**
+     * Process login attempt for a user
+     *
+     * @return Redirect
+     */
+    public function login() {
+
+        $model = $this->resources['user']->getModel();
+        $attributes = Input::only(array_keys($model->rulesForLogin));
+        $user = $this->resources['user']->login($attributes);
+
+        // If login is ok, redirect to the intended URL or default to the dashboard
+        return Redirect::intended(route('index'));
+
+    }
+
+    /**
+     * Logs the user out of the application and redirects to the home page
+     *
+     * @return Redirect
+     */
+    public function logout() {
+        
+        Auth::logout();
+        return Redirect::route('index');
+    }
 
     /**
      * Blocks the specified user 
@@ -224,22 +206,16 @@ class UsersController extends Controller {
         // @todo what about security here?
 
         // Find the user
-        // @todo Using the find method should throw a ModelNotFoundException which should be caught to show a proper 404 page
-        // @todo could probably reuse the show method
-        $user = $this->userRepo->find($id);
-        if ($user === null) {
-            App::abort(404, 'User not found!');
-        }
+        $user = $this->userResource->show($id);
 
         // Block the user
         // @todo add conditional error handling
         $user->block();
         
         return Redirect::route('users.show', ['id' => $id])->with('message', 
-            new ViewMessage(ViewMessage::WARNING, 'User blocked!') // @todo make ViewMessage a dependency injection, move to language file
-        );
+                new ViewMessage(ViewMessage::WARNING, 'User blocked!') // @todo make ViewMessage a dependency injection, move to language file
+            );
     }
-
 
     /**
      * Unblocks the specified user 
@@ -252,22 +228,16 @@ class UsersController extends Controller {
         // @todo what about security here?
 
         // Find the user
-        // @todo Using the find method should throw a ModelNotFoundException which should be caught to show a proper 404 page
-        // @todo could probably reuse the show method
-        $user = $this->userRepo->find($id);
-        if ($user === null) {
-            App::abort(404, 'User not found!');
-        }
+        $user = $this->userResource->show($id);
 
         // Unblock the user
         // @todo add conditional error handling
         $user->unblock();
         
         return Redirect::route('users.show', ['id' => $id])->with('message', 
-            new ViewMessage(ViewMessage::SUCCESS, 'User unblocked!') // @todo make ViewMessage a dependency injection, move to language file
-        );
+                new ViewMessage(ViewMessage::SUCCESS, 'User unblocked!') // @todo make ViewMessage a dependency injection, move to language file
+            );
     }
-
 
     /**
      * Deactivates the specified user 
@@ -280,31 +250,25 @@ class UsersController extends Controller {
         // @todo what about security here?
 
         // Find the user
-        // @todo Using the find method should throw a ModelNotFoundException which should be caught to show a proper 404 page
-        // @todo could probably reuse the show method
-        $user = $this->userRepo->find($id);
-        if ($user === null) {
-            App::abort(404, 'User not found!');
-        }
+        $user = $this->userResource->show($id);
         
         // Deactivate the user
         // @todo add conditional error handling
         $user->deactivate();
         
         return Redirect::route('users.show', ['id' => $id])->with('message', 
-            new ViewMessage(ViewMessage::WARNING, 'User deactivated!') // @todo make ViewMessage a dependency injection, move to language file
-        );
+                new ViewMessage(ViewMessage::WARNING, 'User deactivated!') // @todo make ViewMessage a dependency injection, move to language file
+            );
     }
-
 
     /**
      * Shows the register page for user with deactivated accounts
+     *
      * @return void
      */
     public function requestActivationInit() {
         $this->layout->content = View::make('users.requestActivationInit');
     }
-
 
     /**
      * Checks the user supplied email to see if corresponds to an
@@ -322,7 +286,7 @@ class UsersController extends Controller {
      */
     private function processRequestActivation($inputData) {
 
-        $user = $this->usersResource->requestActivation($inputData);
+        $user = $this->resources['user']->requestActivation($inputData);
 
         //if all is ok, get the activation token and send email...
         $token = $user->getActivationToken();
@@ -360,7 +324,6 @@ class UsersController extends Controller {
 
     }
 
-
     /**
      * Performs the processing of the activation request from the admin flow
      * 
@@ -375,11 +338,10 @@ class UsersController extends Controller {
 
         // @todo remove the passing of data into the message... just for debugging
         return Redirect::route('users.show', ['id' => $id])->with('message',
-            new ViewMessage(ViewMessage::SUCCESS, 'Activation email sent! Debug data = <pre>' . print_r($resp->getHolder(), true) . '</pre>') // @todo make ViewMessage a dependency injection, move to language file
-        );
+                new ViewMessage(ViewMessage::SUCCESS, 'Activation email sent! Debug data = <pre>' . print_r($resp->getHolder(), true) . '</pre>') // @todo make ViewMessage a dependency injection, move to language file
+            );
 
     }
-
 
     /**
      * Performs the processing of the activation request from the user flow
@@ -401,7 +363,6 @@ class UsersController extends Controller {
 
     }
 
-
     /**
      * Searches the user account using the activation token.
      * If corresponds to a valid activation, it shows page 
@@ -413,9 +374,12 @@ class UsersController extends Controller {
     public function requestActivationPassword($token) {
 
         //get user by token
-        try {
-            $user  = $this->usersResource->showByActivationToken($token);
-        } catch (UsersResourceException $e) {
+        try
+        {
+            $user  = $this->resources['user']->showByActivationToken($token);
+        }
+        catch (UsersResourceException $e)
+        {
             return View::make('users.requestActivationPasswordBadToken');
         }
 
@@ -423,7 +387,6 @@ class UsersController extends Controller {
         $this->layout->content = View::make('users.requestActivationPassword',compact('user', 'token'));
 
     }
-
 
     /**
      * Search the user account using the token, validate the password.
@@ -434,17 +397,17 @@ class UsersController extends Controller {
      */
     public function activate($token) {
 
-        $user = $this->usersResource->activate(array_merge(
+        $attributes = array_merge(
                 array('token' => $token),
                 Input::all()
-            ));
+            );
+        $user = $this->resources['user']->activate($attributes);
 
         //@todo: This should be a redirect, to avoid possible double submitions
         //account activated!
         $this->layout->content = View::make('users.activate');
 
     }
-
 
     /**
      * Shows the page for requesting the password reset for the user flow
@@ -454,7 +417,6 @@ class UsersController extends Controller {
         $this->layout->content = View::make('users.requestPasswordResetInit');
     }
 
-
     /**
      * Process the password reset request, validating the email, generating
      * a new password request token and sending the email to the user.
@@ -463,12 +425,12 @@ class UsersController extends Controller {
      * use when reporting back to the view. When Success, it set the 
      * holder to the data used in email view
      * 
-     * @param  array $inputData Array with input data, must have 'email' key
+     * @param  array $attrributes Array with input data, must have 'email' key
      * @return ProcessResponse
      */
-    private function processRequestPasswordReset($inputData) {
+    private function processRequestPasswordReset($attributes) {
 
-        $user = $this->usersResource->requestPasswordReset($inputData);
+        $user = $this->resources['user']->requestPasswordReset($attributes);
 
         //if all is ok, get the passwordReset token and send email...
         $token = $user->getPasswordResetToken();
@@ -504,7 +466,6 @@ class UsersController extends Controller {
 
     }
 
-
     /**
      * Tries to reset the users password if everything is correct, for the user flow
      * 
@@ -512,10 +473,11 @@ class UsersController extends Controller {
      */
     public function requestPasswordReset() {
 
-        $inputData = Input::all();
-        $resp = $this->processRequestPasswordReset($inputData);
+        $attributes = Input::all();
+        $resp = $this->processRequestPasswordReset($attributes);
 
-        if ($resp->isFailure()) {
+        if ($resp->isFailure())
+        {
             return Redirect::route('users.requestPasswordResetInit')->withInput()->with(
                 'message', new ViewMessage($resp->getHolder(), $resp->getMessage()));
         }
@@ -525,18 +487,19 @@ class UsersController extends Controller {
 
     }
 
-
     /**
      * Tries to initiate the user password reset process, from the admin flow
      * 
-     * @return Response
+     * @param integer $id
+     * @return Redirect
      */
     public function requestPasswordResetAdmin($id) {
 
-        $inputData = Input::all();
-        $resp = $this->processRequestPasswordReset($inputData);
+        $attributes = Input::all();
+        $resp = $this->processRequestPasswordReset($attributes);
 
-        if ($resp->isFailure()) {
+        if ($resp->isFailure())
+        {
             return Redirect::route('users.requestPasswordResetInit')->withInput()->with(
                 'message', new ViewMessage($resp->getHolder(), $resp->getMessage()));
         }
@@ -549,19 +512,18 @@ class UsersController extends Controller {
 
     }
 
-
     /**
      * Gets the token and tries to start the passwordReset flow for
      * the user
      * 
      * @param string $token 
-     * @return Response
+     * @return void
      */
     public function passwordResetInit($token) {
 
         try 
         {
-            $user = $this->usersResource->showByPasswordResetToken($token);
+            $user = $this->resources['user']->showByPasswordResetToken($token);
         } 
         catch (UsersResourceException $e)
         {
@@ -576,26 +538,24 @@ class UsersController extends Controller {
 
     }
 
-
     /**
      * Receives a post with all the info for performing a password reset for
      * a user, from the user flow.
      * 
      * @param string $token
-     * @return Response
+     * @return void
      */
     public function passwordReset($token) {
 
-
-        $user = $this->usersResource->resetPassword(array_merge(
+        $attributes = array_merge(
                 array('token' => $token),
                 Input::all()
-            ));
+            );
+        $user = $this->resources['user']->resetPassword($attributes);
 
         //@todo: This should be a redirect, to avoid possible double submitions        
         $this->layout->content = View::make('users.passwordReset');
         
     }
-
 
 }

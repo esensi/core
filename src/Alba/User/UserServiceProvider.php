@@ -19,7 +19,7 @@ class UserServiceProvider extends ServiceProvider {
     * @return void
     */
     public function register() {
-        $this->app->singleton('Alba\User\Repositories\Contracts\UserRepositoryInterface', 'Alba\User\Repositories\DbUserRepository');
+        //$this->app->singleton('Alba\User\Repositories\Contracts\UserRepositoryInterface', 'Alba\User\Repositories\DbUserRepository');
     }
 
     /**

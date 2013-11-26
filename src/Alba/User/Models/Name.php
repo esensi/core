@@ -1,6 +1,4 @@
-<?php
-
-namespace Alba\User\Models;
+<?php namespace Alba\User\Models;
 
 use LaravelBook\Ardent\Ardent;
 use Illuminate\Support\Facades\Log;
@@ -14,11 +12,8 @@ class Name extends Ardent {
      */
     protected $table = 'user_names';
 
-    
     /**
      * The attribute rules that Ardent will validate against
-     * 
-     * FIXME: find a way to not repeat the basic rules here!!!
      * 
      * @var array
      */
@@ -31,17 +26,12 @@ class Name extends Ardent {
         'user' => ['exists:users']
     ];
 
-
-    public function getRulesForStoringAttribute()
-    {
-        return self::$rules;
-    }
-
-    public function getRulesForNameOnlyAttribute()
-    {
-        return array_only(self::$rules, array('title', 'first_name', 'middle_name', 'last_name', 'suffix'));
-    }
-
+    /**
+     * Subset of $rules' keys
+     *
+     * @var array
+     */
+    public static $rulesForNameOnly = ['title', 'first_name', 'middle_name', 'last_name', 'suffix'];
 
     /**
      * Auto hydrate Ardent model based on input (new models)
@@ -57,43 +47,50 @@ class Name extends Ardent {
      */
     public $forceEntityHydrationFromInput = false;
 
+    /**
+     * Relationships that Ardent should set up
+     * 
+     * @var array
+     */
+    public static $relationsData = array(
+        'user'  => array(self::BELONGS_TO, 'Alba\User\Models\User'),
+    );
 
-    public function user() {
-        return $this->belongsTo('Alba\User\Models\User');
+    /**
+     * Rules needed for storing
+     * 
+     * @return array
+     */
+    public function getRulesForStoringAttribute()
+    {
+        return self::$rules;
     }
 
-
     /**
-     * Validates name with basic ruleset
-     * @return boolean Whether the validation succedeed or not
-     */
-    /*public function validateBasic() {
-        //remove the user constraint on validation rules
-        $newRules = array_merge(array(), self::$rules);
-        unset($newRules['user']);
-        return $this->validate($newRules);
-    }*/
-
-
-    /**
-     * Returns a string with the full name of the user
+     * Rules needed for the name only
      * 
-     * @param  string $format Format pattern. Added for future use.
-     * @return string         Full name of the user
+     * @return array
      */
-    public function getFullName($format = null) {
-        
-        if ($format == null) {
-            $format = 'T F M L S';
-        }
+    public function getRulesForNameOnlyAttribute()
+    {
+        return array_only(self::$rules, self::$rulesForNameOnly);
+    }
 
+    /**
+     * Get the user's name in format
+     * 
+     * @param  string $format
+     * @return string
+     */
+    public function formatName($format = 'F L')
+    {
+        
         $str = "";
 
-        //Log::info('format = ' . $format);
-        $formatArr = preg_split('/ /', $format);
-        //Log::info(print_r($formatArr, true));
+        $formatArr = preg_split('/[^a-zA-Z]/', $format);
+
         foreach ($formatArr as $key => $value) {
-            //Log::info($value);
+
             switch ($value) {
                 case 'T':
                     $str .= ($this->title ? $this->title . ' ' : '');
@@ -108,13 +105,33 @@ class Name extends Ardent {
                     $str .= $this->last_name . ' ';
                     break;
                 case 'S':
-                    $str .= ($this->suffix ? $this->suffix . ' ' : '');
+                    $str .= ($this->suffix ? $this->suffix : '');
                     break;
             }
 
         }
         
         return trim($str);
+    }
+
+    /**
+     * Returns a string with the extended name of the user
+     * 
+     * @return string
+     */
+    public function getExtendedNameAttribute()
+    {
+        return $this->formatName('T F M L S');
+    }
+
+    /**
+     * Returns a string with the full name of the user
+     * 
+     * @return string
+     */
+    public function getFullNameAttribute()
+    {
+        return $this->formatName('F M L');
     }
 
 }

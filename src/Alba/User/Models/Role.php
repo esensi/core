@@ -1,6 +1,4 @@
-<?php
-
-namespace Alba\User\Models;
+<?php namespace Alba\User\Models;
 
 use Zizaco\Entrust\EntrustRole;
 

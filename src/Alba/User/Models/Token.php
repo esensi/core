@@ -1,15 +1,18 @@
 <?php namespace Alba\User\Models;
 
 use Ardent;
-
 use Carbon\Carbon;
-
 use Illuminate\Support\Facades\Log;
-
 
 class Token extends Ardent {
 
+    /**
+     * Types of tokens
+     *
+     * @var string
+     */
     const TYPE_ACTIVATION = 'activation';
+
     const TYPE_PASS_RESET = 'pass_reset';
 
     /**
@@ -33,62 +36,69 @@ class Token extends Ardent {
      */
     public $forceEntityHydrationFromInput = false;
 
-    
+    /**
+     * Fields that can be filled
+     *
+     * @var boolean
+     */
     protected $fillable = ['expires_at', 'type', 'token'];
 
-
+    /**
+     * Allow Eloquent to handle timestamps
+     *
+     * @var boolean
+     */
     public $timestamps = false;
 
-
-    public static $rulesForToken = [
-        'token' => ['required', 'max:256']
-    ];
-
-    public static $rulesForType = [        
+    /**
+     * The attribute rules that Ardent will validate against
+     * 
+     * @var array
+     */
+    public static $rules = [
+        'token' => ['required', 'max:256'],
         'type' => ['required', 'max:32']
     ];
 
-    
-    public function getRulesForStoringAttribute()
-    {
-        return array_merge(self::$rulesForToken, self::$rulesForType);
-    }
-
-    public function getRulesForTokenAttribute()
-    {
-        return self::$rulesForToken;
-    }
-   
-
-
-    public function beforeSave()
-    {      
-
-        if ($this->created_at == null) {
-            $this->created_at = new Carbon();
-        }
-
-    }
-
-
+    /**
+     * Subset of $rules' keys for storing
+     * 
+     * @var array
+     */
+    public static $rulesForStoring = ['token', 'type'];
 
     /**
-     * Override of the save method to set the corrent rules if none are
-     * passed to the save method
+     * Rules needed for storing
      * 
-     * @see Ardent::save
+     * @return array
      */
-    //Problems with $customMessages = null... throws exception of not being an array in Ardent
-    /*public function save(array $rules = null, array $customMessages = null, 
-        array $options = null, \Closure $beforeSave = null, \Closure $afterSave = null) 
+    public function getRulesForStoringAttribute()
     {
-        if ($rules == null)
-        {
-            $rules = $this->rulesForStoring;
-        }
-        return parent::save($rules, $customMessages, $options, $beforeSave, $afterSave);
-    }*/
+        return array_only(self::$rules, self::$rulesForStoring);
+    }
 
-    
+    /**
+     * Rules needed for token
+     * 
+     * @return array
+     */
+    public function getRulesForTokenAttribute()
+    {
+        return array_only(self::$rules, ['token']);
+    }
+   
+    /**
+     * Stuff to do before saving the model
+     *
+     * @return void
+     */
+    public function beforeSave()
+    {
+
+        if ($this->created_at == null)
+        {
+            $this->created_at = new Carbon();
+        }
+    }
 
 }

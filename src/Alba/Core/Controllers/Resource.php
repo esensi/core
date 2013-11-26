@@ -16,6 +16,13 @@ class Resource extends Controller implements ResourceInterface {
     protected $model;
 
 	/**
+     * The exception to be thrown
+     * 
+     * @var Alba\Core\Exceptions\ResourceException;
+     */
+    protected $exception = 'ResourceException';
+    
+	/**
      * The default attributes for searching
      * 
      * @var array $defaults
@@ -25,13 +32,6 @@ class Resource extends Controller implements ResourceInterface {
     	'sort' => 'asc',
     	'max' => 25,
     ];
-
-	/**
-     * The exception to be thrown
-     * 
-     * @var Alba\Core\Exceptions\ResourceException;
-     */
-    protected $exception = 'ResourceException';
 
     /**
      * Inject dependencies
@@ -157,11 +157,12 @@ class Resource extends Controller implements ResourceInterface {
 	/**
 	 * Get the resource model used
 	 *
+	 * @param string $model to return
 	 * @return Illuminate\Database\Eloquent\Model
 	 */
-	public function getModel()
+	public function getModel($model = 'model')
 	{
-		return $this->model;
+		return $this->{$model};
 	}
 
 	/**

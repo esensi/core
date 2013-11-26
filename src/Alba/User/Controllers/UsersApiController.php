@@ -34,9 +34,15 @@ class UsersApiController extends Controller {
         $params = Input::only('max', 'order', 'sort', 'keyword');
 
         // Filter by role
-        if( $role = Input::get('role', false) )
+        if( $role = Input::get('roles', false) )
         {
             $params['scopes']['ofRole'] = [ $role ];
+        }
+
+        // Filter by name
+        if( $name = Input::get('names', false) )
+        {
+            $params['scopes']['byName'] = [ $name ];
         }
         
         return $this->resources['user']->index($params);

@@ -302,7 +302,7 @@ class User extends Ardent implements UserInterface {
      * @param string|array $roles ids of role
      * @return Illuminate\Database\Query\Builder
      */
-    public function scopeOfRole($query, $roles = [])
+    public function scopeOfRole($query, $roles)
     {
         // Convert roles string to array
         if ( is_string($roles) )
@@ -312,6 +312,33 @@ class User extends Ardent implements UserInterface {
         return $query->select(['users.*', 'assigned_roles.role_id'])
             ->join('assigned_roles', 'users.id', '=', 'assigned_roles.user_id')
             ->whereIn('assigned_roles.role_id', $roles);
+    }
+
+    /**
+     * Builds a query scope to return users by first or last name
+     *
+     * @param Illuminate\Database\Query\Builder $query
+     * @param string|array $names
+     * @return Illuminate\Database\Query\Builder
+     */
+    public function scopeByName($query, $names)
+    {
+        // Convert roles string to array
+        if ( is_string($names) )
+            $names = explode(',', $names);
+
+        // Query the names table for matching names
+        return $query->select(['users.*', 'user_names.first_name', 'user_names.last_name'])
+            ->join('user_names', 'users.id', '=', 'user_names.user_id')
+            ->where(function($query) use ($names)
+                {
+                    // Loop over each name to find matches for both first and last name
+                    foreach($names as $name)
+                    {
+                        $query->orWhere('user_names.first_name', 'LIKE', '%'.$name.'%')
+                            ->orWhere('user_names.last_name', 'LIKE', '%'.$name.'%');
+                    }
+                });
     }
 
     /** 

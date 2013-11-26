@@ -30,24 +30,25 @@ class UsersController extends Controller {
     /**
      * The layout that should be used for responses.
      */
-    protected $layout = 'layouts.default';
+    protected $layout = 'alba::core.default';
 
     /**
-     * The resource controllers
-     *
+     * The resources injected
+     * 
      * @var array;
      */
-    protected $resources = [];
+    protected $resources;
 
     /**
      * Inject dependencies
+     *
      * @todo make ViewMessage a dependency injection
-     * @param UserRepositoryInterface $userRepo
+     * @param UsersResource $user
      * @return void
      */
-    public function __construct(UsersResource $usersResource)
+    public function __construct(UsersResource $user)
     {
-        $this->resources['user'] = $usersResource;
+        $this->resources['user'] = $user;
     }
         
     /**
@@ -55,8 +56,8 @@ class UsersController extends Controller {
      *
      * @return void
      */
-    public function index() {
-
+    public function index()
+    {
         $params = Input::only('max', 'order', 'sort', 'keyword');
         $paginator = $this->resources['user']->index();
 
@@ -64,11 +65,32 @@ class UsersController extends Controller {
     }
 
     /**
+     * Show the form for registering
+     *
+     * @return void
+     */
+    public function signup()
+    {
+        $this->layout->content = View::make('users.signup');
+    }
+
+    /**
+     * Register the user then redirect to index
+     *
+     * @return Redirect
+     */
+    public function register()
+    {
+        return Redirect::route('index');
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return void
      */
-    public function create() {
+    public function create()
+    {
         $this->layout->content = View::make('users.create');
     }
 
@@ -77,8 +99,8 @@ class UsersController extends Controller {
      *
      * @return Redirect
      */
-    public function store() {
-        
+    public function store()
+    {
         $rules = array_merge($this->resources['user']->getModel()->rulesForStoring, $this->resources['user']->getModel('name')->rulesForStoring);
         $attributes = Input::only(array_keys($rules));
         $user = $this->resources['user']->store($attributes);
@@ -109,9 +131,7 @@ class UsersController extends Controller {
         }
 
         return Redirect::route('users.index')->with('message', new ViewMessage($type, $message)); // @todo make ViewMessage a dependency injection
-
     }
-
 
     /**
      * Display the specified resource.
@@ -119,12 +139,11 @@ class UsersController extends Controller {
      * @param  int  $id
      * @return void
      */
-    public function show($id) {
-
+    public function show($id)
+    {
         $user = $this->resources['user']->show($id);        
         $this->layout->content = View::make('users.show', compact('user'));
     }
-    
 
     /**
      * Show the form for editing the specified resource.
@@ -132,8 +151,8 @@ class UsersController extends Controller {
      * @param  int  $id
      * @return void
      */
-    public function edit($id) {
-        
+    public function edit($id)
+    {
         $user = $this->resources['user']->show($id);
         $this->layout->content = View::make('users.edit', compact('user'));
     }
@@ -144,8 +163,8 @@ class UsersController extends Controller {
      * @param  int  $id
      * @return Redirect
      */
-    public function update($id) {
-
+    public function update($id)
+    {
         // @todo what about security here?
 
         $attributes = Input::all(); // @todo this should only pass what's strictly needed using Input::only()
@@ -154,18 +173,32 @@ class UsersController extends Controller {
         return Redirect::route('users.show', ['id' => $id])->with('message', 
                 new ViewMessage(ViewMessage::SUCCESS, 'User successfully saved!') // @todo make ViewMessage a dependency injection, move to language file
             );
-        
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return Response
+     * @return Redirect
      */
     public function destroy($id)
     {
         // @todo what about security here?
+        $force = Input::get('force');
+        return $this->resources['user']->destroy($id, $force);
+
+        // @todo add flash success message
+        return Redirect::route('users.index');
+    }
+
+    /**
+     * Show sign in page
+     *
+     * @return void
+     */
+    public function signin()
+    {
+        $this->layout->content = View::make('alba::users.signin');
     }
 
     /**
@@ -173,25 +206,68 @@ class UsersController extends Controller {
      *
      * @return Redirect
      */
-    public function login() {
-
-        $model = $this->resources['user']->getModel();
-        $attributes = Input::only(array_keys($model->rulesForLogin));
-        $user = $this->resources['user']->login($attributes);
+    public function login()
+    {
+        // Log user in
+        $credentials = Input::only(array_keys($this->resources['user']->getModel()->rulesForLogin));
+        $extras = ['active' => true, 'blocked' => false];
+        $remember = Input::get('remember', false);
+        $user = $this->resources['user']->authenticate($credentials, $credentials, $remember);
 
         // If login is ok, redirect to the intended URL or default to the dashboard
         return Redirect::intended(route('index'));
-
     }
 
     /**
-     * Logs the user out of the application and redirects to the home page
+     * Log user out and redirect to sign in page
      *
      * @return Redirect
      */
-    public function logout() {
-        
-        Auth::logout();
+    public function logout()
+    {
+        $this->resources['user']->unauthenticate();
+        return Redirect::route('signin');
+    }
+
+    /**
+     * Show forgot password page
+     *
+     * @return void
+     */
+    public function forgotPassword()
+    {
+        $this->layout->content = View::make('alba::users.forgot-password');
+    }
+
+    /**
+     * Send user password reset URL and show confirmation page or redirect to forgot password page with errors
+     *
+     * @return void
+     */
+    public function resetPassword()
+    {
+        $email = Input::get('email');
+        $user = $this->resources['user']->resetPassword($email);
+        $this->layout->content = View::make('alba::users.reset-password')->with('user', $user);
+    }
+
+    /**
+     * Show set password page
+     *
+     * @return void
+     */
+    public function setPassword($token)
+    {
+        $this->layout->content = View::make('alba::users.set-password');
+    }
+
+    /**
+     * Save user password and redirect user to index page
+     *
+     * @return Redirect
+     */
+    public function savePassword()
+    {
         return Redirect::route('index');
     }
 
@@ -201,8 +277,8 @@ class UsersController extends Controller {
      * @param  integer $id User id to block
      * @return Response
      */
-    public function block($id) {
-
+    public function block($id)
+    {
         // @todo what about security here?
 
         // Find the user
@@ -223,8 +299,8 @@ class UsersController extends Controller {
      * @param  integer $id User id to unblock
      * @return Redirect
      */
-    public function unblock($id) {
-
+    public function unblock($id)
+    {
         // @todo what about security here?
 
         // Find the user
@@ -245,8 +321,8 @@ class UsersController extends Controller {
      * @param  integer $id User id to deactivate
      * @return Response
      */
-    public function deactivate($id) {
-
+    public function deactivate($id)
+    {
         // @todo what about security here?
 
         // Find the user
@@ -266,7 +342,8 @@ class UsersController extends Controller {
      *
      * @return void
      */
-    public function requestActivationInit() {
+    public function requestActivationInit()
+    {
         $this->layout->content = View::make('users.requestActivationInit');
     }
 
@@ -284,44 +361,17 @@ class UsersController extends Controller {
      * 
      * @return ProcessResponse Result of operation
      */
-    private function processRequestActivation($inputData) {
+    private function processRequestActivation($inputData)
+    {
+        // Get the user and token
+        $user = $this->resources['user']->requestActivation($attributes);
+        $token = $user->activationToken->token;
 
-        $user = $this->resources['user']->requestActivation($inputData);
-
-        //if all is ok, get the activation token and send email...
-        $token = $user->getActivationToken();
-
-        //generate activation URL
-        $activationUrl = route('users.requestActivationPassword', ['token' => $token->token]);
-
-        //current date
-        $now = new Carbon();
-
-        $senderEmail = Config::get('app.activationEmailSenderAddress', 'info@dorot.org');
-        $senderName = Config::get('app.activationEmailSenderName', 'Dorot Foundation');
-
-        $data = [
-            'activationUrl' => $activationUrl,
-            'currentYear' => $now->year,
-            'dorotLogoUrl' => asset('img/logo.png'),
-            'contactUsEmail' => $senderEmail, 
-            'userName' => $user->getFullName('F') // @todo replace with accessor such as $user->first_name or just use $user->name->first_name
-        ];
-
-        //send email
-        // @todo send email as both html and plain text
-        Mail::send('emails.html.activateAccount', $data, 
-            function($message) use ($user, $senderEmail, $senderName) {
-            // @todo add the email and name from to a config parameter.
-            $message->to($user->email, $user->getFullName('F L'))
-                ->from($senderEmail, $senderName)
-                ->subject('Activate Your Account') // @todo move to language file
-            ;
-        });
+        // Send the password reset link via email
+        $this->resources['user']->emailActivation($user, $token);
 
         // @todo remove the data pased to the view, just done for debugging...        
         return new ProcessResponse(true, null, $data);
-
     }
 
     /**
@@ -329,8 +379,8 @@ class UsersController extends Controller {
      * 
      * @return Redirect
      */
-    public function requestActivationAdmin($id) {
-
+    public function requestActivationAdmin($id)
+    {
         $input = Input::all(); // @todo this should only pass what's strictly needed using Input::only()
         
         //now if the method executes without exception, it will always be success
@@ -340,7 +390,6 @@ class UsersController extends Controller {
         return Redirect::route('users.show', ['id' => $id])->with('message',
                 new ViewMessage(ViewMessage::SUCCESS, 'Activation email sent! Debug data = <pre>' . print_r($resp->getHolder(), true) . '</pre>') // @todo make ViewMessage a dependency injection, move to language file
             );
-
     }
 
     /**
@@ -348,8 +397,8 @@ class UsersController extends Controller {
      * 
      * @return Redirect or void
      */
-    public function requestActivation() {
-
+    public function requestActivation()
+    {
         // @todo don't return a mixed response such as Redirect or void
         $input = Input::all(); // @todo this should only pass what's strictly needed using Input::only()
         
@@ -360,7 +409,6 @@ class UsersController extends Controller {
         
         // @todo this could end up getting a double submission since it isn't redirected
         $this->layout->content = View::make('users.requestActivation')->with($resp->getHolder());
-
     }
 
     /**
@@ -369,23 +417,19 @@ class UsersController extends Controller {
      * for the user to create the password
      * 
      * @param  string $token [description]
-     * @return Response
+     * @return void
      */
-    public function requestActivationPassword($token) {
-
-        //get user by token
+    public function requestActivationPassword($token)
+    {
         try
         {
             $user  = $this->resources['user']->showByActivationToken($token);
+            $this->layout->content = View::make('users.requestActivationPassword',compact('user', 'token'));
         }
         catch (UsersResourceException $e)
         {
-            return View::make('users.requestActivationPasswordBadToken');
+            $this->layout->contet = View::make('users.requestActivationPasswordBadToken');
         }
-
-        //show page to generate password
-        $this->layout->content = View::make('users.requestActivationPassword',compact('user', 'token'));
-
     }
 
     /**
@@ -395,8 +439,8 @@ class UsersController extends Controller {
      * @param  string $token [description]
      * @return Redirect, View, or void
      */
-    public function activate($token) {
-
+    public function activate($token)
+    {
         $attributes = array_merge(
                 array('token' => $token),
                 Input::all()
@@ -410,16 +454,8 @@ class UsersController extends Controller {
     }
 
     /**
-     * Shows the page for requesting the password reset for the user flow
-     * @return Response
-     */
-    public function requestPasswordResetInit() {
-        $this->layout->content = View::make('users.requestPasswordResetInit');
-    }
-
-    /**
      * Process the password reset request, validating the email, generating
-     * a new password request token and sending the email to the user.
+     * a new password request token, and sending the email to the user.
      * It returns the result of the operation with a ProcessResponse. When 
      * in error, it sets the holder to indicate the ViewMessage type to
      * use when reporting back to the view. When Success, it set the 
@@ -428,38 +464,14 @@ class UsersController extends Controller {
      * @param  array $attrributes Array with input data, must have 'email' key
      * @return ProcessResponse
      */
-    private function processRequestPasswordReset($attributes) {
-
+    private function processRequestPasswordReset($attributes)
+    {
+        // Get the user and token
         $user = $this->resources['user']->requestPasswordReset($attributes);
+        $token = $user->passwordResetToken->token;
 
-        //if all is ok, get the passwordReset token and send email...
-        $token = $user->getPasswordResetToken();
-
-        //generate password reset URL
-        $passwordResetUrl = route('users.passwordResetInit', ['token' => $token->token]);
-
-        //current date
-        $now = new Carbon();
-
-        $senderEmail = Config::get('app.passResetEmailSenderAddress', 'info@dorot.org');
-        $senderName = Config::get('app.passResetEmailSenderName', 'Dorot Foundation');
-
-        $data = [
-            'userName' => $user->getFullName('F'),
-            'passwordResetUrl' => $passwordResetUrl,
-            'currentYear' => $now->year,
-            'dorotLogoUrl' => asset('img/logo.png'),
-            'contactUsEmail' => $senderEmail,
-        ];
-
-        //send email
-        Mail::send('emails.html.passwordReset', $data, 
-            function($message) use ($user, $senderEmail, $senderName) {
-            $message->to($user->email, $user->getFullName('F L'))
-                ->from($senderEmail, $senderName)
-                ->subject('Reset Your Password')
-            ;
-        });
+        // Send the password reset link via email
+        $this->resources['user']->emailPasswordReset($user, $token);
 
         // @todo remove the data pased to the view, just done for debugging...        
         return new ProcessResponse(true, null, $data);
@@ -471,8 +483,8 @@ class UsersController extends Controller {
      * 
      * @return Response
      */
-    public function requestPasswordReset() {
-
+    public function requestPasswordReset()
+    {
         $attributes = Input::all();
         $resp = $this->processRequestPasswordReset($attributes);
 
@@ -484,7 +496,6 @@ class UsersController extends Controller {
 
         // @todo remove the data from the view, is just for debgging:
         $this->layout->content = View::make('users.requestPasswordReset', $resp->getHolder());
-
     }
 
     /**
@@ -493,8 +504,8 @@ class UsersController extends Controller {
      * @param integer $id
      * @return Redirect
      */
-    public function requestPasswordResetAdmin($id) {
-
+    public function requestPasswordResetAdmin($id)
+    {
         $attributes = Input::all();
         $resp = $this->processRequestPasswordReset($attributes);
 
@@ -509,7 +520,6 @@ class UsersController extends Controller {
             ViewMessage::SUCCESS,
             'The reset password email was sent successfully. DEBUG = ' . print_r($resp->getHolder(), true)
             ));
-
     }
 
     /**
@@ -519,8 +529,8 @@ class UsersController extends Controller {
      * @param string $token 
      * @return void
      */
-    public function passwordResetInit($token) {
-
+    public function passwordResetInit($token)
+    {
         try 
         {
             $user = $this->resources['user']->showByPasswordResetToken($token);
@@ -535,7 +545,6 @@ class UsersController extends Controller {
         ];
 
         $this->layout->content = View::make('users.passwordResetInit', $data);
-
     }
 
     /**
@@ -545,8 +554,8 @@ class UsersController extends Controller {
      * @param string $token
      * @return void
      */
-    public function passwordReset($token) {
-
+    public function passwordReset($token)
+    {
         $attributes = array_merge(
                 array('token' => $token),
                 Input::all()
@@ -555,7 +564,6 @@ class UsersController extends Controller {
 
         //@todo: This should be a redirect, to avoid possible double submitions        
         $this->layout->content = View::make('users.passwordReset');
-        
     }
 
 }

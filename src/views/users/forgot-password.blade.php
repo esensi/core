@@ -19,13 +19,13 @@
 			    	  	<div class="form-group">
 			    		    {{ Form::text('email', null, ['placeholder' => 'E-mail', 'class' => 'form-control']) }}
 			    		</div>
-			    		<input class="btn btn-lg btn-success btn-block" type="submit" value="Login">
+			    		<input class="btn btn-lg btn-success btn-block" type="submit" value="Reset Password">
 			    	</fieldset>
 			      	{{ Form::close() }}
 			    </div>
 			</div>
 			<ul class="nav nav-pills nav-justified">
-				<li><a href="{{ route('users.signin') }}">&rarr; Back to Login</a></li>
+				<li><a href="{{ route('users.signin') }}">&larr; Back to Login</a></li>
 				<li><a href="{{ route('users.signup') }}">I need to register &rarr;</a></li>
 			</ul>
 		</div>

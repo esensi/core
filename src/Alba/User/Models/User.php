@@ -367,19 +367,6 @@ class User extends Ardent implements UserInterface {
     }
 
     /**
-     * Performs the necessary actions and updates after a successful login. Currently:
-     * - Updates the last login timestamp
-     */
-    public function doLoginActions()
-    {
-        Log::info("Updating last login date...");
-        $this->authenticated_at = new Carbon();
-        if (!$this->save($this->rulesForUpdate)) {
-            Log::warning("Couldn't update last login date!");
-        }
-    }
-
-    /**
      * Returns a string representing the status of password
      * @return string Password status
      */

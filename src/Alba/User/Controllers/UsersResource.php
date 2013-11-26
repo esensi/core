@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Event;
 
 class UsersResourceException extends ResourceException {}
 
@@ -47,31 +48,97 @@ class UsersResource extends Resource {
         $this->model = $user;
         $this->name = $name;
         $this->tokensResource = $tokensResource;
+
+        // Bind auth.login event listener
+        Event::listen('auth.login', function(UserInterface $user, $remember){
+            $user->authenticated_at = new Carbon();
+            return $user->updateUniques();
+        });
+    }
+
+    /**
+     * Log user in by authenticating with credentials
+     *
+     * @param array $credentials to find user with
+     * @param array $extras to make sure found user can login
+     * @param bool $remember user with persistent session
+     * @return User
+     */
+    public function authenticate($credentials, $extras = [], $remember = false)
+    {
+        // Validate the input data
+        $validator = Validator::make($credentials, $this->model->rulesForLogin);
+        if ($validator->fails())
+        {
+            $this->throwNew($validator->messages());
+        }
+
+        // Validate the credentials with a fake attempt
+        if (!Auth::validate($credentials))
+        {
+            $this->throwException(null, Lang::get('alba::user.failed.validate'));
+        }
+        
+        // User will need to be active and not blocked
+        // Check the credentials with a real login
+        if (!Auth::attempt(array_merge($credentials, $extras), $remember))
+        {
+            $this->throwException(null, Lang::get('alba::user.failed.auth'));
+        }
+
+        return Auth::user();
+    }
+
+    /**
+     * Log user out
+     *
+     * @return void
+     */
+    public function unauthenticate()
+    {
+        Auth::logout();
+    }
+
+    /**
+     * Show the specificed resource by the email address
+     *
+     * @param string $email address
+     * @return Model
+     * 
+     */
+    public function showByEmail($email)
+    {
+        $object = $this->model->whereEmail($email)->first();
+        if(!$object)
+        {
+            $this->throwException(null, Lang::get('alba::user.failed.show_by_email'));
+        }
+        return $object;
     }
 
     /**
      * Find the user by the activation token, verifying that it hasn't expired.
      * 
-     * @param string $token The activation token
+     * @param string $token
      * @return User
-     * @throws UsersResourceException If an error ocurs
+     * @throws UsersResourceException
      */
     public function showByActivationToken($token) {
 
-        $user = $this->model->whereActivationToken($token)->first();
-        if (!$user)
+        $object = $this->model->whereActivationToken($token)->first();
+        if (!$object)
         {
             $this->throwExeception('The activation token is not found!');
         }
 
         // Make sure token is still valid
         $ttl = Config::get('app.activationTokenTtlHours', 24);
-        if (!$user->isActivateAllowed($token, $ttl))
+        if (!$object->isActivateAllowed($token, $ttl))
         {
             $this->throwExeception('The activation token has expired!');
         }
 
-        return $user;
+        return $object;
     }
 
     /**
@@ -84,20 +151,20 @@ class UsersResource extends Resource {
     public function showByPasswordResetToken($token) {
 
         // Get the user with the matching token
-        $user = $this->model->wherePasswordResetToken($token)->first();
-        if (!$user) 
+        $object = $this->model->wherePasswordResetToken($token)->first();
+        if (!$object) 
         {
             $this->throwExeception('The password reset token is not found!');
         }
 
         // Make sure token is still valid
         $ttl = Config::get('app.activationTokenTtlHours', 24);
-        if (!$user->isPasswordResetAllowed($token, null, $ttl))
+        if (!$object->isPasswordResetAllowed($token, null, $ttl))
         {
             $this->throwExeception('The password reset token has expired!');
         }
 
-        return $user;
+        return $object;
     }
     
     /**
@@ -175,7 +242,8 @@ class UsersResource extends Resource {
 
         // Update user attributes
         $user->fill($attributes);
-        if (!empty($user->getDirty()))
+        $userIsDirty = count($user->getDirty());
+        if ($userIsDirty)
         {
             if (!$user->validate($user->rulesForUpdate))
             {
@@ -186,7 +254,8 @@ class UsersResource extends Resource {
         // Update name attributes
         $name = $user->name;
         $name->fill($attributes);
-        if (!empty($name->getDirty()))
+        $nameIsDirty = count($name->getDirty());
+        if ($nameIsDirty)
         {
             if (!$name->validate($name->rulesForStoring))
             {
@@ -198,11 +267,11 @@ class UsersResource extends Resource {
         try
         {
             // Use a transaction so everything fails if one fails
-            DB::transaction(function() use ($user, $name)
+            DB::transaction(function() use ($user, $name, $userIsDirty, $nameIsDirty)
             {
                 
                 // Update user if it's changed
-                if (!empty($user->getDirty()))
+                if ($userIsDirty)
                 {
                     if (!$user->save($user->rulesForUpdate))
                     {
@@ -211,7 +280,7 @@ class UsersResource extends Resource {
                 }
                 
                 // Update user if it's changed
-                if (!empty($name->getDirty()))
+                if ($nameIsDirty)
                 {
                     if (!$name->save($name->rulesForStoring))
                     {
@@ -233,50 +302,16 @@ class UsersResource extends Resource {
     }
 
     /**
-     * Process login attempt for a user
-     * 
-     * @param array $inputData
-     * @return User
-     * @throws UsersResourceException If an error occurs or login not allowed.
-     */
-    public function login($inputData) 
-    {   
-        // Get the account inputs needed for authentication
-        $validator = Validator::make($inputData, $this->model->rulesForLogin);
-        if ($validator->fails())
-        {
-            $this->throwNew($validator->messages());
-        }
-
-        // Validate the credentials with a fake attempt
-        if (!Auth::validate($inputData))
-        {
-            $this->throwNew('Your email and/or password are incorrect!');                        
-        }
-        
-        // User will need to be active and not blocked
-        $credentials = array_merge($inputData, ['active' => true, 'blocked' => false]);
-
-        // Check the credentials with a real login
-        if(!Auth::attempt($credentials))
-        {
-            $message = Auth::getProvider()->retrieveByCredentials($inputData)->getLoginAllowedMessage(); // @todo find another way to compute the messages or show a more generic one
-            $this->throwNew($message);
-        }
-
-        // Log authentication
-        // @todo this should be bound as a listener on auth.login
-        Auth::user()->doLoginActions();
-                
-        return Auth::user();
-    }
-
-    /**
-     * Logs the user out
+     * Remove the specified resource from storage.
+     *
+     * @param integer $id of object to remove
+     * @param boolean $force delete
+     * @return boolean
      * 
      */
-    public function logout() {
-        Auth::logout();
+    public function destroy($id, $force = false)
+    {
+        return parent::destroy($id, $force);
     }
 
     /**
@@ -396,6 +431,44 @@ class UsersResource extends Resource {
     }
 
     /**
+     * Email activation link to user
+     *
+     * @param UserInterface $object
+     * @param string $token
+     * @return Mail
+     * 
+     */
+    public function emailActivation(UserInterface $object, $token)
+    {
+        $templates = ['emails.html.users.activation', 'emails.text.users.activation'];
+        $data = ['user' => $object->toArray(), 'token' => $token];
+        return Mail::send($templates, $data, function($message) use ($object)
+        {
+            $message->to($object->email, $object->fullName)
+                ->subject(Lang::get('alba::user.subject.activation'));
+        });
+    }
+
+    /**
+     * Email password reset link to user
+     *
+     * @param UserInterface $object
+     * @param string $token
+     * @return Mail
+     * 
+     */
+    public function emailResetPassword(UserInterface $object, $token)
+    {
+        $templates = ['emails.html.users.reset-password', 'emails.text.users.reset-password'];
+        $data = ['user' => $object->toArray(), 'token' => $token];
+        return Mail::send($templates, $data, function($message) use ($object)
+        {
+            $message->to($object->email, $object->fullName)
+                ->subject(Lang::get('alba::user.subject.reset_password'));
+        });
+    }
+
+    /**
      * Tries to reset the password of a user
      * 
      * @return User
@@ -403,7 +476,6 @@ class UsersResource extends Resource {
      */
     public function resetPassword($inputData)
     {
-
         //validate form input
         $rules = $this->model->rulesForResetPassword;
         $validator = Validator::make($inputData, $rules);

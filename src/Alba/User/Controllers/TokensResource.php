@@ -56,7 +56,8 @@ class TokensResource extends Resource {
      */
     public function generateActivation()
     {
-        return $this->generateByType($this->model::TYPE_ACTIVATION);
+        $model = $this->getModel();
+        return $this->generateByType($model::TYPE_ACTIVATION);
     }
 
     /**
@@ -66,7 +67,8 @@ class TokensResource extends Resource {
      */
     public function generatePasswordReset()
     {
-        return $this->generateByType($this->model::TYPE_PASS_RESET);
+        $model = $this->getModel();
+        return $this->generateByType($model::TYPE_PASS_RESET);
     }
 
 }

@@ -31,7 +31,7 @@ class UsersResource extends Resource {
      * 
      * @var Alba\Core\Exceptions\ResourceException;
      */
-    protected $exception = 'UsersResourceException';
+    protected $exception = 'Alba\User\Controllers\UsersResourceException';
 
     /**
      * The Name model
@@ -131,14 +131,14 @@ class UsersResource extends Resource {
         $object = $this->model->whereActivationToken($token)->first();
         if (!$object)
         {
-            $this->throwExeception('The activation token is not found!');
+            $this->throwException('The activation token is not found!');
         }
 
         // Make sure token is still valid
         $ttl = Config::get('app.activationTokenTtlHours', 24);
         if (!$object->isActivateAllowed($token, $ttl))
         {
-            $this->throwExeception('The activation token has expired!');
+            $this->throwException('The activation token has expired!');
         }
 
         return $object;
@@ -157,14 +157,14 @@ class UsersResource extends Resource {
         $object = $this->model->wherePasswordResetToken($token)->first();
         if (!$object) 
         {
-            $this->throwExeception('The password reset token is not found!');
+            $this->throwException('The password reset token is not found!');
         }
 
         // Make sure token is still valid
         $ttl = Config::get('app.activationTokenTtlHours', 24);
         if (!$object->isPasswordResetAllowed($token, null, $ttl))
         {
-            $this->throwExeception('The password reset token has expired!');
+            $this->throwException('The password reset token has expired!');
         }
 
         return $object;
@@ -182,7 +182,7 @@ class UsersResource extends Resource {
         $user->blocked = false; // new users should not be blocked
         if (!$user->validate($this->model->rulesForStoring))
         {
-            $this->throwExeception($user->errors());
+            $this->throwException($user->errors());
         }
 
         // Validate name
@@ -190,7 +190,7 @@ class UsersResource extends Resource {
         $name->fill($attributes);
         if (!$name->validate($this->name->rulesForNameOnly))
         {
-            $this->throwExeception($name->errors());
+            $this->throwException($name->errors());
         }
                 
         // Get default Roles to attach to a new user
@@ -205,7 +205,7 @@ class UsersResource extends Resource {
                 // Save the user first
                 if (!$user->save($this->model->rulesForStoring))
                 {
-                    $this->throwExeception($user->errors());
+                    $this->throwException($user->errors());
                 }
                 
                 // Attach Roles to user
@@ -217,7 +217,7 @@ class UsersResource extends Resource {
                 $name->user()->associate($user);
                 if (!$name->save($this->name->rulesForStoring))
                 {
-                    $this->throwExeception($name->errors());
+                    $this->throwException($name->errors());
                 }
 
             });
@@ -228,7 +228,7 @@ class UsersResource extends Resource {
         }
         catch (Exception $e) 
         {
-            $this->throwExeception('There was an unexpected error trying to save the user. Please contact a system administrator if this error persists.');
+            $this->throwException('There was an unexpected error trying to save the user. Please contact a system administrator if this error persists.');
         }
 
         return $user;
@@ -371,7 +371,7 @@ class UsersResource extends Resource {
         $validator = Validator::make($inputData, $rules);
         if ($validator->fails())
         {
-            $this->throwExeception($validator->errors(), 'UsersResource::activate - Error 1');
+            $this->throwException($validator->errors(), 'UsersResource::activate - Error 1');
         }
 
         // Get the user by the activation token
@@ -384,7 +384,7 @@ class UsersResource extends Resource {
             $ttl = Config::get('app.activationTokenTtlHours', 24);
             if (!$user->activate($inputData['token'], $inputData['password'], $ttl))
             {
-                $this->throwExeception('User account not activated due to internal problems. Please contact a system administrator if the problem persists.', 'UsersResource::activate - Error 3');
+                $this->throwException('User account not activated due to internal problems. Please contact a system administrator if the problem persists.', 'UsersResource::activate - Error 3');
             }
 
             // Delete activation token
@@ -409,14 +409,14 @@ class UsersResource extends Resource {
         $rules = $this->model->rulesForRequestPasswordReset;
         $validator = Validator::make($inputData, $rules);
         if ($validator->fails()) {
-            $this->throwExeception($validator->errors(), 'UsersResource::requestPasswordReset - Error 1');
+            $this->throwException($validator->errors(), 'UsersResource::requestPasswordReset - Error 1');
         }
 
         // Find user by the email address
         $email = $inputData['email'];
         $user = $this->model->whereEmail($email)->first();
         if ((!$user) || ($user && !$user->isRequestPasswordResetAllowed()) ) {
-            $this->throwExeception('No valid user account with that email could be found.', 'UsersResource::requestActivation - Error 2');   
+            $this->throwException('No valid user account with that email could be found.', 'UsersResource::requestActivation - Error 2');   
         }
 
         DB::transaction(function() use ($user)
@@ -484,7 +484,7 @@ class UsersResource extends Resource {
         $validator = Validator::make($inputData, $rules);
         if ($validator->fails())
         {
-            $this->throwExeception($validator->errors());
+            $this->throwException($validator->errors());
         }
 
         // Get the user by the password reset token
@@ -496,7 +496,7 @@ class UsersResource extends Resource {
             $ttl = Config::get('app.resetPasswordTokenTtlHours');
             if (!$user->resetPassword($inputData['token'], $inputData['email'], $inputData['password'], $ttl)) 
             {
-                $this->throwExeception('The token and/or email do not match to a valid password reset request.');            
+                $this->throwException('The token and/or email do not match to a valid password reset request.');            
             }
 
             // Delete the password reset token

@@ -70,11 +70,20 @@ class Resource extends Controller implements ResourceInterface {
 	            };
 		}
 
-		// Build new query with relationships
+		// Build new query with loaded relationships
 		$query = $this->model->newQuery();
-		if ( $this->loadRelationships )
-			$query->with($this->loadRelationships);
+		if ( isset($this->relationships) )
+			$query->with($this->relationships);
 		
+		// Build up the query using scope closures
+		if ( isset($this->scopes) && !empty($this->scopes) )
+		{
+			foreach( $this->scopes as $scope => $args)
+			{
+				call_user_func_array([$query, $scope], $args);
+			}
+		}
+
 		// Paginate the results
 		return $query->where($this->where)
 			->orderBy($this->order, $this->sort)

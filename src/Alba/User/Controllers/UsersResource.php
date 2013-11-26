@@ -166,13 +166,13 @@ class UsersResource extends Resource {
     {
         // Create the user
         $user = $this->model;
-        $user->fill(array_only($attributes, $user->getFillable());
+        $user->fill(array_only($attributes, $user->getFillable()));
         $user->active = false; // new users should not be active
         $user->blocked = false; // new users should not be blocked
 
         // Create the name
         $name = $this->name;
-        $name->fill(array_only($attributes, $name->getFillable());
+        $name->fill(array_only($attributes, $name->getFillable()));
                 
         // Get default Roles to attach to a new user
         $role = $this->role;
@@ -218,11 +218,11 @@ class UsersResource extends Resource {
     {
         // Update user attributes
         $user = $this->show($id);
-        $user->fill(array_only($attributes, $user->getFillable());
+        $user->fill(array_only($attributes, $user->getFillable()));
 
         // Update name attributes
         $name = $user->name;
-        $name->fill(array_only($attributes, $name->getFillable());
+        $name->fill(array_only($attributes, $name->getFillable()));
         
         // Now save the user and name
         try
@@ -236,7 +236,7 @@ class UsersResource extends Resource {
                 {
                     if (!$user->save($user->rulesForUpdate))
                     {
-                        $this->throwException($user->errors(), Lang::get('alba::user.failed.update');
+                        $this->throwException($user->errors(), Lang::get('alba::user.failed.update'));
                     }
                 }
                 
@@ -245,7 +245,7 @@ class UsersResource extends Resource {
                 {
                     if (!$name->save($name->rulesForStoring))
                     {
-                        $this->throwException($name->errors(), Lang::get('alba::user.failed.update');
+                        $this->throwException($name->errors(), Lang::get('alba::user.failed.update'));
                     }
                 }
             });

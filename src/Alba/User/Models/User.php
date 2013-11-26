@@ -31,6 +31,13 @@ class User extends Ardent implements UserInterface {
     protected $table = 'users';
 
     /**
+     * The relationships that should be eager loaded with each query
+     *
+     * @var array
+     */
+    protected $with = ['name'];
+
+    /**
      * Auto hydrate Ardent model based on input (new models)
      *
      * @var boolean
@@ -71,6 +78,13 @@ class User extends Ardent implements UserInterface {
      * @var array
      */
     protected $fillable = ['email', 'title', 'first_name', 'middle_name', 'last_name', 'suffix'];
+
+    /**
+     * The attributes that can be full-text searched
+     *
+     * @var array
+     */
+    public $searchable = ['email'];
 
     /**
      * Default roles to set to new users
@@ -256,7 +270,6 @@ class User extends Ardent implements UserInterface {
      */
     public function scopeWhereActivationToken($query, $token)
     {
-
         return $query
             ->select('users.*') //this should be here, so it gets the correct id field
             ->join('token_user', 'users.id', '=', 'token_user.user_id')
@@ -280,6 +293,25 @@ class User extends Ardent implements UserInterface {
             ->join('tokens', 'tokens.id', '=', 'token_user.token_id')
             ->where('tokens.type', '=', Token::TYPE_PASS_RESET)
             ->where('tokens.token', '=', $token);
+    }
+
+    /**
+     * Builds a query scope to return users of a certain role
+     *
+     * @param Illuminate\Database\Query\Builder $query
+     * @param string|array $roles ids of role
+     * @return Illuminate\Database\Query\Builder
+     */
+    public function scopeOfRole($query, $roles = [])
+    {
+        // Convert roles string to array
+        if ( is_string($roles) )
+            $roles = explode(',', $roles);
+
+        // Query the assign_roles pivot table for matching roles
+        return $query->select(['users.*', 'assigned_roles.role_id'])
+            ->join('assigned_roles', 'users.id', '=', 'assigned_roles.user_id')
+            ->whereIn('assigned_roles.role_id', $roles);
     }
 
     /** 

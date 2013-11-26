@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Input;
 use Alba\Core\Controllers\Controller;
-use \UsersResource;
+use Alba\User\Controllers\UsersResource;
 
 class UsersApiController extends Controller {
 
@@ -31,25 +31,13 @@ class UsersApiController extends Controller {
      */
     public function index()
     {
-        $params = Input::only('max', 'order', 'sort', 'keyword', 'start', 'end', 'role');
-        $params['loadRelationships'] = ['roles'];
+        $params = Input::only('max', 'order', 'sort', 'keyword');
 
         // Filter by role
-        /*if( isset($params['role']) )
+        if( $role = Input::get('role', false) )
         {
-            $roles = $params['role'];
-            
-            // Convert roles string to array
-            if ( is_string($roles) )
-                $roles = explode(',', $roles);
-            
-            $params['where'] = function($query) use ($roles)
-                {
-                    $query->addSelect(['users.*', 'assigned_roles.role_id'])
-                        ->join('assigned_roles', 'users.id', '=', 'assigned_roles.user_id')
-                        ->whereIn('role_id', $roles);
-                };
-        }*/
+            $params['scopes']['ofRole'] = [ $role ];
+        }
         
         return $this->resources['user']->index($params);
     }

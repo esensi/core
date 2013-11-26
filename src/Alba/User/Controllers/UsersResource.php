@@ -288,7 +288,7 @@ class UsersResource extends Resource {
         // Check if user is allowed to activate
         if (!$object->isActivationAllowed())
         {
-            $this->throwException(Lang::get('alba::user.failed.activation_not_allowed.'));
+            $this->throwException(Lang::get('alba::user.failed.activation_not_allowed'));
         }
 
         DB::transaction(function() use ($object)

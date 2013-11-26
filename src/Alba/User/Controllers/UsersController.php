@@ -87,6 +87,7 @@ class UsersController extends Controller {
      */
     public function register()
     {
+        // @todo create the user and handle default two-step activation
         return Redirect::route('index');
     }
 
@@ -176,9 +177,8 @@ class UsersController extends Controller {
         $attributes = Input::all(); // @todo this should only pass what's strictly needed using Input::only()
         $user = $this->resources['user']->update($id, $attributes);
 
-        return Redirect::route('users.show', ['id' => $id])->with('message', 
-                new ViewMessage(ViewMessage::SUCCESS, 'User successfully saved!') // @todo make ViewMessage a dependency injection, move to language file
-            );
+        return Redirect::route('users.show', ['id' => $id])
+            ->with('message', Lang::get('alba::user.success.update'));
     }
 
     /**
@@ -191,10 +191,11 @@ class UsersController extends Controller {
     {
         // @todo what about security here?
         $force = Input::get('force');
-        return $this->resources['user']->destroy($id, $force);
+        $this->resources['user']->destroy($id, $force);
 
         // @todo add flash success message
-        return Redirect::route('users.index');
+        return Redirect::route('users.index')
+            ->with('message', Lang::get('alba::user.success.destroy'));
     }
 
     /**
@@ -221,7 +222,8 @@ class UsersController extends Controller {
         $user = $this->resources['user']->authenticate($credentials, $credentials, $remember);
 
         // If login is ok, redirect to the intended URL or default to the dashboard
-        return Redirect::intended(route('index'));
+        return Redirect::intended(route('index'))
+            ->with('message', Lang::get('alba::user.success.login'));
     }
 
     /**
@@ -232,7 +234,8 @@ class UsersController extends Controller {
     public function logout()
     {
         $this->resources['user']->unauthenticate();
-        return Redirect::route('signin');
+        return Redirect::route('signin')
+            ->with('message', Lang::get('alba::user.success.logout'));
     }
 
     /**
@@ -258,13 +261,14 @@ class UsersController extends Controller {
     }
 
     /**
-     * Show set password page
+     * Show set new password page
      *
+     * @param string $token
      * @return void
      */
-    public function setPassword($token)
+    public function newPassword($token)
     {
-        $this->layout->content = View::make('alba::users.set-password');
+        $this->layout->content = View::make('alba::users.new-password');
     }
 
     /**
@@ -272,9 +276,13 @@ class UsersController extends Controller {
      *
      * @return Redirect
      */
-    public function savePassword()
+    public function setPassword()
     {
-        return Redirect::route('index');
+        $newPassword = Input::only('password', 'password_confirmation');
+        $token = Input::get('token');
+        $user = $this->resources['user']->setPassword($token, $newPassword);
+        return Redirect::route('index')
+            ->with('message', Lang::get('alba::user.success.set_password'));
     }
 
     /**

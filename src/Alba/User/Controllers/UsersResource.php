@@ -316,14 +316,14 @@ class UsersResource extends Resource {
      *
      * @param UserInterface $object
      * @param string $token
-     * @return Mail
+     * @return void
      * 
      */
     public function emailActivation(UserInterface $object, $token)
     {
         $templates = ['emails.html.users.activation', 'emails.text.users.activation'];
         $data = ['user' => $object->toArray(), 'token' => $token];
-        return Mail::send($templates, $data, function($message) use ($object)
+        Mail::send($templates, $data, function($message) use ($object)
         {
             $message->to($object->email, $object->fullName)
                 ->subject(Lang::get('alba::user.subject.activation'));
@@ -350,7 +350,7 @@ class UsersResource extends Resource {
             // Activate user
             if (!$object->activate())
             {
-                $this->throwException(Lang::get('alba::user.failed.activate'));
+                $this->throwException($object->errors(), Lang::get('alba::user.failed.activate'));
             }
 
             // Delete activation token
@@ -361,7 +361,10 @@ class UsersResource extends Resource {
         // Update the password at the same time
         if( !empty($newPassword) )
         {
-            $object->savePassword($newPassword);
+            if($object->savePassword($newPassword))
+            {
+                $this->throwException($object->errors(), Lang::get('alba::user.failed.update_password'));
+            }
         }
 
         return $object;
@@ -410,14 +413,14 @@ class UsersResource extends Resource {
      *
      * @param UserInterface $object
      * @param string $token
-     * @return Mail
+     * @return void
      * 
      */
     public function emailResetPassword(UserInterface $object, $token)
     {
         $templates = ['emails.html.users.reset-password', 'emails.text.users.reset-password'];
         $data = ['user' => $object->toArray(), 'token' => $token];
-        return Mail::send($templates, $data, function($message) use ($object)
+        Mail::send($templates, $data, function($message) use ($object)
         {
             $message->to($object->email, $object->fullName)
                 ->subject(Lang::get('alba::user.subject.reset_password'));

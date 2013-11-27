@@ -159,6 +159,16 @@ class User extends Ardent implements UserInterface {
     public static $rulesForUpdatingPassword = ['password', 'password_confirmation', 'password_updated_at'];
 
     /**
+     * Rules needed for seeding
+     * 
+     * @return array
+     */    
+    public function getRulesForSeedingAttribute()
+    {
+        return array_only(self::$rules, self::$rulesForSeeding);
+    }
+
+    /**
      * Rules needed for storing
      * 
      * @return array
@@ -405,6 +415,70 @@ class User extends Ardent implements UserInterface {
     }
 
     /**
+     * Returns the message describing the login allowed status
+     * 
+     * @return string
+     */
+    public function getLoginStatusAttribute()
+    {
+        if (!$this->active)
+        {
+            return "User cannot login because the user is not active!";
+        }
+        if (is_null($this->password))
+        {
+            return 'User cannot login because the user has no password!';
+        }
+        if ($this->blocked)
+        {
+            return "User cannot login because the user is blocked!";
+        }
+        return null;
+    }
+
+    /**
+     * Returns a string representing the status of password
+     *
+     * @return string
+     */
+    public function getPasswordStatusAttribute()
+    {
+        return is_null($this->password) ? "Password not set" : "Password set";
+    }
+
+    /**
+     * Returns a string representing the status of account activation
+     *
+     * @return string
+     */
+    public function getActiveStatusAttribute()
+    {
+        return $this->active ? "Activated" : "Deactivated";
+    }    
+
+    /**
+     * Returns a string representing the blocked status of this account
+     *
+     * @return string
+     */
+    public function getBlockedStatusAttribute()
+    {
+        return ($this->blocked) ? "Blocked (Can not login)" : "Not blocked (Can login)";
+    }
+
+    /**
+     * Returns the numbers of days since the last password update
+     *
+     * @return integer
+     */
+    public function getDaysSinceLastPasswordUpdateAttribute()
+    {
+        $date = new Carbon($this->password_updated_at);
+        $now = Carbon::now();
+        return $date->diffInDays($now);
+    }
+
+    /**
      * Checks if this user is allowed to login. Currently must be active 
      * and not blocked to be able to login
      * 
@@ -430,159 +504,9 @@ class User extends Ardent implements UserInterface {
      * 
      * @return boolean
      */
-    public function isRequestPasswordResetAllowed()
+    public function isPasswordResetAllowed()
     {
         return $this->active && !$this->blocked;
-    }
-
-    /**
-     * Returns the message describing the login allowed status
-     * 
-     * @return string
-     */
-    public function getLoginAllowedMessage()
-    {
-        if (!$this->active) {
-            return "The user account is not active yet!";
-        }
-        if ($this->password === null) {
-            return 'The user has no password! The account has not been properly activated!';
-        }
-        if ($this->blocked) {
-            return "The user account is blocked!";
-        }
-        return null;
-    }
-
-    /**
-     * Returns a string representing the status of password
-     * @return string Password status
-     */
-    public function getPasswordStatus()
-    {
-        if ($this->password == null) {
-            return "Password Not Set";
-        } else {
-            return "Password Set";
-        }
-    }
-
-    /**
-     * Returns a string representing the status of account activation
-     * @return string Active status
-     */
-    public function getActiveStatus()
-    {
-        if ($this->active) {
-            return "Activated";
-        } else {
-            return "Deactivated";
-        }
-    }    
-
-    /**
-     * Returns a string representing the blocked status of this account
-     * @return string Blocked status
-     */
-    public function getBlockedStatus()
-    {
-        if ($this->blocked) {
-            return "Blocked (Can not login)";
-        } else {
-            return "Not blocked (Can login)";
-        }
-    }
-
-    /**
-     * Returns the numbers of days since the last password update
-     *
-     * @return integer
-     */
-    public function daysSinceLastPassUpdate()
-    {
-        $date = new Carbon($this->last_pass_update_at);
-        $now = new Carbon();
-        return $date->diffInDays($now);
-    }
-
-    /**
-     * Vaidates if the user can be activated with the data provided. 
-     * It validates that the token provided matches the current one, and also 
-     * that the hours passed since the generation of the actual token is less 
-     * than $ttlHours.
-     * 
-     * @param string $token
-     * @param int $ttlHours
-     * @return boolean
-     */
-    public function isActivateAllowed($token, $ttlHours = 24)
-    {
-
-        if (!$this->isActivationAllowed())
-        {
-            return false;
-        }
-
-        $activationToken = $this->activationToken;
-
-        // Check the token
-        if ($token !== $activationToken->token)
-        {
-            return false;
-        }
-
-        // Validate time to live
-        $now = new Carbon();
-        $tokenTime = new Carbon($activationToken->created_at); //@todo: change this login to start using the expires_at field
-        $diffHours = $now->diffInHours($tokenTime);
-        if ($diffHours > $ttlHours)
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Validates if the password reset is allowed, based on token and time to live
-     * 
-     * @param string $token
-     * @param string $email
-     * @param integer $ttlHours
-     * @return boolean
-     */
-    public function isPasswordResetAllowed($token, $email = null, $ttlHours = 24)
-    {
-
-        if (!$this->isRequestPasswordResetAllowed())
-        {
-            return false;
-        }
-
-        // Check email
-        if ($email && $email != $this->email)
-        {
-            return false;
-        }
-
-        $passwordResetToken = $this->passwordResetToken;
-
-        // Check token
-        if ($token != $passwordResetToken->token) 
-        {
-            return false;
-        }
-
-        //validate time to live
-        $now = new Carbon();
-        $tokenTime = new Carbon($passwordResetToken->created_at);
-        $diffHours = $now->diffInHours($tokenTime);
-        if ($diffHours > $ttlHours) 
-        { 
-            return false;
-        }
-
-        return true;
     }
 
     /**

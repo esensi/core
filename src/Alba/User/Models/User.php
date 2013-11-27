@@ -75,6 +75,13 @@ class User extends Ardent implements UserInterface {
     ];
 
     /**
+     * Enable soft deletes on model
+     *
+     * @var boolean
+     */
+    protected $softDelete = true;
+
+    /**
      * The attributes that can be full-text searched
      *
      * @var array

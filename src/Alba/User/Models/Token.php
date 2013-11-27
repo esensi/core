@@ -23,20 +23,6 @@ class Token extends Ardent {
     protected $table = 'tokens';
 
     /**
-     * Auto hydrate Ardent model based on input (new models)
-     *
-     * @var boolean
-     */
-    public $autoHydrateEntityFromInput = false;
-
-    /**
-     * Auto hydrate Ardent model based on input (existing models)
-     *
-     * @var boolean
-     */
-    public $forceEntityHydrationFromInput = false;
-
-    /**
      * Fields that can be filled
      *
      * @var boolean
@@ -56,6 +42,15 @@ class Token extends Ardent {
      * @var array
      */
     public $searchable = ['type'];
+
+    /**
+     * Relationships that Ardent should set up
+     * 
+     * @var array
+     */
+    public static $relationsData = [
+        'users' => [self::BELONGS_TO_MANY, 'Alba\User\Models\User'],
+    ];
 
     /**
      * The attribute rules that Ardent will validate against
@@ -109,7 +104,7 @@ class Token extends Ardent {
      */
     public function beforeSave()
     {
-        if ($this->created_at == null)
+        if ( is_null($this->created_at) )
         {
             $this->created_at = Carbon::now();
         }

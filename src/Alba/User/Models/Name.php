@@ -13,6 +13,13 @@ class Name extends Ardent {
     protected $table = 'user_names';
 
     /**
+     * The attributes that can be safely filled
+     *
+     * @var array
+     */
+    protected $fillable = ['title', 'first_name', 'middle_name', 'last_name', 'suffix'];
+
+    /**
      * The attribute rules that Ardent will validate against
      * 
      * @var array
@@ -23,45 +30,31 @@ class Name extends Ardent {
         'middle_name' => ['max:100'],
         'last_name' => ['required', 'max:100'],
         'suffix' => ['max:10'],
-        'user' => ['exists:users']
+        'user' => ['exists:users'],
     ];
 
     /**
-     * The attributes that can be safely filled
+     * Subset of $rules' keys for storing
      *
      * @var array
      */
-    protected $fillable = ['title', 'first_name', 'middle_name', 'last_name', 'suffix'];
+    public static $rulesForStoring = ['title', 'first_name', 'middle_name', 'last_name', 'suffix'];
 
     /**
-     * Subset of $rules' keys
+     * Subset of $rules' keys for updating
      *
      * @var array
      */
-    public static $rulesForNameOnly = ['title', 'first_name', 'middle_name', 'last_name', 'suffix'];
-
-    /**
-     * Auto hydrate Ardent model based on input (new models)
-     *
-     * @var boolean
-     */
-    public $autoHydrateEntityFromInput = false;
-
-    /**
-     * Auto hydrate Ardent model based on input (existing models)
-     *
-     * @var boolean
-     */
-    public $forceEntityHydrationFromInput = false;
+    public static $rulesForUpdating = ['title', 'first_name', 'middle_name', 'last_name', 'suffix'];
 
     /**
      * Relationships that Ardent should set up
      * 
      * @var array
      */
-    public static $relationsData = array(
-        'user'  => array(self::BELONGS_TO, 'Alba\User\Models\User'),
-    );
+    public static $relationsData = [
+        'user'  => [self::BELONGS_TO, 'Alba\User\Models\User'],
+    ];
 
     /**
      * Rules needed for storing
@@ -70,17 +63,37 @@ class Name extends Ardent {
      */
     public function getRulesForStoringAttribute()
     {
-        return self::$rules;
+        return array_only(self::$rules, self::$rulesForStoring);
     }
 
     /**
-     * Rules needed for the name only
+     * Rules needed for updating
      * 
      * @return array
      */
-    public function getRulesForNameOnlyAttribute()
+    public function getRulesForUpdatingAttribute()
     {
-        return array_only(self::$rules, self::$rulesForNameOnly);
+        return array_only(self::$rules, self::$rulesForUpdating);
+    }
+
+    /**
+     * Returns a string with the extended name of the user
+     * 
+     * @return string
+     */
+    public function getExtendedNameAttribute()
+    {
+        return $this->formatName('T F M L S');
+    }
+
+    /**
+     * Returns a string with the full name of the user
+     * 
+     * @return string
+     */
+    public function getFullNameAttribute()
+    {
+        return $this->formatName('F M L');
     }
 
     /**
@@ -120,25 +133,4 @@ class Name extends Ardent {
         
         return trim($str);
     }
-
-    /**
-     * Returns a string with the extended name of the user
-     * 
-     * @return string
-     */
-    public function getExtendedNameAttribute()
-    {
-        return $this->formatName('T F M L S');
-    }
-
-    /**
-     * Returns a string with the full name of the user
-     * 
-     * @return string
-     */
-    public function getFullNameAttribute()
-    {
-        return $this->formatName('F M L');
-    }
-
 }

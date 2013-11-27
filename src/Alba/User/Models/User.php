@@ -38,20 +38,6 @@ class User extends Ardent implements UserInterface {
     protected $with = ['name'];
 
     /**
-     * Auto hydrate Ardent model based on input (new models)
-     *
-     * @var boolean
-     */
-    public $autoHydrateEntityFromInput = false;
-
-    /**
-     * Auto hydrate Ardent model based on input (existing models)
-     *
-     * @var boolean
-     */
-    public $forceEntityHydrationFromInput = false;
-
-    /**
      * Attributes that Ardent should Hash
      *
      * @var array
@@ -84,7 +70,10 @@ class User extends Ardent implements UserInterface {
      *
      * @var array
      */
-    protected $fillable = ['email', 'password', 'active', 'blocked', 'password_confirmation', 'password_updated_at', 'activated_at', 'authenticated_at'];
+    protected $fillable = [
+        'email', 'password', 'active', 'blocked', 'password_confirmation',
+        'password_updated_at', 'activated_at', 'authenticated_at',
+    ];
 
     /**
      * The attributes that can be full-text searched
@@ -99,6 +88,16 @@ class User extends Ardent implements UserInterface {
      * @var array
      */
     public $defaultRoles = ['user'];
+
+    /**
+     * Relationships that Ardent should set up
+     * 
+     * @var array
+     */
+    public static $relationsData = [
+        'name' => [self::HAS_ONE, 'Alba\User\Models\Name'],
+        'tokens' => [self::BELONGS_TO_MANY, 'Alba\User\Models\Token'],
+    ];
 
     /**
      * The attribute rules that Ardent will validate against
@@ -255,33 +254,15 @@ class User extends Ardent implements UserInterface {
     }
 
     /**
-     * Many-to-Many relations with Role
-     * 
+     * Many-to-Many relations with Role.
+     * Do NOT remove this definition because it is needed to overwrite
+     * Entrust's implementation.
+     *
      * @return Illuminate\Database\Eloquent\Relationship
      */
     public function roles()
     {
         return $this->belongsToMany('Alba\User\Models\Role', 'assigned_roles', 'user_id', 'role_id');
-    }
-
-    /**
-     * One-To-One relations with Name
-     * 
-     * @return Illuminate\Database\Eloquent\Relationship
-     */
-    public function name()
-    {
-        return $this->hasOne('Alba\User\Models\Name');
-    }
-
-    /**
-     * Many-to-Many relations with Token
-     * 
-     * @return Illuminate\Database\Eloquent\Relationship
-     */
-    public function tokens()
-    {
-        return $this->belongsToMany('Alba\User\Models\Token');
     }
 
     /**

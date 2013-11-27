@@ -291,6 +291,16 @@ class UsersController extends Controller {
     }
 
     /**
+     * Show set password page for reset activation flow
+     *
+     * @return void
+     */
+    public function activatePassword($token)
+    {
+        $this->layout->content = View::make('alba::users.activate-password')->with('token', $token);
+    }
+
+    /**
      * Activate the user that bears the token.
      * Optionally it saves a new password too.
      * 
@@ -299,10 +309,18 @@ class UsersController extends Controller {
      */
     public function activate($token)
     {
+        // Activate the user with optional password
         $newPassword = Input::has('password') ? Input::only('password', 'password_confirmation') : null;
         $object = $this->resources['user']->activate($token, $newPassword);
 
-        return Redirect::route('users.show', ['id' => $id])
+        // Authenticate the user if not already logged in
+        if ( Auth::guest() )
+        {
+            Auth::login($object);
+        }
+
+        // Redirec to user profile
+        return Redirect::route('users.show', ['id' => $object->id])
             ->with('message', Lang::get('alba::user.success.activate'));
     }
 

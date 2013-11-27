@@ -142,7 +142,7 @@ class User extends Ardent implements UserInterface {
      * 
      * @var array
      */
-    public static $rulesForBlocking = ['block'];
+    public static $rulesForBlocking = ['blocked'];
 
     /**
      * The attribute rules used by savePassword()
@@ -195,6 +195,16 @@ class User extends Ardent implements UserInterface {
     public function getRulesForUpdatingPasswordAttribute()
     {
         return array_only(self::$rules, self::$rulesForUpdatingPassword);
+    }
+
+    /**
+     * Rules needed for blocking
+     * 
+     * @return array
+     */
+    public function getRulesForBlockingAttribute()
+    {
+        return array_only(self::$rules, self::$rulesForBlocking);
     }
 
     /**

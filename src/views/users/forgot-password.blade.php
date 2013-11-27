@@ -12,9 +12,7 @@
 			  		<hr>
 
 			    	{{ Form::open([ 'route' => ['users.reset-password'] ]) }}
-			    	@if( Session::has('error') )
-			    		<div class="alert alert-danger">{{ Session::get('message') }}</div>
-			    	@endif
+			    	@include('alba::core.errors')
                     <fieldset>
 			    	  	<div class="form-group">
 			    		    {{ Form::text('email', null, ['placeholder' => 'E-mail', 'class' => 'form-control']) }}

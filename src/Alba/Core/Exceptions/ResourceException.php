@@ -1,8 +1,10 @@
 <?php namespace Alba\Core\Exceptions;
 
 use \Exception;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Contracts\MessageProviderInterface;
 use Illuminate\Support\MessageBag;
 
 /**
@@ -35,7 +37,7 @@ class ResourceException extends Exception {
         if(is_null($message))
         {
             $message = $messageBag;
-            if(!is_string($message))
+            if($messageBag instanceof MessageProviderInterface)
             {
                 $message = $messageBag->__toString();
             }
@@ -47,7 +49,7 @@ class ResourceException extends Exception {
     /**
      * Returns the messageBag property
      *
-     * @return mixed Illuminate\Support\MessageBag
+     * @return mixed Illuminate\Support\Contracts\MessageProviderInterface
      */
     public function getMessageBag()
     {
@@ -55,16 +57,33 @@ class ResourceException extends Exception {
     }
 
     /**
+     * Return an array of errors from the message bag
+     *
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->messageBag instanceof MessageProviderInterface ? $this->messageBag->all() : array();
+    }
+
+    /**
      * Handles exceptions with redirect
+     *
+     * There seems to be a bug in Laravel that makes it difficult to use
+     * Redirect with flash data which leads to persistent error messages.
+     * Capturing the $redirect and then manually calling Session::save()
+     * seems to get around this bug.
      *
      * @return Redirect
      */
     public function handleWithRedirect()
     {
-        Session::flash('error', true);
-        Session::flash('message', $this->getMessage());
-        Session::flash('errors', $this->getMessageBag()->all());
-        return Redirect::back()->withInput();
+        $redirect = Redirect::back()
+            ->with('message', $this->getMessage())
+            ->withErrors($this->getMessageBag())
+            ->withInput();
+        Session::save();
+        return $redirect;
     }
 
     /**
@@ -74,10 +93,9 @@ class ResourceException extends Exception {
      */
     public function handleForApi()
     {
-        $error = true;
         $message = $this->getMessage();
-        $errors = $this->getMessageBag()->all();
-        $args = compact('error', 'message', 'errors');
+        $errors = $this->getErrors();
+        $args = compact('message', 'errors');
         return $args;
     }
 }

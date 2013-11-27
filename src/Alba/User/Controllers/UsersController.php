@@ -198,11 +198,19 @@ class UsersController extends Controller {
     /**
      * Send user password reset URL and show confirmation page or redirect to forgot password page with errors
      *
+     * @param integer $id of User
      * @return void
      */
-    public function resetPassword()
+    public function resetPassword($id = null)
     {
-        $email = Input::get('email');
+        // Prefer to use $id over email for admins
+        if ($id) // @todo restrict to admin privileges
+        {
+            $object = $this->resources['user']->show($id);
+        }
+        
+        // Send activation email to user
+        $email = ($id) ? $object->email : Input::get('email');
         $object = $this->resources['user']->resetPassword($email);
         $this->layout->content = View::make('alba::users.reset-password')->with('user', $object);
     }
@@ -210,7 +218,7 @@ class UsersController extends Controller {
     /**
      * Show set new password page
      *
-     * @param string $token
+     * @param string $token from resetPassword
      * @return void
      */
     public function newPassword($token)
@@ -221,12 +229,12 @@ class UsersController extends Controller {
     /**
      * Save user password and redirect user to profile page
      *
+     * @param string $token from newPassword
      * @return Redirect
      */
-    public function setPassword()
+    public function setPassword($token)
     {
         $newPassword = Input::only('password', 'password_confirmation');
-        $token = Input::get('token');
         $object = $this->resources['user']->setPassword($token, $newPassword);
 
         return Redirect::route('users.show', ['id' => $object->id])
@@ -268,6 +276,7 @@ class UsersController extends Controller {
     /**
      * Show set password page for reset activation flow
      *
+     * @param string $token from resetActivation
      * @return void
      */
     public function activatePassword($token)
@@ -279,7 +288,7 @@ class UsersController extends Controller {
      * Activate the user that bears the token.
      * Optionally it saves a new password too.
      * 
-     * @param string $token
+     * @param string $token from activate
      * @return Redirect
      */
     public function activate($token)

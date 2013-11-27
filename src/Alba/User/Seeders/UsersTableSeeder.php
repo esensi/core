@@ -32,6 +32,7 @@ class UsersTableSeeder extends Seeder {
                 'user' => [            
                     "email" => "admin@app.dev",
                     "password" => 'password',
+                    //"password_confirmation" => 'password',
                     "blocked" => false,
                     "active" => true,
                     'activated_at' => new Carbon(), // @todo this should be a beforeSave hook
@@ -51,6 +52,7 @@ class UsersTableSeeder extends Seeder {
                 'user' => [            
                     "email" => "user@app.dev",
                     "password" => 'password',
+                    //"password_confirmation" => 'password',
                     "blocked" => false,
                     "active" => true, 
                     'activated_at' => new Carbon(), // @todo this should be a beforeSave hook
@@ -74,8 +76,11 @@ class UsersTableSeeder extends Seeder {
             {
                 // Save new user
                 $user = new User;
-                $user->fill($arr['user']);
-                $this->saveOrFail($user);
+                //$user->fill($arr['user']);
+                $user->fill(array_only($arr['user'], $user->getFillable()));
+                //echo print_r("Rules: " . $user->rulesForSeeding, true);
+                //@fixme: here we should be able to call $user->rulesForSeeding, but I don't know why is not working
+                $this->saveOrFail($user, ['email' => ['required', 'email', 'max:128', 'unique:users']]);
 
                 // Assign role to user
                 if($arr['role'])
@@ -86,7 +91,8 @@ class UsersTableSeeder extends Seeder {
 
                 // Save new name to user
                 $name = new Name();
-                $name->fill($arr['name']);
+                //$name->fill($arr['name']);
+                $name->fill(array_only($arr['name'], $name->getFillable()));
                 $name->user()->associate($user);
                 $this->saveOrFail($name);
             }

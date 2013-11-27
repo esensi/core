@@ -39,11 +39,22 @@ class Seeder extends LaravelSeeder {
      * Save model or fail by showing errors
      *
      * @param Eloquent $model
+     * @param  array $rules Optional rules for save method
      * @return void
      */
-    public function saveOrFail(Eloquent $model)
+    public function saveOrFail(Eloquent $model, $rules = null)
     {
-	    if(!$model->save())
+
+    	if ($rules == null)
+    	{
+    		$res = $model->save();
+    	}
+    	else
+    	{
+    		$res = $model->save($rules);
+    	}
+
+	    if(!$res)
 	    {
 	        $class = get_class($model);
 	        $errors = implode("\n- ", $model->errors()->all());
@@ -51,5 +62,7 @@ class Seeder extends LaravelSeeder {
 	        $this->command->line('- '.$errors);
 	        exit();
 		}
+
 	}
+	
 }

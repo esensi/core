@@ -110,6 +110,13 @@ class User extends Ardent implements UserInterface {
     ];
 
     /**
+     * The attribute rules used by seeder
+     * 
+     * @var array
+     */
+    public static $rulesForSeeding = ['email'];
+
+    /**
      * The attribute rules used by store()
      * 
      * @var array

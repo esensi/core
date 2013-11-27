@@ -1,23 +1,25 @@
-<?php
+<?php namespace Alba\User\Models;
 
-namespace Alba\User\Models;
-
-use Ardent;
 use Carbon\Carbon;
 use Illuminate\Auth\UserInterface;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
+use LaravelBook\Ardent\Ardent;
 use Zizaco\Entrust\HasRole;
-
-use Alba\Core\Utils\StringUtils;
+use Alba\User\Models\Token;
 
 /**
- * User model class
+ * Alba\User model
  *
  * @author diego <diego@emersonmedia.com>
+ * @author daniel <daniel@bexarcreative.com>
+ * @see Alba\User\Models\Name
+ * @see Alba\User\Models\Role
+ * @see Alba\User\Models\Token
  */
 class User extends Ardent implements UserInterface {
 
+    /**
+     * Include HasRole trait from Entrust
+     */
     use HasRole;
 
     /**
@@ -28,54 +30,215 @@ class User extends Ardent implements UserInterface {
     protected $table = 'users';
 
     /**
-     * The attribute rules that Ardent will validate against
+     * The relationships that should be eager loaded with each query
      *
      * @var array
      */
-    public static $rules = [
-        'email' => 'required|email|max:128|unique:users', //IMPORTANT: keep unique rule at the end
-    ];
+    protected $with = ['name'];
 
     /**
-     * Aditional ruleset for using as needed
-     * 
+     * Attributes that Ardent should Hash
+     *
      * @var array
      */
-    public static $passwordRules = [
-        'password' => 'required|alpha_num|between:4,256|confirmed',
-        'password_confirmation' => 'required|alpha_num|between:4,256'
-    ];
+    public static $passwordAttributes = ['password'];
 
     /**
-     * Auto hydrate Ardent model based on input (new models)
+     * Ardent should automatically hash the $passwordAttributes
      *
      * @var boolean
      */
-    public $autoHydrateEntityFromInput = false;
+    public $autoHashPasswordAttributes = true;
 
     /**
-     * Auto hydrate Ardent model based on input (existing models)
+     * Removes the _confirmation type fields
      *
      * @var boolean
      */
-    public $forceEntityHydrationFromInput = false;
-
+    public $autoPurgeRedundantAttributes = true;
 
     /**
      * The attributes excluded from the model's JSON form.
      *
      * @var array
      */
-    protected $hidden = array('password');
+    protected $hidden = ['password'];
 
-    protected $fillable = array('email', 'title', 'first_name', 'middle_name', 'last_name', 'suffix');
+    /**
+     * The attributes that can be safely filled
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'email', 'password', 'active', 'blocked', 'password_confirmation',
+        'password_updated_at', 'activated_at', 'authenticated_at',
+    ];
+
+    /**
+     * The attributes that can be full-text searched
+     *
+     * @var array
+     */
+    public $searchable = ['email'];
+
+    /**
+     * Default roles to set to new users
+     *
+     * @var array
+     */
+    public $defaultRoles = ['user'];
+
+    /**
+     * Relationships that Ardent should set up
+     * 
+     * @var array
+     */
+    public static $relationsData = [
+        'name' => [self::HAS_ONE, 'Alba\User\Models\Name'],
+        'tokens' => [self::BELONGS_TO_MANY, 'Alba\User\Models\Token'],
+    ];
+
+    /**
+     * The attribute rules that Ardent will validate against
+     * 
+     * @var array
+     */
+    public static $rules = [
+        'email' => ['required', 'email', 'max:128', 'unique:users'],
+        'password' => ['required', 'alpha_num', 'between:4,256', 'confirmed'],
+        'password_confirmation' => ['required_with:password', 'alpha_num', 'between:4,256'],
+        'active' => ['in:true,false,1,0'],
+        'blocked' => ['in:true,false,1,0'],
+        'activated_at' => ['date'],
+        'authenticated_at' => ['date'],
+        'password_updated_at' => ['date'],
+    ];
+
+    /**
+     * The attribute rules used by seeder
+     * 
+     * @var array
+     */
+    public static $rulesForSeeding = ['email'];
+
+    /**
+     * The attribute rules used by store()
+     * 
+     * @var array
+     */
+    public static $rulesForStoring = ['email', 'password', 'password_confirmation'];
+
+    /**
+     * The attribute rules used by update()
+     * 
+     * @var array
+     */
+    public static $rulesForUpdating = ['email', 'password', 'password_confirmation'];
+
+    /**
+     * The attribute rules used by activate()
+     * 
+     * @var array
+     */
+    public static $rulesForActivating = ['active', 'activated_at'];
+
+    /**
+     * The attribute rules used by block()
+     * 
+     * @var array
+     */
+    public static $rulesForBlocking = ['blocked'];
+
+    /**
+     * The attribute rules used by savePassword()
+     * 
+     * @var array
+     */
+    public static $rulesForUpdatingPassword = ['password', 'password_confirmation', 'password_updated_at'];
+
+    /**
+     * Rules needed for seeding
+     * 
+     * @return array
+     */    
+    public function getRulesForSeedingAttribute()
+    {
+        return array_only(self::$rules, self::$rulesForSeeding);
+    }
+
+    /**
+     * Rules needed for storing
+     * 
+     * @return array
+     */    
+    public function getRulesForStoringAttribute()
+    {
+        return array_only(self::$rules, self::$rulesForStoring);
+    }
+
+    /**
+     * Rules needed for updating
+     * 
+     * @return array
+     */
+    public function getRulesForUpdatingAttribute()
+    {
+        $rules = array_only(self::$rules, self::$rulesForStoring);
+
+        // add exception for the unique constraint
+        $key = array_search('unique:users', $rules['email']);
+        $rules['email'][$key] = 'unique:users,email,' . $this->id;
+
+        return $rules;
+    }
+
+    /**
+     * Rules needed for activating
+     * 
+     * @return array
+     */
+    public function getRulesForActivatingAttribute()
+    {
+        return array_only(self::$rules, self::$rulesForActivating);
+    }
+
+    /**
+     * Rules needed for updating password
+     * 
+     * @return array
+     */
+    public function getRulesForUpdatingPasswordAttribute()
+    {
+        return array_only(self::$rules, self::$rulesForUpdatingPassword);
+    }
+
+    /**
+     * Rules needed for blocking
+     * 
+     * @return array
+     */
+    public function getRulesForBlockingAttribute()
+    {
+        return array_only(self::$rules, self::$rulesForBlocking);
+    }
+
+    /**
+     * Returns a string with the full name of the user
+     * 
+     * @return string
+     */
+    public function getFullNameAttribute()
+    {
+        return $this->name->fullName;
+    }
 
     /**
      * Get the unique identifier for the user.
      *
      * @return mixed
      */
-    public function getAuthIdentifier() {
+    public function getAuthIdentifier()
+    {
         return $this->getKey();
     }
 
@@ -84,437 +247,324 @@ class User extends Ardent implements UserInterface {
      *
      * @return string
      */
-    public function getAuthPassword() {
+    public function getAuthPassword()
+    {
         return $this->password;
     }
 
     /**
-     * Many-to-Many relations with Role
+     * Many-to-Many relations with Role.
+     * Do NOT remove this definition because it is needed to overwrite
+     * Entrust's implementation.
+     *
+     * @return Illuminate\Database\Eloquent\Relationship
      */
-    public function roles() {
-        return $this->belongsToMany('Alba\User\Models\Role', 'assigned_roles');
+    public function roles()
+    {
+        return $this->belongsToMany('Alba\User\Models\Role', 'assigned_roles', 'user_id', 'role_id');
     }
 
     /**
-     * One-to-One reletion with Name
-     * @return Name
+     * Returns the user who has the activation token indicated
+     *
+     * @param  Illuminate\Database\Query\Builder $query
+     * @param string $token
+     * @return Illuminate\Database\Query\Builder
      */
-    public function name() {
-        return $this->hasOne('Alba\User\Models\Name');
+    public function scopeWhereActivationToken($query, $token)
+    {
+        return $query
+            ->select('users.*') //this should be here, so it gets the correct id field
+            ->join('token_user', 'users.id', '=', 'token_user.user_id')
+            ->join('tokens', 'tokens.id', '=', 'token_user.token_id')
+            ->where('tokens.type', '=', Token::TYPE_ACTIVATION)
+            ->where('tokens.token', '=', $token);
     }
 
-
     /**
-     * Returns the validation rules for the password
-     * @return array
+     * Returns the user who has the password reset token indicated
+     *
+     * @param Illuminate\Database\Query\Builder $query
+     * @param string $token
+     * @param boolean $isExpired
+     * @return Illuminate\Database\Query\Builder
      */
-    public function getPasswordRules() {
-        return self::$passwordRules;
+    public function scopeWherePasswordResetToken($query, $token, $isExpired = null)
+    {
+        // Get the user with token
+        $query->select('users.*')
+            ->join('token_user', 'users.id', '=', 'token_user.user_id')
+            ->join('tokens', 'tokens.id', '=', 'token_user.token_id')
+            ->where('tokens.type', '=', Token::TYPE_PASSWORD_RESET)
+            ->where('tokens.token', '=', $token);
+
+        // Return only expired tokens
+        if ( $isExpired === true )
+        {
+            $query->where('tokens.expires_at', '<', Carbon::now());
+        }
+
+        // Return only valid tokens
+        elseif ( $isExpired === false)
+        {
+            $query->where('tokens.expires_at', '>=', Carbon::now());
+        }
+
+        return $query;
+
     }
 
+    /**
+     * Builds a query scope to return users of a certain role
+     *
+     * @param Illuminate\Database\Query\Builder $query
+     * @param string|array $roles ids of role
+     * @return Illuminate\Database\Query\Builder
+     */
+    public function scopeOfRole($query, $roles)
+    {
+        // Convert roles string to array
+        if ( is_string($roles) )
+            $roles = explode(',', $roles);
+
+        // Query the assign_roles pivot table for matching roles
+        return $query->select(['users.*', 'assigned_roles.role_id'])
+            ->join('assigned_roles', 'users.id', '=', 'assigned_roles.user_id')
+            ->whereIn('assigned_roles.role_id', $roles);
+    }
 
     /**
-     * Returns a string with the full name of the user
+     * Builds a query scope to return users by first or last name
+     *
+     * @param Illuminate\Database\Query\Builder $query
+     * @param string|array $names
+     * @return Illuminate\Database\Query\Builder
+     */
+    public function scopeByName($query, $names)
+    {
+        // Convert roles string to array
+        if ( is_string($names) )
+            $names = explode(',', $names);
+
+        // Query the names table for matching names
+        return $query->select(['users.*', 'user_names.first_name', 'user_names.last_name'])
+            ->join('user_names', 'users.id', '=', 'user_names.user_id')
+            ->where(function($query) use ($names)
+                {
+                    // Loop over each name to find matches for both first and last name
+                    foreach($names as $name)
+                    {
+                        $query->orWhere('user_names.first_name', 'LIKE', '%'.$name.'%')
+                            ->orWhere('user_names.last_name', 'LIKE', '%'.$name.'%');
+                    }
+                });
+    }
+
+    /** 
+     * Get a token by type
      * 
-     * @param  string $format Format pattern. Added for future use.
-     * @return string         Full name of the user
+     * @param string $type
+     * @return Token
      */
-    public function getFullName($format = null) {
-        return $this->name->getFullName($format);
+    public function getTypeToken($type)
+    {
+        return $this->tokens()
+            ->whereType($type)
+            ->orderBy('created_at', 'desc')
+            ->first();
     }
 
-
-    /**
-     * Checks if this user is allowedto login. Currently must be active 
-     * and not blocked to be able to login
+    /** 
+     * Returns the current activation token of the user
      * 
-     * @return boolean True if it can login, false otherwise.
+     * @return Token
      */
-    public function isLoginAllowed() {
-        if (!$this->active) {
-            return false;
-        }
-        if ($this->password === null) {
-            return false;
-        }
-        if ($this->blocked) {
-            return false;
-        }        
-        return true;
+    public function getActivationTokenAttribute()
+    {
+        return $this->getTypeToken(Token::TYPE_ACTIVATION);
     }
 
-
-    /**
-     * Checks if activation is allowed. Currently it must be not blocked to do so.
-     * 
-     * @return boolean True if it can be active, false otherwise.
+    /** 
+     * Returns the current password reset token of the user
+     *
+     * @return Token
      */
-    public function isRequestActivationAllowed() {
-        if ($this->active) {         
-            return false;
-        }
-        if ($this->blocked) {
-            return false;
-        } 
-        return true;
+    public function getPasswordResetTokenAttribute()
+    {
+        return $this->getTypeToken(Token::TYPE_PASSWORD_RESET);
     }
-
-
-    /**
-     * Checks if the password can be reseted
-     * 
-     * @return boolean True if the password can be reseted, false otherwise.
-     */
-    public function isRequestPasswordResetAllowed() {
-        if ($this->blocked) {
-            return false;
-        }
-        if (!$this->active) {
-            return false;
-        }
-        return true;
-    }
-
 
     /**
      * Returns the message describing the login allowed status
      * 
-     * @return string The message
+     * @return string
      */
-    public function getLoginAllowedMessage() {
-        if (!$this->active) {
-            return "The user account is not active yet!";
+    public function getLoginStatusAttribute()
+    {
+        if (!$this->active)
+        {
+            return "User cannot login because the user is not active!";
         }
-        if ($this->password === null) {
-            return 'The user has no password! The account has not been properly activated!';
+        if (is_null($this->password))
+        {
+            return 'User cannot login because the user has no password!';
         }
-        if ($this->blocked) {
-            return "The user account is blocked!";
+        if ($this->blocked)
+        {
+            return "User cannot login because the user is blocked!";
         }
         return null;
     }
 
-
-    /**
-     * Performs the necessary actions and updates after a successful login. Currently:
-     * - Updates the last login timestamp
-     */
-    public function doLoginActions() {
-        Log::info("Updating last login date...");
-        $this->authenticated_at = new Carbon();
-        if (!$this->saveUpdate()) {
-            Log::warning("Couldn't update last login date!");
-        }
-    }
-
-
     /**
      * Returns a string representing the status of password
-     * @return string Password status
+     *
+     * @return string
      */
-    public function getPasswordStatus() {
-        if ($this->password == null) {
-            return "Password Not Set";
-        } else {
-            return "Password Set";
-        }
+    public function getPasswordStatusAttribute()
+    {
+        return is_null($this->password) ? "Password not set" : "Password set";
     }
-
 
     /**
      * Returns a string representing the status of account activation
-     * @return string Activation status
+     *
+     * @return string
      */
-    public function getActiveStatus() {
-        if ($this->active) {
-            return "Activated";
-        } else {
-            return "Deactivated";
-        }
+    public function getActiveStatusAttribute()
+    {
+        return $this->active ? "Activated" : "Deactivated";
     }    
-
 
     /**
      * Returns a string representing the blocked status of this account
-     * @return [string  Blocked status
+     *
+     * @return string
      */
-    public function getBlockedStatus() {
-        if ($this->blocked) {
-            return "Blocked (Can't login)";
-        } else {
-            return "Not blocked (Can login)";
-        }
+    public function getBlockedStatusAttribute()
+    {
+        return ($this->blocked) ? "Blocked (Can not login)" : "Not blocked (Can login)";
     }
 
-
     /**
-     * Returns the quantity of days since the last password update
+     * Returns the numbers of days since the last password update
      *
-     * @return integer # days since last pass update
+     * @return integer
      */
-    public function daysSinceLastPassUpdate() {
-        $date = new Carbon($this->last_pass_update_at);
-        $now = new Carbon();
+    public function getDaysSinceLastPasswordUpdateAttribute()
+    {
+        $date = new Carbon($this->password_updated_at);
+        $now = Carbon::now();
         return $date->diffInDays($now);
     }
 
-
     /**
-     * Returns the validation rules to use for an update.
-     * @return array Validation rules
-     */
-    public function getRulesForUpdate() {
-        //clone the rules array
-        $rules = array_merge(array(), self::$rules);
-        $rules['email'] .= ',email,' . $this->id;
-        return $rules;
-    }
-
-
-    /**
-     * Validates the current User instance, but skiping it in the unique constraint
-     * @return boolean Whether validation passes or not
-     */
-    public function validateUpdate() {
-        return $this->validate($this->getRulesForUpdate());
-    }
-
-
-    /**
-     * Saves the User when updating, taking into cosideration to use the
-     * update rules
-     * @return boolean Wheter it updated successfully or not
-     */
-    public function saveUpdate() {
-        return $this->save($this->getRulesForUpdate());
-    }
-
-
-    /**
-     * Blocks the current user
-     * @return void
-     */
-    public function block() {
-        //Log::info('block() - Current blocked value: ' . $this->blocked);
-        if (!$this->blocked) {
-            //Log::info('Blocking!');
-            $this->blocked = true;
-            $this->saveUpdate();
-        }
-    }
-
-
-    /**
-     * Unblocks the current user
-     * @return void
-     */
-    public function unblock() {
-        //Log::info('unblock() - Current blocked value: ' . $this->blocked);
-        if ($this->blocked) {
-            //Log::info('Unblocking!');
-            $this->blocked = false;
-            $this->saveUpdate();
-        }
-    }
-
-
-    /**
-     * Vaidates if the current user can be activated with the
-     * data provided. 
-     * It validates that the token provided matches the current one, and also 
-     * that the hours passed since the generation of the actual token is less 
-     * than $ttlHours.
+     * Checks if this user is allowed to login. Currently must be active 
+     * and not blocked to be able to login
      * 
-     * @param string $token The token that must be matched against the actual in the user's records
-     * @param int $ttlHours Time to live in hours of the current token.
-     * @return boolean True if the user can be activated, false otherwise.
+     * @return boolean
      */
-    public function isActivateAllowed($token, $ttlHours = 24) {
-
-        if (!$this->isRequestActivationAllowed()) {
-            return false;
-        }
-
-        //check the token
-        if ($token !== $this->activation_token) {
-            //Log::info('Token is different: ' . $token . ' <> ' . $this->activation_token);
-            return false;
-        }
-
-        //validate time to live
-        $now = new Carbon();
-        $tokenTime = new Carbon($this->activation_token_created_at);
-        $diffHours = $now->diffInHours($tokenTime);
-        if ($diffHours > $ttlHours) {
-            //Log::info('Time to live expired! Diff: ' . $diffHours);
-            return false;
-        }
-
-        return true;
-
+    public function isLoginAllowed()
+    {
+        return $this->active && $this->password && !$this->blocked;
     }
 
-
     /**
-     * Validates if the password reset is allowed, based on token and time to live
+     * Checks if activation is allowed. Currently it must be not blocked to do so.
      * 
-     * @param string $token Token to validate
-     * @param string $email The email to check agains the actual login email of the user
-     * @param integer $ttlHours time to live to check agains the create_at date
-     * @return boolean True if can reset password
+     * @return boolean
      */
-    public function isPasswordResetAllowed($token, $email, $ttlHours = 24) {
-
-        if (!$this->isRequestPasswordResetAllowed()) {
-            return false;
-        }
-
-        //check email
-        if ($email !== $this->email) {
-            return false;
-        }
-
-        //check token
-        if ($token !== $this->password_reset_token) {
-            return false;
-        }
-
-        //validate time to live
-        $now = new Carbon();
-        $tokenTime = new Carbon($this->password_reset_token_created_at);
-        $diffHours = $now->diffInHours($tokenTime);
-        if ($diffHours > $ttlHours) {            
-            return false;
-        }
-
-        return true;
-
+    public function isActivationAllowed()
+    {
+        return !$this->active && !$this->blocked;
     }
 
-
     /**
-     * Validates the given $password against the User password rules
+     * Checks if the password can be reset
      * 
-     * @param string $password Plain text password to validate
-     * @param string $passwordConfirmation Password confirmation. If not passed, it is assumed is equal to $password.
-     * @return boolean True if the password is ok.
+     * @return boolean
      */
-    /*public function validatePassword($password, $passwordConfirmation = null) {
-
-        if ($passwordConfirmation === null) {
-            $passwordConfirmation = $password;
-        }
-
-        $this->
-
-        return $this->validate(self::$passwordRules);
-
-    }*/
-
+    public function isPasswordResetAllowed()
+    {
+        return $this->active && !$this->blocked;
+    }
 
     /**
-     * Activates the user. Must provide the activation token and a new password.
-     * It validates the activation first.
-     * The password is Hashed prior to set it to the user.
+     * Activates the user
      *
-     * @param string $token The token that must be matched against the actual in the user's records
-     * @param string $newPassword The password in plain text to set to the user
-     * @param int $ttlHours Time to live in hours of the current token.
-     * @return boolean True if the user has been activated, false otherwise.
+     * @return boolean
      */
-    public function activate($token, $newPassword, $ttlHours = 24) {
-
-        //validate activation
-        if (!$this->isActivateAllowed($token, $ttlHours)) {
-            return false;
-        }
-
-        //TODO: validate password when is decided how to handle it
-        /*if (!$this->validatePassword($newPassword)) {
-            return false;
-        }*/
-
-        //everything ok, activate account:        
-        $this->active = true;
-        $this->activated_at = new Carbon();
-        $this->activation_token = null;
-        $this->activation_token_created_at = null;
-        $this->password = Hash::make($newPassword);
-        $this->password_updated_at = new Carbon();
-        $this->saveUpdate();
-        
-        return true;
-
+    public function activate()
+    {
+        return $this->setActive(true);
     }
-
 
     /**
      * Deactivates the user
-     * @return void
-     */
-    public function deactivate() {
-        if ($this->active) {
-            $this->active = false;
-            $this->activated_at = new Carbon();
-            $this->saveUpdate();
-        }
-    }
-
-
-    /**
-     * Generates a new activation token, saving it with a new timestamp.
-     * 
-     * @return string Activation token
-     */
-    public function generateActivationToken() {
-        $token = StringUtils::generateGuid(false);
-        $this->activation_token = $token;
-        $this->activation_token_created_at = new Carbon();
-        $this->saveUpdate();
-        return $token;
-    }
-
-
-    /**
-     * Generates a new password reset token, saving it with a new timestamp
-     * 
-     * @return string Password reset token
-     */
-    public function generatePasswordResetToken() {
-        $token = StringUtils::generateGuid(false);
-        $this->password_reset_token = $token;
-        $this->password_reset_token_created_at = new Carbon();
-        $this->saveUpdate();
-        return $token;
-    }
-
-
-    /**
-     * It changes the password of the user to the one indicated.
-     * It hashes the password, updates the timestamp and saves the
-     * info in the user record.
      *
-     * @param string $token The token to validate against the reset password token
-     * @param string $email the email to validate agains the current one
-     * @param string $newPlainPassword New password to hash and set for this user
-     * @param int $ttlHours Time to live in hours to validate against the timestamp
-     * @return boolean True if the password was set corretly, false otherwise
+     * @return boolean
      */
-    public function resetPassword($token, $email, $newPlainPassword, $ttlHours = 24) {
+    public function deactivate()
+    {
+        return $this->setActive(false);
+    }
 
-        //validate if reset is allowed
-        if (!$this->isPasswordResetAllowed($token, $email, $ttlHours)) {
-            return false;
-        }
+    /**
+     * Save active status
+     *
+     * @param boolean $active status
+     * @return boolean
+     */
+    public function setActive($active = true)
+    {
+        $this->active = $active;
+        $this->activated_at = Carbon::now();
+        return $this->save($this->rulesForActivating);
+    }
 
-        $this->password = Hash::make($newPlainPassword);
-        $this->last_pass_update_at = new Carbon();
-        $this->password_reset_token = null;
-        $this->password_reset_token_created_at = null;
-        $this->saveUpdate();
+    /**
+     * Blocks the user
+     *
+     * @return boolean
+     */
+    public function block()
+    {
+        return $this->setBlocked(true);
+    }
 
-        return true;
+    /**
+     * Unblocks the user
+     *
+     * @return boolean
+     */
+    public function unblock()
+    {   
+        return $this->setBlocked(false);
+    }
 
+    /**
+     * Save blocked status
+     *
+     * @param boolean $blocked status
+     * @return boolean
+     */
+    public function setBlocked($blocked = true)
+    {
+        $this->blocked = $blocked;
+        return $this->save($this->rulesForBlocking);
+    }
+
+    /**
+     * Saves the model with a new password.
+     *
+     * @param array $newPassword
+     * @return boolean
+     */
+    public function savePassword($newPassword)
+    {
+        $this->fill($newPassword);
+        $this->password_updated_at = Carbon::now();
+        return $this->save($this->rulesForUpdatingPassword);
     }
 
 }

@@ -1,15 +1,16 @@
-<?php
+<?php namespace Alba\User\Seeders;
 
-namespace Alba\User\Seeders;
-
-use Alba\Core\Seeders\CoreSeeder;
-
+use Alba\Core\Seeders\Seeder;
 use Alba\User\Models\Permission;
-
 use Illuminate\Support\Facades\DB;
 
-
-class PermissionsTableSeeder extends CoreSeeder {
+/**
+ * Seeder for Permissions
+ *
+ * @author diego <diego@emersonmedia.com>
+ * @author daniel <daniel@bexarcreative.com>
+ */
+class PermissionsTableSeeder extends Seeder {
 
     public function run() {
 
@@ -36,9 +37,7 @@ class PermissionsTableSeeder extends CoreSeeder {
                 $this->saveOrFail($permission);
             }
         });
-
         
-
         $this->afterRun();
 
     }

@@ -1,16 +1,17 @@
-<?php
+<?php namespace Alba\User\Seeders;
 
-namespace Alba\User\Seeders;
-
-use Alba\Core\Seeders\CoreSeeder;
-
+use Illuminate\Support\Facades\DB;
+use Alba\Core\Seeders\Seeder;
 use Alba\User\Models\Permission;
 use Alba\User\Models\Role;
 
-use Illuminate\Support\Facades\DB;
-
-
-class RolesTableSeeder extends CoreSeeder {
+/**
+ * Seeder for Roles
+ *
+ * @author diego <diego@emersonmedia.com>
+ * @author daniel <daniel@bexarcreative.com>
+ */
+class RolesTableSeeder extends Seeder {
 
     public function run() {
 

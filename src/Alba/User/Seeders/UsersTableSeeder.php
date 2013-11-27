@@ -1,20 +1,19 @@
-<?php
-
-namespace Alba\User\Seeders;
-
-use Alba\Core\Seeders\CoreSeeder;
+<?php namespace Alba\User\Seeders;
 
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\DB;
+use Alba\Core\Seeders\Seeder;
 use Alba\User\Models\Name;
 use Alba\User\Models\Role;
 use Alba\User\Models\User;
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-
-class UsersTableSeeder extends CoreSeeder {
-    
+/**
+ * Seeder for Users and Names
+ *
+ * @author diego <diego@emersonmedia.com>
+ * @author daniel <daniel@bexarcreative.com>
+ */
+class UsersTableSeeder extends Seeder {
 
     public function run() {
 
@@ -37,11 +36,12 @@ class UsersTableSeeder extends CoreSeeder {
             [
                 'user' => [            
                     "email" => "admin@app.dev",
-                    "password" => Hash::make("password"), // @todo this should be an Ardent secure field
+                    "password" => 'password',
+                    "password_confirmation" => 'password',
                     "blocked" => false,
                     "active" => true,
-                    'activated_at' => new Carbon(), // @todo this should be a beforeSave hook
-                    'password_updated_at' => new Carbon(), // @todo this should be a beforeSave hook
+                    'activated_at' => Carbon::now(),
+                    'password_updated_at' => Carbon::now(),
                 ],
                 'name' => [
                     'title' => 'Mr.',
@@ -56,11 +56,12 @@ class UsersTableSeeder extends CoreSeeder {
             [
                 'user' => [            
                     "email" => "user@app.dev",
-                    "password" => Hash::make("password"), // @todo this should be an Ardent secure field
+                    "password" => 'password',
+                    "password_confirmation" => 'password',
                     "blocked" => false,
                     "active" => true, 
-                    'activated_at' => new Carbon(), // @todo this should be a beforeSave hook
-                    'password_updated_at' => new Carbon(), // @todo this should be a beforeSave hook
+                    'activated_at' => Carbon::now(),
+                    'password_updated_at' => Carbon::now(),
                 ],
                 'name' => [
                     'title' => 'Mr.',
@@ -73,15 +74,14 @@ class UsersTableSeeder extends CoreSeeder {
         ];
         
         // Iterate over users saving each to database
-        // @note consider user Db::transaction() here to improve efficiency
         DB::transaction(function() use ($users)
         {
             foreach($users as $arr)
             {
                 // Save new user
                 $user = new User;
-                $user->fill($arr['user']);
-                $this->saveOrFail($user);
+                $user->fill(array_only($arr['user'], $user->getFillable()));
+                $this->saveOrFail($user, $user->rulesForSeeding);
 
                 // Assign role to user
                 if($arr['role'])
@@ -92,7 +92,7 @@ class UsersTableSeeder extends CoreSeeder {
 
                 // Save new name to user
                 $name = new Name();
-                $name->fill($arr['name']);
+                $name->fill(array_only($arr['name'], $name->getFillable()));
                 $name->user()->associate($user);
                 $this->saveOrFail($name);
             }

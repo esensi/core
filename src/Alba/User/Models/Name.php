@@ -3,6 +3,13 @@
 use LaravelBook\Ardent\Ardent;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Alba\Name model
+ *
+ * @author diego <diego@emersonmedia.com>
+ * @author daniel <daniel@bexarcreative.com>
+ * @see Alba\User\Models\User
+ */
 class Name extends Ardent {
 
     /**

@@ -1,9 +1,14 @@
-<?php
+<?php namespace Alba\User;
 
-namespace Alba\User;
-
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * Service provider for Alba\User module
+ *
+ * @author diego <diego@emersonmedia.com>, daniel <daniel@bexarcreative.com>
+ */
 class UserServiceProvider extends ServiceProvider {
 
     /**
@@ -18,8 +23,9 @@ class UserServiceProvider extends ServiceProvider {
     *
     * @return void
     */
-    public function register() {
-        //$this->app->singleton('Alba\User\Repositories\Contracts\UserRepositoryInterface', 'Alba\User\Repositories\DbUserRepository');
+    public function register()
+    {
+
     }
 
     /**

@@ -5,6 +5,12 @@ use Alba\Core\Seeders\Seeder;
 use Alba\User\Models\Permission;
 use Alba\User\Models\Role;
 
+/**
+ * Seeder for Roles
+ *
+ * @author diego <diego@emersonmedia.com>
+ * @author daniel <daniel@bexarcreative.com>
+ */
 class RolesTableSeeder extends Seeder {
 
     public function run() {

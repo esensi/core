@@ -3,6 +3,14 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
+/**
+ * Create user table for Alba\User model
+ *
+ * @author diego <diego@emersonmedia.com>
+ * @author daniel <daniel@bexarcreative.com>
+ * @see Alba\User\Seeders\UsersTableSeeder
+ * @see Alba\User\Models\User
+ */
 class CreateUsersTable extends Migration {
 
 	/**

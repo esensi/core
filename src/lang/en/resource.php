@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
 	/*
 	|--------------------------------------------------------------------------
@@ -12,11 +12,11 @@ return array(
 	|
 	*/
 
-	'failed' => array(
+	'failed' => [
 		'store' => 'Object could not be stored. :message',
 		'show' => 'Object could not be found.',
 		'update' => 'Object could not be updated. :message',
 		'destroy' => 'Object could not be deleted.',
-	),
+	],
 
-);
+];

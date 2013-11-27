@@ -1,9 +1,15 @@
 <?php namespace Alba\User\Models;
 
-use Ardent;
+use LaravelBook\Ardent\Ardent;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
 
+/**
+ * Alba\Token model
+ *
+ * @author diego <diego@emersonmedia.com>
+ * @author daniel <daniel@bexarcreative.com>
+ * @see Alba\User\Models\User
+ */
 class Token extends Ardent {
 
     /**

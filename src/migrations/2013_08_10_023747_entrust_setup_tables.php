@@ -2,6 +2,17 @@
 
 use Illuminate\Database\Migrations\Migration;
 
+/**
+ * Create permission and role tables for Alba\Permission
+ * and Alba\Role models
+ *
+ * @author diego <diego@emersonmedia.com>
+ * @author daniel <daniel@bexarcreative.com>
+ * @see Alba\User\Seeders\PermissionsTableSeeder
+ * @see Alba\User\Seeders\RolesTableSeeder
+ * @see Alba\User\Models\Permission
+ * @see Alba\User\Models\Role
+ */
 class EntrustSetupTables extends Migration {
 
     /**

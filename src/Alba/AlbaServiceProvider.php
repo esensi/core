@@ -2,6 +2,12 @@
 
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * Service provider for all Alba modules and package components
+ *
+ * @author diego <diego@emersonmedia.com>
+ * @author daniel <daniel@bexarcreative.com>
+ */
 class AlbaServiceProvider extends ServiceProvider {
 
 	/**
@@ -28,7 +34,7 @@ class AlbaServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		//
+		
 	}
 
 	/**
@@ -38,7 +44,7 @@ class AlbaServiceProvider extends ServiceProvider {
 	 */
 	public function provides()
 	{
-		return array();
+		return array('alba');
 	}
 
 }

@@ -1,11 +1,17 @@
 <?php namespace Alba\Core\Controllers;
 
 use Illuminate\Support\Facades\Lang;
-use Illuminate\Database\Eloquent\Model as Eloquent;
+use Illuminate\Database\Eloquent\Model;
 use Alba\Core\Contracts\ResourceInterface;
 use Alba\Core\Controllers\Controller;
 use Alba\Core\Exceptions\ResourceException;
 
+/**
+ * Core Resource controller as the base for all module Resource controllers
+ *
+ * @author diego <diego@emersonmedia.com>
+ * @author daniel <daniel@bexarcreative.com>
+ */
 class Resource extends Controller implements ResourceInterface {
 
 	/**
@@ -14,6 +20,13 @@ class Resource extends Controller implements ResourceInterface {
      * @var Illuminate\Database\Eloquent\Model;
      */
     protected $model;
+
+	/**
+     * Injected resources
+     * 
+     * @var array
+     */
+    protected $resources = [];
 
 	/**
      * The exception to be thrown
@@ -40,7 +53,7 @@ class Resource extends Controller implements ResourceInterface {
      */
 	public function __construct()
 	{
-		$this->model = new Eloquent;
+		$this->model = new Model;
 		$this->setDefaults($this->defaults);
 	}
 

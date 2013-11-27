@@ -2,6 +2,14 @@
 
 use Zizaco\Entrust\EntrustRole;
 
+/**
+ * Alba\Role model
+ *
+ * @author diego <diego@emersonmedia.com>
+ * @author daniel <daniel@bexarcreative.com>
+ * @see Alba\User\Models\Permission
+ * @see Alba\User\Models\User
+ */
 class Role extends EntrustRole {
 
     /**

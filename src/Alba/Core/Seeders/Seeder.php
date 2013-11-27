@@ -1,8 +1,15 @@
 <?php namespace Alba\Core\Seeders;
 
-use Illuminate\Database\Eloquent\Model as Eloquent;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder as LaravelSeeder;
 
+/**
+ * Core Seeder that adds beforeRun and afterRun methods to Laravel's Seeder.
+ * Also includes a special saveOrFail() method for showing command line errors.
+ *
+ * @author diego <diego@emersonmedia.com>
+ * @author daniel <daniel@bexarcreative.com>
+ */
 class Seeder extends LaravelSeeder {
 
 	/**
@@ -12,7 +19,7 @@ class Seeder extends LaravelSeeder {
 	 */
 	public function beforeRun()
 	{
-		Eloquent::unguard();
+		Model::unguard();
 	}
 
 	/**
@@ -32,20 +39,20 @@ class Seeder extends LaravelSeeder {
 	 */
 	public function afterRun()
 	{
-		Eloquent::reguard();
+		Model::reguard();
 	}
 
 	/**
      * Save model or fail by showing errors
      *
-     * @param Eloquent $model
+     * @param Model $model
      * @param  array $rules Optional rules for save method
      * @return void
      */
-    public function saveOrFail(Eloquent $model, $rules = null)
+    public function saveOrFail(Model $model, $rules = null)
     {
 
-    	if ($rules == null)
+    	if ( is_null($rules) )
     	{
     		$res = $model->save();
     	}

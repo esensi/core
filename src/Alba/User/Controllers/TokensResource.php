@@ -5,11 +5,24 @@ use Illuminate\Auth\UserInterface;
 use Illuminate\Support\Facades\Config;
 use Alba\Core\Controllers\Resource;
 use Alba\Core\Exceptions\ResourceException;
-use Alba\Core\Utils\StringUtils;
 use Alba\User\Models\Token;
 
+/**
+ * Custom exception handler for TokensResource
+ *
+ * @author diego <diego@emersonmedia.com>
+ * @author daniel <daniel@bexarcreative.com>
+ * @see Alba\Core\Exceptions\ResourceException
+ */
 class TokensResourceException extends ResourceException {}
 
+/**
+ * Tokens Resource
+ *
+ * @author diego <diego@emersonmedia.com>
+ * @author daniel <daniel@bexarcreative.com>
+ * @see Alba\Core\Controllers\Resource
+ */
 class TokensResource extends Resource {
     
     /**

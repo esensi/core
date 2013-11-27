@@ -2,10 +2,15 @@
 
 use \Exception;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\MessageBag;
 
+/**
+ * Custom exception handler for Resource controllers
+ *
+ * @author diego <diego@emersonmedia.com>
+ * @author daniel <daniel@bexarcreative.com>
+ */
 class ResourceException extends Exception {
 
     /**
@@ -58,6 +63,7 @@ class ResourceException extends Exception {
     {
         Session::flash('error', true);
         Session::flash('message', $this->getMessage());
+        Session::flash('errors', $this->getMessageBag()->all());
         return Redirect::back()->withInput();
     }
 
@@ -70,7 +76,8 @@ class ResourceException extends Exception {
     {
         $error = true;
         $message = $this->getMessage();
-        $args = compact('error','message');
+        $errors = $this->getMessageBag()->all();
+        $args = compact('error', 'message', 'errors');
         return $args;
     }
 }

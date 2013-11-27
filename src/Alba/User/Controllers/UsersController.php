@@ -1,62 +1,37 @@
 <?php namespace Alba\User\Controllers;
 
 use Carbon\Carbon;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
 
 use Alba\Core\Controllers\Controller;
-use Alba\Core\Utils\ProcessResponse;
-use Alba\Core\Utils\ViewMessage;
-use Alba\User\Models\User;
-use Alba\User\Models\Name;
 use Alba\User\Controllers\UsersResource;
-use Alba\User\Controllers\UsersResourceException;
-use Alba\User\Repositories\Contracts\UserRepositoryInterface;
+use Alba\User\Controllers\UsersApiController;
 
 /**
- * Controller for user interactions from a web interface
+ * Controller for accessing UsersResrouce from a web interface
  *
  * @author diego <diego@emersonmedia.com>
+ * @author daniel <daniel@bexarcreative.com>
+ * @see Alba\Core\Controllers\Controller
+ * @see Alba\User\Controllers\UsersResource
+ * @see Alba\User\Controllers\UsersApiController
  */
 class UsersController extends Controller {
 
     /**
-     * The layout that should be used for responses.
-     */
-    protected $layout = 'alba::core.default';
-
-    /**
-     * The resources injected
-     * 
-     * @var array
-     */
-    protected $resources;
-
-    /**
-     * The APIs injected
-     * 
-     * @var array
-     */
-    protected $apis;
-
-    /**
      * Inject dependencies
      *
-     * @todo make ViewMessage a dependency injection
-     * @param UsersResource $user
+     * @param UsersResource $usersResource
+     * @param UsersApiController $usersApi
      * @return void
      */
-    public function __construct(UsersResource $user, UsersApiController $userApi)
+    public function __construct(UsersResource $usersResource, UsersApiController $usersApi)
     {
-        $this->resources['user'] = $user;
-        $this->apis['user'] = $userApi;
+        $this->resources['user'] = $usersResource;
+        $this->apis['user'] = $usersApi;
     }
         
     /**

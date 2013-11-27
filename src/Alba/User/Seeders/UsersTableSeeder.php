@@ -2,12 +2,17 @@
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Alba\Core\Seeders\Seeder;
 use Alba\User\Models\Name;
 use Alba\User\Models\Role;
 use Alba\User\Models\User;
 
+/**
+ * Seeder for Users and Names
+ *
+ * @author diego <diego@emersonmedia.com>
+ * @author daniel <daniel@bexarcreative.com>
+ */
 class UsersTableSeeder extends Seeder {
 
     public function run() {

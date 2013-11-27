@@ -4,6 +4,12 @@ use Alba\Core\Seeders\Seeder;
 use Alba\User\Models\Permission;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Seeder for Permissions
+ *
+ * @author diego <diego@emersonmedia.com>
+ * @author daniel <daniel@bexarcreative.com>
+ */
 class PermissionsTableSeeder extends Seeder {
 
     public function run() {

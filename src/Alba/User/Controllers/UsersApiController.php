@@ -4,24 +4,25 @@ use Illuminate\Support\Facades\Input;
 use Alba\Core\Controllers\Controller;
 use Alba\User\Controllers\UsersResource;
 
+/**
+ * Controller for accessing UsersResource as an API
+ *
+ * @author diego <diego@emersonmedia.com>
+ * @author daniel <daniel@bexarcreative.com>
+ * @see Alba\Core\Controllers\Controller
+ * @see Alba\User\Controllers\UsersResource
+ */
 class UsersApiController extends Controller {
-
-	/**
-     * The resource injected
-     * 
-     * @var array;
-     */
-    protected $resources;
 
     /**
      * Inject dependencies
      *
-     * @param Alba\User\Controllers\UsersResource $user;
+     * @param UsersResource $usersResource;
      * @return void
      */
-	public function __construct(UsersResource $user)
+	public function __construct(UsersResource $usersResource)
 	{
-		$this->resources['user'] = $user;
+		$this->resources['user'] = $usersResource;
 	}
 
     /**

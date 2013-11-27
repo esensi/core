@@ -1,5 +1,11 @@
 <?php namespace Alba\Core\Contracts;
 
+/**
+ * Contract that defines the Resource controller interface
+ *
+ * @author diego <diego@emersonmedia.com>
+ * @author daniel <daniel@bexarcreative.com>
+ */
 interface ResourceInterface {
 
 	/**

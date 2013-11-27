@@ -1,20 +1,19 @@
 <?php namespace Alba\User\Models;
 
-use Alba\Core\Utils\StringUtils;
-
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Auth\UserInterface;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 use LaravelBook\Ardent\Ardent;
 use Zizaco\Entrust\HasRole;
 use Alba\User\Models\Token;
 
 /**
- * User model class
+ * Alba\User model
  *
  * @author diego <diego@emersonmedia.com>
+ * @author daniel <daniel@bexarcreative.com>
+ * @see Alba\User\Models\Name
+ * @see Alba\User\Models\Role
+ * @see Alba\User\Models\Token
  */
 class User extends Ardent implements UserInterface {
 
@@ -296,7 +295,7 @@ class User extends Ardent implements UserInterface {
         $query->select('users.*')
             ->join('token_user', 'users.id', '=', 'token_user.user_id')
             ->join('tokens', 'tokens.id', '=', 'token_user.token_id')
-            ->where('tokens.type', '=', Token::TYPE_PASS_RESET)
+            ->where('tokens.type', '=', Token::TYPE_PASSWORD_RESET)
             ->where('tokens.token', '=', $token);
 
         // Return only expired tokens
@@ -392,7 +391,7 @@ class User extends Ardent implements UserInterface {
      */
     public function getPasswordResetTokenAttribute()
     {
-        return $this->getTypeToken(Token::TYPE_PASS_RESET);
+        return $this->getTypeToken(Token::TYPE_PASSWORD_RESET);
     }
 
     /**

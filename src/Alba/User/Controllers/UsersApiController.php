@@ -52,15 +52,19 @@ class UsersApiController extends Controller {
     /**
      * Store a newly created resource in storage.
      *
+     * @param boolean $twoStep authentication
      * @return Illuminate\Database\Eloquent\Model
      */
-    public function store()
+    public function store($twoStep = true)
     {
         $attributes = Input::all();
         $object = $this->resources['user']->store($attributes);
 
         // Two-step activation
-        $this->resources['user']->resetActivation($object->email, true);
+        if($twoStep)
+        {
+            $this->resources['user']->resetActivation($object->email, true);
+        }
 
         return $object;
     }

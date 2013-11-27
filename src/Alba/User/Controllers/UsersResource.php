@@ -146,7 +146,7 @@ class UsersResource extends Resource {
      * @return User
      * @throws UsersResourceException
      */
-    public function showByActivationToken($token, $isExpired) {
+    public function showByActivationToken($token, $isExpired = false) {
 
         // Get the user with the matching token
         $object = $this->model->whereActivationToken($token, $isExpired)->first();
@@ -194,8 +194,7 @@ class UsersResource extends Resource {
         $name->fill(array_only($attributes, $name->getFillable()));
                 
         // Get default Roles to attach to a new user
-        $role = $this->role;
-        $roles = $role::whereIn('name', $this->model->defaultRoles)->get();
+        $roles = $this->role->whereIn('name', $this->model->defaultRoles)->get();
 
         // Now save the user and name
         try
@@ -210,7 +209,7 @@ class UsersResource extends Resource {
                 }
                 
                 // Attach Roles to user
-                $user->attachRoles($role);
+                $user->attachRoles($roles);
 
                 // Save name with relationship to user
                 $name->user()->associate($user);
@@ -340,12 +339,12 @@ class UsersResource extends Resource {
      */
     public function emailActivation(UserInterface $object, $token)
     {
-        $templates = ['emails.html.users.activation', 'emails.text.users.activation'];
+        $templates = ['emails.html.users.reset-activation', 'emails.text.users.reset-activation'];
         $data = ['user' => $object->toArray(), 'token' => $token];
         Mail::send($templates, $data, function($message) use ($object)
         {
             $message->to($object->email, $object->fullName)
-                ->subject(Lang::get('alba::user.subject.activation'));
+                ->subject(Lang::get('alba::user.subject.reset-activation'));
         });
     }
 

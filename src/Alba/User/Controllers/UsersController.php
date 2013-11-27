@@ -53,18 +53,29 @@ class UsersController extends Controller {
      */
     public function signup()
     {
-        $this->layout->content = View::make('users.signup');
+        $this->layout->content = View::make('alba::users.signup');
     }
 
     /**
-     * Register the user then redirect to index
+     * Register the user then redirect to activation required page
      *
      * @return Redirect
      */
     public function register()
     {
-        // @todo create the user and handle default two-step activation
-        return Redirect::route('index');
+        $object = $this->apis['user']->store();
+        return Redirect::route('users.registered')
+            ->with('message', Lang::get('alba::user.success.register'));
+    }
+
+    /**
+     * Show registration and two-step activation confirmation page
+     *
+     * @return void
+     */
+    public function registered()
+    {
+        $this->layout->count = View::make('alba::users.reset-activation');
     }
 
     /**
@@ -74,7 +85,7 @@ class UsersController extends Controller {
      */
     public function create()
     {
-        $this->layout->content = View::make('users.create');
+        $this->layout->content = View::make('alba::users.create');
     }
 
     /**
@@ -153,7 +164,7 @@ class UsersController extends Controller {
 
         $this->apis['user']->destroy($id);
 
-        return Redirect::route('users.index')
+        return Redirect::route('admin.users.index')
             ->with('message', Lang::get('alba::user.success.destroy'));
     }
 
@@ -319,10 +330,14 @@ class UsersController extends Controller {
         if ( Auth::guest() )
         {
             Auth::login($object);
+            
+            // Redirect to user profile
+            return Redirect::route('users.account')
+                ->with('message', Lang::get('alba::user.success.activate'));
         }
 
-        // Redirec to user profile
-        return Redirect::route('users.show', ['id' => $object->id])
+        // Redirect to user profile
+        return Redirect::route('admin.users.show', ['id' => $object->id])
             ->with('message', Lang::get('alba::user.success.activate'));
     }
 
@@ -338,7 +353,7 @@ class UsersController extends Controller {
 
         $object = $this->resources['user']->deactivate($id);
         
-        return Redirect::route('users.show', ['id' => $id])
+        return Redirect::route('admin.users.show', ['id' => $id])
             ->with('message', Lang::get('alba::user.success.deactivate'));
     }
 
@@ -354,7 +369,7 @@ class UsersController extends Controller {
 
         $object = $this->resources['user']->block($id);
 
-        return Redirect::route('users.show', ['id' => $id])
+        return Redirect::route('admin.users.show', ['id' => $id])
             ->with('message', Lang::get('alba::user.success.block'));
     }
 
@@ -370,7 +385,7 @@ class UsersController extends Controller {
 
         $object = $this->resources['user']->unblock($id);
         
-        return Redirect::route('users.show', ['id' => $id])
+        return Redirect::route('admin.users.show', ['id' => $id])
             ->with('message', Lang::get('alba::user.success.unblock'));
     }
 

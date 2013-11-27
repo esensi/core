@@ -99,9 +99,10 @@ class Resource extends Controller implements ResourceInterface {
 	public function store($attributes)
 	{
 		$rules = $this->model->rulesForStoring;
-		if(!$this->model->fill($attributes)->save($rules))
+		$this->model->fill($attributes);
+		if(!$this->model->save($rules))
 		{
-			$this->throwException(Lang::get('alba::resource.failed.store', ['message' => implode(' ', $this->model->errors()->all()) ]));
+			$this->throwException($object->errors(), Lang::get('alba::resource.failed.store'));
 		}
 		return $this->model;
 	}
@@ -134,9 +135,10 @@ class Resource extends Controller implements ResourceInterface {
 		$object = $this->show($id);
 
 		$rules = $object->rulesForUpdating;
-		if(!$object->fill($attributes)->save($rules))
+		$object->fill($attributes);
+		if(!$object->save($rules))
 		{
-			$this->throwException(Lang::get('alba::resource.failed.update', ['message' => implode(' ', $object->errors()->all()) ]));
+			$this->throwException($object->errors(), Lang::get('alba::resource.failed.update'));
 		}
 		return $object;
 	}

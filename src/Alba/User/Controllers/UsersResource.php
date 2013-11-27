@@ -288,7 +288,7 @@ class UsersResource extends Resource {
         // Check if user is allowed to activate
         if (!$object->isActivationAllowed())
         {
-            $this->throwException(Lang::get('alba::user.failed.activation_not_allowed.'));
+            $this->throwException(Lang::get('alba::user.failed.activation_not_allowed'));
         }
 
         DB::transaction(function() use ($object)
@@ -361,7 +361,7 @@ class UsersResource extends Resource {
         // Update the password at the same time
         if( !empty($newPassword) )
         {
-            if($object->savePassword($newPassword))
+            if(!$object->savePassword($newPassword))
             {
                 $this->throwException($object->errors(), Lang::get('alba::user.failed.update_password'));
             }
@@ -446,9 +446,9 @@ class UsersResource extends Resource {
         // Save the new password
         DB::transaction(function() use ($object, $newPassword)
         {
-            if($object->savePassword($newPassword))
+            if(!$object->savePassword($newPassword))
             {
-                $this->throwException($object->errors(), Lang::get('alba::user.failed.update_password'));
+                $this->throwException($object->errors(), Lang::get('alba::user.failed.set_password'));
             }
 
             // Delete password reset token
@@ -456,6 +456,57 @@ class UsersResource extends Resource {
             $token->delete();
         });
 
+        return $object;
+    }
+
+    /**
+     * Set the blocked status to true for object
+     *
+     * @param integer $id of object to block
+     * @return User
+     * 
+     */
+    public function block($id)
+    {
+        $object = $this->show($id);
+        if(!$object->block())
+        {
+            $this->throwException($object->errors(), Lang::get('alba::user.failed.block'));
+        }
+        return $object;
+    }
+
+    /**
+     * Set the blocked status to false for object
+     *
+     * @param integer $id of object to unblock
+     * @return User
+     * 
+     */
+    public function unblock($id)
+    {
+        $object = $this->show($id);
+        if(!$object->unblock())
+        {
+            $this->throwException($object->errors(), Lang::get('alba::user.failed.unblock'));
+        }
+        return $object;
+    }
+
+    /**
+     * Set the activation status to false for object
+     *
+     * @param integer $id of object to deactivate
+     * @return User
+     * 
+     */
+    public function deactivate($id)
+    {
+        $object = $this->show($id);
+        if(!$object->deactivate())
+        {
+            $this->throwException($object->errors(), Lang::get('alba::user.failed.deactivate'));
+        }
         return $object;
     }
 

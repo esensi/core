@@ -535,7 +535,7 @@ class User extends Ardent implements UserInterface {
     public function isActivateAllowed($token, $ttlHours = 24)
     {
 
-        if (!$this->isRequestActivationAllowed())
+        if (!$this->isActivationAllowed())
         {
             return false;
         }

@@ -651,9 +651,29 @@ class User extends Ardent implements UserInterface {
      */
     public function savePassword($newPassword)
     {
-        $this->fill($newPassword);
+        //@todo: There's an issue here. Fill creates also the password_confirmation field, 
+        //and Eloquent tries to save it, so I get and error saying "SQL password_confirmation column not found in table 'users'"
+        //But if I send only password in the $newPassword array, the validation fails.
+        //I'm changing this to explicit asignments, but let's review it.
+        
+        //$this->fill($newPassword);
+
+        $this->password = $newPassword['password'];
         $this->password_updated_at = Carbon::now();
-        return $this->save($this->rulesForUpdatingPassword);
+        
+        //@todo: Also changed the rules because in this way is explicitly needed that the 
+        //user have a password_confirmation field. 
+        //Don't know how to make this work... so changing rules.
+        //Rules hardcoded here until we solve this.
+        
+        //Currently I'm explictly validating input in the resource (password = password_validation)
+        //So I enforce this rule somewhere
+        
+        //return $this->save($this->rulesForUpdatingPassword);
+        return $this->save([
+            'password' => ['required', 'alpha_num', 'between:4,256'],
+            'password_updated_at' => ['date'],
+        ]);
     }
 
 }

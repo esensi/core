@@ -7,8 +7,8 @@ ALBA is an awesome Laravel boilerplate application. This repository contains the
 
 ## Modules & Features
 
-* Alba\Core: base components for other modules
-* Alba\User: user management with role-based permissions
+* [Alba\Core](http://github.com/emersonmedia/Alba/tree/master/src/Alba/Core): base components for other modules
+* [Alba\User](http://github.com/emersonmedia/Alba/tree/master/src/Alba/User): user management with role-based permissions
 * Alba\Contact: phone, fax and email addresses for Users
 * Alba\Address: shipping and billing addresses and zip, state, and country definitions
 * Alba\Locator: geo-location services for Addresses

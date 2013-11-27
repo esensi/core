@@ -76,10 +76,16 @@ class TokensResource extends Resource {
     public function createNew($type, UserInterface $user, $ttlHours = null)
     {
         $ttlHours = is_null($ttlHours) ? Config::get('alba::user.tokens.ttl', 24) : $ttlHours;
+        
+        // Generate a token like Illuminate\Auth\Reminders\DatabaseReminderRepository
+        $email = $user->getAuthIdentifier();
+        $value = str_shuffle(sha1($email.$type.spl_object_hash($this).microtime(true)));
+        $token = hash_hmac('sha1', $value, Config::get('app.key'));
+
         $attributes = [
             'type' => $type,
-            'token' => StringUtils::generateGuid(false), // @todo replace with a hash based on $user like Laravel's ReminderInterface
-            'expires_at' => Carbon::now()->addHours($ttlHours)
+            'token' => $token,
+            'expires_at' => Carbon::now()->addHours($ttlHours),
             ];
         return $this->store($attributes);
     }

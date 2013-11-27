@@ -3,6 +3,7 @@
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
 
@@ -181,7 +182,7 @@ class UsersController extends Controller {
     public function logout()
     {
         $this->resources['user']->unauthenticate();
-        return Redirect::route('signin')
+        return Redirect::route('users.signin')
             ->with('message', Lang::get('alba::user.success.logout'));
     }
 

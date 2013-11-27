@@ -101,8 +101,17 @@ class User extends Ardent implements UserInterface {
      * @var array
      */
     public static $relationsData = [
-        'name' => [self::HAS_ONE, 'Alba\User\Models\Name'],
-        'tokens' => [self::BELONGS_TO_MANY, 'Alba\User\Models\Token'],
+        'name' => [
+            self::HAS_ONE,
+            'Alba\User\Models\Name',
+            'foreignKey' => 'user_id'
+        ],
+        'tokens' => [
+            self::BELONGS_TO_MANY,
+            'Alba\User\Models\Token',
+            'foreignKey' => 'user_id',
+            'table' => 'token_user',
+        ],
     ];
 
     /**

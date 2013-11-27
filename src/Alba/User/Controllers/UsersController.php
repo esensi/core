@@ -108,12 +108,7 @@ class UsersController extends Controller {
      */
     public function store()
     {
-        // Save the user
-        $attributes = Input::all();
-        $object = $this->resources['user']->store($attributes);
-
-        // Two-step activation
-        $this->resources['user']->resetActivation($object->email, true);
+        $object = $this->apis['user']->store();
 
         return Redirect::route('users.show', ['id' => $object->id])
             ->with('message', Lang::get('alba::user.success.store'));
@@ -153,8 +148,7 @@ class UsersController extends Controller {
     {
         // @todo what about security here?
 
-        $attributes = Input::all();
-        $object = $this->resources['user']->update($id, $attributes);
+        $object = $this->apis['user']->update($id);
 
         return Redirect::route('users.show', ['id' => $id])
             ->with('message', Lang::get('alba::user.success.update'));
@@ -169,10 +163,9 @@ class UsersController extends Controller {
     public function destroy($id)
     {
         // @todo what about security here?
-        $force = Input::get('force');
-        $this->resources['user']->destroy($id, $force);
 
-        // @todo add flash success message
+        $this->apis['user']->destroy($id);
+
         return Redirect::route('users.index')
             ->with('message', Lang::get('alba::user.success.destroy'));
     }

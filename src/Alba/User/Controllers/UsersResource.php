@@ -8,7 +8,6 @@ use Alba\Core\Exceptions\ResourceException;
 
 use Alba\User\Models\Name;
 use Alba\User\Models\Role;
-use Alba\User\Models\Token;
 use Alba\User\Models\User;
 use Alba\User\Controllers\TokensResource;
 
@@ -48,17 +47,25 @@ class UsersResource extends Resource {
     protected $role;
 
     /**
+     * Injected resources
+     *
+     * @var array
+     */
+    protected $resources;
+
+    /**
      * Inject dependencies
      *
      * @var Alba\User\Models\User $user
      * @var Alba\User\Models\Name $name
+     * @var Alba\User\Models\Role $role
      * @var Alba\User\Controllers\TokensResource $tokensResource
      */
     public function __construct(User $user, Name $name, Role $role, TokensResource $tokensResource) {
         $this->model = $user;
         $this->name = $name;
         $this->role = $role;
-        $this->tokensResource = $tokensResource;
+        $this->resources['token'] = $tokensResource;
 
         // Bind auth.login event listener
         Event::listen('auth.login', function(User $user, $remember){
@@ -296,7 +303,7 @@ class UsersResource extends Resource {
             // @todo: remove all existing activation tokens from user
 
             // Generate activation token
-            $activationToken = $this->tokensResource->createNewActivation($object);
+            $activationToken = $this->resources['token']->createNewActivation($object);
 
             // Attach token to user
             $object->tokens()->attach($activationToken->id);
@@ -395,7 +402,7 @@ class UsersResource extends Resource {
             // @todo: remove all existing password reset tokens from user
 
             // Generate password reset token
-            $resetToken = $this->tokensResource->createNewPasswordReset($object);
+            $resetToken = $this->resources['token']->createNewPasswordReset($object);
 
             // Attach token to user
             $object->tokens()->attach($resetToken->id);

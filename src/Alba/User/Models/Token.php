@@ -13,7 +13,7 @@ class Token extends Ardent {
      */
     const TYPE_ACTIVATION = 'activation';
 
-    const TYPE_PASS_RESET = 'pass_reset';
+    const TYPE_PASSWORD_RESET = 'password_reset';
 
     /**
      * The database table used by the model.
@@ -76,6 +76,13 @@ class Token extends Ardent {
     public static $rulesForStoring = ['token', 'type', 'expires_at'];
 
     /**
+     * Subset of $rules' keys for updating
+     * 
+     * @var array
+     */
+    public static $rulesForUpdating = ['token', 'type', 'expires_at'];
+
+    /**
      * Rules needed for storing
      * 
      * @return array
@@ -83,6 +90,16 @@ class Token extends Ardent {
     public function getRulesForStoringAttribute()
     {
         return array_only(self::$rules, self::$rulesForStoring);
+    }
+
+    /**
+     * Rules needed for updating
+     * 
+     * @return array
+     */
+    public function getRulesForUpdatingAttribute()
+    {
+        return array_only(self::$rules, self::$rulesForUpdating);
     }
    
     /**

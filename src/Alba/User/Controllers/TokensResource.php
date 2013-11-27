@@ -63,7 +63,7 @@ class TokensResource extends Resource {
     {
         $model = $this->getModel();
         $ttlHours = Config::get('alba::user.tokens.password_reset.ttl', null);
-        return $this->createNew($model::TYPE_PASS_RESET, $user, $ttlHours);
+        return $this->createNew($model::TYPE_PASSWORD_RESET, $user, $ttlHours);
     }
 
     /**

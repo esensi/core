@@ -12,7 +12,7 @@
 			    </div>
 			</div>
 			<ul class="nav nav-pills nav-justified">
-				<li><a href="{{ route('dashboard') }}">&larr; Back to Dashboard</a></li>
+				<li><a href="{{ route('admin.dashboard') }}">&larr; Back to Dashboard</a></li>
 			</ul>
 		</div>
 	</div>

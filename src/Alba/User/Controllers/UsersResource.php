@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Auth\UserInterface;
 
 /**
@@ -81,7 +82,7 @@ class UsersResource extends Resource {
         // Bind auth.login event listener
         Event::listen('auth.login', function(User $user, $remember){
             $user->authenticated_at = Carbon::now();
-            return $user->updateUniques();
+            return $user->forceSave();
         });
     }
 
@@ -323,7 +324,7 @@ class UsersResource extends Resource {
         // Send activation email to user
         if( $sendEmail )
         {
-            $this->emailActivation($object, $activationToken->token);
+            $this->emailActivation($object, $object->activationToken->token);
         }
 
         return $object;
@@ -422,7 +423,7 @@ class UsersResource extends Resource {
         // Send password reset email to user
         if( $sendEmail )
         {
-            $this->emailPasswordReset($object, $resetToken->token);
+            $this->emailPasswordReset($object, $object->passwordResetToken->token);
         }
 
         return $object;

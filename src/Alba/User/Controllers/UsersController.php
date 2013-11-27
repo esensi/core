@@ -99,7 +99,18 @@ class UsersController extends Controller {
     public function show($id)
     {
         $object = $this->resources['user']->show($id);        
-        $this->layout->content = View::make('users.show', compact('user'));
+        $this->layout->content = View::make('alba::users.show')->with('user', $object);
+    }
+
+    /**
+     * Display the currently authenticated resource.
+     *
+     * @return void
+     */
+    public function account()
+    {
+        $id = Auth::user()->id;
+        $this->show($id);
     }
 
     /**
@@ -111,7 +122,7 @@ class UsersController extends Controller {
     public function edit($id)
     {
         $object = $this->resources['user']->show($id);
-        $this->layout->content = View::make('users.edit', compact('user'));
+        $this->layout->content = View::make('alba::users.edit')->with('user', $object);
     }
 
     /**
@@ -167,7 +178,7 @@ class UsersController extends Controller {
         $credentials = Input::only(['email', 'password']);
         $extras = ['active' => true, 'blocked' => false];
         $remember = Input::get('remember', false);
-        $object = $this->resources['user']->authenticate($credentials, $credentials, $remember);
+        $object = $this->resources['user']->authenticate($credentials, $extras, $remember);
 
         // If login is ok, redirect to the intended URL or default to the dashboard
         return Redirect::intended(route('index'))
@@ -224,7 +235,7 @@ class UsersController extends Controller {
      */
     public function newPassword($token)
     {
-        $this->layout->content = View::make('alba::users.new-password');
+        $this->layout->content = View::make('alba::users.new-password')->with('token', $token);
     }
 
     /**
@@ -238,7 +249,13 @@ class UsersController extends Controller {
         $newPassword = Input::only('password', 'password_confirmation');
         $object = $this->resources['user']->setPassword($token, $newPassword);
 
-        return Redirect::route('users.show', ['id' => $object->id])
+        // Authenticate the user if not already logged in
+        if ( Auth::guest() )
+        {
+            Auth::login($object);
+        }
+
+        return Redirect::route('users.account')
             ->with('message', Lang::get('alba::user.success.set_password'));
     }
 

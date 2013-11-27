@@ -121,15 +121,16 @@ Route::group(['prefix' => 'admin', 'before' => 'error.default'], function()
 
 Route::group(['before' => 'error.default'], function()
 {
+	Route::get('/account', [ 'as' => 'users.account', 'before' => 'auth', 'uses' => 'UsersController@account' ]);
 	Route::match('get|post', '/activate/{token}', [ 'as' => 'users.activate', 'uses' => 'UsersController@activate' ]);
 	Route::get('/activate-password/{token}', [ 'as' => 'users.activate-password', 'uses' => 'UsersController@activatePassword' ]);
 	Route::post('/set-password/{token}', [ 'as' => 'users.set-password', 'uses' => 'UsersController@setPassword' ]);
 	Route::get('/set-password/{token}', [ 'as' => 'users.new-password', 'uses' => 'UsersController@newPassword' ]);
 	Route::post('/forgot-password', [ 'as' => 'users.reset-password', 'uses' => 'UsersController@resetPassword' ]);
 	Route::get('/forgot-password', [ 'as' => 'users.forgot-password', 'uses' => 'UsersController@forgotPassword' ]);
-	Route::post('/login', [ 'as' => 'users.login', 'uses' => 'UsersController@login' ]);
-	Route::get('/login', [ 'as' => 'users.signin', 'uses' => 'UsersController@signin' ]);
+	Route::post('/login', [ 'as' => 'users.login', 'before' => 'guest', 'uses' => 'UsersController@login' ]);
+	Route::get('/login', [ 'as' => 'users.signin', 'before' => 'guest', 'uses' => 'UsersController@signin' ]);
 	Route::match('get|post|delete', '/logout', [ 'as' => 'users.logout', 'uses' => 'UsersController@logout' ]);
-	Route::post('/register', [ 'as' => 'users.register', 'uses' => 'UsersController@register' ]);
-	Route::get('/register', [ 'as' => 'users.signup', 'uses' => 'UsersController@signup' ]);
+	Route::post('/register', [ 'as' => 'users.register', 'before' => 'guest', 'uses' => 'UsersController@register' ]);
+	Route::get('/register', [ 'as' => 'users.signup', 'before' => 'guest', 'uses' => 'UsersController@signup' ]);
 })->where('token', '[a-zA-Z0-9]+');

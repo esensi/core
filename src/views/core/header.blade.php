@@ -52,13 +52,12 @@
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="{{ route('admin.users.show', Auth::user()->id) }}"><i class="fa fa-user"></i> User Name</a></li>
+            <li><a href="{{ route('admin.users.show', Auth::user()->id) }}"><i class="fa fa-user"></i> {{ Auth::user()->fullName }}</a></li>
             <li class="dropdown">
             	<a class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog"></i></a>
             	<ul class="dropdown-menu pull-right">
-	                <li><a href="{{ route('admin.users.change-password', Auth::user()->id) }}">Change Password</a></li>
 	                <li><a href="{{ route('admin.users.edit', Auth::user()->id) }}">Edit My User</a></li>
-	                <li><a href="{{ route('admin.users.logout') }}">Logout</a></li>
+	                <li><a href="{{ route('users.logout') }}">Logout</a></li>
 	            </ul>
             </li>
           </ul>

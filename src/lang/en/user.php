@@ -4,7 +4,7 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
-	| User language lines
+	| Error messages
 	|--------------------------------------------------------------------------
 	|
 	| The following language lines contain the default error messages used by
@@ -12,16 +12,61 @@ return [
 	|
 	*/
 
-	'failed' => [
-		'validate' => 'User could not be found matching those credentials.',
-		'authenticate' => 'User could not be logged in.',
-		'show_by_email' => 'User could not be found matching this email address.',
-		'show_by_activation_token' => 'Activation token could not be found or is expired.',
-		'show_by_password_reset_token' => 'Password reset token could not be found or is expired.',
+	'errors' => [
+		'validate'							=> 'User could not be found matching this email address and password.',
+		'authenticate'						=> 'User could not be logged in because it either blocked or it is awaiting email activation.',
+		'show_by_email'						=> 'User could not be found matching this email address.',
+		'show_by_activation_token'			=> 'Activation token could not be found or has already expired.',
+		'show_by_password_reset_token'		=> 'Password reset token could not be found or has already expired.',
+		'deactivate'						=> 'User could not be deactivated.',
+		'unblock'							=> 'User could not be unblocked: user cannot log in.',
+		'block'								=> 'User could not be blocked: user can still log in.',
+		'set_password'						=> 'This password could not be saved.',
+		'password_reset_not_allowed'		=> 'A password reset is not allowed for this user.',
+		'activate'							=> 'User could not be activated: user cannot log in.',
+		'activation_not_allowed'			=> 'A new activation request is not allowed for this user.',
+		'update'							=> 'User could not be saved.',
+		'store'								=> 'User could not be created.',
 	],
 
-	'subject' => [
-		'reset_password' => 'Reset Your Password',
+	/*
+	|--------------------------------------------------------------------------
+	| Success messages
+	|--------------------------------------------------------------------------
+	|
+	| The following language lines contain the default success messages used by
+	| the User module.
+	|
+	*/
+
+	'success' => [
+		'destroy'							=> 'User has been deleted.',
+		'activate'							=> 'User has been activate and will not be able to log in.',
+		'deactivate'						=> 'User has been deactivated and will not be able to log in.',
+		'block'								=> 'User has been blocked and will not be able to log in.',
+		'unblock'							=> 'User has been unblocked and will now be able to log in.',
+		'register'							=> 'User has been registered and now needs to activate their account by email.',
+		'store'								=> 'User has been created.',
+		'update'							=> 'User has been saved.',
+		'login'								=> 'User has been logged in.',
+		'logout'							=> 'User has been logged out',
+		'set_password'						=> 'User has saved a new password.',
+
+	],
+
+	/*
+	|--------------------------------------------------------------------------
+	| Subject lines
+	|--------------------------------------------------------------------------
+	|
+	| The following language lines contain subject lines used in emails that
+	| the User module sends.
+	|
+	*/
+
+	'subjects' => [
+		'reset_password'					=> 'Reset your password!',
+		'reset_activation'					=> 'Activate your account!',
 	],
 
 ];

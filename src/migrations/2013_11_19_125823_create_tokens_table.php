@@ -33,7 +33,6 @@ class CreateTokensTable extends Migration {
             $table->index('token');
             $table->index('type');
             $table->index(['type', 'token'], 'type_token');
-
 		});
 		
 	}

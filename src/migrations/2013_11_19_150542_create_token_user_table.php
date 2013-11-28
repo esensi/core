@@ -29,7 +29,6 @@ class CreateTokenUserTable extends Migration {
             $table->primary(array('token_id', 'user_id'));
             $table->foreign('token_id')->references('id')->on('tokens')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-
 		});
 	}
 

@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Auth\UserInterface;
 
@@ -38,6 +39,13 @@ class UsersResourceException extends ResourceException {}
 class UsersResource extends Resource {
 
     /**
+     * The module name
+     * 
+     * @var string
+     */
+    protected $module = 'user';
+
+    /**
      * The exception to be thrown
      * 
      * @var Alba\Core\Exceptions\ResourceException;
@@ -57,13 +65,6 @@ class UsersResource extends Resource {
      * @var Alba\User\Models\Role
      */
     protected $role;
-
-    /**
-     * Injected resources
-     *
-     * @var array
-     */
-    protected $resources;
 
     /**
      * Inject dependencies
@@ -99,14 +100,14 @@ class UsersResource extends Resource {
         // Validate the credentials with a fake attempt
         if (!Auth::validate($credentials))
         {
-            $this->throwException(Lang::get('alba::user.failed.validate'));
+            $this->throwException($this->language('errors.validate'));
         }
         
         // User will need to be active and not blocked
         // Check the credentials with a real login
         if (!Auth::attempt(array_merge($credentials, $extras), $remember))
         {
-            $this->throwException(Lang::get('alba::user.failed.authenticate'));
+            $this->throwException($this->language('errors.authenticate'));
         }
 
         return Auth::user();
@@ -133,7 +134,7 @@ class UsersResource extends Resource {
         $object = $this->model->whereEmail($email)->first();
         if(!$object)
         {
-            $this->throwException(Lang::get('alba::user.failed.show_by_email'));
+            $this->throwException($this->language('errors.show_by_email'));
         }
         return $object;
     }
@@ -152,7 +153,7 @@ class UsersResource extends Resource {
         $object = $this->model->whereActivationToken($token, $isExpired)->first();
         if (!$object)
         {
-            $this->throwException(Lang::get('alba::user.failed.show_by_activation_token'));
+            $this->throwException($this->language('errors.show_by_activation_token'));
         }
 
         return $object;
@@ -172,7 +173,7 @@ class UsersResource extends Resource {
         $object = $this->model->wherePasswordResetToken($token, $isExpired)->first();
         if (!$object)
         {
-            $this->throwException(Lang::get('alba::user.failed.show_by_password_reset_token'));
+            $this->throwException($this->language('errors.show_by_password_reset_token'));
         }
 
         return $object;
@@ -205,7 +206,7 @@ class UsersResource extends Resource {
                 // Save the user
                 if (!$user->save($user->rulesForStoring))
                 {
-                    $this->throwException($user->errors(), Lang::get('alba::user.failed.store'));
+                    $this->throwException($user->errors(), $this->language('errors.store'));
                 }
                 
                 // Attach Roles to user
@@ -215,7 +216,7 @@ class UsersResource extends Resource {
                 $name->user()->associate($user);
                 if (!$name->save($name->rulesForStoring))
                 {
-                    $this->throwException($name->errors(), Lang::get('alba::user.failed.store'));
+                    $this->throwException($name->errors(), $this->language('errors.store'));
                 }
 
             });
@@ -254,7 +255,7 @@ class UsersResource extends Resource {
                 {
                     if (!$user->save($user->rulesForUpdate))
                     {
-                        $this->throwException($user->errors(), Lang::get('alba::user.failed.update'));
+                        $this->throwException($user->errors(), $this->language('errors.update'));
                     }
                 }
                 
@@ -263,7 +264,7 @@ class UsersResource extends Resource {
                 {
                     if (!$name->save($name->rulesForStoring))
                     {
-                        $this->throwException($name->errors(), Lang::get('alba::user.failed.update'));
+                        $this->throwException($name->errors(), $this->language('errors.update'));
                     }
                 }
             });
@@ -306,7 +307,7 @@ class UsersResource extends Resource {
         // Check if user is allowed to activate
         if (!$object->isActivationAllowed())
         {
-            $this->throwException(Lang::get('alba::user.failed.activation_not_allowed'));
+            $this->throwException($this->language('errors.activation_not_allowed'));
         }
 
         DB::transaction(function() use ($object)
@@ -339,12 +340,13 @@ class UsersResource extends Resource {
      */
     public function emailActivation(UserInterface $object, $token)
     {
-        $templates = ['emails.html.users.reset-activation', 'emails.text.users.reset-activation'];
+        $templates = Config::get('alba::user.views.users.emails.reset_activation');
         $data = ['user' => $object->toArray(), 'token' => $token];
-        Mail::send($templates, $data, function($message) use ($object)
+        $subject = $this->language('subjects.reset_activation');
+        Mail::send($templates, $data, function($message) use ($object, $subject)
         {
             $message->to($object->email, $object->fullName)
-                ->subject(Lang::get('alba::user.subject.reset-activation'));
+                ->subject($subject);
         });
     }
 
@@ -368,7 +370,7 @@ class UsersResource extends Resource {
             // Activate user
             if (!$object->activate())
             {
-                $this->throwException($object->errors(), Lang::get('alba::user.failed.activate'));
+                $this->throwException($object->errors(), $this->language('errors.activate'));
             }
 
             // Delete activation token
@@ -381,7 +383,7 @@ class UsersResource extends Resource {
         {
             if(!$object->savePassword($newPassword))
             {
-                $this->throwException($object->errors(), Lang::get('alba::user.failed.update_password'));
+                $this->throwException($object->errors(), $this->language('errors.set_password'));
             }
         }
 
@@ -405,7 +407,7 @@ class UsersResource extends Resource {
         // Check if user is allowed to activate
         if (!$object->isPasswordResetAllowed())
         {
-            $this->throwException(Lang::get('alba::user.failed.password_reset_not_allowed.'));
+            $this->throwException($this->language('errors.password_reset_not_allowed.'));
         }
 
         DB::transaction(function() use ($object)
@@ -438,12 +440,13 @@ class UsersResource extends Resource {
      */
     public function emailPasswordReset(UserInterface $object, $token)
     {
-        $templates = ['emails.html.users.reset-password', 'emails.text.users.reset-password'];
+        $templates = Config::get('alba::user.views.users.emails.reset_password');
         $data = ['user' => $object->toArray(), 'token' => $token];
-        Mail::send($templates, $data, function($message) use ($object)
+        $subject = $this->language('subjects.reset_password');
+        Mail::send($templates, $data, function($message) use ($object, $subject)
         {
             $message->to($object->email, $object->fullName)
-                ->subject(Lang::get('alba::user.subject.reset_password'));
+                ->subject($subject);
         });
     }
 
@@ -466,7 +469,7 @@ class UsersResource extends Resource {
         {
             if(!$object->savePassword($newPassword))
             {
-                $this->throwException($object->errors(), Lang::get('alba::user.failed.set_password'));
+                $this->throwException($object->errors(), $this->language('errors.set_password'));
             }
 
             // Delete password reset token
@@ -489,7 +492,7 @@ class UsersResource extends Resource {
         $object = $this->show($id);
         if(!$object->block())
         {
-            $this->throwException($object->errors(), Lang::get('alba::user.failed.block'));
+            $this->throwException($object->errors(), $this->language('errors.block'));
         }
         return $object;
     }
@@ -506,7 +509,7 @@ class UsersResource extends Resource {
         $object = $this->show($id);
         if(!$object->unblock())
         {
-            $this->throwException($object->errors(), Lang::get('alba::user.failed.unblock'));
+            $this->throwException($object->errors(), $this->language('errors.unblock'));
         }
         return $object;
     }
@@ -523,7 +526,7 @@ class UsersResource extends Resource {
         $object = $this->show($id);
         if(!$object->deactivate())
         {
-            $this->throwException($object->errors(), Lang::get('alba::user.failed.deactivate'));
+            $this->throwException($object->errors(), $this->language('errors.deactivate'));
         }
         return $object;
     }

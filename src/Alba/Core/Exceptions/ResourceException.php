@@ -37,7 +37,7 @@ class ResourceException extends Exception {
         if(is_null($message))
         {
             $message = $messageBag;
-            if($messageBag instanceof MessageProviderInterface)
+            if($message instanceof MessageProviderInterface)
             {
                 $message = $messageBag->__toString();
             }
@@ -78,6 +78,8 @@ class ResourceException extends Exception {
      */
     public function handleWithRedirect()
     {
+        // @todo Why is $this->messageBag a string equal to $message
+        // here when in __construct() it's as a MessageBag?
         $redirect = Redirect::back()
             ->with('message', $this->getMessage())
             ->withErrors($this->getMessageBag())

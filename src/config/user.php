@@ -15,13 +15,157 @@ return [
 	|
 	*/
 
+
+	/*
+	|--------------------------------------------------------------------------
+	| Token configurations
+	|--------------------------------------------------------------------------
+	|
+	| The following configuration options set the Time-to-Live (TTL) for token
+	| expiration. Values should be specified in hours.
+	|
+	*/
+
 	'tokens' => [
+
+		'ttl' => 24, // Default TTL used by all User tokens
+
 		'activation' => [
 			'ttl' => 24,
 		],
 
 		'password_reset' => [
 			'ttl' => 24,
+		],
+	],
+	
+	/*
+	|--------------------------------------------------------------------------
+	| Routes to be included by this module
+	|--------------------------------------------------------------------------
+	|
+	| The following configuration options alter which routes are included,
+	| effectively allowing the user to not use some or all of the default
+	| routes available.
+	|
+	*/
+
+	'routes' => [
+		
+		// Groups of routes
+		'api' 		=> true,
+		'backend' 	=> true,
+		'public'	=> true,
+
+		// Module routes within each group
+		'modules' => [
+			'users'			=> true,
+			'tokens'		=> true,
+			'roles'			=> true,
+			'permissions'	=> true,
+		],
+	],
+
+	/*
+	|--------------------------------------------------------------------------
+	| Views to be used by this module
+	|--------------------------------------------------------------------------
+	|
+	| The following configuration options alter which package handles the
+	| views, and which views are used specifically by each function.
+	|
+	*/
+
+	'views' => [
+		
+		// Package used by each module
+		'packages' => [
+			'users' 		=> 'alba::',
+			'tokens' 		=> 'alba::',
+			'roles' 		=> 'alba::',
+			'permissions'	=> 'alba::',
+		],
+
+		// Views used by user module
+		'users' => [
+			'index' 			=> 'users.index',
+			'signup'			=> 'users.signup',
+			'registered'		=> 'users.reset-activation',
+			'create'			=> 'users.form',
+			'show'				=> 'users.show',
+			'edit'				=> 'users.form',
+			'signin'			=> 'users.signin',
+			'forgot_password' 	=> 'users.forgot-password',
+			'reset_password'	=> 'users.reset-password',
+			'new_password'		=> 'users.new-password',
+			'new_activation'	=> 'users.new-activation',
+			'reset_activation'	=> 'users.reset-activation',
+			'activate_password' => 'users.activate-password',
+
+			// Views used in emails
+			'emails' => [
+				'reset_activation' => [
+					'emails.html.users.reset-activation',
+					'emails.text.users.reset-activation',
+				],
+				'reset_password' => [
+					'emails.html.users.reset-password',
+					'emails.text.users.reset-password',
+				],
+			],
+		],
+
+		// Views used by tokens module
+		'tokens' => [
+			'index' 			=> 'tokens.index',
+			'show'				=> 'tokens.show',
+		],
+
+		// Views used by roles module
+		'roles' => [
+			'index' 			=> 'roles.index',
+			'create'			=> 'roles.form',
+			'show'				=> 'roles.show',
+			'edit'				=> 'roles.form',
+		],
+
+		// Views used by permissions module
+		'permissions' => [
+			'index' 			=> 'permissions.index',
+			'create'			=> 'permissions.form',
+			'show'				=> 'permissions.show',
+			'edit'				=> 'permissions.form',
+		],
+	],
+
+	/*
+	|--------------------------------------------------------------------------
+	| Redirects to be used by this module
+	|--------------------------------------------------------------------------
+	|
+	| The following configuration options alter which routes are called when
+	| the module's methods perform redirects.
+	|
+	*/
+
+	'redirects' => [
+
+		// Views used by user module
+		'users' => [
+			'register' 			=> 'users.registered',
+			'store'				=> 'admin.users.show',
+			'update'			=> 'admin.users.show',
+			'login'				=> 'index',
+			'logout'			=> 'users.signin',
+			'set_password'		=> 'users.account',
+			'activate' => [
+				'guest'			=> 'users.account',
+				'user'			=> 'admin.users.show',
+			],
+			'destroy'			=> 'admin.users.index',
+			'deactivate'		=> 'admin.users.show',
+			'block'				=> 'admin.users.show',
+			'unblock'			=> 'admin.users.unblock',
 		],
 	],
 

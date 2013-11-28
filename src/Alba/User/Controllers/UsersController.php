@@ -3,9 +3,8 @@
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\View;
 
 use Alba\Core\Controllers\Controller;
 use Alba\User\Controllers\UsersResource;
@@ -21,6 +20,13 @@ use Alba\User\Controllers\UsersApiController;
  * @see Alba\User\Controllers\UsersApiController
  */
 class UsersController extends Controller {
+
+    /**
+     * The module name
+     * 
+     * @var string
+     */
+    protected $module = 'user';
 
     /**
      * Inject dependencies
@@ -43,7 +49,7 @@ class UsersController extends Controller {
     public function index()
     {
         $paginator = $this->apis['user']->index();
-        $this->layout->content = View::make('alba::users.index', $paginator);
+        $this->content('index', $paginator);
     }
 
     /**
@@ -53,7 +59,7 @@ class UsersController extends Controller {
      */
     public function signup()
     {
-        $this->layout->content = View::make('alba::users.signup');
+        $this->content('signup');
     }
 
     /**
@@ -64,8 +70,8 @@ class UsersController extends Controller {
     public function register()
     {
         $object = $this->apis['user']->store();
-        return Redirect::route('users.registered')
-            ->with('message', Lang::get('alba::user.success.register'));
+        return $this->redirect('registered')
+            ->with('message', $this->language('success.register'));
     }
 
     /**
@@ -75,7 +81,7 @@ class UsersController extends Controller {
      */
     public function registered()
     {
-        $this->layout->count = View::make('alba::users.reset-activation');
+        $this->content('registered');
     }
 
     /**
@@ -85,7 +91,7 @@ class UsersController extends Controller {
      */
     public function create()
     {
-        $this->layout->content = View::make('alba::users.create');
+        $this->content('create');
     }
 
     /**
@@ -97,8 +103,8 @@ class UsersController extends Controller {
     {
         $object = $this->apis['user']->store();
 
-        return Redirect::route('users.show', ['id' => $object->id])
-            ->with('message', Lang::get('alba::user.success.store'));
+        return $this->redirect('store', ['id' => $object->id])
+            ->with('message', $this->language('success.store'));
     }
 
     /**
@@ -110,7 +116,7 @@ class UsersController extends Controller {
     public function show($id)
     {
         $object = $this->resources['user']->show($id);        
-        $this->layout->content = View::make('alba::users.show')->with('user', $object);
+        $this->content('show', ['user' => $object]);
     }
 
     /**
@@ -133,7 +139,7 @@ class UsersController extends Controller {
     public function edit($id)
     {
         $object = $this->resources['user']->show($id);
-        $this->layout->content = View::make('alba::users.edit')->with('user', $object);
+        $this->content('edit', ['user' => $object]);
     }
 
     /**
@@ -148,24 +154,8 @@ class UsersController extends Controller {
 
         $object = $this->apis['user']->update($id);
 
-        return Redirect::route('users.show', ['id' => $id])
-            ->with('message', Lang::get('alba::user.success.update'));
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Redirect
-     */
-    public function destroy($id)
-    {
-        // @todo what about security here?
-
-        $this->apis['user']->destroy($id);
-
-        return Redirect::route('admin.users.index')
-            ->with('message', Lang::get('alba::user.success.destroy'));
+        return $this->redirect('update', ['id' => $id])
+            ->with('message', $this->language('success.update'));
     }
 
     /**
@@ -175,7 +165,7 @@ class UsersController extends Controller {
      */
     public function signin()
     {
-        $this->layout->content = View::make('alba::users.signin');
+        $this->content('signin');
     }
 
     /**
@@ -192,8 +182,9 @@ class UsersController extends Controller {
         $object = $this->resources['user']->authenticate($credentials, $extras, $remember);
 
         // If login is ok, redirect to the intended URL or default to the dashboard
-        return Redirect::intended(route('index'))
-            ->with('message', Lang::get('alba::user.success.login'));
+        $route = Config::get('alba::user.redirects.users.login');
+        return Redirect::intended(route($route))
+            ->with('message', $this->language('success.login'));
     }
 
     /**
@@ -204,8 +195,8 @@ class UsersController extends Controller {
     public function logout()
     {
         $this->resources['user']->unauthenticate();
-        return Redirect::route('users.signin')
-            ->with('message', Lang::get('alba::user.success.logout'));
+        return $this->redirect('logout')
+            ->with('message', $this->language('success.logout'));
     }
 
     /**
@@ -215,7 +206,7 @@ class UsersController extends Controller {
      */
     public function forgotPassword()
     {
-        $this->layout->content = View::make('alba::users.forgot-password');
+        $this->content('forgot_password');
     }
 
     /**
@@ -235,7 +226,7 @@ class UsersController extends Controller {
         // Send activation email to user
         $email = ($id) ? $object->email : Input::get('email');
         $object = $this->resources['user']->resetPassword($email);
-        $this->layout->content = View::make('alba::users.reset-password')->with('user', $object);
+        $this->content('reset_password', ['users' => $object]);
     }
 
     /**
@@ -246,7 +237,7 @@ class UsersController extends Controller {
      */
     public function newPassword($token)
     {
-        $this->layout->content = View::make('alba::users.new-password')->with('token', $token);
+        $this->content('new_password', ['token' => $token]);
     }
 
     /**
@@ -266,8 +257,8 @@ class UsersController extends Controller {
             Auth::login($object);
         }
 
-        return Redirect::route('users.account')
-            ->with('message', Lang::get('alba::user.success.set_password'));
+        return $this->redirect('set_password')
+            ->with('message', $this->language('success.set_password'));
     }
 
     /**
@@ -277,7 +268,7 @@ class UsersController extends Controller {
      */
     public function newActivation()
     {
-        $this->layout->content = View::make('alba::users.new-activation');
+        $this->content('new_activation');
     }
 
     /**
@@ -299,7 +290,7 @@ class UsersController extends Controller {
         $object = $this->resources['user']->resetActivation($email);
 
         // Show confirmation page
-        $this->layout->content = View::make('alba::users.reset-activation')->with('user', $object);
+        $this->content('reset_activation', ['user' => $object]);
     }
 
     /**
@@ -310,7 +301,7 @@ class UsersController extends Controller {
      */
     public function activatePassword($token)
     {
-        $this->layout->content = View::make('alba::users.activate-password')->with('token', $token);
+        $this->content('activate_password', ['token' => $token]);
     }
 
     /**
@@ -332,61 +323,13 @@ class UsersController extends Controller {
             Auth::login($object);
             
             // Redirect to user profile
-            return Redirect::route('users.account')
-                ->with('message', Lang::get('alba::user.success.activate'));
+            return $this->redirect('activate.guest')
+                ->with('message', $this->language('success.activate'));
         }
 
         // Redirect to user profile
-        return Redirect::route('admin.users.show', ['id' => $object->id])
-            ->with('message', Lang::get('alba::user.success.activate'));
-    }
-
-    /**
-     * Deactivates the specified user
-     * 
-     * @param integer $id
-     * @return Redirect
-     */
-    public function deactivate($id)
-    {
-        // @todo what about security here?
-
-        $object = $this->resources['user']->deactivate($id);
-        
-        return Redirect::route('admin.users.show', ['id' => $id])
-            ->with('message', Lang::get('alba::user.success.deactivate'));
-    }
-
-    /**
-     * Blocks the specified user
-     * 
-     * @param integer $id
-     * @return Redirect
-     */
-    public function block($id)
-    {
-        // @todo what about security here?
-
-        $object = $this->resources['user']->block($id);
-
-        return Redirect::route('admin.users.show', ['id' => $id])
-            ->with('message', Lang::get('alba::user.success.block'));
-    }
-
-    /**
-     * Unblocks the specified user 
-     * 
-     * @param integer $id
-     * @return Redirect
-     */
-    public function unblock($id)
-    {
-        // @todo what about security here?
-
-        $object = $this->resources['user']->unblock($id);
-        
-        return Redirect::route('admin.users.show', ['id' => $id])
-            ->with('message', Lang::get('alba::user.success.unblock'));
+        return $this->redirect('activate.user', ['id' => $object->id])
+            ->with('message', $this->language('success.activate'));
     }
 
 }

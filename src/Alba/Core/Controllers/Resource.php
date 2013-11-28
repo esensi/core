@@ -1,6 +1,7 @@
 <?php namespace Alba\Core\Controllers;
 
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Eloquent\Model;
 use Alba\Core\Contracts\ResourceInterface;
 use Alba\Core\Controllers\Controller;
@@ -13,6 +14,13 @@ use Alba\Core\Exceptions\ResourceException;
  * @author daniel <daniel@bexarcreative.com>
  */
 class Resource extends Controller implements ResourceInterface {
+
+    /**
+     * The module name
+     * 
+     * @var string
+     */
+    protected $module = 'core';
 
 	/**
      * The resource model
@@ -115,7 +123,7 @@ class Resource extends Controller implements ResourceInterface {
 		$this->model->fill($attributes);
 		if(!$this->model->save($rules))
 		{
-			$this->throwException($object->errors(), Lang::get('alba::resource.failed.store'));
+			$this->throwException($object->errors(), $this->language('errors.store'));
 		}
 		return $this->model;
 	}
@@ -131,7 +139,7 @@ class Resource extends Controller implements ResourceInterface {
 		$object = $this->model->find($id);
 		if(!$object)
 		{
-			$this->throwException(Lang::get('alba::resource.failed.show'));
+			$this->throwException($this->language('errors.show'));
 		}
 		return $object;
 	}
@@ -151,7 +159,7 @@ class Resource extends Controller implements ResourceInterface {
 		$object->fill($attributes);
 		if(!$object->save($rules))
 		{
-			$this->throwException($object->errors(), Lang::get('alba::resource.failed.update'));
+			$this->throwException($object->errors(), $this->language('errors.update'));
 		}
 		return $object;
 	}
@@ -172,7 +180,7 @@ class Resource extends Controller implements ResourceInterface {
 		
 		if(!$result)
 		{
-			$this->throwException(Lang::get('alba::resource.failed.destroy'));
+			$this->throwException($this->language('errors.destroy'));
 		}
 
 		return $result;
@@ -235,4 +243,16 @@ class Resource extends Controller implements ResourceInterface {
 	{
 		throw new $this->exception($messageBag, $message, $code, $previous);
 	}
+
+    /**
+     * Get a language line
+     *
+     * @param string $key to language config
+     * @param array $replacements in language line
+     * @return string
+     */
+    protected function language($key, $replacements = [])
+    {
+        return Lang::get('alba::' . str_singular($this->module) . '.' .$key, $replacements);
+    }
 }

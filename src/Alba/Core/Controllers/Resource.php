@@ -61,7 +61,10 @@ class Resource extends Controller implements ResourceInterface {
      */
 	public function __construct()
 	{
-		$this->model = new Model;
+        //@todo:  we should have a core model that has all of the ardent + eloquent properties on it plus the extras that resource uses 
+        //so that way we can make sure to just extend it and copy over any properties we want to change
+		$this->model = new Model;        
+
 		$this->setDefaults($this->defaults);
 	}
 

@@ -42,7 +42,7 @@ class UsersApiController extends Controller {
 
         // Filter by active status
         $active = Input::get('active', null);
-        if( is_numeric($active) )
+        if( is_numeric($active) && $active >= 0 && $active <= 1)
         {
             $params['active'] = $active;
             $params['scopes']['whereActive'] = [ (int) $active ];
@@ -50,7 +50,7 @@ class UsersApiController extends Controller {
 
         // Filter by blocked status
         $blocked = Input::get('blocked', null);
-        if( is_numeric($blocked) )
+        if( is_numeric($blocked) && $blocked >= 0 && $blocked <= 1)
         {
             $params['blocked'] = $blocked;
             $params['scopes']['whereBlocked'] = [ (int) $blocked ];

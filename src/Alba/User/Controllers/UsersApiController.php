@@ -41,7 +41,7 @@ class UsersApiController extends Controller {
         }
 
         // Filter by active status
-        $active = Input::input('active', null);
+        $active = Input::get('active', null);
         if( is_numeric($active) )
         {
             $params['active'] = $active;

@@ -69,7 +69,7 @@ class UsersTableSeeder extends Seeder {
                     'last_name' => 'User',
                     'suffix' => 'MD'
                 ],
-                'role' => false
+                'role' => 'user'
             ]
         ];
         

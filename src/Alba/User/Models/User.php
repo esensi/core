@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Illuminate\Auth\UserInterface;
+use Illuminate\Support\Facades\DB;
 use LaravelBook\Ardent\Ardent;
 use Zizaco\Entrust\HasRole;
 use Alba\User\Models\Token;
@@ -363,8 +364,7 @@ class User extends Ardent implements UserInterface {
             $names = explode(',', $names);
 
         // Query the names table for matching names
-        return $query->select(['users.*', 'user_names.first_name', 'user_names.last_name'])
-            ->join('user_names', 'users.id', '=', 'user_names.user_id')
+        return $query->joinNames()
             ->where(function($query) use ($names)
                 {
                     // Loop over each name to find matches for both first and last name
@@ -374,6 +374,20 @@ class User extends Ardent implements UserInterface {
                             ->orWhere('user_names.last_name', 'LIKE', '%'.$name.'%');
                     }
                 });
+    }
+
+    /**
+     * Builds a query scope to return users with names
+     *
+     * @param Illuminate\Database\Query\Builder $query
+     * @return Illuminate\Database\Query\Builder
+     */
+    public function scopeJoinNames($query)
+    {
+        // Query the names table
+        $name = DB::raw('CONCAT(`user_names`.`first_name`, `user_names`.`middle_name`, `user_names`.`last_name`) AS `name`');
+        return $query->select(['users.*', 'user_names.first_name', 'user_names.last_name', $name])
+            ->join('user_names', 'users.id', '=', 'user_names.user_id');
     }
 
     /** 
@@ -463,7 +477,7 @@ class User extends Ardent implements UserInterface {
     }
 
     /**
-     * Returns the numbers of days since the last password update
+     * Returns the number of days since the last password update
      *
      * @return integer
      */
@@ -472,6 +486,17 @@ class User extends Ardent implements UserInterface {
         $date = new Carbon($this->password_updated_at);
         $now = Carbon::now();
         return $date->diffInDays($now);
+    }
+
+    /**
+     * Returns the number of minutes since the last log in
+     *
+     * @return integer
+     */
+    public function getTimeSinceLastAuthenticatedAttribute()
+    {
+        $date = new Carbon($this->authenticated_at);
+        return $date->diffForHumans();
     }
 
     /**

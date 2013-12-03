@@ -36,7 +36,7 @@ class UsersController extends Controller {
      * @return void
      */
     public function __construct(UsersResource $usersResource, UsersApiController $usersApi)
-    {
+    {   
         $this->resources['user'] = $usersResource;
         $this->apis['user'] = $usersApi;
     }
@@ -49,7 +49,8 @@ class UsersController extends Controller {
     public function index()
     {
         $paginator = $this->apis['user']->index();
-        $this->content('index', $paginator);
+        $collection = $paginator->getCollection();
+        $this->content('index', compact('paginator', 'collection'));
     }
 
     /**

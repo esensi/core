@@ -34,16 +34,40 @@ class UsersApiController extends Controller {
     {
         $params = Input::only('max', 'order', 'sort', 'keyword');
 
-        // Filter by role
-        if( $role = Input::get('roles', false) )
+        // Join the names table when needed
+        if(in_array($params['order'], ['name', 'first_name', 'last_name']))
         {
-            $params['scopes']['ofRole'] = [ $role ];
+            $params['scopes']['joinNames'] = [];
+        }
+
+        // Filter by active status
+        $active = Input::input('active', null);
+        if( is_numeric($active) )
+        {
+            $params['active'] = $active;
+            $params['scopes']['whereActive'] = [ (int) $active ];
+        }
+
+        // Filter by blocked status
+        $blocked = Input::get('blocked', null);
+        if( is_numeric($blocked) )
+        {
+            $params['blocked'] = $blocked;
+            $params['scopes']['whereBlocked'] = [ (int) $blocked ];
+        }
+
+        // Filter by role
+        if( $roles = Input::get('roles', false) )
+        {
+            $params['roles'] = $roles;
+            $params['scopes']['ofRole'] = [ $roles ];
         }
 
         // Filter by name
-        if( $name = Input::get('names', false) )
+        if( $names = Input::get('names', false) )
         {
-            $params['scopes']['byName'] = [ $name ];
+            $params['names'] = $names;
+            $params['scopes']['byName'] = [ $names ];
         }
         
         return $this->resources['user']->index($params);

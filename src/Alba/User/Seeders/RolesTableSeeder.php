@@ -1,6 +1,7 @@
 <?php namespace Alba\User\Seeders;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 use Alba\Core\Seeders\Seeder;
 use Alba\User\Models\Permission;
 use Alba\User\Models\Role;
@@ -21,16 +22,8 @@ class RolesTableSeeder extends Seeder {
         DB::table("assigned_roles")->delete();
         DB::table("roles")->delete();
 
-        /*
-         * Array of roles (key) and assigned permissions (value).
-         * You can use the special permission "*" as a wildcard for all permissions.
-         *
-         * @example $roles = [ 'admin' => ['*'], 'user' => ['foo', 'bar'] ]
-         */
-        $roles = [
-            'admin' => ['*'], 
-            'user' => ['module_dashboard_view'],
-        ];
+        // Get the roles from config
+        $roles = Config::get('alba::user.roles');
 
         // Holds cache of all permissions
         $all_permissions = [];
@@ -45,6 +38,12 @@ class RolesTableSeeder extends Seeder {
                 $role = new Role();
                 $role->name = $name;
                 $this->saveOrFail($role);
+
+                // Only assign permissions if they need to be
+                if(empty($assigned_perms))
+                {
+                    continue;
+                }
 
                 // Check if assigned permissions include all via wildcard
                 if (in_array('*', $assigned_perms))

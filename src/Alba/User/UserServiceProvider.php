@@ -35,6 +35,7 @@ class UserServiceProvider extends ServiceProvider {
      */
     public function boot()
     {
+        require __DIR__.'/filters.php';
         require __DIR__.'/routes.php';
     }
 

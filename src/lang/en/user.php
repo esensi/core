@@ -27,6 +27,8 @@ return [
 		'activation_not_allowed'			=> 'A new activation request is not allowed for this user.',
 		'update'							=> 'User could not be saved.',
 		'store'								=> 'User could not be created.',
+		'no_permission'						=> 'User does not have ":permission" permission.',
+		'no_results'						=> 'There are no user results.',
 	],
 
 	/*

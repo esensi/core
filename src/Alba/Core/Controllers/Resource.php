@@ -109,9 +109,13 @@ class Resource extends Controller implements ResourceInterface {
 		}
 
 		// Paginate the results
-		return $query->where($this->where)
+		$paginator = $query->where($this->where)
 			->orderBy($this->order, $this->sort)
 			->paginate($this->max);
+
+		// Generate paginated links
+		$queries = array_except($params, ['relationships', 'scopes', 'where']);
+		return $paginator->appends($queries);
 	}
 
 	/**

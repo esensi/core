@@ -15,6 +15,47 @@ return [
 	|
 	*/
 
+	/*
+	|--------------------------------------------------------------------------
+	| Permission configurations
+	|--------------------------------------------------------------------------
+	|
+	| The following configuration options are used by the permission seeder to
+	| add permissions to the permissions table. Roles are then assigned these
+	| permissions and the roles are assigned to the users.
+	|
+	*/
+
+    'permissions' => [
+    	
+    	// Permission name 		=> Display name
+        'module_users'          => 'Manage Users',
+        'module_roles'          => 'Manage Roles',
+        'module_permissions'    => 'Manage Permissions',
+        'module_tokens'         => 'Manage Tokens',
+    ],
+
+	/*
+	|--------------------------------------------------------------------------
+	| Role configurations
+	|--------------------------------------------------------------------------
+	|
+	| The following configuration options are used by the roles seeder to
+	| add default roles and assign different permissions to the roles. Roles are
+	| then assigned to the users.
+	|
+	| Array of roles (key) and assigned permissions (value).
+	| You can use the special permission "*" as a wildcard for all permissions.
+	|
+	| @example $roles = [ 'admin' => ['*'], 'user' => ['foo', 'bar'] ]
+	|
+	*/
+
+    'roles' => [
+
+        'admin'          		=> ['*'],
+        'user'					=> [],
+    ],
 
 	/*
 	|--------------------------------------------------------------------------

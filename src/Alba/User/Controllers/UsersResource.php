@@ -73,8 +73,10 @@ class UsersResource extends Resource {
      * @var Alba\User\Models\Name $name
      * @var Alba\User\Models\Role $role
      * @var Alba\User\Controllers\TokensResource $tokensResource
+     * @return UsersResource;
      */
-    public function __construct(User $user, Name $name, Role $role, TokensResource $tokensResource) {
+    public function __construct(User $user, Name $name, Role $role, TokensResource $tokensResource)
+    {
         $this->model = $user;
         $this->name = $name;
         $this->role = $role;

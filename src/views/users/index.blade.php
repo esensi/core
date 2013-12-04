@@ -4,9 +4,11 @@
 	<ol class="breadcrumb">
 		<li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
 		<li class="active">Users</li>
+		@if($collection->count())
 		<span class="pull-right text-muted">
 			Showing {{$paginator->getFrom()}} to {{$paginator->getTo()}} of {{$paginator->getTotal()}}
 		</span>
+		@endif
 	</ol>
 
 	@include('alba::core.errors')
@@ -36,50 +38,57 @@
 		  				<td>{{ $item->timeSinceLastAuthenticated }}</td>
 		  				<td>
 		  					<div class="btn-group">
-							  <a href="{{ route('admin.users.show', $item->id) }}" type="button" class="btn btn-sm btn-default">
-							  	<i class="fa fa-eye fa-fw"></i> View</a>
-							  <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
-							    <span class="caret"></span>
-							    <span class="sr-only">Toggle Dropdown</span>
-							  </button>
-							  <ul class="dropdown-menu" role="menu">
-							    <li><a href="{{ route('admin.users.edit', $item->id) }}">
-							    	<i class="fa fa-pencil fa-fw"></i> Edit User</a></li>
-							    @if($item->isLoginAllowed())
-							    <li><a href="{{ route('admin.users.reset-activation.confirm', $item->id) }}" data-toggle="modal" data-target="#albaModal">
-							    	<i class="fa fa-envelope-o fa-fw"></i> Reset Activation</a></li>
-							    @endif
-							    @if($item->isPasswordResetAllowed())
-							    <li><a href="{{ route('admin.users.reset-password.confirm', $item->id) }}" data-toggle="modal" data-target="#albaModal">
-							    	<i class="fa fa-lock fa-fw"></i> Reset Password</a></li>
-							    @endif
-							    <li class="divider"></li>
-							    <li class="dropdown-header">Access Controls</li>
-							    @if(Entrust::can('module_roles'))
-							    	<li><a href="{{ route('admin.users.edit.roles', $item->id) }}" data-toggle="modal" data-target="#albaModal">
-							    		<i class="fa fa-key fa-fw"></i> Assign Roles</a></li>
-							    @endif
-							    @if($item->active)
-							    <li><a href="{{ route('admin.users.deactivate.confirm', $item->id) }}" data-toggle="modal" data-target="#albaModal">
-							    	<i class="fa fa-times-circle-o fa-fw"></i> Deactivate</a></li>
-							    @else
-							    <li><a href="{{ route('admin.users.activate.confirm', $item->id) }}" data-toggle="modal" data-target="#albaModal">
-							    	<i class="fa fa-check-circle-o fa-fw"></i> Activate</a></li>
-							    @endif
-							    @if($item->blocked)
-							    <li><a href="{{ route('admin.users.unblock.confirm', $item->id) }}" data-toggle="modal" data-target="#albaModal">
-							    	<i class="fa fa-power-off fa-fw"></i> Unblock</a></li>
-							    @else
-							    <li><a href="{{ route('admin.users.block.confirm', $item->id) }}" data-toggle="modal" data-target="#albaModal">
-							    	<i class="fa fa-ban fa-fw"></i> Block</a></li>
-							    @endif
-							    <li><a href="{{ route('admin.users.destroy.confirm', $item->id) }}" data-toggle="modal" data-target="#albaModal">
-							    	<i class="fa fa-trash-o fa-fw"></i> Delete</a></li>
-							    @if($item->trashed())
-							    <li><a href="{{ route('admin.users.restore.confirm', $item->id) }}" data-toggle="modal" data-target="#albaModal">
-							    	<i class="fa fa-refresh fa-fw"></i> Restore</a></li>
-							    @endif
-							  </ul>
+							  @if(!$item->trashed())
+								  <a href="{{ route('admin.users.show', $item->id) }}" class="btn btn-sm btn-default">
+								  	<i class="fa fa-eye fa-fw"></i> View</a>
+								  <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
+								    <span class="caret"></span>
+								    <span class="sr-only">Toggle Dropdown</span>
+								  </button>
+								  <ul class="dropdown-menu pull-right" role="menu">
+								    <li><a href="{{ route('admin.users.edit', $item->id) }}">
+								    	<i class="fa fa-pencil fa-fw"></i> Edit User</a></li>
+								    @if($item->isActivationAllowed())
+								    <li><a href="{{ route('admin.users.reset-activation.confirm', $item->id) }}" data-toggle="modal" data-target="#albaModal">
+								    	<i class="fa fa-envelope-o fa-fw"></i> Send Activation</a></li>
+								    @endif
+								    @if($item->isPasswordResetAllowed())
+								    <li><a href="{{ route('admin.users.reset-password.confirm', $item->id) }}" data-toggle="modal" data-target="#albaModal">
+								    	<i class="fa fa-lock fa-fw"></i> Reset Password</a></li>
+								    @endif
+								    <li class="divider"></li>
+								    <li class="dropdown-header">Access Controls</li>
+								    @if(Entrust::can('module_roles'))
+								    	<li><a href="{{ route('admin.users.edit.roles', $item->id) }}" data-toggle="modal" data-target="#albaModal">
+								    		<i class="fa fa-key fa-fw"></i> Assign Roles</a></li>
+								    @endif
+								    @if($item->active)
+								    <li><a href="{{ route('admin.users.deactivate.confirm', $item->id) }}" data-toggle="modal" data-target="#albaModal">
+								    	<i class="fa fa-times-circle-o fa-fw"></i> Deactivate</a></li>
+								    @else
+								    <li><a href="{{ route('admin.users.activate.confirm', $item->id) }}" data-toggle="modal" data-target="#albaModal">
+								    	<i class="fa fa-check-circle-o fa-fw"></i> Activate</a></li>
+								    @endif
+								    @if($item->blocked)
+								    <li><a href="{{ route('admin.users.unblock.confirm', $item->id) }}" data-toggle="modal" data-target="#albaModal">
+								    	<i class="fa fa-power-off fa-fw"></i> Unblock</a></li>
+								    @else
+								    <li><a href="{{ route('admin.users.block.confirm', $item->id) }}" data-toggle="modal" data-target="#albaModal">
+								    	<i class="fa fa-ban fa-fw"></i> Block</a></li>
+								    @endif
+								    @if($item->trashed())
+								    <li><a href="{{ route('admin.users.restore.confirm', $item->id) }}" data-toggle="modal" data-target="#albaModal">
+								    	<i class="fa fa-refresh fa-fw"></i> Restore</a></li>
+								    @endif
+								    <li><a href="{{ route('admin.users.destroy.confirm', $item->id) }}" data-toggle="modal" data-target="#albaModal">
+								    	<i class="fa fa-trash-o fa-fw"></i> Trash</a></li>
+								  </ul>
+							  @else
+								  <a href="{{ route('admin.users.restore.confirm', $item->id) }}" class="btn btn-sm btn-success" data-toggle="modal" data-target="#albaModal">
+								  	<i class="fa fa-refresh fa-fw"></i> Restore</a>
+								  <a href="{{ route('admin.users.destroy.confirm', $item->id) }}" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#albaModal">
+								    	<i class="fa fa-trash-o fa-fw"></i> Delete</a>
+							  @endif
 							</div>
 						</td>
 					</tr>

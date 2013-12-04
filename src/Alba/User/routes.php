@@ -138,7 +138,9 @@ Route::group([
 			Route::post('{id}/edit', [ 'as' => 'admin.users.update', 'uses' => 'Alba\User\Controllers\UsersAdminController@update' ]);
 			Route::get('{id}/edit', [ 'as' => 'admin.users.edit', 'uses' => 'Alba\User\Controllers\UsersAdminController@edit' ]);
 			
-			// Delete
+			// Delete / Restore
+			Route::post('{id}/restore', [ 'as' => 'admin.users.restore', 'uses' => 'Alba\User\Controllers\UsersAdminController@restore' ]);
+			Route::get('{id}/restore', [ 'as' => 'admin.users.restore.confirm', 'uses' => 'Alba\User\Controllers\UsersAdminController@restoreConfirm' ]);
 			Route::post('{id}/delete', [ 'as' => 'admin.users.destroy', 'uses' => 'Alba\User\Controllers\UsersAdminController@destroy' ]);
 			Route::get('{id}/delete', [ 'as' => 'admin.users.destroy.confirm', 'uses' => 'Alba\User\Controllers\UsersAdminController@destroyConfirm' ]);
 			
@@ -147,6 +149,7 @@ Route::group([
 			
 			// Search / Browse
 			Route::get('search', [ 'as' => 'admin.users.search', 'uses' => 'Alba\User\Controllers\UsersAdminController@search' ]);
+			Route::get('trash', [ 'as' => 'admin.users.trash', 'uses' => 'Alba\User\Controllers\UsersAdminController@trash' ]);
 			Route::get('/', [ 'as' => 'admin.users.index', 'uses' => 'Alba\User\Controllers\UsersAdminController@index' ]);
 		})->where('id', '[0-9]+');
 	endif;

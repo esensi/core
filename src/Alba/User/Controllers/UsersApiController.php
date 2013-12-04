@@ -32,7 +32,7 @@ class UsersApiController extends Controller {
      */
     public function index()
     {
-        $params = Input::only('max', 'order', 'sort', 'keyword');
+        $params = Input::only('max', 'order', 'sort', 'keyword', 'trashed');
 
         // Join the names table when needed
         if(in_array($params['order'], ['name', 'first_name', 'last_name']))
@@ -97,11 +97,12 @@ class UsersApiController extends Controller {
      * Display the specified resource.
      *
      * @param int $id of object
+     * @param boolean $withTrashed
      * @return Illuminate\Database\Eloquent\Model
      */
-    public function show($id)
+    public function show($id, $withTrashed = false)
     {
-        return $this->resources['user']->show($id);
+        return $this->resources['user']->show($id, $withTrashed);
     }
 
     /**
@@ -129,6 +130,18 @@ class UsersApiController extends Controller {
     {
         $force = Input::get('force');
         return $this->resources['user']->destroy($id, $force);
+    }
+
+    /**
+     * Restore the specified resource from soft delete.
+     *
+     * @param int $id of object to remove
+     * @return Illuminate\Database\Eloquent\Model
+     * 
+     */
+    public function restore($id)
+    {
+        return $this->resources['user']->restore($id);
     }
     
 }

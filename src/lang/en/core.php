@@ -16,6 +16,7 @@ return [
 		'store' => 'Object could not be stored.',
 		'show' => 'Object could not be found.',
 		'update' => 'Object could not be updated.',
+		'restore' => 'Object could not be restored.',
 		'destroy' => 'Object could not be deleted.',
 	],
 

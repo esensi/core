@@ -42,10 +42,11 @@
               <a href="{{ route('admin.users.index') }}" class="dropdown-toggle" data-toggle="dropdown">Users <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 @if(Entrust::can('module_roles'))
+                <li><a href="{{ route('admin.users.create') }}" data-toggle="modal" data-target="#albaModal">Create User</a></li>
                 <li><a href="{{ route('admin.users.index') }}">Browse Users</a></li>
                 <li><a href="{{ route('admin.users.search') }}" data-toggle="modal" data-target="#albaModal">Search Users</a></li>
+                <li><a href="{{ route('admin.users.trash') }}">Trash Can</a></li>
                 @endif
-                <li><a href="{{ route('admin.users.edit', Auth::user()->id) }}">Edit My User</a></li>
                 @if(Auth::user()->ability([], ['module_roles','module_permissions','module_tokens']))
                   <li class="divider"></li>
                   <li class="dropdown-header">Access Controls</li>

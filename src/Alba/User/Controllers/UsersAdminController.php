@@ -1,5 +1,6 @@
 <?php namespace Alba\User\Controllers;
 
+use Illuminate\Support\Facades\Input;
 use Alba\User\Controllers\UsersController;
 
 /**
@@ -22,6 +23,17 @@ class UsersAdminController extends UsersController {
     {
         $object = $this->resources['user']->show($id);
         $this->modal($view . '_confirm', ['user' => $object]);
+    }
+
+    /**
+     * Display a listing of the trashed resource.
+     *
+     * @return void
+     */
+    public function trash()
+    {
+        Input::merge(['trashed' => 'only']);
+        $this->index();
     }
 
     /**
@@ -54,7 +66,8 @@ class UsersAdminController extends UsersController {
      */
     public function destroyConfirm($id)
     {
-        $this->confirm($id, 'destroy');
+        $object = $this->resources['user']->show($id, true);
+        $this->modal('destroy_confirm', ['user' => $object]);
     }
 
     /**
@@ -71,6 +84,34 @@ class UsersAdminController extends UsersController {
 
         return $this->redirect('destroy')
             ->with('message', $this->language('success.destroy'));
+    }
+
+    /**
+     * Show confirmation modal to restore
+     * 
+     * @param integer $id
+     * @return void
+     */
+    public function restoreConfirm($id)
+    {
+        $object = $this->resources['user']->show($id, true);
+        $this->modal('restore_confirm', ['user' => $object]);
+    }
+
+    /**
+     * Restore the specified resource from soft delete.
+     *
+     * @param  int  $id
+     * @return Redirect
+     */
+    public function restore($id)
+    {
+        // @todo what about security here?
+
+        $this->apis['user']->restore($id);
+
+        return $this->redirect('restore')
+            ->with('message', $this->language('success.restore'));
     }
 
     /**

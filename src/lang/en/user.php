@@ -15,6 +15,7 @@ return [
 	'errors' => [
 		'validate'							=> 'User could not be found matching this email address and password.',
 		'authenticate'						=> 'User could not be logged in because it either blocked or it is awaiting email activation.',
+		'show'								=> 'User could not be found.',
 		'show_by_email'						=> 'User could not be found matching this email address.',
 		'show_by_activation_token'			=> 'Activation token could not be found or has already expired.',
 		'show_by_password_reset_token'		=> 'Password reset token could not be found or has already expired.',
@@ -28,6 +29,8 @@ return [
 		'activation_not_allowed'			=> 'A new activation request is not allowed for this user.',
 		'update'							=> 'User could not be saved.',
 		'store'								=> 'User could not be created.',
+		'restore'							=> 'User could not be restored.',
+		'destroy'							=> 'User could not be deleted.',
 		'no_permission'						=> 'User does not have ":permission" permission.',
 		'no_results'						=> 'There are no user results.',
 	],
@@ -44,6 +47,7 @@ return [
 
 	'success' => [
 		'destroy'							=> 'User has been deleted.',
+		'restore'							=> 'User has been restored.',
 		'activate'							=> 'User has been activated and will now be able to log in.',
 		'deactivate'						=> 'User has been deactivated and will not be able to log in.',
 		'block'								=> 'User has been blocked and will not be able to log in.',

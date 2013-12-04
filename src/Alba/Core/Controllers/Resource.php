@@ -63,7 +63,7 @@ class Resource extends Controller implements ResourceInterface {
 	{
         //@todo:  we should have a core model that has all of the ardent + eloquent properties on it plus the extras that resource uses 
         //so that way we can make sure to just extend it and copy over any properties we want to change
-		$this->model = new Model;        
+		$this->model = new Model;     
 
 		$this->setDefaults($this->defaults);
 	}
@@ -99,6 +99,19 @@ class Resource extends Controller implements ResourceInterface {
 		if ( isset($this->relationships) )
 			$query->with($this->relationships);
 		
+		// Include trashed results if model supports it
+		if ( $this->model->isSoftDeleting() && isset($this->trashed) )
+		{
+			switch($this->trashed)
+			{
+				case 'only':
+					$query->onlyTrashed();
+
+				case 'true':
+					$query->withTrashed();
+			}
+		}
+
 		// Build up the query using scope closures
 		if ( isset($this->scopes) && !empty($this->scopes) )
 		{
@@ -139,11 +152,12 @@ class Resource extends Controller implements ResourceInterface {
 	 * Display the specified resource.
 	 *
 	 * @param int $id of object
+	 * @param boolean $withTrashed
 	 * @return Illuminate\Database\Eloquent\Model
 	 */
-	public function show($id)
+	public function show($id, $withTrashed = false)
 	{
-		$object = $this->model->find($id);
+		$object = $this->model->newQuery(!$withTrashed)->find($id);
 		if(!$object)
 		{
 			$this->throwException($this->language('errors.show'));
@@ -172,6 +186,31 @@ class Resource extends Controller implements ResourceInterface {
 	}
 
 	/**
+	 * Restore the specified resource after being soft deleted
+	 *
+	 * @param int $id of object to restore
+	 * @return bool
+	 * 
+	 */
+	public function restore($id)
+	{
+		$object = $this->show($id, true);
+		
+		// Sloppy way to get around Ardent $rules validation
+		// @todo add a restore() method to Ardent that uses the forceSave method
+		$rules = $object::$rules;
+		$object::$rules = [];
+
+		// Restore user
+		if(!$object->restore())
+		{
+			$this->throwException($this->language('errors.restore'));
+		}
+		$object::$rules = $rules;
+		return $object;
+	}
+
+	/**
 	 * Remove the specified resource from storage.
 	 *
 	 * @param int $id of object to remove
@@ -181,11 +220,11 @@ class Resource extends Controller implements ResourceInterface {
 	 */
 	public function destroy($id, $force = true)
 	{
-		$object = $this->show($id);
+		$object = $this->show($id, true);
 		
-		$result = ($force) ? $object->forceDelete() : $object->delete();
-		
-		if(!$result)
+		$result = ($force || $object->trashed()) ? $object->forceDelete() : $object->delete();
+
+		if($result === false)
 		{
 			$this->throwException($this->language('errors.destroy'));
 		}

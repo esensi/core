@@ -23,6 +23,7 @@ return [
 		'block'								=> 'User could not be blocked: user can still log in.',
 		'set_password'						=> 'This password could not be saved.',
 		'password_reset_not_allowed'		=> 'A password reset is not allowed for this user.',
+		'password_reset'					=> 'The password could not be unset.',
 		'activate'							=> 'User could not be activated: user cannot log in.',
 		'activation_not_allowed'			=> 'A new activation request is not allowed for this user.',
 		'update'							=> 'User could not be saved.',
@@ -43,7 +44,7 @@ return [
 
 	'success' => [
 		'destroy'							=> 'User has been deleted.',
-		'activate'							=> 'User has been activate and will not be able to log in.',
+		'activate'							=> 'User has been activated and will now be able to log in.',
 		'deactivate'						=> 'User has been deactivated and will not be able to log in.',
 		'block'								=> 'User has been blocked and will not be able to log in.',
 		'unblock'							=> 'User has been unblocked and will now be able to log in.',
@@ -69,6 +70,29 @@ return [
 	'subjects' => [
 		'reset_password'					=> 'Reset your password!',
 		'reset_activation'					=> 'Activate your account!',
+	],
+
+	/*
+	|--------------------------------------------------------------------------
+	| Status message lines
+	|--------------------------------------------------------------------------
+	|
+	| The following language lines contain status message lines used by the
+	| User module models.
+	|
+	*/
+
+	'messages' => [
+		'not_active'						=> 'User cannot login because the user is not active.',
+		'no_password'						=> 'User cannot login because the user has no password.',
+		'is_blocked'						=> 'User cannot login because the user is blocked.',
+		'never_authenticated'				=> 'Never Logged In',
+		'blocked'							=> 'Blocked (Cannot Login)',
+		'not_blocked'						=> 'Not Blocked (Can Login)',
+		'active'							=> 'Activated',
+		'not_active'						=> 'Deactivated',
+		'no_password'						=> 'Password Not Set',
+		'has_password'						=> 'Password Set',
 	],
 
 ];

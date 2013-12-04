@@ -43,19 +43,21 @@
               <ul class="dropdown-menu">
                 @if(Entrust::can('module_roles'))
                 <li><a href="{{ route('admin.users.index') }}">Browse Users</a></li>
-                <li><a href="{{ route('admin.users.search') }}">Search Users</a></li>
+                <li><a href="{{ route('admin.users.search') }}" data-toggle="modal" data-target="#albaModal">Search Users</a></li>
                 @endif
                 <li><a href="{{ route('admin.users.edit', Auth::user()->id) }}">Edit My User</a></li>
-                <li class="divider"></li>
-                <li class="dropdown-header">Access Controls</li>
-                @if(Entrust::can('module_roles'))
-                  <li><a href="{{ route('admin.roles.index') }}">Role Management</a></li>
-                @endif
-                @if(Entrust::can('module_permissions'))
-                  <li><a href="{{ route('admin.permissions.index') }}">Permission Management</a></li>
-                @endif
-                @if(Entrust::can('module_tokens'))
-                  <li><a href="{{ route('admin.tokens.index') }}">Tokens Management</a></li>
+                @if(Auth::user()->ability([], ['module_roles','module_permissions','module_tokens']))
+                  <li class="divider"></li>
+                  <li class="dropdown-header">Access Controls</li>
+                  @if(Entrust::can('module_roles'))
+                    <li><a href="{{ route('admin.roles.index') }}">Role Management</a></li>
+                  @endif
+                  @if(Entrust::can('module_permissions'))
+                    <li><a href="{{ route('admin.permissions.index') }}">Permission Management</a></li>
+                  @endif
+                  @if(Entrust::can('module_tokens'))
+                    <li><a href="{{ route('admin.tokens.index') }}">Tokens Management</a></li>
+                  @endif
                 @endif
               </ul>
             </li>

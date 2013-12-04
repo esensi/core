@@ -225,7 +225,7 @@ class UsersController extends Controller {
         }
         
         // Send activation email to user
-        $email = ($id) ? $object->email : Input::get('email');
+        $email = isset($object->email) ? $object->email : Input::get('email');
         $object = $this->resources['user']->resetPassword($email);
         $this->content('reset_password', ['users' => $object]);
     }
@@ -316,7 +316,7 @@ class UsersController extends Controller {
     {
         // Activate the user with optional password
         $newPassword = Input::has('password') ? Input::only('password', 'password_confirmation') : null;
-        $object = $this->resources['user']->activate($token, $newPassword);
+        $object = $this->resources['user']->activateWithToken($token, $newPassword);
 
         // Authenticate the user if not already logged in
         if ( Auth::guest() )

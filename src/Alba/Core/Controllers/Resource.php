@@ -114,7 +114,7 @@ class Resource extends Controller implements ResourceInterface {
 			->paginate($this->max);
 
 		// Generate paginated links
-		$queries = array_except($params, ['relationships', 'scopes', 'where']);
+		$queries = array_except($this->defaults, ['relationships', 'scopes', 'where']);
 		return $paginator->appends($queries);
 	}
 

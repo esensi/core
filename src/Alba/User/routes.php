@@ -105,34 +105,34 @@ Route::group([
 		], function()
 		{
 			// Create
-			Route::post('create', [ 'as' => 'admin.users.store', 'uses' => 'Alba\User\Controllers\UsersAdminController@store' ]);
-			Route::get('create', [ 'as' => 'admin.users.create', 'uses' => 'Alba\User\Controllers\UsersAdminController@create' ]);
+			Route::post('create', [ 'as' => 'admin.users.store', 'uses' => 'Alba\User\Controllers\UsersAdminAdminController@store' ]);
+			Route::get('create', [ 'as' => 'admin.users.create', 'uses' => 'Alba\User\Controllers\UsersAdminAdminController@create' ]);
 			
 			// Assign roles
-			Route::post('{id}/roles', [ 'as' => 'admin.users.update.roles', 'before' => ['permission:module_roles'], 'uses' => 'Alba\User\Controllers\UsersController@updateRoles' ]);
-			Route::get('{id}/roles', [ 'as' => 'admin.users.edit.roles', 'before' => ['permission:module_roles'], 'uses' => 'Alba\User\Controllers\UsersController@editRoles' ]);
+			Route::post('{id}/roles', [ 'as' => 'admin.users.update.roles', 'before' => ['permission:module_roles'], 'uses' => 'Alba\User\Controllers\UsersAdminController@updateRoles' ]);
+			Route::get('{id}/roles', [ 'as' => 'admin.users.edit.roles', 'before' => ['permission:module_roles'], 'uses' => 'Alba\User\Controllers\UsersAdminController@editRoles' ]);
 			
 			// Block
-			Route::post('{id}/block', [ 'as' => 'admin.users.block', 'uses' => 'Alba\User\Controllers\UsersController@block' ]);
-			Route::get('{id}/block', [ 'as' => 'admin.users.block.confirm', 'uses' => 'Alba\User\Controllers\UsersController@blockConfirm' ]);
+			Route::post('{id}/block', [ 'as' => 'admin.users.block', 'uses' => 'Alba\User\Controllers\UsersAdminController@block' ]);
+			Route::get('{id}/block', [ 'as' => 'admin.users.block.confirm', 'uses' => 'Alba\User\Controllers\UsersAdminController@blockConfirm' ]);
 			
 			// Unblock
-			Route::post('{id}/unblock', [ 'as' => 'admin.users.unblock', 'uses' => 'Alba\User\Controllers\UsersController@unblock' ]);
-			Route::get('{id}/unblock', [ 'as' => 'admin.users.unblock.confirm', 'uses' => 'Alba\User\Controllers\UsersController@unblockConfirm' ]);
+			Route::post('{id}/unblock', [ 'as' => 'admin.users.unblock', 'uses' => 'Alba\User\Controllers\UsersAdminController@unblock' ]);
+			Route::get('{id}/unblock', [ 'as' => 'admin.users.unblock.confirm', 'uses' => 'Alba\User\Controllers\UsersAdminController@unblockConfirm' ]);
 			
 			// Activate
-			Route::post('{id}/activate', [ 'as' => 'admin.users.activate', 'uses' => 'Alba\User\Controllers\UsersController@activate' ]);
-			Route::get('{id}/activate', [ 'as' => 'admin.users.activate.confirm', 'uses' => 'Alba\User\Controllers\UsersController@activateConfirm' ]);
+			Route::post('{id}/activate', [ 'as' => 'admin.users.activate', 'uses' => 'Alba\User\Controllers\UsersAdminController@activate' ]);
+			Route::get('{id}/activate', [ 'as' => 'admin.users.activate.confirm', 'uses' => 'Alba\User\Controllers\UsersAdminController@activateConfirm' ]);
 
 			// Deactivate
-			Route::post('{id}/deactivate', [ 'as' => 'admin.users.deactivate', 'uses' => 'Alba\User\Controllers\UsersController@deactivate' ]);
-			Route::get('{id}/deactivate', [ 'as' => 'admin.users.deactivate.confirm', 'uses' => 'Alba\User\Controllers\UsersController@deactivateConfirm' ]);
+			Route::post('{id}/deactivate', [ 'as' => 'admin.users.deactivate', 'uses' => 'Alba\User\Controllers\UsersAdminController@deactivate' ]);
+			Route::get('{id}/deactivate', [ 'as' => 'admin.users.deactivate.confirm', 'uses' => 'Alba\User\Controllers\UsersAdminController@deactivateConfirm' ]);
 
 			// Reset Activaton / Password
-			Route::post('{id}/reset-activation', [ 'as' => 'admin.users.reset-activation', 'uses' => 'Alba\User\Controllers\UsersController@resetActivation' ]);
-			Route::get('{id}/reset-activation', [ 'as' => 'admin.users.reset-activation.confirm', 'uses' => 'Alba\User\Controllers\UsersController@resetActivationConfirm' ]);
-			Route::post('{id}/reset-password', [ 'as' => 'admin.users.reset-password', 'uses' => 'Alba\User\Controllers\UsersController@resetPassword' ]);
-			Route::get('{id}/reset-password', [ 'as' => 'admin.users.reset-password.confirm', 'uses' => 'Alba\User\Controllers\UsersController@resetPasswordConfirm' ]);
+			Route::post('{id}/reset-activation', [ 'as' => 'admin.users.reset-activation', 'uses' => 'Alba\User\Controllers\UsersAdminController@resetActivation' ]);
+			Route::get('{id}/reset-activation', [ 'as' => 'admin.users.reset-activation.confirm', 'uses' => 'Alba\User\Controllers\UsersAdminController@resetActivationConfirm' ]);
+			Route::post('{id}/reset-password', [ 'as' => 'admin.users.reset-password', 'uses' => 'Alba\User\Controllers\UsersAdminController@resetPassword' ]);
+			Route::get('{id}/reset-password', [ 'as' => 'admin.users.reset-password.confirm', 'uses' => 'Alba\User\Controllers\UsersAdminController@resetPasswordConfirm' ]);
 			
 			// Edit
 			Route::post('{id}/edit', [ 'as' => 'admin.users.update', 'uses' => 'Alba\User\Controllers\UsersAdminController@update' ]);

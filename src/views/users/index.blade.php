@@ -10,12 +10,12 @@
 		<table class="table">
 	  		<thead>
 	  			<tr>
-	  				<th><a href="{{ $paginator->appends(['order' => 'id'])->getUrl(1) }}">ID</a></th>
-	  				<th><a href="{{ $paginator->appends(['order' => 'email'])->getUrl(1) }}">Email</a></th>
-	  				<th><a href="{{ $paginator->appends(['order' => 'name'])->getUrl(1) }}">Name</a></th>
-	  				<th><a href="{{ $paginator->appends(['order' => 'active'])->getUrl(1) }}">Active</a></th>
-	  				<th><a href="{{ $paginator->appends(['order' => 'blocked'])->getUrl(1) }}">Blocked</a></th>
-	  				<th><a href="{{ $paginator->appends(['order' => 'authenticated_at'])->getUrl(1) }}">Last Login</a></th>
+	  				<th><a href="{{ HTML::paginationUrl($paginator, ['order' => 'id']) }}">ID</a></th>
+	  				<th><a href="{{ HTML::paginationUrl($paginator, ['order' => 'email']) }}">Email</a></th>
+	  				<th><a href="{{ HTML::paginationUrl($paginator, ['order' => 'name']) }}">Name</a></th>
+	  				<th><a href="{{ HTML::paginationUrl($paginator, ['order' => 'active']) }}">Active</a></th>
+	  				<th><a href="{{ HTML::paginationUrl($paginator, ['order' => 'blocked']) }}">Blocked</a></th>
+	  				<th><a href="{{ HTML::paginationUrl($paginator, ['order' => 'authenticated_at']) }}">Last Login</a></th>
 	  				<th>Actions</th>
 	  			</tr>
 	  		</thead>
@@ -26,8 +26,8 @@
 		  				<td><a href="{{ route('admin.users.show', $item->id) }}">{{ $item->id }}</a></td>
 		  				<td><a href="mailto:{{ $item->email }}">{{ $item->email }}</a></td>
 		  				<td><a href="{{ route('admin.users.show', $item->id) }}">{{ $item->fullName }}</a></td>
-		  				<td><a href="{{ route('admin.users.index') }}?active={{$item->active}}">{{ $item->activeStatus }}</a></td>
-		  				<td><a href="{{ route('admin.users.index') }}?blocked={{$item->blocked}}">{{ $item->blockedStatus }}</a></td>
+		  				<td><a href="{{ HTML::paginationUrl($paginator, ['active' => $item->active]) }}">{{ $item->activeStatus }}</a></td>
+		  				<td><a href="{{ HTML::paginationUrl($paginator, ['blocked' => $item->blocked]) }}">{{ $item->blockedStatus }}</a></td>
 		  				<td>{{ $item->timeSinceLastAuthenticated }}</td>
 		  				<td>
 		  					<div class="btn-group">

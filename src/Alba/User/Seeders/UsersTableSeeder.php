@@ -49,7 +49,7 @@ class UsersTableSeeder extends Seeder {
                     'last_name' => 'User',
                     'suffix' => 'PhD'
                 ],
-                'role' => 'admin'
+                'role' => ['admin']
             ],
 
             // Common user
@@ -69,7 +69,7 @@ class UsersTableSeeder extends Seeder {
                     'last_name' => 'User',
                     'suffix' => 'MD'
                 ],
-                'role' => 'user'
+                'role' => ['user']
             ]
         ];
         
@@ -86,8 +86,12 @@ class UsersTableSeeder extends Seeder {
                 // Assign role to user
                 if($arr['role'])
                 {
-                    $role = Role::whereName("admin")->first();
-                    $user->attachRole($role);
+                    foreach ($arr['role'] as $roleName)
+                    {
+                        $role = Role::whereName($roleName)->first();
+                        $user->attachRole($role);
+                    }
+                    
                 }
 
                 // Save new name to user

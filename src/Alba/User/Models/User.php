@@ -507,6 +507,40 @@ class User extends Ardent implements UserInterface {
     }
 
     /**
+     * Returns the number of minutes since the last activation
+     *
+     * @return integer
+     */
+    public function getTimeSinceLastActivatedAttribute()
+    {
+        // Short circuit for users who haven't authenticated yet
+        if( is_null($this->activated_at) )
+        {
+            return Lang::get('alba::user.messages.never_activated');
+        }
+
+        $date = new Carbon($this->activated_at);
+        return $date->diffForHumans();
+    }
+
+    /**
+     * Returns the number of minutes since the password was updated
+     *
+     * @return integer
+     */
+    public function getTimeSinceLastPasswordUpdateAttribute()
+    {
+        // Short circuit for users who haven't set a password yet
+        if( is_null($this->password) || is_null($this->password_updated_at))
+        {
+            return Lang::get('alba::user.messages.never_set_password');
+        }
+
+        $date = new Carbon($this->password_updated_at);
+        return $date->diffForHumans();
+    }
+
+    /**
      * Checks if this user is allowed to login. Currently must be active 
      * and not blocked to be able to login
      * 

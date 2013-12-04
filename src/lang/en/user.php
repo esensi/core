@@ -91,6 +91,8 @@ return [
 		'no_password'						=> 'User cannot login because the user has no password.',
 		'is_blocked'						=> 'User cannot login because the user is blocked.',
 		'never_authenticated'				=> 'Never Logged In',
+		'never_activated'					=> 'Never Activated',
+		'never_set_password'				=> 'Never Set Password',
 		'blocked'							=> 'Blocked (Cannot Login)',
 		'not_blocked'						=> 'Not Blocked (Can Login)',
 		'active'							=> 'Activated',

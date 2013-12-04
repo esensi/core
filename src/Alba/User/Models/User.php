@@ -544,7 +544,7 @@ class User extends Ardent implements UserInterface {
      */
     public function activate()
     {
-        return $this->setActive(true);
+        return $this->setActive(true, Carbon::now());
     }
 
     /**
@@ -561,13 +561,20 @@ class User extends Ardent implements UserInterface {
      * Save active status
      *
      * @param boolean $active status
+     * @param Carbon $time of activated_at
      * @return boolean
      */
-    public function setActive($active = true)
+    public function setActive($active = true, $time = null)
     {
         $this->active = $active;
-        $this->activated_at = Carbon::now();
-        return $this->save($this->rulesForActivating);
+        $this->activated_at = $time;
+        $rules = $this->rulesForActivating;
+        if(is_null($time))
+        {
+            $this->activated_at == DB::raw('NULL');
+            $rules = array_except($rules, ['activated_at']);
+        }
+        return $this->save($rules);
     }
 
     /**
@@ -613,6 +620,19 @@ class User extends Ardent implements UserInterface {
         $this->fill($newPassword);
         $this->password_updated_at = Carbon::now();
         return $this->save($this->rulesForUpdatingPassword);
+    }
+
+    /**
+     * Set the password to null
+     *
+     * @return boolean
+     */
+    public function resetPassword()
+    {
+        $this->autoHashPasswordAttributes = false;
+        $this->password = DB::raw('NULL');
+        $this->password_updated_at = DB::raw('NULL');
+        return $this->forceSave();
     }
 
 }

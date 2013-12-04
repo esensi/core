@@ -143,6 +143,15 @@ return [
 			'reset_activation'	=> 'users.reset-activation',
 			'activate_password' => 'users.activate-password',
 
+			// Modals
+			'activate_confirm'				=> 'users.modals.activate-confirm',
+			'deactivate_confirm'			=> 'users.modals.deactivate-confirm',
+			'block_confirm'					=> 'users.modals.block-confirm',
+			'unblock_confirm'				=> 'users.modals.unblock-confirm',
+			'destroy_confirm'				=> 'users.modals.destroy-confirm',
+			'reset_activation_confirm'		=> 'users.modals.reset-activation-confirm',
+			'reset_password_confirm'		=> 'users.modals.reset-password-confirm',
+
 			// Views used in emails
 			'emails' => [
 				'reset_activation' => [
@@ -206,7 +215,7 @@ return [
 			'destroy'			=> 'admin.users.index',
 			'deactivate'		=> 'admin.users.show',
 			'block'				=> 'admin.users.show',
-			'unblock'			=> 'admin.users.unblock',
+			'unblock'			=> 'admin.users.show',
 		],
 	],
 

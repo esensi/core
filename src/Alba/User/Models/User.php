@@ -544,7 +544,7 @@ class User extends Ardent implements UserInterface {
      */
     public function activate()
     {
-        return $this->setActive(true, Carbon::now());
+        return $this->setActive(true);
     }
 
     /**
@@ -564,14 +564,13 @@ class User extends Ardent implements UserInterface {
      * @param Carbon $time of activated_at
      * @return boolean
      */
-    public function setActive($active = true, $time = null)
+    public function setActive($active = true)
     {
         $this->active = $active;
-        $this->activated_at = $time;
+        $this->activated_at = $active ? Carbon::now() : DB::raw('NULL');
         $rules = $this->rulesForActivating;
-        if(is_null($time))
+        if( !$active )
         {
-            $this->activated_at == DB::raw('NULL');
             $rules = array_except($rules, ['activated_at']);
         }
         return $this->save($rules);

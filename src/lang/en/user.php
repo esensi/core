@@ -71,4 +71,27 @@ return [
 		'reset_activation'					=> 'Activate your account!',
 	],
 
+	/*
+	|--------------------------------------------------------------------------
+	| Status message lines
+	|--------------------------------------------------------------------------
+	|
+	| The following language lines contain status message lines used by the
+	| User module models.
+	|
+	*/
+
+	'messages' => [
+		'not_active'						=> 'User cannot login because the user is not active.',
+		'no_password'						=> 'User cannot login because the user has no password.',
+		'is_blocked'						=> 'User cannot login because the user is blocked.',
+		'never_authenticated'				=> 'Never Logged In',
+		'blocked'							=> 'Blocked (Cannot Login)',
+		'not_blocked'						=> 'Not Blocked (Can Login)',
+		'active'							=> 'Activated',
+		'not_active'						=> 'Deactivated',
+		'no_password'						=> 'Password Not Set',
+		'has_password'						=> 'Password Set',
+	],
+
 ];

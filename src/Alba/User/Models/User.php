@@ -3,6 +3,7 @@
 use Carbon\Carbon;
 use Illuminate\Auth\UserInterface;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Lang;
 use LaravelBook\Ardent\Ardent;
 use Zizaco\Entrust\HasRole;
 use Alba\User\Models\Token;
@@ -433,15 +434,15 @@ class User extends Ardent implements UserInterface {
     {
         if (!$this->active)
         {
-            return "User cannot login because the user is not active!";
+            return Lang::get('alba::user.messages.not_active');
         }
         if (is_null($this->password))
         {
-            return 'User cannot login because the user has no password!';
+            return Lang::get('alba::user.messages.no_password');
         }
         if ($this->blocked)
         {
-            return "User cannot login because the user is blocked!";
+            return Lang::get('alba::user.messages.is_blocked');
         }
         return null;
     }
@@ -453,7 +454,7 @@ class User extends Ardent implements UserInterface {
      */
     public function getPasswordStatusAttribute()
     {
-        return is_null($this->password) ? "Password not set" : "Password set";
+        return is_null($this->password) ? Lang::get('alba::user.messages.no_password') : Lang::get('alba::user.messages.has_password');
     }
 
     /**
@@ -463,7 +464,7 @@ class User extends Ardent implements UserInterface {
      */
     public function getActiveStatusAttribute()
     {
-        return $this->active ? "Activated" : "Deactivated";
+        return $this->active ? Lang::get('alba::user.messages.active') : Lang::get('alba::user.messages.not_active');
     }    
 
     /**
@@ -473,7 +474,7 @@ class User extends Ardent implements UserInterface {
      */
     public function getBlockedStatusAttribute()
     {
-        return ($this->blocked) ? "Blocked (Can not login)" : "Not blocked (Can login)";
+        return $this->blocked ? Lang::get('alba::user.messages.blocked') : Lang::get('alba::user.messages.not_blocked');
     }
 
     /**
@@ -495,6 +496,12 @@ class User extends Ardent implements UserInterface {
      */
     public function getTimeSinceLastAuthenticatedAttribute()
     {
+        // Short circuit for users who haven't authenticated yet
+        if( is_null($this->authenticated_at) )
+        {
+            return Lang::get('alba::user.messages.never_authenticated');
+        }
+
         $date = new Carbon($this->authenticated_at);
         return $date->diffForHumans();
     }

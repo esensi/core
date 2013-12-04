@@ -127,12 +127,13 @@ class Resource extends Controller implements ResourceInterface {
 	public function store($attributes)
 	{
 		$rules = $this->model->rulesForStoring;
-		$this->model->fill($attributes);
-		if(!$this->model->save($rules))
+        $object = new $this->model;
+		$object->fill($attributes);
+		if(!$object->save($rules))
 		{
 			$this->throwException($object->errors(), $this->language('errors.store'));
 		}
-		return $this->model;
+		return $object;
 	}
 
 	/**

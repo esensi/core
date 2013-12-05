@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Lang;
 use LaravelBook\Ardent\Ardent;
 use Zizaco\Entrust\HasRole;
 use Alba\User\Models\Token;
+use Alba\User\Models\Role;
 
 /**
  * Alba\User model
@@ -345,10 +346,30 @@ class User extends Ardent implements UserInterface {
         if ( is_string($roles) )
             $roles = explode(',', $roles);
 
+        // Separate role names from role ids
+        $rolesNames = [];
+        foreach($roles as $i => $role)
+        {
+            if(!is_numeric($role))
+            {
+                $roleNames[] = $role;
+                unset($roles[$i]);
+            }
+        }
+
+        // Get role ids by querying role names and merge
+        $roleIds = $roles;
+        if(!empty($roleNames))
+        {
+            $roles = Role::whereIn('name', $roleNames)->lists('id');
+            $roleIds = array_values(array_unique(array_merge($roleIds, $roles), SORT_NUMERIC));
+        }
+
         // Query the assign_roles pivot table for matching roles
         return $query->select(['users.*', 'assigned_roles.role_id'])
             ->join('assigned_roles', 'users.id', '=', 'assigned_roles.user_id')
-            ->whereIn('assigned_roles.role_id', $roles);
+            ->whereIn('assigned_roles.role_id', $roleIds)
+            ->groupBy('users.id');
     }
 
     /**

@@ -1,6 +1,8 @@
 <?php namespace Alba;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\HTML;
 
 /**
  * Service provider for all Alba modules and package components
@@ -34,7 +36,7 @@ class AlbaServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		
+
 	}
 
 	/**

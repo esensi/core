@@ -58,13 +58,28 @@ class Controller extends LaravelController {
      *
      * @param string $key to view config
      * @param array $data to be passed to view
+     * @param string $name of content
      * @return void
      */
-    protected function content($key, $data = [])
+    protected function content($key, $data = [], $name = 'content')
     {
         $package = Config::get('alba::' . str_singular($this->module) . '.views.packages.' . str_plural($this->module), 'alba::');
         $view = Config::get('alba::' . str_singular($this->module) . '.views.' . str_plural($this->module) . '.' . $key);
-        $this->layout->content = View::make($package . $view, $data);
+        $this->layout->$name = View::make($package . $view, $data);
+    }
+
+    /**
+     * Generate a modal view
+     *
+     * @param string $key to view config
+     * @param array $data to be passed to view
+     * @return void
+     */
+    protected function modal($key, $data = [], $name = 'modal-body')
+    {
+        $this->layout = 'alba::core.modal';
+        $this->setupLayout();
+        $this->content($key, $data, $name);
     }
 
     /**

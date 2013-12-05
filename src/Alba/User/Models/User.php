@@ -2,9 +2,12 @@
 
 use Carbon\Carbon;
 use Illuminate\Auth\UserInterface;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Lang;
 use LaravelBook\Ardent\Ardent;
 use Zizaco\Entrust\HasRole;
 use Alba\User\Models\Token;
+use Alba\User\Models\Role;
 
 /**
  * Alba\User model
@@ -343,10 +346,30 @@ class User extends Ardent implements UserInterface {
         if ( is_string($roles) )
             $roles = explode(',', $roles);
 
+        // Separate role names from role ids
+        $rolesNames = [];
+        foreach($roles as $i => $role)
+        {
+            if(!is_numeric($role))
+            {
+                $roleNames[] = $role;
+                unset($roles[$i]);
+            }
+        }
+
+        // Get role ids by querying role names and merge
+        $roleIds = $roles;
+        if(!empty($roleNames))
+        {
+            $roles = Role::whereIn('name', $roleNames)->lists('id');
+            $roleIds = array_values(array_unique(array_merge($roleIds, $roles), SORT_NUMERIC));
+        }
+
         // Query the assign_roles pivot table for matching roles
         return $query->select(['users.*', 'assigned_roles.role_id'])
             ->join('assigned_roles', 'users.id', '=', 'assigned_roles.user_id')
-            ->whereIn('assigned_roles.role_id', $roles);
+            ->whereIn('assigned_roles.role_id', $roleIds)
+            ->groupBy('users.id');
     }
 
     /**
@@ -363,8 +386,7 @@ class User extends Ardent implements UserInterface {
             $names = explode(',', $names);
 
         // Query the names table for matching names
-        return $query->select(['users.*', 'user_names.first_name', 'user_names.last_name'])
-            ->join('user_names', 'users.id', '=', 'user_names.user_id')
+        return $query->joinNames()
             ->where(function($query) use ($names)
                 {
                     // Loop over each name to find matches for both first and last name
@@ -374,6 +396,20 @@ class User extends Ardent implements UserInterface {
                             ->orWhere('user_names.last_name', 'LIKE', '%'.$name.'%');
                     }
                 });
+    }
+
+    /**
+     * Builds a query scope to return users with names
+     *
+     * @param Illuminate\Database\Query\Builder $query
+     * @return Illuminate\Database\Query\Builder
+     */
+    public function scopeJoinNames($query)
+    {
+        // Query the names table
+        $name = DB::raw('CONCAT(`user_names`.`first_name`, `user_names`.`middle_name`, `user_names`.`last_name`) AS `name`');
+        return $query->select(['users.*', 'user_names.first_name', 'user_names.last_name', $name])
+            ->join('user_names', 'users.id', '=', 'user_names.user_id');
     }
 
     /** 
@@ -419,15 +455,15 @@ class User extends Ardent implements UserInterface {
     {
         if (!$this->active)
         {
-            return "User cannot login because the user is not active!";
+            return Lang::get('alba::user.messages.not_active');
         }
         if (is_null($this->password))
         {
-            return 'User cannot login because the user has no password!';
+            return Lang::get('alba::user.messages.no_password');
         }
         if ($this->blocked)
         {
-            return "User cannot login because the user is blocked!";
+            return Lang::get('alba::user.messages.is_blocked');
         }
         return null;
     }
@@ -439,7 +475,7 @@ class User extends Ardent implements UserInterface {
      */
     public function getPasswordStatusAttribute()
     {
-        return is_null($this->password) ? "Password not set" : "Password set";
+        return is_null($this->password) ? Lang::get('alba::user.messages.no_password') : Lang::get('alba::user.messages.has_password');
     }
 
     /**
@@ -449,7 +485,7 @@ class User extends Ardent implements UserInterface {
      */
     public function getActiveStatusAttribute()
     {
-        return $this->active ? "Activated" : "Deactivated";
+        return $this->active ? Lang::get('alba::user.messages.active') : Lang::get('alba::user.messages.not_active');
     }    
 
     /**
@@ -459,11 +495,11 @@ class User extends Ardent implements UserInterface {
      */
     public function getBlockedStatusAttribute()
     {
-        return ($this->blocked) ? "Blocked (Can not login)" : "Not blocked (Can login)";
+        return $this->blocked ? Lang::get('alba::user.messages.blocked') : Lang::get('alba::user.messages.not_blocked');
     }
 
     /**
-     * Returns the numbers of days since the last password update
+     * Returns the number of days since the last password update
      *
      * @return integer
      */
@@ -472,6 +508,57 @@ class User extends Ardent implements UserInterface {
         $date = new Carbon($this->password_updated_at);
         $now = Carbon::now();
         return $date->diffInDays($now);
+    }
+
+    /**
+     * Returns the number of minutes since the last log in
+     *
+     * @return integer
+     */
+    public function getTimeSinceLastAuthenticatedAttribute()
+    {
+        // Short circuit for users who haven't authenticated yet
+        if( is_null($this->authenticated_at) )
+        {
+            return Lang::get('alba::user.messages.never_authenticated');
+        }
+
+        $date = new Carbon($this->authenticated_at);
+        return $date->diffForHumans();
+    }
+
+    /**
+     * Returns the number of minutes since the last activation
+     *
+     * @return integer
+     */
+    public function getTimeSinceLastActivatedAttribute()
+    {
+        // Short circuit for users who haven't authenticated yet
+        if( is_null($this->activated_at) )
+        {
+            return Lang::get('alba::user.messages.never_activated');
+        }
+
+        $date = new Carbon($this->activated_at);
+        return $date->diffForHumans();
+    }
+
+    /**
+     * Returns the number of minutes since the password was updated
+     *
+     * @return integer
+     */
+    public function getTimeSinceLastPasswordUpdateAttribute()
+    {
+        // Short circuit for users who haven't set a password yet
+        if( is_null($this->password) || is_null($this->password_updated_at))
+        {
+            return Lang::get('alba::user.messages.never_set_password');
+        }
+
+        $date = new Carbon($this->password_updated_at);
+        return $date->diffForHumans();
     }
 
     /**
@@ -529,13 +616,19 @@ class User extends Ardent implements UserInterface {
      * Save active status
      *
      * @param boolean $active status
+     * @param Carbon $time of activated_at
      * @return boolean
      */
     public function setActive($active = true)
     {
         $this->active = $active;
-        $this->activated_at = Carbon::now();
-        return $this->save($this->rulesForActivating);
+        $this->activated_at = $active ? Carbon::now() : DB::raw('NULL');
+        $rules = $this->rulesForActivating;
+        if( !$active )
+        {
+            $rules = array_except($rules, ['activated_at']);
+        }
+        return $this->save($rules);
     }
 
     /**
@@ -581,6 +674,19 @@ class User extends Ardent implements UserInterface {
         $this->fill($newPassword);
         $this->password_updated_at = Carbon::now();
         return $this->save($this->rulesForUpdatingPassword);
+    }
+
+    /**
+     * Set the password to null
+     *
+     * @return boolean
+     */
+    public function resetPassword()
+    {
+        $this->autoHashPasswordAttributes = false;
+        $this->password = DB::raw('NULL');
+        $this->password_updated_at = DB::raw('NULL');
+        return $this->forceSave();
     }
 
 }

@@ -321,6 +321,9 @@ class UsersResource extends Resource {
 
             // Attach token to user
             $object->tokens()->attach($activationToken->id);
+
+            // Deactivate user
+            $this->deactivate($object->id);
         });
         
         // Send activation email to user
@@ -353,6 +356,26 @@ class UsersResource extends Resource {
     }
 
     /**
+     * Activate the specified user
+     * 
+     * @param integer $id
+     * @return User
+     * @throws UsersResourceException
+     */
+    public function activate($id)
+    {
+        $object = $this->show($id);
+        
+        // Activate the user
+        if (!$object->activate())
+        {
+            $this->throwException($object->errors(), $this->language('errors.activate'));
+        }
+
+        return $object;
+    }
+
+    /**
      * Find ther user by activation token then activate the user.
      * Optionally set a new password
      *
@@ -361,7 +384,7 @@ class UsersResource extends Resource {
      * @return User
      * @throws UsersResourceException
      */
-    public function activate($token, $newPassword = [])
+    public function activateWithToken($token, $newPassword = [])
     {
         // Get the user by the activation token
         $object = $this->showByActivationToken($token);
@@ -421,6 +444,12 @@ class UsersResource extends Resource {
 
             // Attach token to user
             $object->tokens()->attach($resetToken->id);
+
+            // Remove existing password
+            if(!$object->resetPassword())
+            {
+                $this->throwException($object->errors(), $this->language('errors.password_reset'));
+            }
         });
         
         // Send password reset email to user

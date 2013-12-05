@@ -32,18 +32,42 @@ class UsersApiController extends Controller {
      */
     public function index()
     {
-        $params = Input::only('max', 'order', 'sort', 'keyword');
+        $params = Input::only('max', 'order', 'sort', 'keyword', 'trashed');
+
+        // Join the names table when needed
+        if(in_array($params['order'], ['name', 'first_name', 'last_name']))
+        {
+            $params['scopes']['joinNames'] = [];
+        }
+
+        // Filter by active status
+        $active = Input::get('active', null);
+        if( is_numeric($active) && $active >= 0 && $active <= 1)
+        {
+            $params['active'] = $active;
+            $params['scopes']['whereActive'] = [ (int) $active ];
+        }
+
+        // Filter by blocked status
+        $blocked = Input::get('blocked', null);
+        if( is_numeric($blocked) && $blocked >= 0 && $blocked <= 1)
+        {
+            $params['blocked'] = $blocked;
+            $params['scopes']['whereBlocked'] = [ (int) $blocked ];
+        }
 
         // Filter by role
-        if( $role = Input::get('roles', false) )
+        if( $roles = Input::get('roles', false) )
         {
-            $params['scopes']['ofRole'] = [ $role ];
+            $params['roles'] = $roles;
+            $params['scopes']['ofRole'] = [ $roles ];
         }
 
         // Filter by name
-        if( $name = Input::get('names', false) )
+        if( $names = Input::get('names', false) )
         {
-            $params['scopes']['byName'] = [ $name ];
+            $params['names'] = $names;
+            $params['scopes']['byName'] = [ $names ];
         }
         
         return $this->resources['user']->index($params);
@@ -73,11 +97,12 @@ class UsersApiController extends Controller {
      * Display the specified resource.
      *
      * @param int $id of object
+     * @param boolean $withTrashed
      * @return Illuminate\Database\Eloquent\Model
      */
-    public function show($id)
+    public function show($id, $withTrashed = false)
     {
-        return $this->resources['user']->show($id);
+        return $this->resources['user']->show($id, $withTrashed);
     }
 
     /**
@@ -105,6 +130,18 @@ class UsersApiController extends Controller {
     {
         $force = Input::get('force');
         return $this->resources['user']->destroy($id, $force);
+    }
+
+    /**
+     * Restore the specified resource from soft delete.
+     *
+     * @param int $id of object to remove
+     * @return Illuminate\Database\Eloquent\Model
+     * 
+     */
+    public function restore($id)
+    {
+        return $this->resources['user']->restore($id);
     }
     
 }

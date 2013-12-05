@@ -3,6 +3,7 @@
 use Alba\Core\Seeders\Seeder;
 use Alba\User\Models\Permission;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 
 /**
  * Seeder for Permissions
@@ -20,11 +21,8 @@ class PermissionsTableSeeder extends Seeder {
         DB::table('permission_role')->delete();
         DB::table('permissions')->delete();
 
-        // Permission name => Display name
-        $permissions = [
-            'module_users_manage' => 'Manage Users',
-            'module_dashboard_view' => 'View Dashboard',
-        ];
+        // Get permissions from config
+        $permissions = Config::get('alba::user.permissions');
 
         // Iterate over permissions saving each to database
         DB::transaction(function () use ($permissions)

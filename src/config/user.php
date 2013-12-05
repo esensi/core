@@ -15,6 +15,47 @@ return [
 	|
 	*/
 
+	/*
+	|--------------------------------------------------------------------------
+	| Permission configurations
+	|--------------------------------------------------------------------------
+	|
+	| The following configuration options are used by the permission seeder to
+	| add permissions to the permissions table. Roles are then assigned these
+	| permissions and the roles are assigned to the users.
+	|
+	*/
+
+    'permissions' => [
+    	
+    	// Permission name 		=> Display name
+        'module_users'          => 'Manage Users',
+        'module_roles'          => 'Manage Roles',
+        'module_permissions'    => 'Manage Permissions',
+        'module_tokens'         => 'Manage Tokens',
+    ],
+
+	/*
+	|--------------------------------------------------------------------------
+	| Role configurations
+	|--------------------------------------------------------------------------
+	|
+	| The following configuration options are used by the roles seeder to
+	| add default roles and assign different permissions to the roles. Roles are
+	| then assigned to the users.
+	|
+	| Array of roles (key) and assigned permissions (value).
+	| You can use the special permission "*" as a wildcard for all permissions.
+	|
+	| @example $roles = [ 'admin' => ['*'], 'user' => ['foo', 'bar'] ]
+	|
+	*/
+
+    'roles' => [
+
+        'admin'          		=> ['*'],
+        'user'					=> [],
+    ],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -102,6 +143,16 @@ return [
 			'reset_activation'	=> 'users.reset-activation',
 			'activate_password' => 'users.activate-password',
 
+			// Modals
+			'activate_confirm'				=> 'users.modals.activate-confirm',
+			'deactivate_confirm'			=> 'users.modals.deactivate-confirm',
+			'block_confirm'					=> 'users.modals.block-confirm',
+			'unblock_confirm'				=> 'users.modals.unblock-confirm',
+			'restore_confirm'				=> 'users.modals.restore-confirm',
+			'destroy_confirm'				=> 'users.modals.destroy-confirm',
+			'reset_activation_confirm'		=> 'users.modals.reset-activation-confirm',
+			'reset_password_confirm'		=> 'users.modals.reset-password-confirm',
+
 			// Views used in emails
 			'emails' => [
 				'reset_activation' => [
@@ -162,10 +213,11 @@ return [
 				'guest'			=> 'users.account',
 				'user'			=> 'admin.users.show',
 			],
+			'restore'			=> 'admin.users.trash',
 			'destroy'			=> 'admin.users.index',
 			'deactivate'		=> 'admin.users.show',
 			'block'				=> 'admin.users.show',
-			'unblock'			=> 'admin.users.unblock',
+			'unblock'			=> 'admin.users.show',
 		],
 	],
 

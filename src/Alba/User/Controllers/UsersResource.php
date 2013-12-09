@@ -96,8 +96,10 @@ class UsersResource extends Resource {
      */
     public function titles()
     {
-        $titles = $this->name->whereNotNull('title')->distinct()->lists('title');
-        return array_merge($titles, $this->language('names.titles'));
+        $ttl = Config::get('alba::user.names.ttl.titles', 10);
+        $titles = $this->name->whereNotNull('title')->distinct()->remember($ttl)->lists('title');
+        $tags = array_unique(array_merge($titles, $this->language('names.titles', [])));
+        return array_values($tags); // @note required because array_unique is a numerically associative array
     }
 
     /**
@@ -107,8 +109,10 @@ class UsersResource extends Resource {
      */
     public function suffixes()
     {
-        $suffixes = $this->name->whereNotNull('suffix')->distinct()->lists('suffix');
-        return array_merge($suffixes, $this->language('names.suffixes'));
+        $ttl = Config::get('alba::user.names.ttl.suffixes', 10);
+        $suffixes = $this->name->whereNotNull('suffix')->distinct()->remember($ttl)->lists('suffix');
+        $tags = array_unique(array_merge($suffixes, $this->language('names.suffixes', [])));
+        return array_values($tags); // @note required because array_unique is a numerically associative array
     }
 
     /**

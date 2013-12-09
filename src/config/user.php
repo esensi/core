@@ -17,6 +17,24 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
+	| Names configurations
+	|--------------------------------------------------------------------------
+	|
+	| The following configuration options set the Time-to-Live (TTL) for titles
+	| and suffixes caching. Values should be specified in minutes.
+	|
+	*/
+
+	'names' => [
+
+		'ttl' => [
+			'titles' => 10,
+			'suffixes' => 10,
+		],
+	],
+
+	/*
+	|--------------------------------------------------------------------------
 	| Permission configurations
 	|--------------------------------------------------------------------------
 	|

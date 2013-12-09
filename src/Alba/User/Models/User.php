@@ -4,8 +4,8 @@ use Carbon\Carbon;
 use Illuminate\Auth\UserInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
-use LaravelBook\Ardent\Ardent;
 use Zizaco\Entrust\HasRole;
+use Alba\Core\Models\Model;
 use Alba\User\Models\Token;
 use Alba\User\Models\Role;
 
@@ -14,11 +14,12 @@ use Alba\User\Models\Role;
  *
  * @author diego <diego@emersonmedia.com>
  * @author daniel <daniel@bexarcreative.com>
+ * @see Alba\Core\Models\Model
  * @see Alba\User\Models\Name
  * @see Alba\User\Models\Role
  * @see Alba\User\Models\Token
  */
-class User extends Ardent implements UserInterface {
+class User extends Model implements UserInterface {
 
     /**
      * Include HasRole trait from Entrust
@@ -97,6 +98,47 @@ class User extends Ardent implements UserInterface {
      * @var array
      */
     public $defaultRoles = ['user'];
+
+    /**
+     * Options for active status dropdowns
+     *
+     * @var array
+     */
+    public $activeOptions = [
+        ''      => 'Any Active',
+        1       => 'Activated',
+        0       => 'Deactivated',
+    ];
+
+    /**
+     * Options for blocked status dropdowns
+     *
+     * @var array
+     */
+    public $blockedOptions = [
+        ''      => 'Any Blocked',
+        1       => 'Blocked',
+        0       => 'Unblocked',
+    ];
+
+    /**
+     * Options for order by dropdowns
+     *
+     * @var array
+     */
+    public $orderOptions = [
+        'id'                    => 'ID',
+        'name'                  => 'Name',
+        'email'                 => 'Email',
+        'active'                => 'Active Status',
+        'blocked'               => 'Blocked Status',
+        'created_at'            => 'Created',
+        'updated_at'            => 'Updated',
+        'activated_at'          => 'Activated',
+        'deleted_at'            => 'Deleted',
+        'authenticated_at'      => 'Last Authenticated',
+        'password_updated_at'   => 'Last Password Update',
+    ];
 
     /**
      * Relationships that Ardent should set up
@@ -366,7 +408,7 @@ class User extends Ardent implements UserInterface {
         }
 
         // Query the assign_roles pivot table for matching roles
-        return $query->select(['users.*', 'assigned_roles.role_id'])
+        return $query->addSelect(['assigned_roles.role_id'])
             ->join('assigned_roles', 'users.id', '=', 'assigned_roles.user_id')
             ->whereIn('assigned_roles.role_id', $roleIds)
             ->groupBy('users.id');
@@ -408,7 +450,7 @@ class User extends Ardent implements UserInterface {
     {
         // Query the names table
         $name = DB::raw('CONCAT(`user_names`.`first_name`, `user_names`.`middle_name`, `user_names`.`last_name`) AS `name`');
-        return $query->select(['users.*', 'user_names.first_name', 'user_names.last_name', $name])
+        return $query->addSelect(['user_names.first_name', 'user_names.last_name', $name])
             ->join('user_names', 'users.id', '=', 'user_names.user_id');
     }
 

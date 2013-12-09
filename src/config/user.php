@@ -152,6 +152,7 @@ return [
 			'destroy_confirm'				=> 'users.modals.destroy-confirm',
 			'reset_activation_confirm'		=> 'users.modals.reset-activation-confirm',
 			'reset_password_confirm'		=> 'users.modals.reset-password-confirm',
+			'search'						=> 'users.modals.search',
 
 			// Views used in emails
 			'emails' => [

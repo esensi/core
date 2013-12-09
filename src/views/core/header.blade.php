@@ -44,7 +44,7 @@
                 @if(Entrust::can('module_roles'))
                 <li><a href="{{ route('admin.users.create') }}" data-toggle="modal" data-target="#albaModal">Create User</a></li>
                 <li><a href="{{ route('admin.users.index') }}">Browse Users</a></li>
-                <li><a href="{{ route('admin.users.search') }}" data-toggle="modal" data-target="#albaModal">Search Users</a></li>
+                <li><a href="{{ route('admin.users.search') }}?{{http_build_query(Input::all())}}" data-toggle="modal" data-target="#albaModal">Search Users</a></li>
                 <li><a href="{{ route('admin.users.trash') }}">Trash Can</a></li>
                 @endif
                 @if(Auth::user()->ability([], ['module_roles','module_permissions','module_tokens']))

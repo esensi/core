@@ -29,4 +29,17 @@ class Role extends EntrustRole {
         } catch(Execption $e) {}
     }
 
+    /**
+     * Builds a query scope to return roles alphabetically for a dropdown list
+     *
+     * @param Illuminate\Database\Query\Builder $query
+     * @param string $column to order by
+     * @param string $key to use in returned array
+     * @param string $sort direction
+     * @return array [$key => $name]
+     */
+    public function scopeListAlphabetically($query, $column = 'name', $key = 'id', $sort = 'asc')
+    {
+        return $query->orderBy($column, $sort)->lists($column, $key);
+    }
 }

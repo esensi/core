@@ -23,6 +23,7 @@ Route::group([
 			'prefix' => Config::get('alba::core.prefixes.modules.users', 'users'),
 		], function()
 		{
+			Route::get('roles', [ 'as' => 'api.user.roles', 'before' => ['permission:module_roles'], 'uses' => 'Alba\User\Controllers\RolesApiController@names' ]);
 			Route::get('suffixes', [ 'as' => 'api.user.suffixes', 'uses' => 'Alba\User\Controllers\UsersApiController@suffixes' ]);
 			Route::get('titles', [ 'as' => 'api.user.titles', 'uses' => 'Alba\User\Controllers\UsersApiController@titles' ]);
 			Route::post('login', [ 'as' => 'api.user.login', 'uses' => 'Alba\User\Controllers\UsersApiController@login' ]);
@@ -41,8 +42,12 @@ Route::group([
 			'prefix' => Config::get('alba::core.prefixes.modules.roles', 'roles'),
 		], function()
 		{
+			Route::get('names', [ 'as' => 'api.role.names', 'uses' => 'Alba\User\Controllers\RolesApiController@names' ]);
 			Route::delete('{id}', [ 'as' => 'api.role.destroy', 'uses' => 'Alba\User\Controllers\RolesApiController@destroy' ]);
 			Route::put('{id}', [ 'as' => 'api.role.update', 'uses' => 'Alba\User\Controllers\RolesApiController@update' ]);
+			Route::get('{name}', [ 'as' => 'api.role.show.name', 'uses' => 'Alba\User\Controllers\RolesApiController@showByName' ])->where('name', '^[a-z][a-z0-9\-_\.]+');
+			Route::get('{id}/permissions', [ 'as' => 'api.role.show.permissions', 'before' => ['permission:module_permissions'], 'uses' => 'Alba\User\Controllers\RolesApiController@showPermissions' ]);
+			Route::get('{id}/users', [ 'as' => 'api.role.show.users', 'before' => ['permission:module_users'], 'uses' => 'Alba\User\Controllers\RolesApiController@showUsers' ]);
 			Route::get('{id}', [ 'as' => 'api.role.show', 'uses' => 'Alba\User\Controllers\RolesApiController@show' ]);
 			Route::post('/', [ 'as' => 'api.role.store', 'uses' => 'Alba\User\Controllers\RolesApiController@store' ]);
 			Route::get('/', [ 'as' => 'api.role.index', 'uses' => 'Alba\User\Controllers\RolesApiController@index' ]);
@@ -55,6 +60,7 @@ Route::group([
 			'prefix' => Config::get('alba::core.prefixes.modules.permissions', 'permissions'),
 		], function()
 		{
+			Route::get('names', [ 'as' => 'api.permission.names', 'uses' => 'Alba\User\Controllers\PermissionsApiController@names' ]);
 			Route::delete('{id}', [ 'as' => 'api.permission.destroy', 'uses' => 'Alba\User\Controllers\PermissionsApiController@destroy' ]);
 			Route::put('{id}', [ 'as' => 'api.permission.update', 'uses' => 'Alba\User\Controllers\PermissionsApiController@update' ]);
 			Route::get('{id}', [ 'as' => 'api.permission.show', 'uses' => 'Alba\User\Controllers\PermissionsApiController@show' ]);
@@ -153,6 +159,7 @@ Route::group([
 			Route::get('search', [ 'as' => 'admin.users.search', 'uses' => 'Alba\User\Controllers\UsersAdminController@search' ]);
 			Route::get('trash', [ 'as' => 'admin.users.trash', 'uses' => 'Alba\User\Controllers\UsersAdminController@trash' ]);
 			Route::get('/', [ 'as' => 'admin.users.index', 'uses' => 'Alba\User\Controllers\UsersAdminController@index' ]);
+
 		})->where('id', '[0-9]+');
 	endif;
 
@@ -164,10 +171,21 @@ Route::group([
 		], function()
 		{
 			Route::get('create', [ 'as' => 'admin.roles.create', 'uses' => 'Alba\User\Controllers\RolesAdminController@create' ]);
-			Route::get('search', [ 'as' => 'admin.roles.search', 'uses' => 'Alba\User\Controllers\RolesAdminController@search' ]);
+			
+			// Delete
+			Route::post('{id}/delete', [ 'as' => 'admin.roles.destroy', 'uses' => 'Alba\User\Controllers\RolesAdminController@destroy' ]);
+			Route::get('{id}/delete', [ 'as' => 'admin.roles.destroy.confirm', 'uses' => 'Alba\User\Controllers\RolesAdminController@destroyConfirm' ]);
+
+			// Edit
 			Route::get('{id}/edit', [ 'as' => 'admin.roles.edit', 'uses' => 'Alba\User\Controllers\RolesAdminController@edit' ]);
+
+			// Show
+			Route::get('{name}', [ 'as' => 'admin.roles.show.name', 'uses' => 'Alba\User\Controllers\RolesAdminController@showByName' ])->where('name', '^[a-z][a-z0-9\-_\.]+');
 			Route::get('{id}', [ 'as' => 'admin.roles.show', 'uses' => 'Alba\User\Controllers\RolesAdminController@show' ]);
+			
+			// Search / Browse
 			Route::get('/', [ 'as' => 'admin.roles.index', 'uses' => 'Alba\User\Controllers\RolesAdminController@index' ]);
+
 		})->where('id', '[0-9]+');
 	endif;
 

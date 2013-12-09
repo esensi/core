@@ -141,7 +141,6 @@ return [
 		'packages' => [
 			'users' 		=> 'alba::',
 			'tokens' 		=> 'alba::',
-			'roles' 		=> 'alba::',
 			'permissions'	=> 'alba::',
 		],
 
@@ -189,14 +188,6 @@ return [
 		'tokens' => [
 			'index' 			=> 'tokens.index',
 			'show'				=> 'tokens.show',
-		],
-
-		// Views used by roles module
-		'roles' => [
-			'index' 			=> 'roles.index',
-			'create'			=> 'roles.form',
-			'show'				=> 'roles.show',
-			'edit'				=> 'roles.form',
 		],
 
 		// Views used by permissions module

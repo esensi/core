@@ -1,5 +1,8 @@
 <?php namespace Alba\User\Models;
 
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Lang;
+use Alba\Core\Models\Model;
 use Zizaco\Entrust\EntrustRole;
 
 /**
@@ -30,6 +33,14 @@ class Role extends EntrustRole {
     }
 
     /**
+     * Many-to-Many relations with Users
+     */
+    public function users()
+    {
+        return $this->belongsToMany('Alba\User\Models\User', 'assigned_roles');
+    }
+
+    /**
      * Builds a query scope to return roles alphabetically for a dropdown list
      *
      * @param Illuminate\Database\Query\Builder $query
@@ -41,5 +52,39 @@ class Role extends EntrustRole {
     public function scopeListAlphabetically($query, $column = 'name', $key = 'id', $sort = 'asc')
     {
         return $query->orderBy($column, $sort)->lists($column, $key);
+    }
+
+    /**
+     * Returns the number of minutes since the creation time
+     *
+     * @return string
+     */
+    public function getTimeSinceCreatedAttribute()
+    {
+        // Short circuit for models that have not been created
+        if( is_null($this->created_at) )
+        {
+            return Lang::get('alba::core.messages.never_created');
+        }
+
+        $date = new Carbon($this->created_at);
+        return $date->diffForHumans();
+    }
+
+    /**
+     * Returns the number of minutes since the update time
+     *
+     * @return string
+     */
+    public function getTimeSinceUpdatedAttribute()
+    {
+        // Short circuit for models that have not been updated
+        if( is_null($this->updated_at) )
+        {
+            return Lang::get('alba::core.messages.never_updated');
+        }
+
+        $date = new Carbon($this->updated_at);
+        return $date->diffForHumans();
     }
 }

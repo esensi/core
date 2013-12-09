@@ -1,11 +1,12 @@
 <?php namespace Alba\Core\Models;
 
+use Carbon\Carbon;
 use LaravelBook\Ardent\Ardent;
+use Illuminate\Support\Facades\Lang;
 
 /**
  * Alba\Model model
  *
- * @author diego <diego@emersonmedia.com>
  * @author daniel <daniel@bexarcreative.com>
  * @see Illuminate\Database\Eloquent\Model
  * @see LaravelBook\Ardent\Ardent
@@ -180,6 +181,57 @@ class Model extends Ardent {
     public function getRulesForUpdatingAttribute()
     {
         return array_only(self::$rules, self::$rulesForUpdating);
+    }
+
+    /**
+     * Returns the number of minutes since the creation time
+     *
+     * @return string
+     */
+    public function getTimeSinceCreatedAttribute()
+    {
+        // Short circuit for models that have not been created
+        if( is_null($this->created_at) )
+        {
+            return Lang::get('alba::core.messages.never_created');
+        }
+
+        $date = new Carbon($this->created_at);
+        return $date->diffForHumans();
+    }
+
+    /**
+     * Returns the number of minutes since the update time
+     *
+     * @return string
+     */
+    public function getTimeSinceUpdatedAttribute()
+    {
+        // Short circuit for models that have not been updated
+        if( is_null($this->updated_at) )
+        {
+            return Lang::get('alba::core.messages.never_updated');
+        }
+
+        $date = new Carbon($this->updated_at);
+        return $date->diffForHumans();
+    }
+
+    /**
+     * Returns the number of minutes since the deleted time
+     *
+     * @return string
+     */
+    public function getTimeSinceDeletedAttribute()
+    {
+        // Short circuit for models that have not been deleted
+        if( is_null($this->deleted_at) )
+        {
+            return Lang::get('alba::core.messages.never_deleted');
+        }
+
+        $date = new Carbon($this->deleted_at);
+        return $date->diffForHumans();
     }
 
 }

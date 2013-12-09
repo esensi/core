@@ -159,7 +159,8 @@ class Resource extends Controller implements ResourceInterface {
 	 */
 	public function show($id, $withTrashed = false)
 	{
-		$object = $this->model->newQuery(!$withTrashed)->find($id);
+		$excludeTrashed = !$withTrashed;
+		$object = $this->model->newQuery($excludeTrashed)->find($id);
 		if(!$object)
 		{
 			$this->throwException($this->language('errors.show'));

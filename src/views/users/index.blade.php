@@ -3,12 +3,14 @@
 <div class="container">
 	<ol class="breadcrumb">
 		<li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-		<li class="active">Users</li>
+		<li class="active">Users &nbsp;
+			<a href="{{ route('admin.users.create') }}" class="btn btn-xs btn-success"><i class="fa fa-plus-circle"></i> User</a></li>
 		@if($collection->count())
 		<span class="pull-right text-muted">
 			Showing {{$paginator->getFrom()}} to {{$paginator->getTo()}} of {{$paginator->getTotal()}}
 		</span>
 		@endif
+		<span class="clearfix"></span>
 	</ol>
 
 	@include('alba::core.errors')

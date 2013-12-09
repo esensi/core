@@ -4,12 +4,14 @@
 	<ol class="breadcrumb">
 		<li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
 		<li><a href="{{ route('admin.users.index') }}">Users</a></li>
-		<li class="active">Roles</li>
+		<li class="active">Roles &nbsp;
+			<a href="{{ route('admin.roles.create') }}" class="btn btn-xs btn-success"><i class="fa fa-plus-circle"></i> Role</a></li>
 		@if($collection->count())
 		<span class="pull-right text-muted">
 			Showing {{$paginator->getFrom()}} to {{$paginator->getTo()}} of {{$paginator->getTotal()}}
 		</span>
 		@endif
+		<span class="clearfix"></span>
 	</ol>
 
 	@include('alba::core.errors')

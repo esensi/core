@@ -23,6 +23,7 @@
 	  				<th><a href="{{ HTML::paginationUrl($paginator, ['order' => 'active']) }}">Active</a></th>
 	  				<th><a href="{{ HTML::paginationUrl($paginator, ['order' => 'blocked']) }}">Blocked</a></th>
 	  				<th><a href="{{ HTML::paginationUrl($paginator, ['order' => 'authenticated_at']) }}">Last Login</a></th>
+	  				<th>Roles</th>
 	  				<th>Actions</th>
 	  			</tr>
 	  		</thead>
@@ -36,6 +37,15 @@
 		  				<td><a href="{{ HTML::paginationUrl($paginator, ['active' => $item->active]) }}">{{ $item->activeStatus }}</a></td>
 		  				<td><a href="{{ HTML::paginationUrl($paginator, ['blocked' => $item->blocked]) }}">{{ $item->blockedStatus }}</a></td>
 		  				<td>{{ $item->timeSinceLastAuthenticated }}</td>
+		  				<td>
+		  					<?php
+	  						$roles = [];
+		  					foreach($item->roles as $role):
+		  						$roles[] = '<a href="'.route('admin.roles.edit', $role->id).'">'.$role->name.'</a>';
+		  					endforeach;
+		  					echo implode(', ', $roles);
+		  					?>
+		  				</td>
 		  				<td>
 		  					<div class="btn-group">
 							  @if(!$item->trashed())

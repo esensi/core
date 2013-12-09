@@ -95,7 +95,7 @@ class Resource extends Controller implements ResourceInterface {
 		}
 
 		// Build new query with loaded relationships
-		$query = $this->model->newQuery();
+		$query = $this->model->newQuery()->select([$this->model->getTable().'.*']);
 		if ( isset($this->relationships) )
 			$query->with($this->relationships);
 		
@@ -107,6 +107,7 @@ class Resource extends Controller implements ResourceInterface {
 				case 'only':
 					$query->onlyTrashed();
 
+				case '1':
 				case 'true':
 					$query->withTrashed();
 			}
@@ -125,7 +126,7 @@ class Resource extends Controller implements ResourceInterface {
 		$paginator = $query->where($this->where)
 			->orderBy($this->order, $this->sort)
 			->paginate($this->max);
-
+			
 		// Generate paginated links
 		$queries = array_except($this->defaults, ['relationships', 'scopes', 'where']);
 		return $paginator->appends($queries);

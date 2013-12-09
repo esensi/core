@@ -54,6 +54,45 @@ class UsersController extends Controller {
     }
 
     /**
+     * Show the search modal
+     *
+     * @return void
+     */
+    public function search()
+    {
+        // Get the models used
+        $user = $this->resources['user']->getModel();
+        $role = $this->resources['user']->getModel('role');
+
+        // Get all the options
+        $rolesOptions = array_merge(['' => 'Any Roles'], $role->listAlphabetically());
+        $activeOptions = $user->activeOptions;
+        $blockedOptions = $user->blockedOptions;
+        $orderOptions = $user->orderOptions;
+        $trashedOptions = $user->trashedOptions;
+        $sortOptions = $user->sortOptions;
+        $maxOptions = $user->maxOptions;
+
+        // Construct data arguments
+        $options = compact('activeOptions', 'blockedOptions', 'trashedOptions', 'orderOptions', 'sortOptions', 'maxOptions', 'rolesOptions');
+        $inputs = Input::only('order','sort','max','keywords','names','roles','active','blocked','trashed');
+        $data = array_merge($options, $inputs);
+
+        // Convert arrays used in text inputs to comma-separated values
+        if(is_array($data['keywords']))
+        {
+            $data['keywords'] = implode(', ', $data['keywords']);
+        }
+        if(is_array($data['names']))
+        {
+            $data['names'] = implode(', ', $data['names']);
+        }        
+
+        // Pass data to search modal view
+        $this->modal('search', $data);
+    }
+
+    /**
      * Show the form for registering
      *
      * @return void

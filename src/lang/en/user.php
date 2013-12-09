@@ -101,4 +101,18 @@ return [
 		'has_password'						=> 'Password Set',
 	],
 
+	/*
+	|--------------------------------------------------------------------------
+	| User name titles and suffixes
+	|--------------------------------------------------------------------------
+	|
+	| The following language lines contain common titles used as prefixes and
+	| suffixes for a person's name.
+	|
+	*/
+
+	'names' => [
+		'titles' 							=> ['Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Rev.', 'Hon.'],
+		'suffixes'							=> ['Jr.', 'Sr.', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'PhD'],
+	],
 ];

@@ -153,5 +153,25 @@ class UsersApiController extends Controller {
     {
         return $this->resources['user']->restore($id);
     }
-    
+
+    /**
+     * Display a list of all available titles
+     *
+     * @return array
+     */
+    public function titles()
+    {
+        return $this->resources['user']->titles();
+    }
+
+    /**
+     * Display a list of all available suffixes
+     *
+     * @return array
+     */
+    public function suffixes()
+    {
+        return $this->resources['user']->suffixes();
+    }
+
 }

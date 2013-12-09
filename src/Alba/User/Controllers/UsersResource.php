@@ -90,6 +90,28 @@ class UsersResource extends Resource {
     }
 
     /**
+     * Return an array of user name titles
+     *
+     * @return array
+     */
+    public function titles()
+    {
+        $titles = $this->name->whereNotNull('title')->distinct()->lists('title');
+        return array_merge($titles, $this->language('names.titles'));
+    }
+
+    /**
+     * Return an array of user name suffixes
+     *
+     * @return array
+     */
+    public function suffixes()
+    {
+        $suffixes = $this->name->whereNotNull('suffix')->distinct()->lists('suffix');
+        return array_merge($suffixes, $this->language('names.suffixes'));
+    }
+
+    /**
      * Log user in by authenticating with credentials
      *
      * @param array $credentials to find user with

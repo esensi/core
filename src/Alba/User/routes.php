@@ -23,6 +23,8 @@ Route::group([
 			'prefix' => Config::get('alba::core.prefixes.modules.users', 'users'),
 		], function()
 		{
+			Route::get('suffixes', [ 'as' => 'api.user.suffixes', 'uses' => 'Alba\User\Controllers\UsersApiController@suffixes' ]);
+			Route::get('titles', [ 'as' => 'api.user.titles', 'uses' => 'Alba\User\Controllers\UsersApiController@titles' ]);
 			Route::post('login', [ 'as' => 'api.user.login', 'uses' => 'Alba\User\Controllers\UsersApiController@login' ]);
 			Route::any('logout', [ 'as' => 'api.user.logout', 'uses' => 'Alba\User\Controllers\UsersApiController@logout' ]);
 			Route::delete('{id}', [ 'as' => 'api.user.destroy', 'uses' => 'Alba\User\Controllers\UsersApiController@destroy' ]);

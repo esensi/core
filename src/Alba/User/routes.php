@@ -10,7 +10,7 @@
 |
 */
 
-if ( Config::get('alba::user.routes.api', false) == true ):
+if ( Config::get('alba::core.routes.api', false) == true ):
 
 Route::group([
 	'prefix' => Config::get('alba::core.prefixes.api.latest', 'api'),
@@ -18,7 +18,7 @@ Route::group([
 ], function()
 {
 	// User API Routes
-	if ( Config::get('alba::user.routes.modules.users', false) == true ):
+	if ( Config::get('alba::user.routes.api', false) == true ):
 		Route::group([
 			'prefix' => Config::get('alba::core.prefixes.modules.users', 'users'),
 		], function()
@@ -37,7 +37,7 @@ Route::group([
 	endif;
 
 	// Role API Routes
-	if ( Config::get('alba::user.routes.modules.roles', false) == true ):
+	if ( Config::get('alba::role.routes.api', false) == true ):
 		Route::group([
 			'prefix' => Config::get('alba::core.prefixes.modules.roles', 'roles'),
 		], function()
@@ -55,14 +55,15 @@ Route::group([
 	endif;
 
 	// Permission API Routes
-	if ( Config::get('alba::user.routes.modules.permissions', false) == true ):
+	if ( Config::get('alba::permission.routes.api', false) == true ):
 		Route::group([
 			'prefix' => Config::get('alba::core.prefixes.modules.permissions', 'permissions'),
 		], function()
 		{
 			Route::get('names', [ 'as' => 'api.permission.names', 'uses' => 'Alba\User\Controllers\PermissionsApiController@names' ]);
-			Route::delete('{id}', [ 'as' => 'api.permission.destroy', 'uses' => 'Alba\User\Controllers\PermissionsApiController@destroy' ]);
 			Route::put('{id}', [ 'as' => 'api.permission.update', 'uses' => 'Alba\User\Controllers\PermissionsApiController@update' ]);
+			Route::get('{name}', [ 'as' => 'api.permission.show.name', 'uses' => 'Alba\User\Controllers\PermissionsApiController@showByName' ])->where('name', '^[a-z][a-z0-9\-_\.]+');
+			Route::get('{id}/roles', [ 'as' => 'api.permission.show.roles', 'before' => ['permission:module_permissions'], 'uses' => 'Alba\User\Controllers\PermissionsApiController@showRoles' ]);
 			Route::get('{id}', [ 'as' => 'api.permission.show', 'uses' => 'Alba\User\Controllers\PermissionsApiController@show' ]);
 			Route::post('/', [ 'as' => 'api.permission.store', 'uses' => 'Alba\User\Controllers\PermissionsApiController@store' ]);
 			Route::get('/', [ 'as' => 'api.permission.index', 'uses' => 'Alba\User\Controllers\PermissionsApiController@index' ]);
@@ -70,7 +71,7 @@ Route::group([
 	endif;
 
 	// Tokens API Routes
-	if ( Config::get('alba::user.routes.modules.tokens', false) == true ):
+	if ( Config::get('alba::token.routes.api', false) == true ):
 		Route::group([
 			'prefix' => Config::get('alba::core.prefixes.modules.tokens', 'tokens'),
 		], function()
@@ -100,7 +101,7 @@ endif;
 |
 */
 
-if ( Config::get('alba::user.routes.backend', false) == true ):
+if ( Config::get('alba::core.routes.backend', false) == true ):
 
 Route::group([
 	'prefix' => Config::get('alba::core.prefixes.backend', 'admin'), 
@@ -108,7 +109,7 @@ Route::group([
 ], function()
 {	
 	// User Admin Routes
-	if ( Config::get('alba::user.routes.modules.users', false) == true ):
+	if ( Config::get('alba::user.routes.backend', false) == true ):
 		Route::group([
 			'prefix' => Config::get('alba::core.prefixes.modules.users', 'users'),
 			'before' => ['permission:module_users'],
@@ -166,7 +167,7 @@ Route::group([
 	endif;
 
 	// Roles Admin Routes
-	if ( Config::get('alba::user.routes.modules.roles', false) == true ):
+	if ( Config::get('alba::role.routes.backend', false) == true ):
 		Route::group([
 			'prefix' => Config::get('alba::core.prefixes.modules.roles', 'roles'),
 			'before' => ['permission:module_roles'],
@@ -195,22 +196,32 @@ Route::group([
 	endif;
 
 	// Permissions Admin Routes
-	if ( Config::get('alba::user.routes.modules.permissions', false) == true ):
+	if ( Config::get('alba::permission.routes.backend', false) == true ):
 		Route::group([
 			'prefix' => Config::get('alba::core.prefixes.modules.permissions', 'permissions'),
 			'before' => ['permission:module_permissions'],
 		], function()
 		{
+			// Create
+			Route::post('create', [ 'as' => 'admin.permissions.store', 'uses' => 'Alba\User\Controllers\PermissionsAdminController@store' ]);
 			Route::get('create', [ 'as' => 'admin.permissions.create', 'uses' => 'Alba\User\Controllers\PermissionsAdminController@create' ]);
-			Route::get('search', [ 'as' => 'admin.permissions.search', 'uses' => 'Alba\User\Controllers\PermissionsAdminController@search' ]);
+			
+			// Edit
+			Route::post('{id}/edit', [ 'as' => 'admin.permissions.update', 'uses' => 'Alba\User\Controllers\PermissionsAdminController@update' ]);
 			Route::get('{id}/edit', [ 'as' => 'admin.permissions.edit', 'uses' => 'Alba\User\Controllers\PermissionsAdminController@edit' ]);
+
+			// Show
+			Route::get('{id}', [ 'as' => 'admin.permissions.show.name', 'uses' => 'Alba\User\Controllers\PermissionsAdminController@showByName' ])->where('name', '^[a-z][a-z0-9\-_\.]+');
 			Route::get('{id}', [ 'as' => 'admin.permissions.show', 'uses' => 'Alba\User\Controllers\PermissionsAdminController@show' ]);
+
+			// Search / Browse
 			Route::get('/', [ 'as' => 'admin.permissions.index', 'uses' => 'Alba\User\Controllers\PermissionsAdminController@index' ]);
+			
 		})->where('id', '[0-9]+');
 	endif;
 
 	// Tokens Admin Routes
-	if ( Config::get('alba::user.routes.modules.tokens', false) == true ):
+	if ( Config::get('alba::token.routes.backend', false) == true ):
 		Route::group([
 			'prefix' => Config::get('alba::core.prefixes.modules.tokens', 'tokens'),
 			'before' => ['permission:module_tokens'],

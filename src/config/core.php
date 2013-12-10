@@ -40,4 +40,39 @@ return [
 		],
 	],
 
+	/*
+	|--------------------------------------------------------------------------
+	| Routes to be included by all modules
+	|--------------------------------------------------------------------------
+	|
+	| The following configuration options alter which routes are included,
+	| effectively allowing the user to not use some or all of the default
+	| routes available.
+	|
+	*/
+
+	'routes' => [
+		
+		'api' 		=> true,
+		'backend' 	=> true,
+		'public'	=> true,
+	],
+
+	/*
+	|--------------------------------------------------------------------------
+	| Views to be used by core module
+	|--------------------------------------------------------------------------
+	|
+	| The following configuration options alter which package handles the
+	| views, and which views are used specifically by each function.
+	|
+	*/
+
+	'package' => 'alba::',
+
+	'views' => [
+
+		// Modals
+		'modal'				=> 'core.modal',
+	],
 ];

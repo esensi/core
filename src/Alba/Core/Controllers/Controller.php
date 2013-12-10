@@ -63,8 +63,8 @@ class Controller extends LaravelController {
      */
     protected function content($key, $data = [], $name = 'content')
     {
-        $package = Config::get('alba::' . str_singular($this->module) . '.views.packages.' . str_plural($this->module), 'alba::');
-        $view = Config::get('alba::' . str_singular($this->module) . '.views.' . str_plural($this->module) . '.' . $key);
+        $package = Config::get('alba::' . str_singular($this->module) . '.package', 'alba::');
+        $view = Config::get('alba::' . str_singular($this->module) . '.views.' . $key);
         $this->layout->$name = View::make($package . $view, $data);
     }
 
@@ -77,7 +77,9 @@ class Controller extends LaravelController {
      */
     protected function modal($key, $data = [], $name = 'modal-body')
     {
-        $this->layout = 'alba::core.modal';
+        $package = Config::get('alba::core.package', 'alba::');
+        $view = Config::get('alba::core.views.modal', 'core.modal');
+        $this->layout = $package . $view;
         $this->setupLayout();
         $this->content($key, $data, $name);
     }
@@ -91,7 +93,7 @@ class Controller extends LaravelController {
      */
     protected function redirect($key, $params = [])
     {
-        $name = Config::get('alba::' . str_singular($this->module) . '.redirects.' . str_plural($this->module) . '.' . $key, 'index');
+        $name = Config::get('alba::' . str_singular($this->module) . '.redirects.' . $key, 'index');
         return Redirect::route($name, $params);
     }
 

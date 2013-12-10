@@ -2,26 +2,26 @@
 
 use Illuminate\Support\Facades\Input;
 use Alba\Core\Controllers\Controller;
-use Alba\User\Controllers\RolesResource;
+use Alba\User\Controllers\PermissionsResource;
 
 /**
- * Controller for accessing RolesResource as an API
+ * Controller for accessing PermissionResource as an API
  *
  * @author daniel <daniel@bexarcreative.com>
  * @see Alba\Core\Controllers\Controller
- * @see Alba\User\Controllers\RolesResource
+ * @see Alba\User\Controllers\PermissionsResource
  */
-class RolesApiController extends Controller {
+class PermissionsApiController extends Controller {
 
     /**
      * Inject dependencies
      *
-     * @param RolesResource $rolesResource;
+     * @param PermissionsResource $permissionsResource;
      * @return void
      */
-	public function __construct(RolesResource $rolesResource)
+	public function __construct(PermissionsResource $permissionsResource)
 	{
-		$this->resources['role'] = $rolesResource;
+		$this->resources['permission'] = $permissionsResource;
 	}
 
     /**
@@ -33,20 +33,20 @@ class RolesApiController extends Controller {
     {
         $params = Input::only('max', 'order', 'sort', 'keyword');
 
-        // Filter by permission
-        if( $permissions = Input::get('permissions', false) )
+        // Filter by role
+        if( $roles = Input::get('roles', false) )
         {
-            $permissions = is_array($permissions) ? $permissions : explode(',', $permissions);
-            $permissions = array_values($permissions);
-            $test = implode('', $permissions);
+            $roles = is_array($roles) ? $roles : explode(',', $roles);
+            $roles = array_values($roles);
+            $test = implode('', $roles);
             if(!empty($test))
             {
-                $params['permissions'] = $permissions;
-                $params['scopes']['ofPermission'] = [ $permissions ];
+                $params['roles'] = $roles;
+                $params['scopes']['ofRole'] = [ $roles ];
             }
         }
-
-        return $this->resources['role']->index($params);
+        
+        return $this->resources['permission']->index($params);
     }
 
     /**
@@ -57,7 +57,7 @@ class RolesApiController extends Controller {
     public function store()
     {
         $attributes = Input::all();
-        return $this->resources['role']->store($attributes);
+        return $this->resources['permission']->store($attributes);
     }
 
     /**
@@ -68,7 +68,7 @@ class RolesApiController extends Controller {
      */
     public function show($id)
     {
-        return $this->resources['role']->show($id);
+        return $this->resources['permission']->show($id);
     }
 
     /**
@@ -79,20 +79,7 @@ class RolesApiController extends Controller {
      */
     public function showByName($name)
     {
-        return $this->resources['role']->showByName($name);
-    }
-
-    /**
-     * Display the specified resource with users.
-     *
-     * @param int $id of object
-     * @return Illuminate\Database\Eloquent\Model
-     */
-    public function showUsers($id)
-    {
-        $object = $this->resources['role']->show($id);
-        $object->load('users');
-        return $object;
+        return $this->resources['permission']->showByName($name);
     }
 
     /**
@@ -101,10 +88,10 @@ class RolesApiController extends Controller {
      * @param int $id of object
      * @return Illuminate\Database\Eloquent\Model
      */
-    public function showPermissions($id)
+    public function showRoles($id)
     {
-        $object = $this->resources['role']->show($id);
-        $object->load('perms');
+        $object = $this->resources['permission']->show($id);
+        $object->load('roles');
         return $object;
     }
 
@@ -117,7 +104,7 @@ class RolesApiController extends Controller {
     public function update($id)
     {
         $attributes = Input::all();
-        $object = $this->resources['role']->update($id, $attributes);
+        $object = $this->resources['permission']->update($id, $attributes);
         return $object;
     }
 
@@ -131,17 +118,17 @@ class RolesApiController extends Controller {
      */
     public function destroy($id)
     {
-        return $this->resources['role']->destroy($id);
+        return $this->resources['permission']->destroy($id);
     }
 
     /**
-     * Display a list of all roles
+     * Display a list of all permissions.
      *
      * @return array
      */
     public function names()
     {
-        return $this->resources['role']->names();
+        return $this->resources['permission']->names();
     }
 
 }

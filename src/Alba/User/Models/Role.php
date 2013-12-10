@@ -2,7 +2,6 @@
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Lang;
-use Alba\Core\Models\Model;
 use Zizaco\Entrust\EntrustRole;
 
 /**
@@ -86,5 +85,44 @@ class Role extends EntrustRole {
 
         $date = new Carbon($this->updated_at);
         return $date->diffForHumans();
+    }
+
+    /**
+     * Builds a query scope to return roles of a certain permission
+     *
+     * @param Illuminate\Database\Query\Builder $query
+     * @param string|array $permissions ids of permission
+     * @return Illuminate\Database\Query\Builder
+     */
+    public function scopeOfPermission($query, $permissions)
+    {
+        // Convert permissions string to array
+        if ( is_string($permissions) )
+            $permissions = explode(',', $permissions);
+
+        // Separate permission names from permission ids
+        $permissionNames = [];
+        foreach($permissions as $i => $permission)
+        {
+            if(!is_numeric($permission))
+            {
+                $permissionNames[] = $permission;
+                unset($permissions[$i]);
+            }
+        }
+
+        // Get permission ids by querying permission names and merge
+        $permissionIds = $permissions;
+        if(!empty($permissionNames))
+        {
+            $permissions = Permission::whereIn('name', $permissionNames)->lists('id');
+            $permissionIds = array_values(array_unique(array_merge($permissionIds, $permissions), SORT_NUMERIC));
+        }
+
+        // Query the permission_role pivot table for matching permissions
+        return $query->addSelect(['permission_role.permission_id'])
+            ->join('permission_role', 'roles.id', '=', 'permission_role.role_id')
+            ->whereIn('permission_role.permission_id', $permissionIds)
+            ->groupBy('roles.id');
     }
 }

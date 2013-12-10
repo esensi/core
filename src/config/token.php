@@ -34,6 +34,24 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
+	| Routes to be included by this module
+	|--------------------------------------------------------------------------
+	|
+	| The following configuration options alter which routes are included,
+	| effectively allowing the user to not use some or all of the default
+	| routes available.
+	|
+	*/
+
+	'routes' => [
+		
+		'api' 		=> true,
+		'backend' 	=> true,
+		'public'	=> true,
+	],
+	
+	/*
+	|--------------------------------------------------------------------------
 	| Views to be used by this module
 	|--------------------------------------------------------------------------
 	|
@@ -42,17 +60,10 @@ return [
 	|
 	*/
 
-	'views' => [
-		
-		// Package used by each module
-		'packages' => [
-			'tokens' 		=> 'alba::',
-		],
+	'package' => 'alba::',
 
-		// Views used by tokens module
-		'tokens' => [
-			'index' 			=> 'tokens.index',
-		],
+	'views' => [
+		'index' 			=> 'tokens.index',
 	],
 
 ];

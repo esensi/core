@@ -43,7 +43,7 @@
 		  					<?php
 	  						$roles = [];
 		  					foreach($item->roles as $role):
-		  						$roles[] = '<a href="'.route('admin.roles.edit', $role->id).'">'.$role->name.'</a>';
+		  						$roles[] = '<a href="'.route('admin.users.index').'?roles='.$role->id.'">'.$role->name.'</a>';
 		  					endforeach;
 		  					echo implode(', ', $roles);
 		  					?>
@@ -107,7 +107,7 @@
 					@endforeach
 				@else
 					<tr class="warning">
-						<td colspan="7">@lang('alba::user.errors.no_results')</td>
+						<td colspan="8">@lang('alba::user.errors.no_results')</td>
 					</tr>
 				@endif
 	  		</tbody>

@@ -4,11 +4,11 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
-	| Configuration values for Alba\User\Role module
+	| Configuration values for Alba\User\Permission module
 	|--------------------------------------------------------------------------
 	|
 	| The following lines contain the default configuration values for the
-	| Alba\User\Role module. You can publish these to your project for
+	| Alba\User\Permission module. You can publish these to your project for
 	| modification using the following Artisan command:
 	|
 	| php artisan config:publish emersonmedia/alba
@@ -17,24 +17,22 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
-	| Role configurations
+	| Permission configurations
 	|--------------------------------------------------------------------------
 	|
-	| The following configuration options are used by the roles seeder to
-	| add default roles and assign different permissions to the roles. Roles are
-	| then assigned to the users.
-	|
-	| Array of roles (key) and assigned permissions (value).
-	| You can use the special permission "*" as a wildcard for all permissions.
-	|
-	| @example $roles = [ 'admin' => ['*'], 'user' => ['foo', 'bar'] ]
+	| The following configuration options are used by the permission seeder to
+	| add permissions to the permissions table. Roles are then assigned these
+	| permissions and the roles are assigned to the users.
 	|
 	*/
 
     'defaults' => [
-
-        'admin'          		=> ['*'],
-        'user'					=> [],
+    	
+    	// Permission name 		=> Display name
+        'module_users'          => 'Manage Users',
+        'module_roles'          => 'Manage Roles',
+        'module_permissions'    => 'Manage Permissions',
+        'module_tokens'         => 'Manage Tokens',
     ],
 
 	/*
@@ -42,8 +40,8 @@ return [
 	| TTL configurations
 	|--------------------------------------------------------------------------
 	|
-	| The following configuration options set the Time-to-Live (TTL) for role
-	| names caching. Values should be specified in minutes.
+	| The following configuration options set the Time-to-Live (TTL) for
+	| permission names caching. Values should be specified in minutes.
 	|
 	*/
 
@@ -83,13 +81,10 @@ return [
 
 	'views' => [
 		
-		'index' 			=> 'roles.index',
-		'create'			=> 'roles.form',
-		'show'				=> 'roles.show',
-		'edit'				=> 'roles.form',
-
-		// Modals
-		'destroy_confirm'				=> 'roles.modals.destroy-confirm',
+		'index' 			=> 'permissions.index',
+		'create'			=> 'permissions.form',
+		'show'				=> 'permissions.show',
+		'edit'				=> 'permissions.form',
 	],
 
 	/*
@@ -103,10 +98,9 @@ return [
 	*/
 
 	'redirects' => [
-
-		'store'				=> 'admin.roles.index',
-		'update'			=> 'admin.roles.index',
-		'destroy'			=> 'admin.roles.index',
+	
+		'store'				=> 'admin.permissions.index',
+		'update'			=> 'admin.permissions.index',
 	],
 
 ];

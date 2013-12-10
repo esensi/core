@@ -33,7 +33,7 @@ class TokensApiController extends Controller {
     {
         $params = Input::only('max', 'order', 'sort', 'keyword');
 
-         // Filter by type
+        // Filter by type
         if( $types = Input::get('types', false) )
         {
             $types = is_array($types) ? $types : explode(',', $types);

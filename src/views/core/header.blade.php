@@ -57,7 +57,7 @@
                     <li><a href="{{ route('admin.permissions.index') }}">Permission Management</a></li>
                   @endif
                   @if(Entrust::can('module_tokens'))
-                    <li><a href="{{ route('admin.tokens.index') }}">Tokens Management</a></li>
+                    <li><a href="{{ route('admin.tokens.index') }}">Token Log</a></li>
                   @endif
                 @endif
               </ul>

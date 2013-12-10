@@ -41,6 +41,16 @@ class User extends Model implements UserInterface {
     protected $with = ['name'];
 
     /**
+     * Attributes that Eloquent will conver to Carbon dates
+     *
+     * @var array
+     */
+    protected $dateAttributes = [
+        'created_at', 'updated_at', 'deleted_at',
+        'activated_at', 'authenticated_at', 'password_updated_at',
+    ];
+
+    /**
      * Attributes that Ardent should Hash
      *
      * @var array

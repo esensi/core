@@ -28,6 +28,13 @@ class Model extends Ardent {
     protected $with = [];
 
     /**
+     * Attributes that Eloquent will conver to Carbon dates
+     *
+     * @var array
+     */
+    protected $dateAttributes = ['created_at', 'updated_at', 'deleted_at'];
+
+    /**
      * Attributes that Ardent should Hash
      *
      * @var array
@@ -152,6 +159,16 @@ class Model extends Ardent {
      * @var array
      */
     public static $rulesForUpdating = [];
+
+    /**
+     * Get the date type fields that should be converted to Carbon dates
+     *
+     * @return array
+     */
+    public function getDates()
+    {
+        return $this->dateAttributes;
+    }
 
     /**
      * Rules needed for seeding

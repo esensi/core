@@ -30,6 +30,15 @@ class Token extends Model {
     protected $table = 'tokens';
 
     /**
+     * Attributes that Eloquent will conver to Carbon dates
+     *
+     * @var array
+     */
+    protected $dateAttributes = [
+        'created_at', 'expires_at',
+    ];
+
+    /**
      * Fields that can be filled
      *
      * @var boolean

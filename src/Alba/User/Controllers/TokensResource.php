@@ -26,11 +26,18 @@ class TokensResourceException extends ResourceException {}
 class TokensResource extends Resource {
     
     /**
+     * The module name
+     * 
+     * @var string
+     */
+    protected $module = 'token';
+
+    /**
      * The exception to be thrown
      * 
      * @var Alba\Core\Exceptions\ResourceException;
      */
-    protected $exception = 'TokensResourceException';
+    protected $exception = 'Alba\User\Controllers\TokensResourceException';
 
     /**
      * Inject dependencies
@@ -38,6 +45,22 @@ class TokensResource extends Resource {
     public function __construct(Token $token)
     {        
         $this->model = $token;
+    }
+
+    /**
+     * Show the specificed resource by the token
+     *
+     * @param string $token
+     * @return Model
+     */
+    public function showByToken($token)
+    {
+        $object = $this->model->whereToken($token)->first();
+        if(!$object)
+        {
+            $this->throwException($this->language('errors.show_by_token'));
+        }
+        return $object;
     }
 
     /**
@@ -62,7 +85,7 @@ class TokensResource extends Resource {
     public function createNewActivation(UserInterface $user)
     {
         $model = $this->getModel();
-        $ttlHours = Config::get('alba::user.tokens.activation.ttl', null);
+        $ttlHours = Config::get('alba::token.ttl.activation', null);
         return $this->createNew($model::TYPE_ACTIVATION, $user, $ttlHours);
     }
 
@@ -75,7 +98,7 @@ class TokensResource extends Resource {
     public function createNewPasswordReset(UserInterface $user)
     {
         $model = $this->getModel();
-        $ttlHours = Config::get('alba::user.tokens.password_reset.ttl', null);
+        $ttlHours = Config::get('alba::token.ttl.password_reset', null);
         return $this->createNew($model::TYPE_PASSWORD_RESET, $user, $ttlHours);
     }
 
@@ -88,7 +111,7 @@ class TokensResource extends Resource {
      */
     public function createNew($type, UserInterface $user, $ttlHours = null)
     {
-        $ttlHours = is_null($ttlHours) ? Config::get('alba::user.tokens.ttl', 24) : $ttlHours;
+        $ttlHours = is_null($ttlHours) ? Config::get('alba::token.ttl.default', 24) : $ttlHours;
         
         // Generate a token like Illuminate\Auth\Reminders\DatabaseReminderRepository
         $email = $user->getAuthIdentifier();
@@ -101,6 +124,31 @@ class TokensResource extends Resource {
             'expires_at' => Carbon::now()->addHours($ttlHours),
             ];
         return $this->store($attributes);
+    }
+
+    /**
+     * Returns the route for token
+     *
+     * @param string $type of token
+     * @param string $token value
+     * @return string
+     */
+    public function route($type, $token)
+    {
+        $model = $this->model;
+
+        switch($type)
+        {
+            case $model::TYPE_PASSWORD_RESET:
+                return route('users.new-password', $token);
+
+            case $model::TYPE_ACTIVATION:
+                return route('users.activate', $token);
+
+            default:
+                $this->throwException($this->language('errors.invalid_type', ['type' => $type]));
+                break;
+        }
     }
 
 }

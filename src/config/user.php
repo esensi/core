@@ -74,29 +74,6 @@ return [
         'admin'          		=> ['*'],
         'user'					=> [],
     ],
-
-	/*
-	|--------------------------------------------------------------------------
-	| Token configurations
-	|--------------------------------------------------------------------------
-	|
-	| The following configuration options set the Time-to-Live (TTL) for token
-	| expiration. Values should be specified in hours.
-	|
-	*/
-
-	'tokens' => [
-
-		'ttl' => 24, // Default TTL used by all User tokens
-
-		'activation' => [
-			'ttl' => 24,
-		],
-
-		'password_reset' => [
-			'ttl' => 24,
-		],
-	],
 	
 	/*
 	|--------------------------------------------------------------------------
@@ -140,7 +117,6 @@ return [
 		// Package used by each module
 		'packages' => [
 			'users' 		=> 'alba::',
-			'tokens' 		=> 'alba::',
 			'permissions'	=> 'alba::',
 		],
 
@@ -182,12 +158,6 @@ return [
 					'emails.text.users.reset-password',
 				],
 			],
-		],
-
-		// Views used by tokens module
-		'tokens' => [
-			'index' 			=> 'tokens.index',
-			'show'				=> 'tokens.show',
 		],
 
 		// Views used by permissions module

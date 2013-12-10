@@ -1,6 +1,7 @@
 <?php namespace Alba\User\Models;
 
-use LaravelBook\Ardent\Ardent;
+use Alba\User\Controllers\TokensResource;
+use Alba\Core\Models\Model;
 use Carbon\Carbon;
 
 /**
@@ -10,7 +11,7 @@ use Carbon\Carbon;
  * @author daniel <daniel@bexarcreative.com>
  * @see Alba\User\Models\User
  */
-class Token extends Ardent {
+class Token extends Model {
 
     /**
      * Types of tokens
@@ -34,6 +35,26 @@ class Token extends Ardent {
      * @var boolean
      */
     protected $fillable = ['expires_at', 'type', 'token'];
+
+    /**
+     * Options for order by dropdowns
+     *
+     * @var array
+     */
+    public $orderOptions = [
+        'id'                    => 'ID',
+        'type'                  => 'Type',
+        'token'                 => 'Token',
+        'created_at'            => 'Created',
+        'expires_at'            => 'Expires',
+    ];
+
+    /**
+     * Enable soft deletes on model
+     *
+     * @var boolean
+     */
+    protected $softDelete = false;
 
     /**
      * Allow Eloquent to handle timestamps
@@ -102,6 +123,34 @@ class Token extends Ardent {
     {
         return array_only(self::$rules, self::$rulesForUpdating);
     }
+
+    /**
+     * Returns the number of minutes since the update time
+     *
+     * @return string
+     */
+    public function getTimeTillExpiresAttribute()
+    {
+        // Short circuit for models that have not had an expiration set
+        if( is_null($this->expires_at) )
+        {
+            return Lang::get('alba::core.messages.never_expires');
+        }
+
+        $date = new Carbon($this->expires_at);
+        return $date->diffForHumans();
+    }
+
+    /**
+     * Returns the URL for the model
+     *
+     * @return string
+     */
+    public function getRouteAttribute()
+    {
+        $resource = new TokensResource($this);
+        return $resource->route($this->type, $this->token);
+    }
    
     /**
      * Stuff to do before saving the model
@@ -116,4 +165,20 @@ class Token extends Ardent {
         }
     }
 
+    /**
+     * Builds a query scope to return tokens of a certain type
+     *
+     * @param Illuminate\Database\Query\Builder $query
+     * @param string|array $types of tokens
+     * @return Illuminate\Database\Query\Builder
+     */
+    public function scopeOfType($query, $types)
+    {
+        // Convert types string to array
+        if ( is_string($types) )
+            $types = explode(',', $types);
+
+        // Query the tokens table for matching types
+        return $query->whereIn('type', $types);
+    }
 }

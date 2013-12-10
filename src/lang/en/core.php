@@ -20,4 +20,21 @@ return [
 		'destroy' => 'Object could not be deleted.',
 	],
 
+
+	/*
+	|--------------------------------------------------------------------------
+	| Status message lines
+	|--------------------------------------------------------------------------
+	|
+	| The following language lines contain status message lines used by the
+	| Core module models.
+	|
+	*/
+
+	'messages' => [
+		'never_expires'	=> 'Never Expires',
+		'never_updated'	=> 'Never Updated',
+		'never_created' => 'Never Created',
+		'never_deleted' => 'Never Deleted',
+	],
 ];

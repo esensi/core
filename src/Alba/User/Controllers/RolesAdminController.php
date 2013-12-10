@@ -6,7 +6,6 @@ use Alba\User\Controllers\RolesController;
 /**
  * Controller for accessing RolesResource from a backend web interface
  *
- * @author diego <diego@emersonmedia.com>
  * @author daniel <daniel@bexarcreative.com>
  * @see Alba\Core\Controllers\RolesController
  */

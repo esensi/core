@@ -105,7 +105,7 @@ if ( Config::get('alba::core.routes.backend', false) == true ):
 
 Route::group([
 	'prefix' => Config::get('alba::core.prefixes.backend', 'admin'), 
-	'before' => ['error.default','auth', 'permission:module_users'],
+	'before' => ['error.default','auth'],
 ], function()
 {	
 	// User Admin Routes

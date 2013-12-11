@@ -60,6 +60,8 @@ return [
 
 	'package' => 'alba::',
 
+	'dropdown' => 'alba::users.dropdown',
+
 	'views' => [
 
 		'index' 			=> 'users.index',

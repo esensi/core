@@ -23,7 +23,7 @@ class RolesTableSeeder extends Seeder {
         DB::table("roles")->delete();
 
         // Get the roles from config
-        $roles = Config::get('alba::user.roles');
+        $roles = Config::get('alba::role.defaults');
 
         // Holds cache of all permissions
         $all_permissions = [];

@@ -4,7 +4,7 @@
 	<ol class="breadcrumb">
 		<li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
 		<li class="active">Users &nbsp;
-			<a href="{{ route('admin.users.create') }}" class="btn btn-xs btn-success"><i class="fa fa-plus-circle"></i> User</a></li>
+			<a href="{{ route('admin.users.create') }}" class="btn btn-xs btn-success"><i class="fa fa-plus-circle"></i> New</a></li>
 		@if($collection->count())
 		<span class="pull-right text-muted">
 			Showing {{$paginator->getFrom()}} to {{$paginator->getTo()}} of {{$paginator->getTotal()}}
@@ -87,10 +87,6 @@
 								    @else
 								    <li><a href="{{ route('admin.users.block.confirm', $item->id) }}" data-toggle="modal" data-target="#albaModal">
 								    	<i class="fa fa-ban fa-fw"></i> Block</a></li>
-								    @endif
-								    @if($item->trashed())
-								    <li><a href="{{ route('admin.users.restore.confirm', $item->id) }}" data-toggle="modal" data-target="#albaModal">
-								    	<i class="fa fa-refresh fa-fw"></i> Restore</a></li>
 								    @endif
 								    <li><a href="{{ route('admin.users.destroy.confirm', $item->id) }}" data-toggle="modal" data-target="#albaModal">
 								    	<i class="fa fa-trash-o fa-fw"></i> Trash</a></li>

@@ -22,7 +22,7 @@ class PermissionsTableSeeder extends Seeder {
         DB::table('permissions')->delete();
 
         // Get permissions from config
-        $permissions = Config::get('alba::user.permissions');
+        $permissions = Config::get('alba::permission.defaults');
 
         // Iterate over permissions saving each to database
         DB::transaction(function () use ($permissions)

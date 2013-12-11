@@ -222,7 +222,7 @@ class UsersController extends Controller {
         $object = $this->resources['user']->authenticate($credentials, $extras, $remember);
 
         // If login is ok, redirect to the intended URL or default to the dashboard
-        $route = Config::get('alba::user.redirects.users.login');
+        $route = Config::get('alba::user.redirects.login');
         return Redirect::intended(route($route))
             ->with('message', $this->language('success.login'));
     }

@@ -302,6 +302,7 @@ class Resource extends Controller implements ResourceInterface {
      */
     protected function language($key, $replacements = [])
     {
-        return Lang::get('alba::' . str_singular($this->module) . '.' .$key, $replacements);
+        $key = str_singular($this->module) . '.' .$key;
+        return Lang::has('alba::' . $key) ? Lang::get('alba::' . $key, $replacements) : Lang::get($key, $replacements);
     }
 }

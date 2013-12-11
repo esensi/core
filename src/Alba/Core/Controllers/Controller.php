@@ -63,8 +63,10 @@ class Controller extends LaravelController {
      */
     protected function content($key, $data = [], $name = 'content')
     {
-        $package = Config::get('alba::' . str_singular($this->module) . '.package', 'alba::');
-        $view = Config::get('alba::' . str_singular($this->module) . '.views.' . $key);
+        $packageKey = str_singular($this->module) . '.package';
+        $package = Config::get('alba::' . $packageKey, Config::get($packageKey));
+        $viewKey = str_singular($this->module) . '.views.' . $key;
+        $view = Config::get('alba::' . $viewKey, Config::get($viewKey));
         $this->layout->$name = View::make($package . $view, $data);
     }
 
@@ -93,8 +95,9 @@ class Controller extends LaravelController {
      */
     protected function redirect($key, $params = [])
     {
-        $name = Config::get('alba::' . str_singular($this->module) . '.redirects.' . $key, 'index');
-        return Redirect::route($name, $params);
+        $redirectKey = str_singular($this->module) . '.redirects.' . $key;
+        $redirect = Config::get('alba::'.$redirectKey, Config::get($redirectKey, 'index'));
+        return Redirect::route($redirect, $params);
     }
 
     /**

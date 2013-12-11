@@ -10,13 +10,16 @@ Filter Users
 
         <fieldset>
                 <div class="form-group">
-                        {{ Form::text('keywords', $keywords, ['placeholder' => 'Keywords', 'class' => 'form-control']) }}
+                        {{ Form::text('keywords', $keywords,
+                                ['placeholder' => 'Keywords', 'class' => 'form-control', 'data-role' => 'tagsinput']) }}
                 </div>
                 <div class="form-group">
-                        {{ Form::text('names', $names, ['placeholder' => 'Names', 'class' => 'form-control']) }}
+                        {{ Form::text('names', $names,
+                                ['placeholder' => 'Names', 'class' => 'form-control', 'data-role' => 'tagsinput']) }}
                 </div>
                 <div class="form-group">
-                        {{ Form::select('roles[]', $rolesOptions, $roles, ['class' => 'form-control', 'multiple' => true]) }}
+                        {{ Form::select('roles[]', $rolesOptions, $roles,
+                                ['class' => 'form-control multiselect', 'size' => 1, 'data-role' => 'multiselect', 'data-default-text' => 'Any Role', 'multiple' => true]) }}
                 </div>
                 <div class="row">
                         <div class="col-sm-4">
@@ -37,19 +40,13 @@ Filter Users
                 </div>
                 <div class="row">
                         <div class="col-sm-4">
-                                <div class="form-group">
-                                        {{ Form::select('order', $orderOptions, $order, ['class' => 'form-control']) }}
-                                </div>
+                                {{ Form::select('order', $orderOptions, $order, ['class' => 'form-control']) }}
                         </div>
                         <div class="col-sm-4">
-                                <div class="form-group">
-                                        {{ Form::select('sort', $sortOptions, $sort, ['class' => 'form-control']) }}
-                                </div>
+                                {{ Form::select('sort', $sortOptions, $sort, ['class' => 'form-control']) }}
                         </div>
                         <div class="col-sm-4">
-                                <div class="form-group">
-                                        {{ Form::select('max', $maxOptions, $max, ['class' => 'form-control']) }}
-                                </div>
+                                {{ Form::select('max', $maxOptions, $max, ['class' => 'form-control']) }}
                         </div>
                 </div>
         </fieldset>

@@ -31,7 +31,7 @@ class PermissionsApiController extends Controller {
      */
     public function index()
     {
-        $params = Input::only('max', 'order', 'sort', 'keyword');
+        $params = Input::only('max', 'order', 'sort', 'keywords');
 
         // Filter by role
         if( $roles = Input::get('roles', false) )

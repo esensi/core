@@ -32,7 +32,7 @@ class UsersApiController extends Controller {
      */
     public function index()
     {
-        $params = Input::only('max', 'order', 'sort', 'keyword', 'trashed');
+        $params = Input::only('max', 'order', 'sort', 'keywords', 'trashed');
 
         // Join the names table when needed
         if(in_array($params['order'], ['name', 'first_name', 'last_name']))

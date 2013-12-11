@@ -65,7 +65,7 @@ class UsersController extends Controller {
         $role = $this->resources['user']->getModel('role');
 
         // Get all the options
-        $rolesOptions = array_merge(['' => 'Any Roles'], $role->listAlphabetically());
+        $rolesOptions = $role->listAlphabetically();
         $activeOptions = $user->activeOptions;
         $blockedOptions = $user->blockedOptions;
         $orderOptions = $user->orderOptions;

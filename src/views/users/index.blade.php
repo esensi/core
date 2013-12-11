@@ -4,7 +4,10 @@
 	<ol class="breadcrumb">
 		<li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
 		<li class="active">Users &nbsp;
-			<a href="{{ route('admin.users.create') }}" class="btn btn-xs btn-success"><i class="fa fa-plus-circle"></i> New</a></li>
+			<a href="{{ route('admin.users.create') }}" class="btn btn-xs btn-success"><i class="fa fa-plus-circle"></i> New</a>
+			&nbsp;
+			<a href="{{ route('admin.users.search') }}?{{http_build_query(Input::all())}}" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#albaModal"><i class="fa fa-search"></i> Search</a>
+		</li>
 		@if($collection->count())
 		<span class="pull-right text-muted">
 			Showing {{$paginator->getFrom()}} to {{$paginator->getTo()}} of {{$paginator->getTotal()}}

@@ -81,15 +81,20 @@ class Resource extends Controller implements ResourceInterface {
 			$this->setDefaults($params);
 
 		// Add full-text query on Model::$searchable columns
-		if( !empty($this->keyword) )
+		if( !empty($this->keywords) )
 		{
-			$keyword = $this->keyword;
+			$keywords = $this->keywords;
+			if(is_string($keywords))
+				$keywords = explode(',', $keywords);
 			$fields = $this->model->searchable;
-			$this->where = function( $query ) use ($keyword, $fields)
+			$this->where = function( $query ) use ($keywords, $fields)
 	            {
 	                foreach($fields as $field)
 	                {
-						$query->orWhere($field, 'LIKE', '%' . $keyword . '%');
+						foreach($keywords as $keyword)
+						{
+							$query->orWhere($field, 'LIKE', '%' . $keyword . '%');
+						}
 	                }
 	            };
 		}

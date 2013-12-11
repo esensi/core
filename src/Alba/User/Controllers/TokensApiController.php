@@ -31,7 +31,7 @@ class TokensApiController extends Controller {
      */
     public function index()
     {
-        $params = Input::only('max', 'order', 'sort', 'keyword');
+        $params = Input::only('max', 'order', 'sort', 'keywords');
 
         // Filter by type
         if( $types = Input::get('types', false) )

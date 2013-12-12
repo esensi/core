@@ -180,9 +180,9 @@ class User extends Model implements UserInterface {
         'password_confirmation' => ['required_with:password', 'alpha_num', 'between:4,256'],
         'active' => ['in:true,false,1,0'],
         'blocked' => ['in:true,false,1,0'],
-        'activated_at' => ['date'],
-        'authenticated_at' => ['date'],
-        'password_updated_at' => ['date'],
+        'activated_at' => ['date:null'],
+        'authenticated_at' => ['date:null'],
+        'password_updated_at' => ['date:null'],
     ];
 
     /**
@@ -674,7 +674,7 @@ class User extends Model implements UserInterface {
     public function setActive($active = true)
     {
         $this->active = $active;
-        $this->activated_at = $active ? Carbon::now() : DB::raw('NULL');
+        $this->activated_at = $active ? Carbon::now() : null;
         $rules = $this->rulesForActivating;
         if( !$active )
         {

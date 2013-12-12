@@ -2,6 +2,19 @@
 
 /*
 |--------------------------------------------------------------------------
+| Route Patterns
+|--------------------------------------------------------------------------
+|
+| Here you can define global patterns for route parameters.
+|
+*/
+
+Route::pattern('id', '[0-9]+');
+Route::pattern('token', '[a-zA-Z0-9]+');
+Route::pattern('name', '^[a-z][a-z0-9\-_\.]+');
+
+/*
+|--------------------------------------------------------------------------
 | API Routes
 |--------------------------------------------------------------------------
 |
@@ -33,7 +46,7 @@ Route::group([
 			Route::get('{id}', [ 'as' => 'api.user.show', 'uses' => 'Alba\User\Controllers\UsersApiController@show' ]);
 			Route::post('/', [ 'as' => 'api.user.store', 'uses' => 'Alba\User\Controllers\UsersApiController@store' ]);
 			Route::get('/', [ 'as' => 'api.user.index', 'uses' => 'Alba\User\Controllers\UsersApiController@index' ]);
-		})->where('id', '[0-9]+');
+		});
 	endif;
 
 	// Role API Routes
@@ -45,13 +58,13 @@ Route::group([
 			Route::get('names', [ 'as' => 'api.role.names', 'uses' => 'Alba\User\Controllers\RolesApiController@names' ]);
 			Route::delete('{id}', [ 'as' => 'api.role.destroy', 'uses' => 'Alba\User\Controllers\RolesApiController@destroy' ]);
 			Route::put('{id}', [ 'as' => 'api.role.update', 'uses' => 'Alba\User\Controllers\RolesApiController@update' ]);
-			Route::get('{name}', [ 'as' => 'api.role.show.name', 'uses' => 'Alba\User\Controllers\RolesApiController@showByName' ])->where('name', '^[a-z][a-z0-9\-_\.]+');
+			Route::get('{name}', [ 'as' => 'api.role.show.name', 'uses' => 'Alba\User\Controllers\RolesApiController@showByName' ]);
 			Route::get('{id}/permissions', [ 'as' => 'api.role.show.permissions', 'before' => ['permission:module_permissions'], 'uses' => 'Alba\User\Controllers\RolesApiController@showPermissions' ]);
 			Route::get('{id}/users', [ 'as' => 'api.role.show.users', 'before' => ['permission:module_users'], 'uses' => 'Alba\User\Controllers\RolesApiController@showUsers' ]);
 			Route::get('{id}', [ 'as' => 'api.role.show', 'uses' => 'Alba\User\Controllers\RolesApiController@show' ]);
 			Route::post('/', [ 'as' => 'api.role.store', 'uses' => 'Alba\User\Controllers\RolesApiController@store' ]);
 			Route::get('/', [ 'as' => 'api.role.index', 'uses' => 'Alba\User\Controllers\RolesApiController@index' ]);
-		})->where('id', '[0-9]+');
+		});
 	endif;
 
 	// Permission API Routes
@@ -62,12 +75,12 @@ Route::group([
 		{
 			Route::get('names', [ 'as' => 'api.permission.names', 'uses' => 'Alba\User\Controllers\PermissionsApiController@names' ]);
 			Route::put('{id}', [ 'as' => 'api.permission.update', 'uses' => 'Alba\User\Controllers\PermissionsApiController@update' ]);
-			Route::get('{name}', [ 'as' => 'api.permission.show.name', 'uses' => 'Alba\User\Controllers\PermissionsApiController@showByName' ])->where('name', '^[a-z][a-z0-9\-_\.]+');
+			Route::get('{name}', [ 'as' => 'api.permission.show.name', 'uses' => 'Alba\User\Controllers\PermissionsApiController@showByName' ]);
 			Route::get('{id}/roles', [ 'as' => 'api.permission.show.roles', 'before' => ['permission:module_permissions'], 'uses' => 'Alba\User\Controllers\PermissionsApiController@showRoles' ]);
 			Route::get('{id}', [ 'as' => 'api.permission.show', 'uses' => 'Alba\User\Controllers\PermissionsApiController@show' ]);
 			Route::post('/', [ 'as' => 'api.permission.store', 'uses' => 'Alba\User\Controllers\PermissionsApiController@store' ]);
 			Route::get('/', [ 'as' => 'api.permission.index', 'uses' => 'Alba\User\Controllers\PermissionsApiController@index' ]);
-		})->where('id', '[0-9]+');
+		});
 	endif;
 
 	// Tokens API Routes
@@ -77,13 +90,13 @@ Route::group([
 		], function()
 		{
 			Route::delete('{id}', [ 'as' => 'api.token.destroy', 'uses' => 'Alba\User\Controllers\TokensApiController@destroy' ]);
-			Route::delete('{token}', [ 'as' => 'api.token.destroy.token', 'uses' => 'Alba\User\Controllers\TokensApiController@destroyByToken' ])->where('token', '[a-zA-Z0-9]+');
+			Route::delete('{token}', [ 'as' => 'api.token.destroy.token', 'uses' => 'Alba\User\Controllers\TokensApiController@destroyByToken' ]);
 			Route::put('{id}', [ 'as' => 'api.token.update', 'uses' => 'Alba\User\Controllers\TokensApiController@update' ]);
 			Route::get('{id}', [ 'as' => 'api.token.show', 'uses' => 'Alba\User\Controllers\TokensApiController@show' ]);
-			Route::get('{token}', [ 'as' => 'api.token.show.token', 'uses' => 'Alba\User\Controllers\TokensApiController@showByToken' ])->where('token', '[a-zA-Z0-9]+');
+			Route::get('{token}', [ 'as' => 'api.token.show.token', 'uses' => 'Alba\User\Controllers\TokensApiController@showByToken' ]);
 			Route::post('/', [ 'as' => 'api.token.store', 'uses' => 'Alba\User\Controllers\TokensApiController@store' ]);
 			Route::get('/', [ 'as' => 'api.token.index', 'uses' => 'Alba\User\Controllers\TokensApiController@index' ]);
-		})->where('id', '[0-9]+');
+		});
 	endif;
 });
 
@@ -163,7 +176,7 @@ Route::group([
 			Route::get('trash', [ 'as' => 'admin.users.trash', 'uses' => 'Alba\User\Controllers\UsersAdminController@trash' ]);
 			Route::get('/', [ 'as' => 'admin.users.index', 'uses' => 'Alba\User\Controllers\UsersAdminController@index' ]);
 
-		})->where('id', '[0-9]+');
+		});
 	endif;
 
 	// Roles Admin Routes
@@ -186,13 +199,13 @@ Route::group([
 			Route::get('{id}/edit', [ 'as' => 'admin.roles.edit', 'uses' => 'Alba\User\Controllers\RolesAdminController@edit' ]);
 
 			// Show
-			Route::get('{name}', [ 'as' => 'admin.roles.show.name', 'uses' => 'Alba\User\Controllers\RolesAdminController@showByName' ])->where('name', '^[a-z][a-z0-9\-_\.]+');
+			Route::get('{name}', [ 'as' => 'admin.roles.show.name', 'uses' => 'Alba\User\Controllers\RolesAdminController@showByName' ]);
 			Route::get('{id}', [ 'as' => 'admin.roles.show', 'uses' => 'Alba\User\Controllers\RolesAdminController@show' ]);
 			
 			// Search / Browse
 			Route::get('/', [ 'as' => 'admin.roles.index', 'uses' => 'Alba\User\Controllers\RolesAdminController@index' ]);
 
-		})->where('id', '[0-9]+');
+		});
 	endif;
 
 	// Permissions Admin Routes
@@ -211,13 +224,13 @@ Route::group([
 			Route::get('{id}/edit', [ 'as' => 'admin.permissions.edit', 'uses' => 'Alba\User\Controllers\PermissionsAdminController@edit' ]);
 
 			// Show
-			Route::get('{id}', [ 'as' => 'admin.permissions.show.name', 'uses' => 'Alba\User\Controllers\PermissionsAdminController@showByName' ])->where('name', '^[a-z][a-z0-9\-_\.]+');
+			Route::get('{id}', [ 'as' => 'admin.permissions.show.name', 'uses' => 'Alba\User\Controllers\PermissionsAdminController@showByName' ]);
 			Route::get('{id}', [ 'as' => 'admin.permissions.show', 'uses' => 'Alba\User\Controllers\PermissionsAdminController@show' ]);
 
 			// Search / Browse
 			Route::get('/', [ 'as' => 'admin.permissions.index', 'uses' => 'Alba\User\Controllers\PermissionsAdminController@index' ]);
 			
-		})->where('id', '[0-9]+');
+		});
 	endif;
 
 	// Tokens Admin Routes
@@ -230,7 +243,7 @@ Route::group([
 			// Search / Browse
 			Route::get('/', [ 'as' => 'admin.tokens.index', 'uses' => 'Alba\User\Controllers\TokensAdminController@index' ]);
 
-		})->where('id', '[0-9]+');
+		});
 	endif;
 });
 
@@ -254,7 +267,7 @@ Route::group([
 ], function()
 {
 	Route::get('account', [ 'as' => 'users.account', 'before' => 'auth', 'uses' => 'UsersController@account' ]);
-	Route::match('get|post', 'activate/{token}', [ 'as' => 'users.activate', 'uses' => 'UsersController@activate' ]);
+	Route::match(['GET', 'POST'], 'activate/{token}', [ 'as' => 'users.activate', 'uses' => 'UsersController@activate' ]);
 	Route::get('activate-password/{token}', [ 'as' => 'users.activate-password', 'uses' => 'UsersController@activatePassword' ]);
 	Route::post('reset-activation', [ 'as' => 'users.reset-activation', 'uses' => 'UsersController@resetActivation' ]);
 	Route::get('new-activation', [ 'as' => 'users.new-activation', 'uses' => 'UsersController@newActivation' ]);
@@ -264,10 +277,10 @@ Route::group([
 	Route::get('forgot-password', [ 'as' => 'users.forgot-password', 'uses' => 'UsersController@forgotPassword' ]);
 	Route::post('login', [ 'as' => 'users.login', 'before' => 'guest', 'uses' => 'UsersController@login' ]);
 	Route::get('login', [ 'as' => 'users.signin', 'before' => 'guest', 'uses' => 'UsersController@signin' ]);
-	Route::match('get|post|delete', 'logout', [ 'as' => 'users.logout', 'uses' => 'UsersController@logout' ]);
+	Route::match(['GET', 'POST', 'DELETE'], 'logout', [ 'as' => 'users.logout', 'uses' => 'UsersController@logout' ]);
 	Route::get('registered', [ 'as' => 'users.registered', 'before' => 'guest', 'uses' => 'UsersController@registered' ]);
 	Route::post('register', [ 'as' => 'users.register', 'before' => 'guest', 'uses' => 'UsersController@register' ]);
 	Route::get('register', [ 'as' => 'users.signup', 'before' => 'guest', 'uses' => 'UsersController@signup' ]);
-})->where('token', '[a-zA-Z0-9]+');
+});
 
 endif;

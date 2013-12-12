@@ -84,7 +84,6 @@ class ResourceException extends Exception {
             ->with('message', $this->getMessage())
             ->withErrors($this->getMessageBag())
             ->withInput();
-        Session::save();
         return $redirect;
     }
 

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
-use Illuminate\Routing\Controllers\Controller as LaravelController;
+use Illuminate\Routing\Controller as LaravelController;
 
 /**
  * Core controller for base features of all module controllers

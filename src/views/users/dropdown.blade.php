@@ -1,4 +1,4 @@
-<li class="dropdown @if(starts_with(Route::currentRouteName(),  ['admin.users', 'admin.roles', 'admin.permissions', 'admin.tokens'])) active @endif">
+<li class="dropdown @if(starts_with(Route::current(),  ['admin.users', 'admin.roles', 'admin.permissions', 'admin.tokens'])) active @endif">
   <a href="{{ route('admin.users.index') }}" class="dropdown-toggle" data-toggle="dropdown">Users <b class="caret"></b></a>
   <ul class="dropdown-menu">
     @if(Entrust::can('module_roles'))

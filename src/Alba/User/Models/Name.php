@@ -140,4 +140,30 @@ class Name extends Ardent {
         
         return trim($str);
     }
+
+    /**
+     * Builds a query scope to return titles alphabetically for a dropdown list
+     *
+     * @param Illuminate\Database\Query\Builder $query
+     * @param string $key to use in returned array
+     * @param string $sort direction
+     * @return array [$key => $name]
+     */
+    public function scopeListTitles($query, $key = null, $sort = 'asc')
+    {
+        return $query->distinct()->whereNotNull('title')->orderBy('title', $sort)->lists('title', $key, $sort);
+    }
+
+    /**
+     * Builds a query scope to return suffixes alphabetically for a dropdown list
+     *
+     * @param Illuminate\Database\Query\Builder $query
+     * @param string $key to use in returned array
+     * @param string $sort direction
+     * @return array [$key => $name]
+     */
+    public function scopeListSuffixes($query, $key = null, $sort = 'asc')
+    {
+        return $query->distinct()->whereNotNull('suffix')->orderBy('suffix', $sort)->lists('suffix', $key, $sort);
+    }
 }

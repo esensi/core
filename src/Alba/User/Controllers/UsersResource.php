@@ -90,32 +90,6 @@ class UsersResource extends Resource {
     }
 
     /**
-     * Return an array of user name titles
-     *
-     * @return array
-     */
-    public function titles()
-    {
-        $ttl = Config::get('alba::user.names.ttl.titles', 10);
-        $titles = $this->name->whereNotNull('title')->distinct()->remember($ttl)->lists('title');
-        $tags = array_unique(array_merge($titles, $this->language('names.titles', [])));
-        return array_values($tags); // @note required because array_unique is a numerically associative array
-    }
-
-    /**
-     * Return an array of user name suffixes
-     *
-     * @return array
-     */
-    public function suffixes()
-    {
-        $ttl = Config::get('alba::user.names.ttl.suffixes', 10);
-        $suffixes = $this->name->whereNotNull('suffix')->distinct()->remember($ttl)->lists('suffix');
-        $tags = array_unique(array_merge($suffixes, $this->language('names.suffixes', [])));
-        return array_values($tags); // @note required because array_unique is a numerically associative array
-    }
-
-    /**
      * Log user in by authenticating with credentials
      *
      * @param array $credentials to find user with
@@ -598,4 +572,35 @@ class UsersResource extends Resource {
         return $object;
     }
 
+    /**
+     * Return an array of user name titles
+     *
+     * @param string $key
+     * @return array
+     */
+    public function titles($key = null)
+    {
+        $ttl = Config::get('alba::user.names.ttl.titles', 10);
+        $dbTags = $this->name->distinct()->remember($ttl)->listTitles($key);
+        $langTags = $this->language('names.titles', []);
+        $configTags = array_combine($langTags, $langTags);
+        $tags = array_unique(array_merge($configTags, $dbTags));
+        return is_null($key) ? array_values($tags) : $tags;
+    }
+
+    /**
+     * Return an array of user name suffixes
+     *
+     * @param string $key
+     * @return array
+     */
+    public function suffixes($key = null)
+    {
+        $ttl = Config::get('alba::user.names.ttl.suffixes', 10);
+        $dbTags = $this->name->distinct()->remember($ttl)->listSuffixes($key);
+        $langTags = $this->language('names.suffixes', []);
+        $configTags = array_combine($langTags, $langTags);
+        $tags = array_unique(array_merge($configTags, $dbTags));
+        return is_null($key) ? array_values($tags) : $tags;
+    }
 }

@@ -198,8 +198,8 @@ class UsersController extends Controller {
         }
         
         // Get all the options
-        $titlesOptions = $this->apis['user']->titles();
-        $suffixesOptions = $this->apis['user']->suffixes();
+        $titlesOptions = $this->resources['user']->titles('title');
+        $suffixesOptions = $this->resources['user']->suffixes('suffix');
         $rolesOptions = $this->resources['user']->getModel('role')->listAlphabetically();
         $roles = isset($object) ? $object->roles->lists('id') : [];
 

@@ -251,4 +251,17 @@ class Model extends Ardent {
         return $date->diffForHumans();
     }
 
+    /**
+     * Builds a query scope to return object alphabetically for a dropdown list
+     *
+     * @param Illuminate\Database\Query\Builder $query
+     * @param string $column to order by
+     * @param string $key to use in returned array
+     * @param string $sort direction
+     * @return array [$key => $name]
+     */
+    public function scopeListAlphabetically($query, $column, $key = null, $sort = 'asc')
+    {
+        return $query->orderBy($column, $sort)->lists($column, $key);
+    }
 }

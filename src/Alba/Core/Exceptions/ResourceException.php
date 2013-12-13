@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Contracts\MessageProviderInterface;
-//use Illuminate\Support\MessageBag;
+use Illuminate\Support\MessageBag;
 
 /**
  * Custom exception handler for Resource controllers
@@ -20,34 +20,92 @@ class ResourceException extends Exception {
      *
      * @var Illuminate\Support\Contracts\MessageProviderInterface
      */
-    public $messageBag;
+    protected $messageBag;
+
+    /**
+     * Construct the exception
+     *
+     * @var mixed $messageBag
+     * @var string $message
+     * @var integer $code
+     * @var Exception $previous
+     * @return ResourceException
+     */
+    public function __construct($messageBag, $message = null, $code = 0, $previous = null)
+    {
+
+        // Make sure there's always a message
+        if(is_null($message))
+        {
+            // Message bag is the message
+            if(is_string($messageBag))
+            {
+                $message = $messageBag;
+            }
+
+            // Message bag contains the message
+            elseif(is_array($messageBag) && isset($messageBag['message']))
+            {
+                $message = $messageBag['message'];
+            }
+
+            // Message doesn't exist so just cast the message bag to a string
+            else
+            {
+                $message = (string) $messageBag;
+            }
+        }
+
+        // Make sure the message bag is a message bag
+        if( !$messageBag instanceof MessageProviderInterface)
+        {
+            if(is_array($messageBag))
+            {
+                $messageBag = new MessageBag(array_except($messageBag, ['message']));
+            }
+            else
+            {
+                $messageBag = new MessageBag(['error' => false]);
+            }
+        }
+
+        // save the properties
+        $this->messageBag = $messageBag;
+        $this->message = $message;
+        $this->code = $code;
+        $this->previous = $previous;
+    }
 
     /**
      * Get the messageBag property
      *
-     * @return mixed Illuminate\Support\Contracts\MessageProviderInterface
+     * @return Illuminate\Support\Contracts\MessageProviderInterface
      */
     public function getMessageBag()
     {
-        return json_decode($this->getMessage());
+        return $this->messageBag;
+    }
+
+    /**
+     * Get the errors from MessageBag
+     *
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->getMessageBag()->toArray();
     }
 
     /**
      * Handles exceptions with redirect
      *
-     * There seems to be a bug in Laravel that makes it difficult to use
-     * Redirect with flash data which leads to persistent error messages.
-     * Capturing the $redirect and then manually calling Session::save()
-     * seems to get around this bug.
-     *
      * @return Redirect
      */
     public function handleWithRedirect()
     {
-        // here when in __construct() it's as a MessageBag?
         $redirect = Redirect::back()
-            ->with('message', end($this->getMessageBag()->message))
-            ->withErrors(array_except((array)$this->getMessageBag(), ['message']))
+            ->with('message', $this->getMessage())
+            ->withErrors($this->getMessageBag())
             ->withInput();
         return $redirect;
     }
@@ -59,6 +117,8 @@ class ResourceException extends Exception {
      */
     public function handleForApi()
     {
-        return $this->getMessageBag();
+        $errors = $this->getErrors();
+        $message = $this->getMessage();
+        return compact('errors', 'message');
     }
 }

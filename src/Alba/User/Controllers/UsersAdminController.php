@@ -123,7 +123,7 @@ class UsersAdminController extends UsersController {
 
         $this->apis['user']->restore($id);
 
-        return $this->redirect('restore')
+        return $this->redirectBack('restore')
             ->with('message', $this->language('success.restore'));
     }
 
@@ -149,7 +149,7 @@ class UsersAdminController extends UsersController {
         $object = $this->resources['user']->activate($id);
 
         // Redirect to user profile
-        return $this->redirect('activate.user', ['id' => $object->id])
+        return $this->redirectBack('activate.user', ['id' => $object->id])
             ->with('message', $this->language('success.activate'));
     }
 
@@ -176,7 +176,7 @@ class UsersAdminController extends UsersController {
 
         $object = $this->resources['user']->deactivate($id);
         
-        return $this->redirect('deactivate', ['id' => $id])
+        return $this->redirectBack('deactivate', ['id' => $id])
             ->with('message', $this->language('success.deactivate'));
     }
 
@@ -203,7 +203,7 @@ class UsersAdminController extends UsersController {
 
         $object = $this->resources['user']->block($id);
 
-        return $this->redirect('block', ['id' => $id])
+        return $this->redirectBack('block', ['id' => $id])
             ->with('message', $this->language('success.block'));
     }
 
@@ -219,7 +219,7 @@ class UsersAdminController extends UsersController {
 
         $object = $this->resources['user']->unblock($id);
         
-        return $this->redirect('unblock', ['id' => $id])
+        return $this->redirectBack('unblock', ['id' => $id])
             ->with('message', $this->language('success.unblock'));
     }
 
@@ -233,5 +233,20 @@ class UsersAdminController extends UsersController {
     {
         $this->confirm($id, 'unblock');
     }
-    
+
+    /**
+     * Update the roles attached to the specified resource in storage.
+     *
+     * @param int $id of object to update
+     * @return Redirect
+     */
+    public function assignRoles($id)
+    {
+        // @todo what about security here?
+
+        $object = $this->apis['user']->assignRoles($id);
+
+        return $this->redirectBack('assign_roles', ['id' => $id])
+            ->with('message', $this->language('success.assign_roles'));
+    }
 }

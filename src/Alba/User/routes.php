@@ -41,6 +41,7 @@ Route::group([
 			Route::get('titles', [ 'as' => 'api.user.titles', 'uses' => 'Alba\User\Controllers\UsersApiController@titles' ]);
 			Route::post('login', [ 'as' => 'api.user.login', 'uses' => 'Alba\User\Controllers\UsersApiController@login' ]);
 			Route::any('logout', [ 'as' => 'api.user.logout', 'uses' => 'Alba\User\Controllers\UsersApiController@logout' ]);
+			Route::match(['POST', 'PUT'], '{id}/roles', [ 'as' => 'api.user.assign.roles', 'before' => ['permission:module_roles'], 'uses' => 'Alba\User\Controllers\UsersApiController@assignRoles' ]);
 			Route::delete('{id}', [ 'as' => 'api.user.destroy', 'uses' => 'Alba\User\Controllers\UsersApiController@destroy' ]);
 			Route::put('{id}', [ 'as' => 'api.user.update', 'uses' => 'Alba\User\Controllers\UsersApiController@update' ]);
 			Route::get('{id}', [ 'as' => 'api.user.show', 'uses' => 'Alba\User\Controllers\UsersApiController@show' ]);
@@ -133,7 +134,7 @@ Route::group([
 			Route::get('create', [ 'as' => 'admin.users.create', 'uses' => 'Alba\User\Controllers\UsersAdminController@create' ]);
 			
 			// Assign roles
-			Route::post('{id}/roles', [ 'as' => 'admin.users.update.roles', 'before' => ['permission:module_roles'], 'uses' => 'Alba\User\Controllers\UsersAdminController@updateRoles' ]);
+			Route::post('{id}/roles', [ 'as' => 'admin.users.assign.roles', 'before' => ['permission:module_roles'], 'uses' => 'Alba\User\Controllers\UsersAdminController@assignRoles' ]);
 			Route::get('{id}/roles', [ 'as' => 'admin.users.edit.roles', 'before' => ['permission:module_roles'], 'uses' => 'Alba\User\Controllers\UsersAdminController@editRoles' ]);
 			
 			// Block

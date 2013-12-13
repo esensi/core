@@ -293,9 +293,12 @@ class Resource extends Controller implements ResourceInterface {
 	 * @param Exception $previous exception
 	 * @return void
 	 */
-	public function throwException($messageBag = null, $message = null, $code = 0, Exception $previous = null)
+	public function throwException($messageBag, $message = null, $code = 0, Exception $previous = null)
 	{
-		throw new $this->exception($messageBag, $message, $code, $previous);
+		$exceptionName = $this->exception;
+		$messageBag->add('message', $message);
+		$msgs = (string) $messageBag;
+		throw new $exceptionName($msgs, $code, $previous);
 	}
 
     /**

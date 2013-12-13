@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
 use Illuminate\Routing\Controller as LaravelController;
@@ -91,13 +92,33 @@ class Controller extends LaravelController {
      *
      * @param string $key to route config
      * @param array $params to construct route
+     * @param bool $back to previous route first
      * @return Redirect
      */
-    protected function redirect($key, $params = [])
+    protected function redirect($key, $params = [], $back = false)
     {
+        // Short circuit to referrer URL
+        if( $back && Request::header('referer') )
+        {
+            return Redirect::back();
+        }
+
+        // Redirect to intended route
         $redirectKey = str_singular($this->module) . '.redirects.' . $key;
         $redirect = Config::get('alba::'.$redirectKey, Config::get($redirectKey, 'index'));
         return Redirect::route($redirect, $params);
+    }
+
+    /**
+     * Generate a redirect back to a previous URL
+     *
+     * @param string $key to route config
+     * @param array $params to construct route
+     * @return Redirect
+     */
+    protected function redirectBack($key, $params = [])
+    {
+        return $this->redirect($key, $params, true);
     }
 
     /**

@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Contracts\MessageProviderInterface;
-use Illuminate\Support\MessageBag;
+//use Illuminate\Support\MessageBag;
 
 /**
  * Custom exception handler for Resource controllers
@@ -18,52 +18,18 @@ class ResourceException extends Exception {
     /**
      * The messageBag holder
      *
-     * @var mixed Illuminate\Support\MessageBag
+     * @var Illuminate\Support\Contracts\MessageProviderInterface
      */
-    protected $messageBag;
+    public $messageBag;
 
     /**
-     * Constructor for throwing new exception messages 
-     *
-     * @param mixed $messageBag
-     * @param string $message
-     * @param long $code
-     * @param Exception $previous exception
-     * @return void
-     */
-    public function __construct($messageBag = null, $message = null, $code = 0, Exception $previous = null)
-    {
-        // Convert a messageBag to a string if missing a message
-        if(is_null($message))
-        {
-            $message = $messageBag;
-            if($message instanceof MessageProviderInterface)
-            {
-                $message = $messageBag->__toString();
-            }
-        }
-        parent::__construct($message, $code, $previous);
-        $this->messageBag = $messageBag;
-    }
-
-    /**
-     * Returns the messageBag property
+     * Get the messageBag property
      *
      * @return mixed Illuminate\Support\Contracts\MessageProviderInterface
      */
     public function getMessageBag()
     {
-        return $this->messageBag;
-    }
-
-    /**
-     * Return an array of errors from the message bag
-     *
-     * @return array
-     */
-    public function getErrors()
-    {
-        return $this->messageBag instanceof MessageProviderInterface ? $this->messageBag->all() : array();
+        return json_decode($this->getMessage());
     }
 
     /**
@@ -78,11 +44,10 @@ class ResourceException extends Exception {
      */
     public function handleWithRedirect()
     {
-        // @todo Why is $this->messageBag a string equal to $message
         // here when in __construct() it's as a MessageBag?
         $redirect = Redirect::back()
-            ->with('message', $this->getMessage())
-            ->withErrors($this->getMessageBag())
+            ->with('message', end($this->getMessageBag()->message))
+            ->withErrors(array_except((array)$this->getMessageBag(), ['message']))
             ->withInput();
         return $redirect;
     }
@@ -94,9 +59,6 @@ class ResourceException extends Exception {
      */
     public function handleForApi()
     {
-        $message = $this->getMessage();
-        $errors = $this->getErrors();
-        $args = compact('message', 'errors');
-        return $args;
+        return $this->getMessageBag();
     }
 }

@@ -58,6 +58,7 @@ return [
 		'login'								=> 'User has been logged in.',
 		'logout'							=> 'User has been logged out',
 		'set_password'						=> 'User has saved a new password.',
+		'assign_roles'						=> 'User\'s roles have been updated.',
 	],
 
 	/*

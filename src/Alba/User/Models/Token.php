@@ -151,6 +151,16 @@ class Token extends Model {
     }
 
     /**
+     * Returns true if token is expired
+     *
+     * @return boolean
+     */
+    public function getIsExpiredAttribute()
+    {
+        return $this->expires_at < Carbon::now();
+    }
+
+    /**
      * Returns the URL for the model
      *
      * @return string

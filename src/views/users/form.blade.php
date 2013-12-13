@@ -17,6 +17,8 @@
 		@endif
 	</ol>
 	
+	@include('alba::core.errors')
+	
 	<div class="row">
 		<div class="col-sm-8">
 			<div class="panel panel-default">
@@ -24,25 +26,24 @@
 					<h3 class="panel-title">User Account Information</h3>
 				</div>
 				<div class="panel-body">
-					{{ Form::open([ 'route' => ['admin.users.update', $user->id] ]) }}
-					@include('alba::core.errors')
+					{{ Form::open([ 'route' => isset($user) ? ['admin.users.update', $user->id] : 'admin.users.store' ]) }}
 				    <fieldset>
 						<div class="row">
 							<div class="form-group col-sm-3 col-md-2">
-							    {{ Form::select('title', $titlesOptions, $user->name->title, ['class' => 'form-control']) }}
+							    {{ Form::select('title', $titlesOptions, isset($user) ? $user->name->title : null, ['class' => 'form-control']) }}
 							</div>
 							<div class="form-group col-sm-3 col-md-4">
-							    {{ Form::text('first_name', $user->name->first_name, ['placeholder' => 'First name', 'class' => 'form-control']) }}
+							    {{ Form::text('first_name', isset($user) ? $user->name->first_name : null, ['placeholder' => 'First name', 'class' => 'form-control']) }}
 							</div>
 							<div class="form-group col-sm-3 col-md-4">
-							    {{ Form::text('last_name', $user->name->last_name, ['placeholder' => 'Last name', 'class' => 'form-control']) }}
+							    {{ Form::text('last_name', isset($user) ? $user->name->last_name : null, ['placeholder' => 'Last name', 'class' => 'form-control']) }}
 							</div>
 							<div class="form-group col-sm-3 col-md-2">
-							    {{ Form::select('suffix', $suffixesOptions, $user->name->suffix, ['class' => 'form-control']) }}
+							    {{ Form::select('suffix', $suffixesOptions, isset($user) ? $user->name->suffix : null, ['class' => 'form-control']) }}
 							</div>
 						</div>
 						<div class="form-group">
-						    {{ Form::text('email', $user->email, ['placeholder' => 'E-mail', 'class' => 'form-control']) }}
+						    {{ Form::text('email', isset($user) ? $user->email : null, ['placeholder' => 'E-mail', 'class' => 'form-control']) }}
 						</div>
 						<input class="btn btn-primary" type="submit" value="Save">
 					</fieldset>
@@ -51,29 +52,33 @@
 			</div>
 		</div>
 		<div class="col-sm-4">
-			@if(Entrust::can('module_tokens'))
+			@if(Entrust::can('module_roles'))
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h3 class="panel-title">Assigned Roles</h3>
 					</div>
 					<div class="panel-body">
-						{{ Form::open([ 'route' => ['admin.users.update', $user->id] ]) }}
-						@include('alba::core.errors')
-					    <fieldset>
-							<div class="row">
-								<div class="col-xs-7 col-sm-12 col-md-7">
-								    {{ Form::select('roles[]', $rolesOptions, $roles,
-		                                ['class' => 'form-control multiselect', 'size' => 1, 'data-default-text' => 'No Roles Assigned', 'multiple' => true]) }}
+						@if(isset($user))
+							{{ Form::open([ 'route' => ['admin.users.assign.roles', $user->id] ]) }}
+						    <fieldset>
+								<div class="row">
+									<div class="col-xs-7 col-sm-12 col-md-7">
+									    {{ Form::select('roles[]', $rolesOptions, $roles,
+			                                ['class' => 'form-control multiselect', 'size' => 1, 'data-default-text' => 'No Roles Assigned', 'multiple' => true]) }}
+									</div>
+									<div class="col-xs-5 col-sm-12 col-md-5">
+										<input class="btn btn-sm btn-primary btn-block" type="submit" value="Assign Roles">
+									</div>
 								</div>
-								<div class="col-xs-5 col-sm-12 col-md-5">
-									<input class="btn btn-sm btn-primary btn-block" type="submit" value="Assign Roles">
-								</div>
-							</div>
-						</fieldset>
-					  	{{ Form::close() }}
+							</fieldset>
+						  	{{ Form::close() }}
+						@else
+						<div class="alert alert-warning" style="margin-bottom:0">You can assign roles after the user has been created. Until then the default user roles will be assigned to the new user.</div>
+						@endif
 					</div>
 				</div>
 			@endif
+			@if(isset($user))
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h3 class="panel-title">Access Controls</h3>
@@ -131,7 +136,7 @@
 							</div>
 							<div class="col-xs-6 col-sm-12 col-md-6">
 								@if($user->blocked)
-									<a href="{{ route('admin.users.unblock.confirm', $user->id) }}" class="btn btn-sm btn-block btn-green" data-toggle="modal" data-target="#albaModal">
+									<a href="{{ route('admin.users.unblock.confirm', $user->id) }}" class="btn btn-sm btn-block btn-success" data-toggle="modal" data-target="#albaModal">
 										  	<i class="fa fa-power-off fa-fw"></i> Unblock</a>
 								@else
 									<a href="{{ route('admin.users.block.confirm', $user->id) }}" class="btn btn-sm btn-block btn-danger" data-toggle="modal" data-target="#albaModal">
@@ -157,7 +162,9 @@
 					</li>
 				</ul>
 			</div>
-			@if($user->tokens->count() && Entrust::can('module_tokens'))
+			@endif
+
+			@if(isset($user) && $user->tokens->count() && Entrust::can('module_tokens'))
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h3 class="panel-title">Token Log</h3>
@@ -165,18 +172,24 @@
 					<table class="table table-striped">
 						<thead>
 				  			<tr>
-				  				<th>&nbsp;</th>
-				  				<th>Created</th>
-				  				<th>Expires</th>
+				  				<th width="33%">&nbsp;</th>
+				  				<th width="33%">Created</th>
+				  				<th width="33%">Expires</th>
 				  			</tr>
 				  		</thead>
 				  		<tbody>
 				  			@foreach ($user->tokens as $token)
 				  			<tr>
-				  				<td><a href="{{ $token->route }}">{{ $token->type }}</a><br>
+				  				<td>
+					  				@if($token->isExpired)
+					  					{{ $token->type }}
+					  				@else
+					  					<a href="{{ $token->route }}">{{ $token->type }}</a>
+					  				@endif
+				  					<br>
 				  					<small class="text-muted">{{ substr($token->token, 0, 16) }}...</small></td>
-				  				<td>{{ $token->timeSinceCreated }}</a></td>
-				  				<td>{{ $token->timeTillExpires }}</a></td>
+				  				<td><small>{{ $token->timeSinceCreated }}</small></td>
+				  				<td><small>{{ $token->timeTillExpires }}</small></td>
 							</tr>
 							@endforeach
 				  		</tbody>

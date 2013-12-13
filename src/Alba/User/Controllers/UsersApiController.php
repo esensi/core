@@ -131,6 +131,24 @@ class UsersApiController extends Controller {
     }
 
     /**
+     * Update the roles attached to the specified resource in storage.
+     *
+     * @param int $id of object to update
+     * @return Illuminate\Database\Eloquent\Model
+     */
+    public function assignRoles($id)
+    {  
+        // Convert roles to array
+        $roles = Input::get('roles', []);
+        if(is_string($roles))
+            $roles = explode(',', $roles);
+
+        // Sync roles
+        $object = $this->resources['user']->syncRoles($id, $roles);
+        return $object;
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param int $id of object to remove

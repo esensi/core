@@ -225,34 +225,26 @@ class UsersResource extends Resource {
         // Get default Roles to attach to a new user
         $roles = $this->role->whereIn('name', $this->model->defaultRoles)->get();
 
-        // Now save the user and name
-        try
+        // Use a transaction so everything fails if one fails
+        DB::transaction(function() use ($user, $name, $roles)
         {
-            // Use a transaction so everything fails if one fails
-            DB::transaction(function() use ($user, $name, $roles)
+            // Save the user
+            if (!$user->save($user->rulesForStoring))
             {
-                // Save the user
-                if (!$user->save($user->rulesForStoring))
-                {
-                    $this->throwException($user->errors(), $this->language('errors.store'));
-                }
-                
-                // Attach Roles to user
-                $user->attachRoles($roles);
+                $this->throwException($user->errors(), $this->language('errors.store'));
+            }
+            
+            // Attach Roles to user
+            $user->attachRoles($roles);
 
-                // Save name with relationship to user
-                $name->user()->associate($user);
-                if (!$name->save($name->rulesForStoring))
-                {
-                    $this->throwException($name->errors(), $this->language('errors.store'));
-                }
+            // Save name with relationship to user
+            $name->user()->associate($user);
+            if (!$name->save($name->rulesForStoring))
+            {
+                $this->throwException($name->errors(), $this->language('errors.store'));
+            }
 
-            });
-        }
-        catch (Exception $e)
-        {
-            $this->throwException($e->getMessage());
-        }
+        });
 
         return $user;
 
@@ -271,38 +263,56 @@ class UsersResource extends Resource {
         $name = $user->name;
         $name->fill(array_only($attributes, $name->getFillable()));
         
-        // Now save the user and name
+        // Use a transaction so everything fails if one fails
+        DB::transaction(function() use ($user, $name)
+        {
+            
+            // Update user if it's changed
+            if ( count($user->getDirty()) )
+            {
+                if (!$user->save($user->rulesForUpdate))
+                {
+                    $this->throwException($user->errors(), $this->language('errors.update'));
+                }
+            }
+            
+            // Update user if it's changed
+            if ( count($name->getDirty()) )
+            {
+                if (!$name->save($name->rulesForStoring))
+                {
+                    $this->throwException($name->errors(), $this->language('errors.update'));
+                }
+            }
+        });
+
+        return $user;
+    }
+
+    /**
+     * Synchronize the roles on the user
+     *
+     * @param integer $id of user
+     * @param array $roles ids
+     * @return Model
+     * 
+     */
+    public function syncRoles($id, $roles)
+    {
+        // Update user attributes
+        $object = $this->show($id);
+                
+        // Sync assigned roles
         try
         {
-            // Use a transaction so everything fails if one fails
-            DB::transaction(function() use ($user, $name)
-            {
-                
-                // Update user if it's changed
-                if ( count($user->getDirty()) )
-                {
-                    if (!$user->save($user->rulesForUpdate))
-                    {
-                        $this->throwException($user->errors(), $this->language('errors.update'));
-                    }
-                }
-                
-                // Update user if it's changed
-                if ( count($name->getDirty()) )
-                {
-                    if (!$name->save($name->rulesForStoring))
-                    {
-                        $this->throwException($name->errors(), $this->language('errors.update'));
-                    }
-                }
-            });
-        } 
+            $object->roles()->sync($roles);
+        }
         catch (Exception $e)
         {
             $this->throwException($e->getMessage());
         }
 
-        return $user;
+        return $object;
     }
 
     /**
@@ -371,7 +381,7 @@ class UsersResource extends Resource {
      */
     public function emailActivation(UserInterface $object, $token)
     {
-        $templates = Config::get('alba::user.views.users.emails.reset_activation');
+        $templates = Config::get('alba::user.views.emails.reset_activation');
         $data = ['user' => $object->toArray(), 'token' => $token];
         $subject = $this->language('subjects.reset_activation');
         Mail::send($templates, $data, function($message) use ($object, $subject)
@@ -497,7 +507,7 @@ class UsersResource extends Resource {
      */
     public function emailPasswordReset(UserInterface $object, $token)
     {
-        $templates = Config::get('alba::user.views.users.emails.reset_password');
+        $templates = Config::get('alba::user.views.emails.reset_password');
         $data = ['user' => $object->toArray(), 'token' => $token];
         $subject = $this->language('subjects.reset_password');
         Mail::send($templates, $data, function($message) use ($object, $subject)

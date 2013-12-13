@@ -32,7 +32,13 @@
 		  			<tr>
 		  				<td><a href="{{ $item->route }}">{{ $item->id }}</a></td>
 		  				<td><a href="{{ HTML::paginationUrl($paginator, ['types' => $item->type]) }}">{{ $item->type }}</a></td>
-		  				<td><a href="{{ $item->route }}">{{ $item->token }}</a></td>
+		  				<td>
+			  				@if($item->isExpired)
+			  					{{ $item->token }}
+			  				@else
+			  					<a href="{{ $item->route }}">{{ $item->token }}</a>
+			  				@endif
+		  				</td>
 		  				<td>{{ $item->timeSinceCreated }}</a></td>
 		  				<td>{{ $item->timeTillExpires }}</a></td>
 					</tr>

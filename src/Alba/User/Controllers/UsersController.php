@@ -131,7 +131,7 @@ class UsersController extends Controller {
      */
     public function create()
     {
-        $this->content('create');
+        $this->form('create');
     }
 
     /**
@@ -179,20 +179,37 @@ class UsersController extends Controller {
      */
     public function edit($id)
     {
-        // Get user
-        $object = $this->resources['user']->show($id);
-        $role = $this->resources['user']->getModel('role');
+        $this->form('edit', $id);
+    }
 
+    /**
+     * Show the form for modifying the specified resource.
+     *
+     * @param string $view
+     * @param  int  $id
+     * @return void
+     */
+    protected function form($view, $id = null)
+    {
+        // Get user
+        if( $id )
+        {
+            $object = $this->resources['user']->show($id);
+        }
+        
         // Get all the options
         $titlesOptions = $this->apis['user']->titles();
         $suffixesOptions = $this->apis['user']->suffixes();
-        $rolesOptions = $role->listAlphabetically();
-        $roles = $object->roles->lists('id');
+        $rolesOptions = $this->resources['user']->getModel('role')->listAlphabetically();
+        $roles = isset($object) ? $object->roles->lists('id') : [];
 
         // Parse view data
         $data = compact('titlesOptions', 'suffixesOptions', 'rolesOptions', 'roles');
-        $data['user'] = $object;
-        $this->content('edit', $data);
+        if(isset($object))
+        {
+            $data['user'] = $object;
+        }
+        $this->content($view, $data);
     }
 
     /**
@@ -207,7 +224,7 @@ class UsersController extends Controller {
 
         $object = $this->apis['user']->update($id);
 
-        return $this->redirect('update', ['id' => $id])
+        return $this->redirectBack('update', ['id' => $id])
             ->with('message', $this->language('success.update'));
     }
 

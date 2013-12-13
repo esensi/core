@@ -736,8 +736,8 @@ class User extends Model implements UserInterface {
     public function resetPassword()
     {
         $this->autoHashPasswordAttributes = false;
-        $this->password = DB::raw('NULL');
-        $this->password_updated_at = DB::raw('NULL');
+        $this->password = null;
+        $this->password_updated_at = null;
         return $this->forceSave();
     }
 

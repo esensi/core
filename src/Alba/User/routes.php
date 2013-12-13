@@ -129,8 +129,8 @@ Route::group([
 		], function()
 		{
 			// Create
-			Route::post('create', [ 'as' => 'admin.users.store', 'uses' => 'Alba\User\Controllers\UsersAdminAdminController@store' ]);
-			Route::get('create', [ 'as' => 'admin.users.create', 'uses' => 'Alba\User\Controllers\UsersAdminAdminController@create' ]);
+			Route::post('create', [ 'as' => 'admin.users.store', 'uses' => 'Alba\User\Controllers\UsersAdminController@store' ]);
+			Route::get('create', [ 'as' => 'admin.users.create', 'uses' => 'Alba\User\Controllers\UsersAdminController@create' ]);
 			
 			// Assign roles
 			Route::post('{id}/roles', [ 'as' => 'admin.users.update.roles', 'before' => ['permission:module_roles'], 'uses' => 'Alba\User\Controllers\UsersAdminController@updateRoles' ]);

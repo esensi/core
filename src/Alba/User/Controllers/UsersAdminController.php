@@ -37,6 +37,19 @@ class UsersAdminController extends UsersController {
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @param boolean $withTrashed
+     * @return void
+     */
+    public function show($id, $withTrashed = true)
+    {
+        // Make sure to include trashed
+        parent::show($id, $withTrashed);
+    }
+
+    /**
      * Show confirmation modal to reset activation
      * 
      * @param integer $id

@@ -151,11 +151,12 @@ class UsersController extends Controller {
      * Display the specified resource.
      *
      * @param  int  $id
+     * @param boolean $withTrashed
      * @return void
      */
-    public function show($id)
+    public function show($id, $withTrashed = false)
     {
-        $object = $this->resources['user']->show($id);        
+        $object = $this->resources['user']->show($id, $withTrashed);
         $this->content('show', ['user' => $object]);
     }
 
@@ -178,8 +179,20 @@ class UsersController extends Controller {
      */
     public function edit($id)
     {
+        // Get user
         $object = $this->resources['user']->show($id);
-        $this->content('edit', ['user' => $object]);
+        $role = $this->resources['user']->getModel('role');
+
+        // Get all the options
+        $titlesOptions = $this->apis['user']->titles();
+        $suffixesOptions = $this->apis['user']->suffixes();
+        $rolesOptions = $role->listAlphabetically();
+        $roles = $object->roles->lists('id');
+
+        // Parse view data
+        $data = compact('titlesOptions', 'suffixesOptions', 'rolesOptions', 'roles');
+        $data['user'] = $object;
+        $this->content('edit', $data);
     }
 
     /**

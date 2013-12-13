@@ -15,8 +15,8 @@
 
 	@include('alba::core.errors')
 
-	<div class="table-responsive table-striped table-hover">
-		<table class="table">
+	<div class="table-responsive">
+		<table class="table table-striped table-hover">
 	  		<thead>
 	  			<tr>
 	  				<th><a href="{{ HTML::paginationUrl($paginator, ['order' => 'id']) }}">ID</a></th>
@@ -30,9 +30,9 @@
 	  			@if ($collection->count())
 		  			@foreach ($collection as $item)
 		  			<tr>
-		  				<td><a href="{{ $item->route }}">{{ $item->id }}</a></a></td>
-		  				<td><a href="{{ HTML::paginationUrl($paginator, ['types' => $item->type]) }}">{{ $item->type }}</a></a></td>
-		  				<td><a href="{{ $item->route }}">{{ $item->token }}</a></a></td>
+		  				<td><a href="{{ $item->route }}">{{ $item->id }}</a></td>
+		  				<td><a href="{{ HTML::paginationUrl($paginator, ['types' => $item->type]) }}">{{ $item->type }}</a></td>
+		  				<td><a href="{{ $item->route }}">{{ $item->token }}</a></td>
 		  				<td>{{ $item->timeSinceCreated }}</a></td>
 		  				<td>{{ $item->timeTillExpires }}</a></td>
 					</tr>

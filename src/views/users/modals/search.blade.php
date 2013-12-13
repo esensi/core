@@ -11,15 +11,15 @@ Filter Users
         <fieldset>
                 <div class="form-group">
                         {{ Form::text('keywords', $keywords,
-                                ['placeholder' => 'Keywords', 'class' => 'form-control', 'data-role' => 'tagsinput']) }}
+                                ['placeholder' => 'Keywords', 'class' => 'form-control tagsinput']) }}
                 </div>
                 <div class="form-group">
                         {{ Form::text('names', $names,
-                                ['placeholder' => 'Names', 'class' => 'form-control', 'data-role' => 'tagsinput']) }}
+                                ['placeholder' => 'Names', 'class' => 'form-control tagsinput']) }}
                 </div>
                 <div class="form-group">
                         {{ Form::select('roles[]', $rolesOptions, $roles,
-                                ['class' => 'form-control multiselect', 'size' => 1, 'data-role' => 'multiselect', 'data-default-text' => 'Any Role', 'multiple' => true]) }}
+                                ['class' => 'form-control multiselect', 'size' => 1, 'data-default-text' => 'Any Role', 'multiple' => true]) }}
                 </div>
                 <div class="row">
                         <div class="col-sm-4">

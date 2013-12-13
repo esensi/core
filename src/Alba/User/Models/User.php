@@ -517,7 +517,7 @@ class User extends Model implements UserInterface {
         {
             return Lang::get('alba::user.messages.is_blocked');
         }
-        return null;
+        return Lang::get('alba::user.messages.can_login');
     }
 
     /**

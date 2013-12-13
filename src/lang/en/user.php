@@ -98,6 +98,7 @@ return [
 		'not_active'						=> 'Deactivated',
 		'no_password'						=> 'Password Not Set',
 		'has_password'						=> 'Password Set',
+		'can_login'							=> 'Login Allowed',
 	],
 
 	/*

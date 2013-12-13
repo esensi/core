@@ -18,8 +18,8 @@
 
 	@include('alba::core.errors')
 
-	<div class="table-responsive table-striped table-hover">
-		<table class="table">
+	<div class="table-responsive">
+		<table class="table table-striped table-hover">
 	  		<thead>
 	  			<tr>
 	  				<th><a href="{{ HTML::paginationUrl($paginator, ['order' => 'id']) }}">ID</a></th>

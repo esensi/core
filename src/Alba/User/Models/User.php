@@ -193,11 +193,18 @@ class User extends Model implements UserInterface {
     public static $rulesForSeeding = ['email'];
 
     /**
+     * The attribute rules used by register()
+     * 
+     * @var array
+     */
+    public static $rulesForRegistering = ['email', 'password', 'password_confirmation'];
+
+    /**
      * The attribute rules used by store()
      * 
      * @var array
      */
-    public static $rulesForStoring = ['email', 'password', 'password_confirmation'];
+    public static $rulesForStoring = ['email'];
 
     /**
      * The attribute rules used by update()
@@ -235,6 +242,16 @@ class User extends Model implements UserInterface {
     public function getRulesForSeedingAttribute()
     {
         return array_only(self::$rules, self::$rulesForSeeding);
+    }
+
+    /**
+     * Rules needed for registering
+     * 
+     * @return array
+     */    
+    public function getRulesForRegisteringAttribute()
+    {
+        return array_only(self::$rules, self::$rulesforRegistering);
     }
 
     /**
@@ -304,6 +321,16 @@ class User extends Model implements UserInterface {
     }
 
     /**
+     * Returns a string with the extended name of the user
+     * 
+     * @return string
+     */
+    public function getExtendedNameAttribute()
+    {
+        return $this->name->extendedName;
+    }
+
+    /**
      * Get the unique identifier for the user.
      *
      * @return mixed
@@ -333,6 +360,23 @@ class User extends Model implements UserInterface {
     public function roles()
     {
         return $this->belongsToMany('Alba\User\Models\Role', 'assigned_roles', 'user_id', 'role_id');
+    }
+
+    /** 
+     * Returns the permissions for the current user
+     * 
+     * @return Collection
+     */
+    public function getPermissionsAttribute()
+    {
+        $collection = new \Illuminate\Database\Eloquent\Collection;
+        
+        foreach($this->roles as $role)
+        {
+           $collection = $collection->merge($role->perms);
+        }
+        
+        return $collection;
     }
 
     /**

@@ -38,6 +38,17 @@ class RolesResource extends Resource {
     protected $exception = 'Alba\User\Controllers\RolesResourceException';
 
     /**
+     * The default attributes for searching
+     * 
+     * @var array $defaults
+     */
+    protected $defaults = [
+        'order' => 'name',
+        'sort' => 'asc',
+        'max' => 25,
+    ];
+
+    /**
      * Inject dependencies
      *
      * @var Alba\User\Models\Role $role

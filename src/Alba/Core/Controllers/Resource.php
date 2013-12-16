@@ -230,8 +230,17 @@ class Resource extends Controller implements ResourceInterface {
 	{
 		$object = $this->show($id, true);
 		
-		$result = ($force || $object->trashed()) ? $object->forceDelete() : $object->delete();
+		// Check if trashing is allowed
+		if( method_exists($object, 'isTrashingAllowed') )
+		{
+			if(!$object->isTrashingAllowed())
+			{
+				$this->throwException($this->language('errors.trashing'));
+			}
+		}
 
+		// Delete the user
+		$result = ($force || $object->trashed()) ? $object->forceDelete() : $object->delete();
 		if($result === false)
 		{
 			$this->throwException($this->language('errors.destroy'));

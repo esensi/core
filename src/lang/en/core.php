@@ -18,6 +18,7 @@ return [
 		'update' => 'Object could not be updated.',
 		'restore' => 'Object could not be restored.',
 		'destroy' => 'Object could not be deleted.',
+		'trashing' => 'Object cannot be sent to trash.',
 	],
 
 

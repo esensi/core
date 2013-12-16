@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Illuminate\Auth\UserInterface;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
 use Zizaco\Entrust\HasRole;
@@ -665,17 +666,47 @@ class User extends Model implements UserInterface {
      */
     public function isLoginAllowed()
     {
-        return $this->active && $this->password && !$this->blocked;
+        return !$this->trashed() && $this->active && $this->password && !$this->blocked;
     }
 
     /**
-     * Checks if activation is allowed. Currently it must be not blocked to do so.
+     * Checks if activation is allowed.
      * 
      * @return boolean
      */
     public function isActivationAllowed()
     {
-        return !$this->active && !$this->blocked;
+        return !$this->trashed() && !$this->active && !$this->blocked;
+    }
+
+    /**
+     * Checks if deactivation is allowed.
+     * 
+     * @return boolean
+     */
+    public function isDeactivationAllowed()
+    {
+        return !$this->trashed() && $this->active && !$this->blocked;
+    }
+
+    /**
+     * Checks if blocking is allowed.
+     * 
+     * @return boolean
+     */
+    public function isBlockingAllowed()
+    {
+        return !$this->trashed() && !$this->blocked;
+    }
+
+    /**
+     * Checks if unblocking is allowed.
+     * 
+     * @return boolean
+     */
+    public function isUnblockingAllowed()
+    {
+        return !$this->trashed() && $this->blocked;
     }
 
     /**
@@ -685,7 +716,18 @@ class User extends Model implements UserInterface {
      */
     public function isPasswordResetAllowed()
     {
-        return $this->active && !$this->blocked;
+        return !$this->trashed() && $this->active && !$this->blocked;
+    }
+
+    /**
+     * Checks if the user can be sent to trash
+     * - Can't delete yourself
+     * 
+     * @return boolean
+     */
+    public function isTrashingAllowed()
+    {
+        return $this->id != Auth::user()->id;
     }
 
     /**

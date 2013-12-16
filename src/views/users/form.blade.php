@@ -79,7 +79,7 @@
 				</div>
 			@endif
 
-			@if(isset($user) && Entrust::can('module_permissions'))
+			@if(isset($user) && Entrust::can('module_permissions') && $user->permissions->count())
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h3 class="panel-title">Assigned Permissions</h3>
@@ -137,10 +137,10 @@
 									<small class="text-muted"><i class="fa fa-clock-o"></i> {{ $user->timeSinceLastActivated }}</small></p>
 							</div>
 							<div class="col-xs-6 col-sm-12 col-md-6">
-								@if($user->active)
+								@if($user->isDeactivationAllowed())
 									<a href="{{ route('admin.users.deactivate.confirm', $user->id) }}" class="btn btn-sm btn-block btn-danger" data-toggle="modal" data-target="#albaModal">
 										  	<i class="fa fa-times-circle-o fa-fw"></i> Deactivate</a>
-								@else
+								@elseif($user->isActivationAllowed())
 									<a href="{{ route('admin.users.activate.confirm', $user->id) }}" class="btn btn-sm btn-block btn-success" data-toggle="modal" data-target="#albaModal">
 										  	<i class="fa fa-check-circle-o fa-fw"></i> Activate</a>
 								@endif
@@ -153,16 +153,17 @@
 								<p>{{ $user->blockedStatus }}</p>
 							</div>
 							<div class="col-xs-6 col-sm-12 col-md-6">
-								@if($user->blocked)
+								@if($user->isUnblockingAllowed())
 									<a href="{{ route('admin.users.unblock.confirm', $user->id) }}" class="btn btn-sm btn-block btn-success" data-toggle="modal" data-target="#albaModal">
 										  	<i class="fa fa-power-off fa-fw"></i> Unblock</a>
-								@else
+								@elseif($user->isBlockingAllowed())
 									<a href="{{ route('admin.users.block.confirm', $user->id) }}" class="btn btn-sm btn-block btn-danger" data-toggle="modal" data-target="#albaModal">
 										  	<i class="fa fa-ban fa-fw"></i> Block</a>
 								@endif
 							</div>
 						</div>
 					</li>
+					@if($user->isTrashingAllowed())
 					<li class="list-group-item">
 						@if($user->trashed())
 						<p>Trashed<br>
@@ -178,6 +179,7 @@
 							<i class="fa fa-trash-o fa-fw"></i> Send to Trash</a>
 						@endif
 					</li>
+					@endif
 				</ul>
 			</div>
 			@endif

@@ -33,6 +33,7 @@ return [
 		'destroy'							=> 'User could not be deleted.',
 		'no_permission'						=> 'User does not have ":permission" permission.',
 		'no_results'						=> 'There are no user results.',
+		'trashing'							=> 'You can not delete your own user account.',
 	],
 
 	/*

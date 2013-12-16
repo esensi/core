@@ -38,6 +38,17 @@ class PermissionsResource extends Resource {
     protected $exception = 'Alba\User\Controllers\PermissionsResourceException';
 
     /**
+     * The default attributes for searching
+     * 
+     * @var array $defaults
+     */
+    protected $defaults = [
+        'order' => 'display_name',
+        'sort' => 'asc',
+        'max' => 25,
+    ];
+
+    /**
      * Inject dependencies
      *
      * @var Alba\User\Models\Permission $permission

@@ -40,6 +40,17 @@ class TokensResource extends Resource {
     protected $exception = 'Alba\User\Controllers\TokensResourceException';
 
     /**
+     * The default attributes for searching
+     * 
+     * @var array $defaults
+     */
+    protected $defaults = [
+        'order' => 'expires_at',
+        'sort' => 'desc',
+        'max' => 25,
+    ];
+
+    /**
      * Inject dependencies
      **/
     public function __construct(Token $token)

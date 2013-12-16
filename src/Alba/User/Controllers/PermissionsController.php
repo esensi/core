@@ -59,7 +59,7 @@ class PermissionsController extends Controller {
      */
     public function create()
     {
-        $this->content('create');
+        $this->form('create');
     }
 
     /**
@@ -108,7 +108,25 @@ class PermissionsController extends Controller {
     public function edit($id)
     {
         $object = $this->resources['permission']->show($id);
-        $this->content('edit', ['permission' => $object]);
+        $this->form('edit', $object);
+    }
+
+    /**
+     * Show the form for modifying the specified resource.
+     *
+     * @param string $view
+     * @param  Permission $object
+     * @return void
+     */
+    protected function form($view, $object = null)
+    {
+        // Parse view data
+        $data = [];
+        if(!is_null($object))
+        {
+            $data['permission'] = $object;
+        }
+        $this->modal($view, $data);
     }
 
     /**

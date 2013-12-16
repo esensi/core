@@ -82,9 +82,9 @@ return [
 	'views' => [
 		
 		'index' 			=> 'permissions.index',
-		'create'			=> 'permissions.form',
+		'create'			=> 'permissions.modals.form',
 		'show'				=> 'permissions.show',
-		'edit'				=> 'permissions.form',
+		'edit'				=> 'permissions.modals.form',
 	],
 
 	/*

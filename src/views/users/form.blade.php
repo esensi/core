@@ -88,7 +88,7 @@
 						<?php
 	  						$perms = [];
 		  					foreach($user->permissions as $permission):
-		  						$perms[] = '<a href="'.route('admin.roles.index').'?permissions='.$permission->id.'">'.$permission->display_name.'</a>';
+		  						$perms[] = '<a href="'.route('admin.permissions.show', $permission->id).'">'.$permission->display_name.'</a>';
 		  					endforeach;
 		  					echo implode(', ', $perms);
 		  				?>

@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Database\Eloquent\Collection;
 use Zizaco\Entrust\EntrustPermission;
 
 /**
@@ -12,6 +13,83 @@ use Zizaco\Entrust\EntrustPermission;
  * @see Alba\User\Models\Role
  */
 class Permission extends EntrustPermission {
+
+    /**
+     * The attributes that can be safely filled
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name', 'display_name',
+    ];
+
+    /**
+     * The attributes that can be full-text searched
+     *
+     * @var array
+     */
+    public $searchable = ['name', 'display_name'];
+
+    /**
+     * The attribute rules that Ardent will validate against
+     * 
+     * @var array
+     */
+    public static $rules = [
+        'name' => ['required', 'alpha_dash', 'max:32', 'unique:permissions'],
+        'display_name' => ['required', 'max:32'],
+    ];
+
+    /**
+     * The attribute rules used by seeder
+     * 
+     * @var array
+     */
+    public static $rulesForSeeding = ['name', 'display_name'];
+
+    /**
+     * The attribute rules used by store()
+     * 
+     * @var array
+     */
+    public static $rulesForStoring = ['name', 'display_name'];
+
+    /**
+     * The attribute rules used by update()
+     * 
+     * @var array
+     */
+    public static $rulesForUpdating = ['display_name'];
+
+    /**
+     * Rules needed for seeding
+     * 
+     * @return array
+     */    
+    public function getRulesForSeedingAttribute()
+    {
+        return array_only(self::$rules, self::$rulesForSeeding);
+    }
+
+    /**
+     * Rules needed for storing
+     * 
+     * @return array
+     */    
+    public function getRulesForStoringAttribute()
+    {
+        return array_only(self::$rules, self::$rulesForStoring);
+    }
+
+    /**
+     * Rules needed for updating
+     * 
+     * @return array
+     */
+    public function getRulesForUpdatingAttribute()
+    {
+        return array_only(self::$rules, self::$rulesForUpdating);
+    }
 
     /**
      * Many-to-Many relations with Roles
@@ -67,6 +145,23 @@ class Permission extends EntrustPermission {
 
         $date = new Carbon($this->updated_at);
         return $date->diffForHumans();
+    }
+
+    /** 
+     * Returns the users for the current permission
+     * 
+     * @return Collection
+     */
+    public function getUsersAttribute()
+    {
+        $collection = new Collection;
+        
+        foreach($this->roles as $role)
+        {
+           $collection = $collection->merge($role->users);
+        }
+        
+        return $collection;
     }
 
     /**

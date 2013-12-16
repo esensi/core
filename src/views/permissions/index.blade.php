@@ -5,7 +5,7 @@
 		<li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
 		<li><a href="{{ route('admin.users.index') }}">Users</a></li>
 		<li class="active">Permissions &nbsp;
-			<a href="{{ route('admin.permissions.create') }}" class="btn btn-xs btn-success"><i class="fa fa-plus-circle"></i> New</a></li>
+			<a href="{{ route('admin.permissions.create') }}" class="btn btn-xs btn-success" data-toggle="modal" data-target="#albaModal"><i class="fa fa-plus-circle"></i> New</a></li>
 		@if($collection->count())
 		<span class="pull-right text-muted">
 			Showing {{$paginator->getFrom()}} to {{$paginator->getTo()}} of {{$paginator->getTotal()}}
@@ -54,7 +54,7 @@
 							    <span class="sr-only">Toggle Dropdown</span>
 							  </button>
 							  <ul class="dropdown-menu pull-right" role="menu">
-							    <li><a href="{{ route('admin.permissions.edit', $item->id) }}">
+							    <li><a href="{{ route('admin.permissions.edit', $item->id) }}" data-toggle="modal" data-target="#albaModal">
 							    	<i class="fa fa-pencil fa-fw"></i> Edit Permission</a></li>
 							  </ul>
 							</div>

@@ -179,24 +179,19 @@ class UsersController extends Controller {
      */
     public function edit($id)
     {
-        $this->form('edit', $id);
+        $object = $this->resources['user']->show($id);
+        $this->form('edit', $object);
     }
 
     /**
      * Show the form for modifying the specified resource.
      *
      * @param string $view
-     * @param  int  $id
+     * @param  User $object
      * @return void
      */
-    protected function form($view, $id = null)
-    {
-        // Get user
-        if( $id )
-        {
-            $object = $this->resources['user']->show($id);
-        }
-        
+    protected function form($view, $object = null)
+    {        
         // Get all the options
         $titlesOptions = $this->resources['user']->titles('title');
         $suffixesOptions = $this->resources['user']->suffixes('suffix');
@@ -205,7 +200,7 @@ class UsersController extends Controller {
 
         // Parse view data
         $data = compact('titlesOptions', 'suffixesOptions', 'rolesOptions', 'roles');
-        if(isset($object))
+        if(!is_null($object))
         {
             $data['user'] = $object;
         }

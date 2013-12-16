@@ -5,6 +5,7 @@ use Illuminate\Auth\UserInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Database\Eloquent\Collection;
 use Zizaco\Entrust\HasRole;
 use Alba\Core\Models\Model;
 use Alba\User\Models\Token;
@@ -370,7 +371,7 @@ class User extends Model implements UserInterface {
      */
     public function getPermissionsAttribute()
     {
-        $collection = new \Illuminate\Database\Eloquent\Collection;
+        $collection = new Collection;
         
         foreach($this->roles as $role)
         {

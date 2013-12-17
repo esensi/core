@@ -38,8 +38,13 @@
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-            
-            @include(Config::get('alba::user.dropdown'))
+          
+            @foreach(Config::get('alba::core.modules') as $module)
+              <?php $package = Config::get($module.'.package', 'alba::'); ?>
+              @if(Config::has($package.$module.'.dropdown'))
+                @include(Config::get($package.$module.'.dropdown'))
+              @endif
+            @endforeach
 
           </ul>
           <ul class="nav navbar-nav navbar-right">

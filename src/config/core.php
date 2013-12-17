@@ -18,6 +18,21 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
+	| Modules to load
+	|--------------------------------------------------------------------------
+	|
+	| The following configuration options tell Alba which modules are available.
+	| This can be useful for many things but is specifically used by the template
+	| engine to determine how to render the administrative interfaces.
+	|
+	*/
+
+	'modules' => [
+		'user',
+	],
+
+	/*
+	|--------------------------------------------------------------------------
 	| Configuration of module route prefixes
 	|--------------------------------------------------------------------------
 	|

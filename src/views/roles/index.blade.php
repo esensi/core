@@ -22,7 +22,7 @@
 	  			<tr>
 	  				<th><a href="{{ HTML::paginationUrl($paginator, ['order' => 'id']) }}">ID</a></th>
 	  				<th><a href="{{ HTML::paginationUrl($paginator, ['order' => 'name']) }}">Name</a></th>
-	  				<th>Permissions</th>
+	  				<th width="30%">Permissions</th>
 	  				<th><a href="{{ HTML::paginationUrl($paginator, ['order' => 'users']) }}">Users</a></th>
 	  				<th><a href="{{ HTML::paginationUrl($paginator, ['order' => 'updated_at']) }}">Last Updated</a></th>
 	  				<th>Actions</th>

@@ -1,7 +1,7 @@
 <li class="dropdown @if(starts_with(Route::current()->getName(),  ['admin.users', 'admin.roles', 'admin.permissions', 'admin.tokens'])) active @endif">
   <a href="{{ route('admin.users.index') }}" class="dropdown-toggle" data-toggle="dropdown">Users <b class="caret"></b></a>
   <ul class="dropdown-menu">
-    @if(Entrust::can('module_roles'))
+    @if(Entrust::can('module_users'))
     <li><a href="{{ route('admin.users.create') }}">Create User</a></li>
     <li><a href="{{ route('admin.users.index') }}">Browse Users</a></li>
     <li><a href="{{ route('admin.users.search') }}?{{http_build_query(Input::all())}}" data-toggle="modal" data-target="#albaModal">Search Users</a></li>

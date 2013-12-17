@@ -7,7 +7,7 @@
 		<li><a href="{{ route('admin.users.index') }}">Users</a></li>
 		<li><a href="{{ route('admin.permissions.index') }}">Permissions</a></li>
 		<li class="active">{{ $permission->display_name }} ({{ $permission->name}}) &nbsp;
-			<a href="{{ route('admin.permissions.edit', $permission->id) }}" class="btn btn-xs btn-success" data-toggle="modal" data-target="#albaModal"><i class="fa fa-pencil"></i> Edit</a>
+			<a href="{{ route('admin.permissions.edit', $permission->id) }}" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#albaModal"><i class="fa fa-pencil"></i> Edit</a>
 		</li>
 		<small class="pull-right text-muted">
 			<i class="fa fa-clock-o"></i> Created {{ $permission->timeSinceCreated }} &nbsp;
@@ -19,7 +19,7 @@
 	
 	<div class="row">
 		
-		@if(Entrust::can('module_roles'))
+		@if(Entrust::can('module_roles') && $permission->roles->count())
 		<div class="col-sm-6">
 			<div class="panel panel-default">
 				<div class="panel-heading clearfix">
@@ -31,7 +31,7 @@
 					<?php
   						$roles = [];
 	  					foreach($permission->roles as $role):
-	  						$roles[] = '<a href="'.route('admin.permissions.index').'?roles='.$role->id.'">'.$role->name.'</a>';
+	  						$roles[] = '<a href="'.route('admin.roles.show', $role->id).'">'.$role->name.'</a>';
 	  					endforeach;
 	  					echo implode(', ', $roles);
 	  				?>
@@ -40,7 +40,7 @@
 		</div>
 		@endif
 
-		@if(Entrust::can('module_users'))
+		@if(Entrust::can('module_users') && $permission->users->count())
 		<div class="col-sm-6">
 			<div class="panel panel-default">
 				<div class="panel-heading clearfix">

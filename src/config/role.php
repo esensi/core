@@ -84,9 +84,9 @@ return [
 	'views' => [
 		
 		'index' 			=> 'roles.index',
-		'create'			=> 'roles.form',
+		'create'			=> 'roles.modals.form',
 		'show'				=> 'roles.show',
-		'edit'				=> 'roles.form',
+		'edit'				=> 'roles.modals.form',
 
 		// Modals
 		'destroy_confirm'				=> 'roles.modals.destroy-confirm',

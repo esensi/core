@@ -59,7 +59,7 @@ class RolesController extends Controller {
      */
     public function create()
     {
-        $this->content('create');
+        $this->form('create');
     }
 
     /**
@@ -108,7 +108,25 @@ class RolesController extends Controller {
     public function edit($id)
     {
         $object = $this->resources['role']->show($id);
-        $this->content('edit', ['role' => $object]);
+        $this->form('edit', $object);
+    }
+
+    /**
+     * Show the form for modifying the specified resource.
+     *
+     * @param string $view
+     * @param  Role $object
+     * @return void
+     */
+    protected function form($view, $object = null)
+    {
+        // Parse view data
+        $data = [];
+        if(!is_null($object))
+        {
+            $data['role'] = $object;
+        }
+        $this->modal($view, $data);
     }
 
     /**

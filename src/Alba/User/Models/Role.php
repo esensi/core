@@ -15,6 +15,82 @@ use Zizaco\Entrust\EntrustRole;
 class Role extends EntrustRole {
 
     /**
+     * The attributes that can be safely filled
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+    ];
+
+    /**
+     * The attributes that can be full-text searched
+     *
+     * @var array
+     */
+    public $searchable = ['name'];
+
+    /**
+     * The attribute rules that Ardent will validate against
+     * 
+     * @var array
+     */
+    public static $rules = [
+        'name' => ['required', 'alpha_dash', 'max:32', 'unique:roles'],
+    ];
+
+    /**
+     * The attribute rules used by seeder
+     * 
+     * @var array
+     */
+    public static $rulesForSeeding = ['name'];
+
+    /**
+     * The attribute rules used by store()
+     * 
+     * @var array
+     */
+    public static $rulesForStoring = ['name'];
+
+    /**
+     * The attribute rules used by update()
+     * 
+     * @var array
+     */
+    public static $rulesForUpdating = ['name'];
+
+    /**
+     * Rules needed for seeding
+     * 
+     * @return array
+     */    
+    public function getRulesForSeedingAttribute()
+    {
+        return array_only(self::$rules, self::$rulesForSeeding);
+    }
+
+    /**
+     * Rules needed for storing
+     * 
+     * @return array
+     */    
+    public function getRulesForStoringAttribute()
+    {
+        return array_only(self::$rules, self::$rulesForStoring);
+    }
+
+    /**
+     * Rules needed for updating
+     * 
+     * @return array
+     */
+    public function getRulesForUpdatingAttribute()
+    {
+        return array_only(self::$rules, self::$rulesForUpdating);
+    }
+
+    /**
      * Method added to solve bug:
      *
      * PHP Fatal error:  Class 'Permission' not found in ...../bootstrap/compiled.php

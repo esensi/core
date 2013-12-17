@@ -44,7 +44,7 @@
 						<?php
 	  						$roles = [];
 		  					foreach($user->roles as $role):
-		  						$roles[] = '<a href="'.route('admin.users.index').'?roles='.$role->id.'">'.$role->name.'</a>';
+		  						$roles[] = '<a href="'.route('admin.roles.show', $role->id).'">'.$role->name.'</a>';
 		  					endforeach;
 		  					echo implode(', ', $roles);
 		  				?>

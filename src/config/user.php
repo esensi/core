@@ -88,6 +88,7 @@ return [
 		'reset_activation_confirm'		=> 'users.modals.reset-activation-confirm',
 		'reset_password_confirm'		=> 'users.modals.reset-password-confirm',
 		'search'						=> 'users.modals.search',
+		'edit_roles'					=> 'users.modals.edit-roles',
 
 		// Views used in emails
 		'emails' => [

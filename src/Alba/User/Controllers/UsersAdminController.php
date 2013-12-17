@@ -235,6 +235,34 @@ class UsersAdminController extends UsersController {
     }
 
     /**
+     * Show the form for updating the roles attached to the specified resource in storage.
+     *
+     * @param int $id of object to update
+     * @return void
+     */
+    public function editRoles($id)
+    {
+        // @todo what about security here?
+
+        // Get user object
+        $object = $this->apis['user']->show($id);
+        
+        // Get options
+        $rolesOptions = $this->resources['user']->getModel('role')->listAlphabetically();
+        $roles = isset($object) ? $object->roles->lists('id') : [];
+
+        // Parse view data
+        $data = compact('rolesOptions', 'roles');
+        if(!is_null($object))
+        {
+            $data['user'] = $object;
+        }
+
+        $this->modal('edit_roles')
+            ->with($data);
+    }
+
+    /**
      * Update the roles attached to the specified resource in storage.
      *
      * @param int $id of object to update

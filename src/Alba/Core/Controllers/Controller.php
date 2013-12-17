@@ -60,7 +60,7 @@ class Controller extends LaravelController {
      * @param string $key to view config
      * @param array $data to be passed to view
      * @param string $name of content
-     * @return void
+     * @return View
      */
     protected function content($key, $data = [], $name = 'content')
     {
@@ -68,7 +68,7 @@ class Controller extends LaravelController {
         $package = Config::get('alba::' . $packageKey, Config::get($packageKey));
         $viewKey = str_singular($this->module) . '.views.' . $key;
         $view = Config::get('alba::' . $viewKey, Config::get($viewKey));
-        $this->layout->$name = View::make($package . $view, $data);
+        return $this->layout->$name = View::make($package . $view, $data);
     }
 
     /**
@@ -76,7 +76,7 @@ class Controller extends LaravelController {
      *
      * @param string $key to view config
      * @param array $data to be passed to view
-     * @return void
+     * @return View
      */
     protected function modal($key, $data = [], $name = 'modal-body')
     {
@@ -84,7 +84,7 @@ class Controller extends LaravelController {
         $view = Config::get('alba::core.views.modal', 'core.modal');
         $this->layout = $package . $view;
         $this->setupLayout();
-        $this->content($key, $data, $name);
+        return $this->content($key, $data, $name);
     }
 
     /**

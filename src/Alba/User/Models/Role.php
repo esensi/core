@@ -87,7 +87,13 @@ class Role extends EntrustRole {
      */
     public function getRulesForUpdatingAttribute()
     {
-        return array_only(self::$rules, self::$rulesForUpdating);
+        $rules = array_only(self::$rules, self::$rulesForUpdating);
+
+        // add exception for the unique constraint
+        $key = array_search('unique:roles', $rules['name']);
+        $rules['name'][$key] = 'unique:roles,name,' . $this->id;
+
+        return $rules;
     }
 
     /**

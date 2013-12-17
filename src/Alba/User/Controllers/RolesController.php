@@ -120,8 +120,12 @@ class RolesController extends Controller {
      */
     protected function form($view, $object = null)
     {
+        // Get options
+        $permissionsOptions = $this->resources['role']->getModel('permission')->listAlphabetically();
+        $permissions = isset($object) ? $object->perms->lists('id') : [];
+
         // Parse view data
-        $data = [];
+        $data = compact('permissionsOptions', 'permissions');
         if(!is_null($object))
         {
             $data['role'] = $object;

@@ -135,6 +135,24 @@ class RolesApiController extends Controller {
     }
 
     /**
+     * Update the permissions attached to the specified resource in storage.
+     *
+     * @param int $id of object to update
+     * @return Illuminate\Database\Eloquent\Model
+     */
+    public function assignPermissions($id)
+    {  
+        // Convert permissions to array
+        $permissions = Input::get('permissions', []);
+        if(is_string($permissions))
+            $permissions = explode(',', $permissions);
+
+        // Sync permissions
+        $object = $this->resources['role']->syncPermissions($id, $permissions);
+        return $object;
+    }
+
+    /**
      * Display a list of all roles
      *
      * @return array

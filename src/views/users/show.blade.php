@@ -35,7 +35,7 @@
 				<div class="panel panel-default">
 					<div class="panel-heading clearfix">
 						@if(!$user->trashed())
-						<a href="{{route('admin.users.edit', $user->id)}}" class="btn btn-sm btn-primary pull-right">
+						<a href="{{route('admin.users.edit.roles', $user->id)}}" class="btn btn-sm btn-primary pull-right" data-toggle="modal" data-target="#albaModal">
 							<i class="fa fa-key fa-fw"></i> Assign Roles</a>
 						@endif
 						<h3 class="panel-title">Assigned Roles</h3>

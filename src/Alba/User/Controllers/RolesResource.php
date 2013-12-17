@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Config;
 use Alba\Core\Controllers\Resource;
 use Alba\Core\Exceptions\ResourceException;
 
+use Alba\User\Models\Permission;
 use Alba\User\Models\Role;
 
 /**
@@ -49,14 +50,23 @@ class RolesResource extends Resource {
     ];
 
     /**
+     * The Permission model
+     *
+     * @var Alba\User\Models\Permission
+     */
+    protected $permission;
+
+    /**
      * Inject dependencies
      *
      * @var Alba\User\Models\Role $role
+     * @var Alba\User\Models\Permission $permission
      * @return RolesResource;
      */
-    public function __construct(Role $role)
+    public function __construct(Role $role, Permission $permission)
     {
         $this->model = $role;
+        $this->permission = $permission;
     }
 
     /**
@@ -72,6 +82,46 @@ class RolesResource extends Resource {
         {
             $this->throwException($this->language('errors.show_by_name'));
         }
+        return $object;
+    }
+
+    /**
+     * @see ResourceInterface::update
+     */
+    public function update($id, $attributes)
+    {
+        // Update the role
+        $object = parent::update($id, array_except($attributes, ['permissions']));
+
+        // Sync the permissions
+        $object = $this->syncPermissions($id, $attributes['permissions']);
+
+        return $object;
+    }
+
+    /**
+     * Synchronize the permissions on the role
+     *
+     * @param integer $id of role
+     * @param array $permissions ids
+     * @return Model
+     * 
+     */
+    public function syncPermissions($id, $permissions)
+    {
+        // Update role attributes
+        $object = $this->show($id);
+                
+        // Sync assigned permissions
+        try
+        {
+            $object->perms()->sync($permissions);
+        }
+        catch (Exception $e)
+        {
+            $this->throwException($e->getMessage());
+        }
+
         return $object;
     }
 

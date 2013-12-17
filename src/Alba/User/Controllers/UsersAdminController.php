@@ -274,7 +274,7 @@ class UsersAdminController extends UsersController {
 
         $object = $this->apis['user']->assignRoles($id);
 
-        return $this->redirectBack('assign_roles', ['id' => $id])
+        return $this->redirect('assign_roles', ['id' => $id])
             ->with('message', $this->language('success.assign_roles'));
     }
 }

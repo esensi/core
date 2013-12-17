@@ -219,7 +219,7 @@ class UsersController extends Controller {
 
         $object = $this->apis['user']->update($id);
 
-        return $this->redirectBack('update', ['id' => $id])
+        return $this->redirect('update', ['id' => $id])
             ->with('message', $this->language('success.update'));
     }
 

@@ -33,6 +33,7 @@ return [
 		'destroy'							=> 'User could not be deleted.',
 		'no_permission'						=> 'User does not have ":permission" permission.',
 		'no_results'						=> 'There are no user results.',
+		'no_roles'							=> 'There are no roles assigned to this user.',
 		'trashing'							=> 'You can not delete your own user account.',
 	],
 
@@ -101,6 +102,7 @@ return [
 		'no_password'						=> 'Password Not Set',
 		'has_password'						=> 'Password Set',
 		'can_login'							=> 'Login Allowed',
+		'assign_roles_later'				=> 'You can assign roles after the user has been created. Until then the default user roles will be assigned to the new user.',
 	],
 
 	/*

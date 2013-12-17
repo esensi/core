@@ -103,6 +103,11 @@ return [
 		],
 	],
 
+	'panels' => [
+		'alba::users.panels.user',
+		'alba::users.panels.tokens',
+	],
+
 	/*
 	|--------------------------------------------------------------------------
 	| Redirects to be used by this module

@@ -253,7 +253,7 @@ class User extends Model implements UserInterface {
      */    
     public function getRulesForRegisteringAttribute()
     {
-        return array_only(self::$rules, self::$rulesforRegistering);
+        return array_only(self::$rules, self::$rulesForRegistering);
     }
 
     /**

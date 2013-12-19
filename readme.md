@@ -13,3 +13,7 @@ ALBA is an awesome Laravel boilerplate application. This repository contains the
 * Alba\Address: shipping and billing addresses and zip, state, and country definitions
 * Alba\Locator: geo-location services for Addresses
 * Alba\Utils: helper functions for other components
+
+## Documentation
+
+To learn how Alba works, you should refer to the generously commented Alba source code. To learn how to work with Alba, you should use our tiny-but-ever-improving documentation that lives in [alba-docs](https://github.com/emersonmedia/alba-docs).

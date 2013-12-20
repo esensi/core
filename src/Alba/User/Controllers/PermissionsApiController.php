@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Input;
 use Alba\Core\Controllers\Controller;
-use Alba\User\Controllers\PermissionsResource;
 
 /**
  * Controller for accessing PermissionResource as an API
@@ -19,7 +18,7 @@ class PermissionsApiController extends Controller {
      * @param PermissionsResource $permissionsResource;
      * @return void
      */
-	public function __construct(PermissionsResource $permissionsResource)
+	public function __construct(\AlbaPermissionsResource $permissionsResource)
 	{
 		$this->resources['permission'] = $permissionsResource;
 	}

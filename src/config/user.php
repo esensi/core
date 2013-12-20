@@ -17,6 +17,28 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
+	| Application aliases
+	|--------------------------------------------------------------------------
+	|
+	| The following configuration options allow the developer to map aliases to
+	| controllers and models for easier customization of how Alba handles
+	| requests related to the User module. These aliases are loaded by the
+	| service provider for this module.
+	|
+	*/
+
+	'aliases' => [
+		'AlbaUser'					=> '\Alba\User\Models\User',
+		'AlbaName'					=> '\Alba\User\Models\Name',
+		'AlbaUsersResource'			=> '\Alba\User\Controllers\UsersResource',
+		'AlbaUsersController'		=> '\Alba\User\Controllers\UsersController',
+		'AlbaUsersAdminController'	=> '\Alba\User\Controllers\UsersAdminController',
+		'AlbaUsersApiController'	=> '\Alba\User\Controllers\UsersApiController',
+		'AlbaUsersTableSeeder'		=> '\Alba\User\Seeders\UsersTableSeeder',
+	],
+
+	/*
+	|--------------------------------------------------------------------------
 	| TTL configurations
 	|--------------------------------------------------------------------------
 	|

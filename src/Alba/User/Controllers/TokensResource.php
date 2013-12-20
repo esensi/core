@@ -5,7 +5,6 @@ use Illuminate\Auth\UserInterface;
 use Illuminate\Support\Facades\Config;
 use Alba\Core\Controllers\Resource;
 use Alba\Core\Exceptions\ResourceException;
-use Alba\User\Models\Token;
 
 /**
  * Custom exception handler for TokensResource
@@ -53,7 +52,7 @@ class TokensResource extends Resource {
     /**
      * Inject dependencies
      **/
-    public function __construct(Token $token)
+    public function __construct(\AlbaToken $token)
     {        
         $this->model = $token;
     }

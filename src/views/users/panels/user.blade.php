@@ -7,9 +7,11 @@
 			@endif
 			<h3 class="panel-title">User Account Information</h3>
 		</div>
-		<div class="panel-body">
-			{{ $user->extendedName }}<br>
-			<a href="mailto::{{$user->email}}">{{ $user->email }}</a>
-		</div>
+		<ul class="list-group">
+			<li class="list-group-item">
+				{{ $user->extendedName }}<br>
+				<a href="mailto::{{$user->email}}">{{ $user->email }}</a><br>
+			</li>
+		</ul>
 	</div>
 @endif

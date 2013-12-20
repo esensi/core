@@ -2,10 +2,10 @@
 
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Database\Eloquent\Model;
 use Alba\Core\Contracts\ResourceInterface;
 use Alba\Core\Controllers\Controller;
 use Alba\Core\Exceptions\ResourceException;
+use Alba\Core\Models\Model;
 
 /**
  * Core Resource controller as the base for all module Resource controllers

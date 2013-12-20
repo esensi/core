@@ -20,6 +20,16 @@ class AlbaServiceProvider extends ServiceProvider {
 	protected $defer = false;
 
 	/**
+	 * Register the service provider.
+	 *
+	 * @return void
+	 */
+	public function register()
+	{
+		
+	}
+
+	/**
 	 * Bootstrap the application events.
 	 *
 	 * @return void
@@ -27,16 +37,6 @@ class AlbaServiceProvider extends ServiceProvider {
 	public function boot()
 	{
 		$this->package('emersonmedia/alba','alba', __DIR__.'/..');
-	}
-
-	/**
-	 * Register the service provider.
-	 *
-	 * @return void
-	 */
-	public function register()
-	{
-
 	}
 
 	/**

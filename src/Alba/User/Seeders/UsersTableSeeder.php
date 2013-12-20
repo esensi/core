@@ -3,9 +3,6 @@
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Alba\Core\Seeders\Seeder;
-use Alba\User\Models\Name;
-use Alba\User\Models\Role;
-use Alba\User\Models\User;
 
 /**
  * Seeder for Users and Names
@@ -79,7 +76,7 @@ class UsersTableSeeder extends Seeder {
             foreach($users as $arr)
             {
                 // Save new user
-                $user = new User;
+                $user = new \AlbaUser;
                 $user->fill(array_only($arr['user'], $user->getFillable()));
                 $this->saveOrFail($user, $user->rulesForSeeding);
 
@@ -88,14 +85,13 @@ class UsersTableSeeder extends Seeder {
                 {
                     foreach ($arr['role'] as $roleName)
                     {
-                        $role = Role::whereName($roleName)->first();
+                        $role = \AlbaRole::whereName($roleName)->first();
                         $user->attachRole($role);
                     }
-                    
                 }
 
                 // Save new name to user
-                $name = new Name();
+                $name = new \AlbaName();
                 $name->fill(array_only($arr['name'], $name->getFillable()));
                 $name->user()->associate($user);
                 $this->saveOrFail($name);

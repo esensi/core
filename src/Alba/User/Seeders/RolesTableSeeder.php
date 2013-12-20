@@ -3,8 +3,6 @@
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 use Alba\Core\Seeders\Seeder;
-use Alba\User\Models\Permission;
-use Alba\User\Models\Role;
 
 /**
  * Seeder for Roles
@@ -35,7 +33,7 @@ class RolesTableSeeder extends Seeder {
             {
             
                 // Save new role
-                $role = new Role();
+                $role = new \AlbaRole();
                 $role->name = $name;
                 $this->saveOrFail($role);
 
@@ -51,7 +49,7 @@ class RolesTableSeeder extends Seeder {
                     // Create cache the first time all permissions is needed
                     if(empty($all_permissions))
                     {
-                        $all_permissions = Permission::all()->lists('id');
+                        $all_permissions = \AlbaPermission::all()->lists('id');
                     }
 
                     // Use cache of all  permissions
@@ -60,7 +58,7 @@ class RolesTableSeeder extends Seeder {
                 else
                 {
                     // Get permissions by name
-                    $permissions = Permission::whereIn('name', $assigned_perms)->lists('id');
+                    $permissions = \AlbaPermission::whereIn('name', $assigned_perms)->lists('id');
                 }
 
                 // Assign permissions to role

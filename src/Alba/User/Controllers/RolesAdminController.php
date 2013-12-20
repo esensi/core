@@ -1,7 +1,6 @@
 <?php namespace Alba\User\Controllers;
 
 use Illuminate\Support\Facades\Input;
-use Alba\User\Controllers\RolesController;
 
 /**
  * Controller for accessing RolesResource from a backend web interface
@@ -9,7 +8,12 @@ use Alba\User\Controllers\RolesController;
  * @author daniel <daniel@bexarcreative.com>
  * @see Alba\Core\Controllers\RolesController
  */
-class RolesAdminController extends RolesController {
+class RolesAdminController extends \AlbaRolesController {
+
+    /**
+     * The layout that should be used for responses.
+     */
+    protected $layout = 'alba::core.default';
 
     /**
      * Show confirmation modal

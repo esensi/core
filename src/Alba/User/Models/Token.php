@@ -1,6 +1,5 @@
 <?php namespace Alba\User\Models;
 
-use Alba\User\Controllers\TokensResource;
 use Alba\Core\Models\Model;
 use Carbon\Carbon;
 
@@ -85,7 +84,12 @@ class Token extends Model {
      * @var array
      */
     public static $relationsData = [
-        'users' => [self::BELONGS_TO_MANY, 'Alba\User\Models\User'],
+        'users' => [
+            self::BELONGS_TO_MANY,
+            '\AlbaUser',
+            'table' => 'token_user',
+            'foreignKey' => 'token_id',
+        ],
     ];
 
     /**
@@ -167,7 +171,7 @@ class Token extends Model {
      */
     public function getRouteAttribute()
     {
-        $resource = new TokensResource($this);
+        $resource = new \AlbaTokensResource($this);
         return $resource->route($this->type, $this->token);
     }
    

@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redirect;
 
 use Alba\Core\Controllers\Controller;
-use Alba\User\Controllers\TokensResource;
-use Alba\User\Controllers\TokensApiController;
 
 /**
  * Controller for accessing TokensResource from a web interface
@@ -34,7 +32,7 @@ class TokensController extends Controller {
      * @param TokensApiController $tokensApi
      * @return void
      */
-    public function __construct(TokensResource $tokensResource, TokensApiController $tokensApi)
+    public function __construct(\AlbaTokensResource $tokensResource, \AlbaTokensApiController $tokensApi)
     {   
         $this->resources['token'] = $tokensResource;
         $this->apis['token'] = $tokensApi;

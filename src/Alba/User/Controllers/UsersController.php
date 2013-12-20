@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redirect;
 
 use Alba\Core\Controllers\Controller;
-use Alba\User\Controllers\UsersResource;
-use Alba\User\Controllers\UsersApiController;
 
 /**
  * Controller for accessing UsersResrouce from a web interface
@@ -35,7 +33,7 @@ class UsersController extends Controller {
      * @param UsersApiController $usersApi
      * @return void
      */
-    public function __construct(UsersResource $usersResource, UsersApiController $usersApi)
+    public function __construct(\AlbaUsersResource $usersResource, \AlbaUsersApiController $usersApi)
     {   
         $this->resources['user'] = $usersResource;
         $this->apis['user'] = $usersApi;

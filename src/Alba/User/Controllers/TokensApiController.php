@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Input;
 use Alba\Core\Controllers\Controller;
-use Alba\User\Controllers\TokensResource;
 
 /**
  * Controller for accessing TokensResource as an API
@@ -19,7 +18,7 @@ class TokensApiController extends Controller {
      * @param TokensResource $tokensResource;
      * @return void
      */
-	public function __construct(TokensResource $tokensResource)
+	public function __construct(\AlbaTokensResource $tokensResource)
 	{
 		$this->resources['token'] = $tokensResource;
 	}

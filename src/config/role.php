@@ -17,6 +17,27 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
+	| Class aliases
+	|--------------------------------------------------------------------------
+	|
+	| The following configuration options allow the developer to map aliases to
+	| controllers and models for easier customization of how Alba handles
+	| requests related to the this module. These aliases are loaded by the
+	| service provider for this module.
+	|
+	*/
+
+	'aliases' => [
+		'AlbaRole'					=> '\Alba\User\Models\Role',
+		'AlbaRolesResource'			=> '\Alba\User\Controllers\RolesResource',
+		'AlbaRolesController'		=> '\Alba\User\Controllers\RolesController',
+		'AlbaRolesAdminController'	=> '\Alba\User\Controllers\RolesAdminController',
+		'AlbaRolesApiController'	=> '\Alba\User\Controllers\RolesApiController',
+		'AlbaRolesTableSeeder'		=> '\Alba\User\Seeders\RolesTableSeeder',
+	],
+	
+	/*
+	|--------------------------------------------------------------------------
 	| Role configurations
 	|--------------------------------------------------------------------------
 	|

@@ -60,7 +60,7 @@ class Name extends Ardent {
      * @var array
      */
     public static $relationsData = [
-        'user'  => [self::BELONGS_TO, 'Alba\User\Models\User'],
+        'user'  => [self::BELONGS_TO, '\AlbaUser'],
     ];
 
     /**

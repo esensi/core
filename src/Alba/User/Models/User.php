@@ -8,8 +8,6 @@ use Illuminate\Support\Facades\Lang;
 use Illuminate\Database\Eloquent\Collection;
 use Zizaco\Entrust\HasRole;
 use Alba\Core\Models\Model;
-use Alba\User\Models\Token;
-use Alba\User\Models\Role;
 
 /**
  * Alba\User model
@@ -160,12 +158,12 @@ class User extends Model implements UserInterface {
     public static $relationsData = [
         'name' => [
             self::HAS_ONE,
-            'Alba\User\Models\Name',
+            '\AlbaName',
             'foreignKey' => 'user_id'
         ],
         'tokens' => [
             self::BELONGS_TO_MANY,
-            'Alba\User\Models\Token',
+            '\AlbaToken',
             'foreignKey' => 'user_id',
             'table' => 'token_user',
         ],
@@ -213,7 +211,7 @@ class User extends Model implements UserInterface {
      * 
      * @var array
      */
-    public static $rulesForUpdating = ['email', 'password', 'password_confirmation'];
+    public static $rulesForUpdating = ['email'];
 
     /**
      * The attribute rules used by activate()
@@ -273,7 +271,7 @@ class User extends Model implements UserInterface {
      */
     public function getRulesForUpdatingAttribute()
     {
-        $rules = array_only(self::$rules, self::$rulesForStoring);
+        $rules = array_only(self::$rules, self::$rulesForUpdating);
 
         // add exception for the unique constraint
         $key = array_search('unique:users', $rules['email']);
@@ -361,7 +359,7 @@ class User extends Model implements UserInterface {
      */
     public function roles()
     {
-        return $this->belongsToMany('Alba\User\Models\Role', 'assigned_roles', 'user_id', 'role_id');
+        return $this->belongsToMany('\AlbaRole', 'assigned_roles', 'user_id', 'role_id');
     }
 
     /** 
@@ -394,7 +392,7 @@ class User extends Model implements UserInterface {
             ->select('users.*') //this should be here, so it gets the correct id field
             ->join('token_user', 'users.id', '=', 'token_user.user_id')
             ->join('tokens', 'tokens.id', '=', 'token_user.token_id')
-            ->where('tokens.type', '=', Token::TYPE_ACTIVATION)
+            ->where('tokens.type', '=', \AlbaToken::TYPE_ACTIVATION)
             ->where('tokens.token', '=', $token);
     }
 
@@ -412,7 +410,7 @@ class User extends Model implements UserInterface {
         $query->select('users.*')
             ->join('token_user', 'users.id', '=', 'token_user.user_id')
             ->join('tokens', 'tokens.id', '=', 'token_user.token_id')
-            ->where('tokens.type', '=', Token::TYPE_PASSWORD_RESET)
+            ->where('tokens.type', '=', \AlbaToken::TYPE_PASSWORD_RESET)
             ->where('tokens.token', '=', $token);
 
         // Return only expired tokens
@@ -459,7 +457,7 @@ class User extends Model implements UserInterface {
         $roleIds = $roles;
         if(!empty($roleNames))
         {
-            $roles = Role::whereIn('name', $roleNames)->lists('id');
+            $roles = \AlbaRole::whereIn('name', $roleNames)->lists('id');
             $roleIds = array_values(array_unique(array_merge($roleIds, $roles), SORT_NUMERIC));
         }
 
@@ -531,7 +529,7 @@ class User extends Model implements UserInterface {
      */
     public function getActivationTokenAttribute()
     {
-        return $this->getTypeToken(Token::TYPE_ACTIVATION);
+        return $this->getTypeToken(\AlbaToken::TYPE_ACTIVATION);
     }
 
     /** 
@@ -541,7 +539,7 @@ class User extends Model implements UserInterface {
      */
     public function getPasswordResetTokenAttribute()
     {
-        return $this->getTypeToken(Token::TYPE_PASSWORD_RESET);
+        return $this->getTypeToken(\AlbaToken::TYPE_PASSWORD_RESET);
     }
 
     /**

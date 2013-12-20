@@ -1,7 +1,6 @@
 <?php namespace Alba\User\Seeders;
 
 use Alba\Core\Seeders\Seeder;
-use Alba\User\Models\Permission;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 
@@ -29,7 +28,7 @@ class PermissionsTableSeeder extends Seeder {
         {
             foreach ($permissions as $name => $description)
             {
-                $permission = new Permission;
+                $permission = new \AlbaPermission;
                 $permission->name = $name;
                 $permission->display_name = $description;
                 $this->saveOrFail($permission);

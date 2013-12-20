@@ -5,9 +5,6 @@ use Illuminate\Support\Facades\Config;
 use Alba\Core\Controllers\Resource;
 use Alba\Core\Exceptions\ResourceException;
 
-use Alba\User\Models\Permission;
-use Alba\User\Models\Role;
-
 /**
  * Custom exception handler for RolesResource
  *
@@ -63,7 +60,7 @@ class RolesResource extends Resource {
      * @var Alba\User\Models\Permission $permission
      * @return RolesResource;
      */
-    public function __construct(Role $role, Permission $permission)
+    public function __construct(\AlbaRole $role, \AlbaPermission $permission)
     {
         $this->model = $role;
         $this->permission = $permission;

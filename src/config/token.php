@@ -17,6 +17,26 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
+	| Class aliases
+	|--------------------------------------------------------------------------
+	|
+	| The following configuration options allow the developer to map aliases to
+	| controllers and models for easier customization of how Alba handles
+	| requests related to the this module. These aliases are loaded by the
+	| service provider for this module.
+	|
+	*/
+
+	'aliases' => [
+		'AlbaToken'					=> '\Alba\User\Models\Token',
+		'AlbaTokensResource'		=> '\Alba\User\Controllers\TokensResource',
+		'AlbaTokensController'		=> '\Alba\User\Controllers\TokensController',
+		'AlbaTokensAdminController'	=> '\Alba\User\Controllers\TokensAdminController',
+		'AlbaTokensApiController'	=> '\Alba\User\Controllers\TokensApiController',
+	],
+	
+	/*
+	|--------------------------------------------------------------------------
 	| TTL configurations
 	|--------------------------------------------------------------------------
 	|

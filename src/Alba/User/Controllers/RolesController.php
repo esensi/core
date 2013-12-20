@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redirect;
 
 use Alba\Core\Controllers\Controller;
-use Alba\User\Controllers\RolesResource;
-use Alba\User\Controllers\RolesApiController;
 
 /**
  * Controller for accessing RolesResource from a web interface
@@ -34,7 +32,7 @@ class RolesController extends Controller {
      * @param RolesApiController $rolesApi
      * @return void
      */
-    public function __construct(RolesResource $rolesResource, RolesApiController $rolesApi)
+    public function __construct(\AlbaRolesResource $rolesResource, \AlbaRolesApiController $rolesApi)
     {   
         $this->resources['role'] = $rolesResource;
         $this->apis['role'] = $rolesApi;

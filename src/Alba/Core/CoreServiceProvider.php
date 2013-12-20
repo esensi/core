@@ -1,32 +1,16 @@
 <?php namespace Alba\Core;
 
+use Alba\Core\Providers\ModuleServiceProvider;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\HTML;
 
 /**
  * Service provider for Alba\Core module
  *
- * @author diego <diego@emersonmedia.com>, daniel <daniel@bexarcreative.com>
+ * @author diego <diego@emersonmedia.com>
+ * @author daniel <daniel@bexarcreative.com>
  */
-class CoreServiceProvider extends ServiceProvider {
-
-    /**
-    * Indicates if loading of the provider is deferred.
-    *
-    * @var bool
-    */
-    protected $defer = false;
-
-    /**
-    * Registers the resource dependencies
-    *
-    * @return void
-    */
-    public function register()
-    {
-
-    }
+class CoreServiceProvider extends ModuleServiceProvider {
 
     /**
      * Bootstrap the application events.

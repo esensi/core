@@ -1,7 +1,6 @@
 <?php namespace Alba\User\Controllers;
 
 use Illuminate\Support\Facades\Input;
-use Alba\User\Controllers\PermissionsController;
 
 /**
  * Controller for accessing PermissionsResource from a backend web interface
@@ -9,6 +8,10 @@ use Alba\User\Controllers\PermissionsController;
  * @author daniel <daniel@bexarcreative.com>
  * @see Alba\Core\Controllers\PermissionsController
  */
-class PermissionsAdminController extends PermissionsController {
+class PermissionsAdminController extends \AlbaPermissionsController {
     
+    /**
+     * The layout that should be used for responses.
+     */
+    protected $layout = 'alba::core.default';
 }

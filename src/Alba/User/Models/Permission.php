@@ -96,7 +96,7 @@ class Permission extends EntrustPermission {
      */
     public function roles()
     {
-        return $this->belongsToMany('Alba\User\Models\Role');
+        return $this->belongsToMany('\AlbaRole', 'permission_role', 'permission_id');
     }
 
     /**
@@ -192,7 +192,7 @@ class Permission extends EntrustPermission {
         $roleIds = $roles;
         if(!empty($roleNames))
         {
-            $roles = Role::whereIn('name', $roleNames)->lists('id');
+            $roles = \AlbaRole::whereIn('name', $roleNames)->lists('id');
             $roleIds = array_values(array_unique(array_merge($roleIds, $roles), SORT_NUMERIC));
         }
 

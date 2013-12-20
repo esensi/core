@@ -5,11 +5,6 @@ use \Exception;
 use Alba\Core\Controllers\Resource;
 use Alba\Core\Exceptions\ResourceException;
 
-use Alba\User\Models\Name;
-use Alba\User\Models\Role;
-use Alba\User\Models\User;
-use Alba\User\Controllers\TokensResource;
-
 use Carbon\Carbon;
 
 use Illuminate\Support\Facades\Auth;
@@ -86,7 +81,7 @@ class UsersResource extends Resource {
      * @var Alba\User\Controllers\TokensResource $tokensResource
      * @return UsersResource;
      */
-    public function __construct(User $user, Name $name, Role $role, TokensResource $tokensResource)
+    public function __construct(\AlbaUser $user, \AlbaName $name, \AlbaRole $role, \AlbaTokensResource $tokensResource)
     {
         $this->model = $user;
         $this->name = $name;
@@ -255,7 +250,7 @@ class UsersResource extends Resource {
             // Update user if it's changed
             if ( count($user->getDirty()) )
             {
-                if (!$user->save($user->rulesForUpdate))
+                if (!$user->save($user->rulesForUpdating))
                 {
                     $this->throwException($user->errors(), $this->language('errors.update'));
                 }
@@ -264,7 +259,7 @@ class UsersResource extends Resource {
             // Update user if it's changed
             if ( count($name->getDirty()) )
             {
-                if (!$name->save($name->rulesForStoring))
+                if (!$name->save($name->rulesForUpdating))
                 {
                     $this->throwException($name->errors(), $this->language('errors.update'));
                 }

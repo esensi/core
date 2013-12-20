@@ -1,7 +1,6 @@
 <?php namespace Alba\User\Controllers;
 
 use Illuminate\Support\Facades\Input;
-use Alba\User\Controllers\UsersController;
 
 /**
  * Controller for accessing UsersResource from a backend web interface
@@ -10,7 +9,12 @@ use Alba\User\Controllers\UsersController;
  * @author daniel <daniel@bexarcreative.com>
  * @see Alba\Core\Controllers\UsersController
  */
-class UsersAdminController extends UsersController {
+class UsersAdminController extends \AlbaUsersController {
+
+    /**
+     * The layout that should be used for responses.
+     */
+    protected $layout = 'alba::core.default';
 
     /**
      * Show confirmation modal

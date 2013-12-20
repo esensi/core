@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redirect;
 
 use Alba\Core\Controllers\Controller;
-use Alba\User\Controllers\PermissionsResource;
-use Alba\User\Controllers\PermissionsApiController;
 
 /**
  * Controller for accessing PermissionsResource from a web interface
@@ -34,7 +32,7 @@ class PermissionsController extends Controller {
      * @param PermissionsApiController $permissionsApi
      * @return void
      */
-    public function __construct(PermissionsResource $permissionsResource, PermissionsApiController $permissionsApi)
+    public function __construct(\AlbaPermissionsResource $permissionsResource, \AlbaPermissionsApiController $permissionsApi)
     {   
         $this->resources['permission'] = $permissionsResource;
         $this->apis['permission'] = $permissionsApi;

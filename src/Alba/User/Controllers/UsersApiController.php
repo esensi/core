@@ -1,8 +1,8 @@
 <?php namespace Alba\User\Controllers;
 
 use Illuminate\Support\Facades\Input;
+
 use Alba\Core\Controllers\Controller;
-use Alba\User\Controllers\UsersResource;
 
 /**
  * Controller for accessing UsersResource as an API
@@ -20,7 +20,7 @@ class UsersApiController extends Controller {
      * @param UsersResource $usersResource;
      * @return void
      */
-	public function __construct(UsersResource $usersResource)
+	public function __construct(\AlbaUsersResource $usersResource)
 	{
 		$this->resources['user'] = $usersResource;
 	}

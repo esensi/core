@@ -20,7 +20,7 @@
 	@include('alba::core.errors')
 	
 	<div class="row">
-		<div class="col-sm-8">
+		<div class="col-sm-12 col-md-8">
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h3 class="panel-title">User Account Information</h3>
@@ -29,16 +29,19 @@
 					{{ Form::open([ 'route' => isset($user) ? ['admin.users.update', $user->id] : 'admin.users.store' ]) }}
 				    <fieldset>
 						<div class="row">
-							<div class="form-group col-sm-3 col-md-2">
+							<div class="form-group col-sm-2">
 							    {{ Form::select('title', $titlesOptions, isset($user) ? $user->name->title : null, ['class' => 'form-control']) }}
 							</div>
-							<div class="form-group col-sm-3 col-md-4">
-							    {{ Form::text('first_name', isset($user) ? $user->name->first_name : null, ['placeholder' => 'First name', 'class' => 'form-control']) }}
+							<div class="form-group col-sm-3">
+							    {{ Form::text('first_name', isset($user) ? $user->name->first_name : null, ['placeholder' => 'First', 'class' => 'form-control']) }}
 							</div>
-							<div class="form-group col-sm-3 col-md-4">
-							    {{ Form::text('last_name', isset($user) ? $user->name->last_name : null, ['placeholder' => 'Last name', 'class' => 'form-control']) }}
+							<div class="form-group col-sm-2">
+							    {{ Form::text('middle_name', isset($user) ? $user->name->middle_name : null, ['placeholder' => 'Middle', 'class' => 'form-control']) }}
 							</div>
-							<div class="form-group col-sm-3 col-md-2">
+							<div class="form-group col-sm-3">
+							    {{ Form::text('last_name', isset($user) ? $user->name->last_name : null, ['placeholder' => 'Last', 'class' => 'form-control']) }}
+							</div>
+							<div class="form-group col-sm-2">
 							    {{ Form::select('suffix', $suffixesOptions, isset($user) ? $user->name->suffix : null, ['class' => 'form-control']) }}
 							</div>
 						</div>
@@ -56,7 +59,7 @@
             @endforeach
 
 		</div>
-		<div class="col-sm-4">
+		<div class="col-sm-12 col-md-4">
 			@if(Entrust::can('module_roles'))
 				<div class="panel panel-default">
 					<div class="panel-heading">

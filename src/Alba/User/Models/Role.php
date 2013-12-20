@@ -97,28 +97,25 @@ class Role extends EntrustRole {
     }
 
     /**
-     * Method added to solve bug:
-     *
-     * PHP Fatal error:  Class 'Permission' not found in ...../bootstrap/compiled.php
-     *
-     * 
-     * Many-to-Many relations with Permission
-     * named perms as permissions is already taken.
+     * Many-to-Many relationship with Permissions
      */
     public function perms() {
-        // To maintain backwards compatibility we'll catch the exception if the Permission table doesn't exist.
-        // TODO remove in a future version
-        try {
-            return $this->belongsToMany('Alba\User\Models\Permission');
-        } catch(Execption $e) {}
+        return $this->belongsToMany('\AlbaPermission', 'permission_role', 'role_id');
     }
 
     /**
-     * Many-to-Many relations with Users
+     * Alias for perms()
+     */
+    public function permissions() {
+        return $this->perms();
+    }
+
+    /**
+     * Many-to-Many relationship with Users
      */
     public function users()
     {
-        return $this->belongsToMany('Alba\User\Models\User', 'assigned_roles');
+        return $this->belongsToMany('\AlbaUser', 'assigned_roles', 'role_id');
     }
 
     /**
@@ -197,7 +194,7 @@ class Role extends EntrustRole {
         $permissionIds = $permissions;
         if(!empty($permissionNames))
         {
-            $permissions = Permission::whereIn('name', $permissionNames)->lists('id');
+            $permissions = \AlbaPermission::whereIn('name', $permissionNames)->lists('id');
             $permissionIds = array_values(array_unique(array_merge($permissionIds, $permissions), SORT_NUMERIC));
         }
 

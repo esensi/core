@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Input;
 use Alba\Core\Controllers\Controller;
-use Alba\User\Controllers\RolesResource;
 
 /**
  * Controller for accessing RolesResource as an API
@@ -19,7 +18,7 @@ class RolesApiController extends Controller {
      * @param RolesResource $rolesResource;
      * @return void
      */
-	public function __construct(RolesResource $rolesResource)
+	public function __construct(\AlbaRolesResource $rolesResource)
 	{
 		$this->resources['role'] = $rolesResource;
 	}

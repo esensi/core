@@ -1,8 +1,8 @@
-<?php namespace Alba\User\Controllers;
+<?php namespace Alba\User\Resources;
 
 use \Exception;
 
-use Alba\Core\Controllers\Resource;
+use Alba\Core\Resources\Resource;
 use Alba\Core\Exceptions\ResourceException;
 
 use Carbon\Carbon;
@@ -29,7 +29,7 @@ class UsersResourceException extends ResourceException {}
  *
  * @author diego <diego@emersonmedia.com>
  * @author daniel <daniel@bexarcreative.com>
- * @see Alba\Core\Controllers\Resource
+ * @see Alba\Core\Resources\Resource
  */
 class UsersResource extends Resource {
 
@@ -45,7 +45,7 @@ class UsersResource extends Resource {
      * 
      * @var Alba\Core\Exceptions\ResourceException;
      */
-    protected $exception = 'Alba\User\Controllers\UsersResourceException';
+    protected $exception = 'Alba\User\Resources\UsersResourceException';
 
     /**
      * The Name model
@@ -78,7 +78,7 @@ class UsersResource extends Resource {
      * @var Alba\User\Models\User $user
      * @var Alba\User\Models\Name $name
      * @var Alba\User\Models\Role $role
-     * @var Alba\User\Controllers\TokensResource $tokensResource
+     * @var Alba\User\Resources\TokensResource $tokensResource
      * @return UsersResource;
      */
     public function __construct(\AlbaUser $user, \AlbaName $name, \AlbaRole $role, \AlbaTokensResource $tokensResource)

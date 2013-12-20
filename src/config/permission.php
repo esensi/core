@@ -29,7 +29,7 @@ return [
 
 	'aliases' => [
 		'AlbaPermission'					=> '\Alba\User\Models\Permission',
-		'AlbaPermissionsResource'			=> '\Alba\User\Controllers\PermissionsResource',
+		'AlbaPermissionsResource'			=> '\Alba\User\Resources\PermissionsResource',
 		'AlbaPermissionsController'			=> '\Alba\User\Controllers\PermissionsController',
 		'AlbaPermissionsAdminController'	=> '\Alba\User\Controllers\PermissionsAdminController',
 		'AlbaPermissionsApiController'		=> '\Alba\User\Controllers\PermissionsApiController',

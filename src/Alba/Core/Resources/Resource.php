@@ -1,4 +1,4 @@
-<?php namespace Alba\Core\Controllers;
+<?php namespace Alba\Core\Resources;
 
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Config;

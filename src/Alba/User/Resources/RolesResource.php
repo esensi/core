@@ -1,8 +1,8 @@
-<?php namespace Alba\User\Controllers;
+<?php namespace Alba\User\Resources;
 
 use Illuminate\Support\Facades\Config;
 
-use Alba\Core\Controllers\Resource;
+use Alba\Core\Resources\Resource;
 use Alba\Core\Exceptions\ResourceException;
 
 /**
@@ -17,7 +17,7 @@ class RolesResourceException extends ResourceException {}
  * Roles Resource
  *
  * @author daniel <daniel@bexarcreative.com>
- * @see Alba\Core\Controllers\Resource
+ * @see Alba\Core\Resources\Resource
  */
 class RolesResource extends Resource {
 
@@ -33,7 +33,7 @@ class RolesResource extends Resource {
      * 
      * @var Alba\Core\Exceptions\ResourceException;
      */
-    protected $exception = 'Alba\User\Controllers\RolesResourceException';
+    protected $exception = 'Alba\User\Resources\RolesResourceException';
 
     /**
      * The default attributes for searching

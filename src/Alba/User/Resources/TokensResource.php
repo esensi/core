@@ -1,9 +1,9 @@
-<?php namespace Alba\User\Controllers;
+<?php namespace Alba\User\Resources;
 
 use Carbon\Carbon;
 use Illuminate\Auth\UserInterface;
 use Illuminate\Support\Facades\Config;
-use Alba\Core\Controllers\Resource;
+use Alba\Core\Resources\Resource;
 use Alba\Core\Exceptions\ResourceException;
 
 /**
@@ -20,7 +20,7 @@ class TokensResourceException extends ResourceException {}
  *
  * @author diego <diego@emersonmedia.com>
  * @author daniel <daniel@bexarcreative.com>
- * @see Alba\Core\Controllers\Resource
+ * @see Alba\Core\Resources\Resource
  */
 class TokensResource extends Resource {
     
@@ -36,7 +36,7 @@ class TokensResource extends Resource {
      * 
      * @var Alba\Core\Exceptions\ResourceException;
      */
-    protected $exception = 'Alba\User\Controllers\TokensResourceException';
+    protected $exception = 'Alba\User\Resources\TokensResourceException';
 
     /**
      * The default attributes for searching

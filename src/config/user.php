@@ -30,7 +30,7 @@ return [
 	'aliases' => [
 		'AlbaUser'					=> '\Alba\User\Models\User',
 		'AlbaName'					=> '\Alba\User\Models\Name',
-		'AlbaUsersResource'			=> '\Alba\User\Controllers\UsersResource',
+		'AlbaUsersResource'			=> '\Alba\User\Resources\UsersResource',
 		'AlbaUsersController'		=> '\Alba\User\Controllers\UsersController',
 		'AlbaUsersAdminController'	=> '\Alba\User\Controllers\UsersAdminController',
 		'AlbaUsersApiController'	=> '\Alba\User\Controllers\UsersApiController',

@@ -14,7 +14,7 @@ use Alba\Core\Controllers\Controller;
  * @author diego <diego@emersonmedia.com>
  * @author daniel <daniel@bexarcreative.com>
  * @see Alba\Core\Controllers\Controller
- * @see Alba\User\Controllers\UsersResource
+ * @see Alba\User\Resources\UsersResource
  * @see Alba\User\Controllers\UsersApiController
  */
 class UsersController extends Controller {

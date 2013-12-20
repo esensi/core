@@ -13,7 +13,7 @@ use Alba\Core\Controllers\Controller;
  *
  * @author daniel <daniel@bexarcreative.com>
  * @see Alba\Core\Controllers\Controller
- * @see Alba\User\Controllers\PermissionsResource
+ * @see Alba\User\Resources\PermissionsResource
  * @see Alba\User\Controllers\PermissionsApiController
  */
 class PermissionsController extends Controller {

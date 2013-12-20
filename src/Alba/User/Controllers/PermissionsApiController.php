@@ -8,7 +8,7 @@ use Alba\Core\Controllers\Controller;
  *
  * @author daniel <daniel@bexarcreative.com>
  * @see Alba\Core\Controllers\Controller
- * @see Alba\User\Controllers\PermissionsResource
+ * @see Alba\User\Resources\PermissionsResource
  */
 class PermissionsApiController extends Controller {
 

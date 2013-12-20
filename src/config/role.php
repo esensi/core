@@ -29,7 +29,7 @@ return [
 
 	'aliases' => [
 		'AlbaRole'					=> '\Alba\User\Models\Role',
-		'AlbaRolesResource'			=> '\Alba\User\Controllers\RolesResource',
+		'AlbaRolesResource'			=> '\Alba\User\Resources\RolesResource',
 		'AlbaRolesController'		=> '\Alba\User\Controllers\RolesController',
 		'AlbaRolesAdminController'	=> '\Alba\User\Controllers\RolesAdminController',
 		'AlbaRolesApiController'	=> '\Alba\User\Controllers\RolesApiController',

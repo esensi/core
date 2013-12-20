@@ -29,7 +29,7 @@ return [
 
 	'aliases' => [
 		'AlbaToken'					=> '\Alba\User\Models\Token',
-		'AlbaTokensResource'		=> '\Alba\User\Controllers\TokensResource',
+		'AlbaTokensResource'		=> '\Alba\User\Resources\TokensResource',
 		'AlbaTokensController'		=> '\Alba\User\Controllers\TokensController',
 		'AlbaTokensAdminController'	=> '\Alba\User\Controllers\TokensAdminController',
 		'AlbaTokensApiController'	=> '\Alba\User\Controllers\TokensApiController',

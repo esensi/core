@@ -41,16 +41,26 @@ class ModuleServiceProvider extends ServiceProvider {
     /**
     * Add all of the module's aliases
     *
-    * @param string $module to get config for
+    * @param mixed $module to get config for
     * @return void
     */
-    public function addAliases($module)
+    public function addAliases($modules)
     {
-        // Map aliases to classes from the config
-        $aliasLoader = AliasLoader::getInstance();
-        foreach(Config::get('alba::'.$module.'.aliases') as $alias => $class)
+        // Make sure we're dealing with an array
+        if(is_string($modules))
         {
-            $aliasLoader->alias($alias, $class);
+            $modules = [$modules];
+        }
+
+        // Iterate over the modules loading their aliases
+        $aliasLoader = AliasLoader::getInstance();
+        foreach($modules as $module)
+        {
+            // Map aliases to classes from the config
+            foreach(Config::get('alba::'.$module.'.aliases') as $alias => $class)
+            {
+                $aliasLoader->alias($alias, $class);
+            }
         }
     }
 

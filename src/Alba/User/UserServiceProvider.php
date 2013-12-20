@@ -19,10 +19,7 @@ class UserServiceProvider extends ModuleServiceProvider {
      */
     public function boot()
     {
-        $this->addAliases('user');
-        $this->addAliases('role');
-        $this->addAliases('permission');
-        $this->addAliases('token');
+        $this->addAliases(['user', 'role', 'permission', 'token']);
 
         require __DIR__.'/filters.php';
         require __DIR__.'/routes.php';

@@ -91,14 +91,18 @@
 								    <li><a href="{{ route('admin.users.block.confirm', $item->id) }}" data-toggle="modal" data-target="#albaModal">
 								    	<i class="fa fa-ban fa-fw"></i> Block</a></li>
 								    @endif
+								    @if($item->isTrashingAllowed())
 								    <li><a href="{{ route('admin.users.destroy.confirm', $item->id) }}" data-toggle="modal" data-target="#albaModal">
 								    	<i class="fa fa-trash-o fa-fw"></i> Trash</a></li>
+								    @endif
 								  </ul>
 							  @else
 								  <a href="{{ route('admin.users.restore.confirm', $item->id) }}" class="btn btn-sm btn-success" data-toggle="modal" data-target="#albaModal">
 								  	<i class="fa fa-refresh fa-fw"></i> Restore</a>
+								  @if($item->isTrashingAllowed())
 								  <a href="{{ route('admin.users.destroy.confirm', $item->id) }}" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#albaModal">
 								    	<i class="fa fa-trash-o fa-fw"></i> Delete</a>
+								  @endif
 							  @endif
 							</div>
 						</td>

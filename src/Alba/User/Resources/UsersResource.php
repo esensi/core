@@ -89,7 +89,7 @@ class UsersResource extends Resource {
         $this->resources['token'] = $tokensResource;
 
         // Bind auth.login event listener
-        Event::listen('auth.login', function(User $user, $remember){
+        Event::listen('auth.login', function(\AlbaUser $user, $remember){
             $user->authenticated_at = Carbon::now();
             return $user->forceSave();
         });

@@ -503,7 +503,7 @@ class User extends Model implements UserInterface {
     public function scopeJoinNames($query)
     {
         // Query the names table
-        $name = DB::raw('CONCAT(`user_names`.`first_name`, `user_names`.`middle_name`, `user_names`.`last_name`) AS `name`');
+        $name = DB::raw("CONCAT(ifnull(`user_names`.`first_name`, ''), ifnull(`user_names`.`middle_name`, ''), ifnull(`user_names`.`last_name`, '')) AS `sort_name`");
         return $query->addSelect(['user_names.first_name', 'user_names.last_name', $name])
             ->join('user_names', 'users.id', '=', 'user_names.user_id');
     }

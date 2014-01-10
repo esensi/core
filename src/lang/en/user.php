@@ -77,6 +77,7 @@ return [
 	'subjects' => [
 		'reset_password'					=> 'Reset your password!',
 		'reset_activation'					=> 'Activate your account!',
+		'new_account'						=> 'New account created!',
 	],
 
 	/*

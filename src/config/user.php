@@ -114,6 +114,10 @@ return [
 
 		// Views used in emails
 		'emails' => [
+			'new_account' => [
+				'emails.html.users.new-account',
+				'emails.text.users.new-account',
+			],
 			'reset_activation' => [
 				'emails.html.users.reset-activation',
 				'emails.text.users.reset-activation',

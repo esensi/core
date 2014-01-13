@@ -77,6 +77,7 @@ return [
 	'subjects' => [
 		'reset_password'					=> 'Reset your password!',
 		'reset_activation'					=> 'Activate your account!',
+		'new_account'						=> 'New account created!',
 	],
 
 	/*
@@ -117,7 +118,7 @@ return [
 	*/
 
 	'names' => [
-		'titles' 							=> ['Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Rev.', 'Hon.'],
-		'suffixes'							=> ['Jr.', 'Sr.', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'PhD'],
+		'titles' 							=> ['', 'Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Rev.', 'Hon.'],
+		'suffixes'							=> ['', 'Jr.', 'Sr.', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'PhD'],
 	],
 ];

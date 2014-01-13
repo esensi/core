@@ -40,7 +40,7 @@ class ResourceException extends Exception {
         {
             // Message bag is the message
             if(is_string($messageBag))
-            {
+            {                
                 $message = $messageBag;
             }
 
@@ -59,14 +59,14 @@ class ResourceException extends Exception {
 
         // Make sure the message bag is a message bag
         if( !$messageBag instanceof MessageProviderInterface)
-        {
+        {            
             if(is_array($messageBag))
             {
                 $messageBag = new MessageBag(array_except($messageBag, ['message']));
             }
             else
             {
-                $messageBag = new MessageBag(['error' => false]);
+                $messageBag = new MessageBag();
             }
         }
 

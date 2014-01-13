@@ -556,7 +556,7 @@ class User extends Model implements UserInterface {
             $middleNames = explode(',', $middleNames);
 
         // Query the names table for matching names
-        return $query->joinNames
+        return $query->joinNames()
             ->where(function($query) use ($middleNames)
             {                    
                 foreach($middleNames as $middleName)

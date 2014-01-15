@@ -138,7 +138,7 @@ class User extends Model implements UserInterface {
      */
     public $orderOptions = [
         'id'                    => 'ID',
-        'name'                  => 'Name',
+        'sort_name'             => 'Name',
         'email'                 => 'Email',
         'active'                => 'Active Status',
         'blocked'               => 'Blocked Status',

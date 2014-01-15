@@ -35,7 +35,7 @@ class UsersApiController extends Controller {
         $params = Input::only('max', 'order', 'sort', 'keywords', 'trashed');
 
         // Join the names table when needed
-        if(in_array($params['order'], ['name', 'first_name', 'last_name']))
+        if(in_array($params['order'], ['sort_name', 'first_name', 'last_name']))
         {
             $params['scopes']['joinNames'] = [];
         }

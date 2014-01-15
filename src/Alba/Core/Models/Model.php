@@ -74,7 +74,7 @@ class Model extends Ardent {
      *
      * @var boolean
      */
-    protected $softDelete = true;
+    protected $softDelete = false;
 
     /**
      * The attributes that can be full-text searched

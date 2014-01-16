@@ -64,6 +64,7 @@ class RolesResource extends Resource {
     {
         $this->model = $role;
         $this->permission = $permission;
+        $this->setDefaults($this->defaults);
     }
 
     /**

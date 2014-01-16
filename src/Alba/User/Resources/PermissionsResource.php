@@ -55,6 +55,7 @@ class PermissionsResource extends Resource {
     public function __construct(\AlbaPermission $permission)
     {
         $this->model = $permission;
+        $this->setDefaults($this->defaults);
     }
 
     /**

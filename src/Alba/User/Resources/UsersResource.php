@@ -88,6 +88,8 @@ class UsersResource extends Resource {
         $this->role = $role;
         $this->resources['token'] = $tokensResource;
 
+        $this->setDefaults($this->defaults);
+        
         // Bind auth.login event listener
         Event::listen('auth.login', function(\AlbaUser $user, $remember){
             $user->authenticated_at = Carbon::now();

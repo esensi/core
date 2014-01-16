@@ -55,6 +55,7 @@ class TokensResource extends Resource {
     public function __construct(\AlbaToken $token)
     {        
         $this->model = $token;
+        $this->setDefaults($this->defaults);
     }
 
     /**

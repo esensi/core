@@ -1,6 +1,6 @@
 @section('content')
 
-<div class="container" style="margin-top: 20%">
+<div class="container">
     <div class="row">
 		<div class="col-md-4 col-md-offset-4">
     		<div class="panel panel-default">

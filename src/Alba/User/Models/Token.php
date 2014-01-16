@@ -58,13 +58,6 @@ class Token extends Model {
     ];
 
     /**
-     * Enable soft deletes on model
-     *
-     * @var boolean
-     */
-    protected $softDelete = false;
-
-    /**
      * Allow Eloquent to handle timestamps
      *
      * @var boolean

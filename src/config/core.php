@@ -87,6 +87,9 @@ return [
 
 	'views' => [
 
+		// Error pages
+		'missing'			=> 'alba::core.missing',
+
 		// Modals
 		'modal'				=> 'core.modal',
 	],

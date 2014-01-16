@@ -24,7 +24,7 @@
 	  			<tr>
 	  				<th><a href="{{ HTML::paginationUrl($paginator, ['order' => 'id']) }}">ID</a></th>
 	  				<th><a href="{{ HTML::paginationUrl($paginator, ['order' => 'email']) }}">Email</a></th>
-	  				<th><a href="{{ HTML::paginationUrl($paginator, ['order' => 'name']) }}">Name</a></th>
+	  				<th><a href="{{ HTML::paginationUrl($paginator, ['order' => 'sort_name']) }}">Name</a></th>
 	  				<th><a href="{{ HTML::paginationUrl($paginator, ['order' => 'active']) }}">Active</a></th>
 	  				<th><a href="{{ HTML::paginationUrl($paginator, ['order' => 'blocked']) }}">Blocked</a></th>
 	  				<th><a href="{{ HTML::paginationUrl($paginator, ['order' => 'authenticated_at']) }}">Last Login</a></th>

@@ -138,7 +138,7 @@ class User extends Model implements UserInterface {
      */
     public $orderOptions = [
         'id'                    => 'ID',
-        'name'                  => 'Name',
+        'sort_name'             => 'Name',
         'email'                 => 'Email',
         'active'                => 'Active Status',
         'blocked'               => 'Blocked Status',
@@ -495,6 +495,126 @@ class User extends Model implements UserInterface {
     }
 
     /**
+     * Builds a query scope to return users by title
+     *
+     * @param Illuminate\Database\Query\Builder $query
+     * @param string|array $titles
+     * @return Illuminate\Database\Query\Builder
+     */
+    public function scopeByTitle($query, $titles)
+    {
+        // Convert string to array
+        if ( is_string($titles) )
+            $titles = explode(',', $titles);
+
+        // Query the names table for matching names
+        return $query->joinNames()
+            ->where(function($query) use ($titles)
+            {                    
+                foreach($titles as $title)
+                {
+                    $query->orWhere('user_names.title', 'LIKE', '%'.$title.'%');
+                }
+            });
+    }
+
+    /**
+     * Builds a query scope to return users by first name
+     *
+     * @param Illuminate\Database\Query\Builder $query
+     * @param string|array $firstNames
+     * @return Illuminate\Database\Query\Builder
+     */
+    public function scopeByFirstName($query, $firstNames)
+    {
+        // Convert string to array
+        if ( is_string($firstNames) )
+            $firstNames = explode(',', $firstNames);
+        
+        // Query the names table for matching names
+        return $query->joinNames()
+            ->where(function($query) use ($firstNames)
+            {                    
+                foreach($firstNames as $firstName)
+                {
+                    $query->orWhere('user_names.first_name', 'LIKE', '%'.$firstName.'%');
+                }
+            });
+    }
+
+    /**
+     * Builds a query scope to return users by middle name
+     *
+     * @param Illuminate\Database\Query\Builder $query
+     * @param string|array $middleNames
+     * @return Illuminate\Database\Query\Builder
+     */
+    public function scopeByMiddleName($query, $middleNames)
+    {
+        // Convert string to array
+        if ( is_string($middleNames) )
+            $middleNames = explode(',', $middleNames);
+
+        // Query the names table for matching names
+        return $query->joinNames()
+            ->where(function($query) use ($middleNames)
+            {                    
+                foreach($middleNames as $middleName)
+                {
+                    $query->orWhere('user_names.middle_name', 'LIKE', '%'.$middleName.'%');
+                }
+            });
+    }
+
+    /**
+     * Builds a query scope to return users by last name
+     *
+     * @param Illuminate\Database\Query\Builder $query
+     * @param string|array $lastNames
+     * @return Illuminate\Database\Query\Builder
+     */
+    public function scopeByLastName($query, $lastNames)
+    {
+        // Convert string to array
+        if ( is_string($lastNames) )
+            $lastNames = explode(',', $lastNames);
+
+        // Query the names table for matching names
+        return $query->joinNames()
+            ->where(function($query) use ($lastNames)
+            {                    
+                foreach($lastNames as $lastName)
+                {
+                    $query->orWhere('user_names.last_name', 'LIKE', '%'.$lastName.'%');
+                }
+            });
+    }
+
+    /**
+     * Builds a query scope to return users by suffix
+     *
+     * @param Illuminate\Database\Query\Builder $query
+     * @param string|array $suffixes
+     * @return Illuminate\Database\Query\Builder
+     */
+    public function scopeBySuffix($query, $suffixes)
+    {
+        // Convert string to array
+        if ( is_string($suffixes) )
+            $suffixes = explode(',', $suffixes);
+
+        // Query the names table for matching names
+        return $query->joinNames()
+            ->where(function($query) use ($suffixes)
+            {                    
+                foreach($suffixes as $suffix)
+                {
+                    $query->orWhere('user_names.suffix', 'LIKE', '%'.$suffix.'%');
+                }
+            });
+    }
+
+    /**
      * Builds a query scope to return users with names
      *
      * @param Illuminate\Database\Query\Builder $query
@@ -502,10 +622,18 @@ class User extends Model implements UserInterface {
      */
     public function scopeJoinNames($query)
     {
-        // Query the names table
-        $name = DB::raw('CONCAT(`user_names`.`first_name`, `user_names`.`middle_name`, `user_names`.`last_name`) AS `name`');
-        return $query->addSelect(['user_names.first_name', 'user_names.last_name', $name])
-            ->join('user_names', 'users.id', '=', 'user_names.user_id');
+
+        //check if join with user names is already done:
+        if (strpos($query->toSql(), 'inner join `user_names`') === false)
+        {
+            // Query the names table
+            $name = DB::raw("CONCAT(ifnull(`user_names`.`first_name`, ''), ifnull(`user_names`.`middle_name`, ''), ifnull(`user_names`.`last_name`, '')) AS `sort_name`");
+            return $query->addSelect(['user_names.first_name', 'user_names.last_name', $name])
+                ->join('user_names', 'users.id', '=', 'user_names.user_id');
+        }
+
+        return $query;
+        
     }
 
     /** 

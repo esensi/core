@@ -246,9 +246,8 @@ class UsersResource extends Resource {
         // Use a transaction so everything fails if one fails
         DB::transaction(function() use ($user, $name)
         {
-            
             // Update user if it's changed
-            if ( count($user->getDirty()) )
+            if ( count($user->getDirty()) || !$user->validate($user->rulesForUpdating))
             {
                 if (!$user->save($user->rulesForUpdating))
                 {
@@ -257,7 +256,7 @@ class UsersResource extends Resource {
             }
             
             // Update user if it's changed
-            if ( count($name->getDirty()) )
+            if ( count($name->getDirty()) || !$name->validate($name->rulesForUpdating))
             {
                 if (!$name->save($name->rulesForUpdating))
                 {

@@ -33,17 +33,7 @@ class RolesApiController extends Controller {
         $params = Input::only('max', 'order', 'sort', 'keywords');
 
         // Filter by permission
-        if( $permissions = Input::get('permissions', false) )
-        {
-            $permissions = is_array($permissions) ? $permissions : explode(',', $permissions);
-            $permissions = array_values($permissions);
-            $test = implode('', $permissions);
-            if(!empty($test))
-            {
-                $params['permissions'] = $permissions;
-                $params['scopes']['ofPermission'] = [ $permissions ];
-            }
-        }
+        $this->setupArrayTypeScope($params, 'permissions', 'ofPermission');
 
         return $this->resources['role']->index($params);
     }

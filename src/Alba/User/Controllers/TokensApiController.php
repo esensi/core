@@ -33,17 +33,7 @@ class TokensApiController extends Controller {
         $params = Input::only('max', 'order', 'sort', 'keywords');
 
         // Filter by type
-        if( $types = Input::get('types', false) )
-        {
-            $types = is_array($types) ? $types : explode(',', $types);
-            $types = array_values($types);
-            $test = implode('', $types);
-            if(!empty($test))
-            {
-                $params['types'] = $types;
-                $params['scopes']['ofType'] = [ $types ];
-            }
-        }
+        $this->setupArrayTypeScope($params, 'types', 'ofType');
 
         return $this->resources['token']->index($params);
     }

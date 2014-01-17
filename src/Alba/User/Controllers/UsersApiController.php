@@ -57,30 +57,10 @@ class UsersApiController extends Controller {
         }
 
         // Filter by role
-        if( $roles = Input::get('roles', false) )
-        {
-            $roles = is_array($roles) ? $roles : explode(',', $roles);
-            $roles = array_values($roles);
-            $test = implode('', $roles);
-            if(!empty($test))
-            {
-                $params['roles'] = $roles;
-                $params['scopes']['ofRole'] = [ $roles ];
-            }
-        }
+        $this->setupArrayTypeScope($params, 'roles', 'ofRole');
 
         // Filter by name
-        if( $names = Input::get('names', false) )
-        {
-            $names = is_array($names) ? $names : explode(',', $names);
-            $names = array_values($names);
-            $test = implode('', $names);
-            if(!empty($test))
-            {
-                $params['names'] = $names;
-                $params['scopes']['byName'] = [ $names ];
-            }
-        }
+        $this->setupArrayTypeScope($params, 'names', 'byName');
         
         return $this->resources['user']->index($params);
     }

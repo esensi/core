@@ -93,4 +93,12 @@ return [
 		// Modals
 		'modal'				=> 'core.modal',
 	],
+
+	'javascripts' => [
+		'jqueryui', 'bootstrap', 'typeahead', 'application',
+	],
+
+	'stylesheets' => [
+		'jqueryui', 'bootstrap', 'fontawesome', 'application',
+	],
 ];

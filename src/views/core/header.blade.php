@@ -11,7 +11,7 @@
 		<link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
 		<title>Administration</title>
 		
-		@stylesheets('jqueryui', 'bootstrap', 'fontawesome', 'application')
+		@stylesheets(Config::get('alba::core.stylesheets', []))
 		
 		<!--[if lt IE 9]>
 		@javascripts('ie')

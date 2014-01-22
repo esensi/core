@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
@@ -53,6 +54,29 @@ class Controller extends LaravelController {
 			$this->layout = View::make($this->layout);
 		}
 	}
+
+    /**
+     * Setup an array type of scope
+     *
+     * @param array $params for binding
+     * @param string $key of Input
+     * @param string $scope of query scope
+     * @return void
+     */
+    protected function setupArrayTypeScope(&$params, $key, $scope)
+    {
+        if( $arr = Input::get($key, false) )
+        {
+            $arr = is_array($arr) ? $arr : explode(',', $arr);
+            $arr = array_values($arr);
+            $test = implode('', $arr);
+            if(!empty($test))
+            {
+                $params[$key] = $arr;
+                $params['scopes'][$scope] = [ $arr ];
+            }
+        }
+    }
 
     /**
      * Assign a view to the layout's content

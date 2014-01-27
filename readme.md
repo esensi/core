@@ -1,5 +1,4 @@
-ALBA Expansion Packages
-===
+## ALBA Expansion Packages
 
 ALBA is an awesome Laravel boilerplate application. This repository contains the expansion packages that make up Alba. If you are starting a new Alba-based project then you should start by forking the [Alba Boilerplate](http://github.com/emersonmedia/Alba-Boilerplate) repository which includes this repository as a Composer dependency.
 

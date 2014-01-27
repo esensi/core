@@ -75,6 +75,18 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
+	| Package to be used by core module
+	|--------------------------------------------------------------------------
+	|
+	| The following configuration option alter which package namespace is used
+	| for all of the views. Set to empty to use the application level views.
+	|
+	*/
+
+	'package' => 'alba::',
+	
+	/*
+	|--------------------------------------------------------------------------
 	| Views to be used by core module
 	|--------------------------------------------------------------------------
 	|
@@ -82,8 +94,6 @@ return [
 	| views, and which views are used specifically by each function.
 	|
 	*/
-
-	'package' => 'alba::',
 
 	'views' => [
 
@@ -94,11 +104,22 @@ return [
 		'modal'				=> 'core.modal',
 	],
 
-	'javascripts' => [
-		'jqueryui', 'bootstrap', 'typeahead', 'application',
-	],
+	/*
+	|--------------------------------------------------------------------------
+	| Collections to be used by Basset
+	|--------------------------------------------------------------------------
+	|
+	| The following configuration options alter which collections are included
+	| in the Alba\Core layout views. Stylesheets are added to the header while
+	| javascripts are added to the footer.
+	|
+	*/
 
 	'stylesheets' => [
 		'jqueryui', 'bootstrap', 'fontawesome', 'application',
+	],
+
+	'javascripts' => [
+		'jqueryui', 'bootstrap', 'typeahead', 'application',
 	],
 ];

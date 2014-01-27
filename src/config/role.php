@@ -92,6 +92,18 @@ return [
 	
 	/*
 	|--------------------------------------------------------------------------
+	| Package to be used by core module
+	|--------------------------------------------------------------------------
+	|
+	| The following configuration option alter which package namespace is used
+	| for all of the views. Set to empty to use the application level views.
+	|
+	*/
+
+	'package' => 'alba::',
+	
+	/*
+	|--------------------------------------------------------------------------
 	| Views to be used by this module
 	|--------------------------------------------------------------------------
 	|
@@ -99,8 +111,6 @@ return [
 	| views, and which views are used specifically by each function.
 	|
 	*/
-
-	'package' => 'alba::',
 
 	'views' => [
 		

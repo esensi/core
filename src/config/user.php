@@ -72,6 +72,18 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
+	| Package to be used by core module
+	|--------------------------------------------------------------------------
+	|
+	| The following configuration option alter which package namespace is used
+	| for all of the views. Set to empty to use the application level views.
+	|
+	*/
+
+	'package' => 'alba::',
+	
+	/*
+	|--------------------------------------------------------------------------
 	| Views to be used by this module
 	|--------------------------------------------------------------------------
 	|
@@ -79,10 +91,6 @@ return [
 	| views, and which views are used specifically by each function.
 	|
 	*/
-
-	'package' => 'alba::',
-
-	'dropdown' => 'alba::users.dropdown',
 
 	'views' => [
 
@@ -129,7 +137,33 @@ return [
 		],
 	],
 
+	/*
+	|--------------------------------------------------------------------------
+	| Dropdown view
+	|--------------------------------------------------------------------------
+	|
+	| This special view is used in the administration to allow customization
+	| of the module's dropdown menu.
+	|
+	*/
+
+	'dropdown' => 'alba::users.dropdown',
+
+	/*
+	|--------------------------------------------------------------------------
+	| Panel views
+	|--------------------------------------------------------------------------
+	|
+	| These special views are used in the administration to allow customization
+	| of the module's sub-views, effectively letting the developer add more
+	| features to administrative views without having to completely overwrite
+	| the existing view's logic. The order in which these are set define the
+	| order in which they appear.
+	|
+	*/
+
 	'panels' => [
+	
 		'alba::users.panels.user',
 		'alba::users.panels.tokens',
 	],

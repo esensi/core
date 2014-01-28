@@ -100,11 +100,21 @@ class ResourceException extends Exception {
     /**
      * Handles exceptions with redirect
      *
+     * @param string $fragment for URL
      * @return Redirect
      */
-    public function handleWithRedirect()
+    public function handleWithRedirect($fragment = null)
     {
+        // Get redirect
         $redirect = Request::header('referer') ? Redirect::back() : Redirect::route('users.signin');
+        
+        // Redirect with fragment
+        if($fragment)
+        {
+            $redirect->setTargetUrl($redirect->getTargetUrl() . '#' . $fragment);
+        }
+
+        // Send redirect
         return $redirect->with('message', $this->getMessage())
             ->withErrors($this->getMessageBag())
             ->withInput();

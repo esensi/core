@@ -106,6 +106,18 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
+	| Dashboard link
+	|--------------------------------------------------------------------------
+	|
+	| The following configuration option specifies whether the backend should
+	| show or hide the dashboard menu item.
+	|
+	*/
+
+	'dashboard' => true,
+
+	/*
+	|--------------------------------------------------------------------------
 	| Collections to be used by Basset
 	|--------------------------------------------------------------------------
 	|

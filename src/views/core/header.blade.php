@@ -37,7 +37,9 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
+            @if(Config::get('alba::core.dashboard', true))
             <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+            @endif
           
             @foreach(Config::get('alba::core.modules') as $module)
               <?php $package = Config::get($module.'.package', 'alba::'); ?>

@@ -128,7 +128,7 @@ return [
 	*/
 
 	'stylesheets' => [
-		'jqueryui', 'bootstrap', 'fontawesome', 'application',
+		'googlefonts', 'jqueryui', 'bootstrap', 'fontawesome', 'application',
 	],
 
 	'javascripts' => [

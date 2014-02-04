@@ -13,10 +13,10 @@ return [
 	*/
 
 	'errors' => [
-		'validate'							=> 'User could not be found matching this email address and password.',
+		'validate'							=> 'No se encontró ningún usuario con este correo electrónico y esta contraseña.',
 		'authenticate'						=> 'User could not be logged in because it either blocked or it is awaiting email activation.',
 		'show'								=> 'User could not be found.',
-		'show_by_email'						=> 'User could not be found matching this email address.',
+		'show_by_email'						=> 'No se encontró ningún usuario con este correo electrónico.',
 		'show_by_activation_token'			=> 'Activation token could not be found or has already expired.',
 		'show_by_password_reset_token'		=> 'Password reset token could not be found or has already expired.',
 		'deactivate'						=> 'User could not be deactivated.',

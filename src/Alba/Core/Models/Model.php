@@ -197,7 +197,21 @@ class Model extends Ardent {
      */
     public function getRulesForUpdatingAttribute()
     {
-        return array_only(self::$rules, self::$rulesForUpdating);
+        $rules = array_only(self::$rules, self::$rulesForUpdating);
+
+        // add exception for the unique constraint
+        foreach(array_keys($rules) as $attribute)
+        {
+            foreach($rules[$attribute] as $i => $rule)
+            {
+                if(starts_with($rule, 'unique'))
+                {
+                    $rules[$attribute][$i] = $rule.','.$this->id;
+                }
+            }
+        }
+
+        return $rules;
     }
 
     /**

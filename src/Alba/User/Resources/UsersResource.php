@@ -199,6 +199,7 @@ class UsersResource extends Resource {
         $user->fill(array_only($attributes, $user->getFillable()));
         $user->active = false; // new users should not be active
         $user->blocked = false; // new users should not be blocked
+        $user->password_updated_at = Carbon::now();
 
         // Create the name
         $name = $this->name;

@@ -6,8 +6,6 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redirect;
 
-use Alba\Core\Controllers\Controller;
-
 /**
  * Controller for accessing PermissionsResource from a web interface
  *
@@ -16,7 +14,7 @@ use Alba\Core\Controllers\Controller;
  * @see Alba\User\Resources\PermissionsResource
  * @see Alba\User\Controllers\PermissionsApiController
  */
-class PermissionsController extends Controller {
+class PermissionsController extends \AlbaCoreController {
 
     /**
      * The module name
@@ -28,14 +26,14 @@ class PermissionsController extends Controller {
     /**
      * Inject dependencies
      *
-     * @param PermissionsResource $permissionsResource
-     * @param PermissionsApiController $permissionsApi
+     * @param PermissionsResource $resource
+     * @param PermissionsApiController $api
      * @return void
      */
-    public function __construct(\AlbaPermissionsResource $permissionsResource, \AlbaPermissionsApiController $permissionsApi)
+    public function __construct(\AlbaPermissionsResource $resource, \AlbaPermissionsApiController $api)
     {   
-        $this->resources['permission'] = $permissionsResource;
-        $this->apis['permission'] = $permissionsApi;
+        $this->setResource($resource);
+        $this->setApi($api);
     }
     
     /**
@@ -45,7 +43,7 @@ class PermissionsController extends Controller {
      */
     public function index()
     {
-        $paginator = $this->apis['permission']->index();
+        $paginator = $this->getApi()->index();
         $collection = $paginator->getCollection();
         $this->content('index', compact('paginator', 'collection'));
     }
@@ -67,7 +65,7 @@ class PermissionsController extends Controller {
      */
     public function store()
     {
-        $object = $this->apis['permission']->store();
+        $object = $this->getApi()->store();
 
         return $this->redirect('store', ['id' => $object->id])
             ->with('message', $this->language('success.store'));
@@ -81,7 +79,7 @@ class PermissionsController extends Controller {
      */
     public function show($id)
     {
-        $object = $this->resources['permission']->show($id);        
+        $object = $this->getApi()->show($id);        
         $this->content('show', ['permission' => $object]);
     }
 
@@ -93,7 +91,7 @@ class PermissionsController extends Controller {
      */
     public function showByName($name)
     {
-        $object = $this->resources['permission']->showByName($name);        
+        $object = $this->getApi()->showByName($name);        
         $this->content('show', ['permission' => $object]);
     }
 
@@ -105,7 +103,7 @@ class PermissionsController extends Controller {
      */
     public function edit($id)
     {
-        $object = $this->resources['permission']->show($id);
+        $object = $this->getApi()->show($id);
         $this->form('edit', $object);
     }
 
@@ -137,7 +135,7 @@ class PermissionsController extends Controller {
     {
         // @todo what about security here?
 
-        $object = $this->apis['permission']->update($id);
+        $object = $this->getApi()->update($id);
 
         return $this->redirect('update', ['id' => $id])
             ->with('message', $this->language('success.update'));

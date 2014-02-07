@@ -2,16 +2,13 @@
 
 use Illuminate\Support\Facades\Config;
 
-use Alba\Core\Resources\Resource;
-use Alba\Core\Exceptions\ResourceException;
-
 /**
  * Custom exception handler for PermissionsResource
  *
  * @author daniel <daniel@bexarcreative.com>
  * @see Alba\Core\Exceptions\ResourceException
  */
-class PermissionsResourceException extends ResourceException {}
+class PermissionsResourceException extends \AlbaCoreResourceException {}
 
 /**
  * Roles Resource
@@ -19,7 +16,7 @@ class PermissionsResourceException extends ResourceException {}
  * @author daniel <daniel@bexarcreative.com>
  * @see Alba\Core\Resources\Resource
  */
-class PermissionsResource extends Resource {
+class PermissionsResource extends \AlbaCoreResource {
 
     /**
      * The module name
@@ -49,12 +46,12 @@ class PermissionsResource extends Resource {
     /**
      * Inject dependencies
      *
-     * @var Alba\User\Models\Permission $permission
+     * @var Alba\User\Models\Permission $model
      * @return RolesResource;
      */
-    public function __construct(\AlbaPermission $permission)
+    public function __construct(\AlbaPermission $model)
     {
-        $this->model = $permission;
+        $this->setModel($model);
         $this->setDefaults($this->defaults);
     }
 
@@ -66,7 +63,7 @@ class PermissionsResource extends Resource {
      */
     public function showByName($name)
     {
-        $object = $this->model->whereName($name)->first();
+        $object = $this->getModel()->whereName($name)->first();
         if(!$object)
         {
             $this->throwException($this->language('errors.show_by_name'));
@@ -82,6 +79,6 @@ class PermissionsResource extends Resource {
     public function names()
     {
         $ttl = Config::get('alba::permission.ttl.names', 10);
-        return $this->model->whereNotNull('name')->distinct()->remember($ttl)->lists('name');
+        return $this->getModel()->whereNotNull('name')->distinct()->remember($ttl)->lists('name');
     }
 }

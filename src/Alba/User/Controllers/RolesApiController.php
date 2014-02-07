@@ -1,26 +1,33 @@
 <?php namespace Alba\User\Controllers;
 
 use Illuminate\Support\Facades\Input;
-use Alba\Core\Controllers\Controller;
 
 /**
  * Controller for accessing RolesResource as an API
  *
  * @author daniel <daniel@bexarcreative.com>
- * @see Alba\Core\Controllers\Controller
+ * @see Alba\Core\Controllers\ApiController
  * @see Alba\User\Resources\RolesResource
+ * @see Alba\User\Controllers\RolesApiController
  */
-class RolesApiController extends Controller {
+class RolesApiController extends \AlbaCoreApiController {
+
+    /**
+     * The module name
+     * 
+     * @var string
+     */
+    protected $module = 'role';
 
     /**
      * Inject dependencies
      *
-     * @param RolesResource $rolesResource;
+     * @param RolesResource $resource;
      * @return void
      */
-	public function __construct(\AlbaRolesResource $rolesResource)
+	public function __construct(\AlbaRolesResource $resource)
 	{
-		$this->resources['role'] = $rolesResource;
+		$this->setResource($resource);
 	}
 
     /**
@@ -35,29 +42,7 @@ class RolesApiController extends Controller {
         // Filter by permission
         $this->setupArrayTypeScope($params, 'permissions', 'ofPermission');
 
-        return $this->resources['role']->index($params);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return Illuminate\Database\Eloquent\Model
-     */
-    public function store()
-    {
-        $attributes = Input::all();
-        return $this->resources['role']->store($attributes);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id of object
-     * @return Illuminate\Database\Eloquent\Model
-     */
-    public function show($id)
-    {
-        return $this->resources['role']->show($id);
+        return $this->getResource()->index($params);
     }
 
     /**
@@ -68,7 +53,7 @@ class RolesApiController extends Controller {
      */
     public function showByName($name)
     {
-        return $this->resources['role']->showByName($name);
+        return $this->getResource()->showByName($name);
     }
 
     /**
@@ -79,7 +64,7 @@ class RolesApiController extends Controller {
      */
     public function showUsers($id)
     {
-        $object = $this->resources['role']->show($id);
+        $object = $this->getResource()->show($id);
         $object->load('users');
         return $object;
     }
@@ -92,35 +77,9 @@ class RolesApiController extends Controller {
      */
     public function showPermissions($id)
     {
-        $object = $this->resources['role']->show($id);
+        $object = $this->getResource()->show($id);
         $object->load('perms');
         return $object;
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param int $id of object to update
-     * @return Illuminate\Database\Eloquent\Model
-     */
-    public function update($id)
-    {
-        $attributes = Input::all();
-        $object = $this->resources['role']->update($id, $attributes);
-        return $object;
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id of object to remove
-     * @param bool $force delete
-     * @return bool
-     * 
-     */
-    public function destroy($id)
-    {
-        return $this->resources['role']->destroy($id);
     }
 
     /**
@@ -137,7 +96,7 @@ class RolesApiController extends Controller {
             $permissions = explode(',', $permissions);
 
         // Sync permissions
-        $object = $this->resources['role']->syncPermissions($id, $permissions);
+        $object = $this->getResource()->syncPermissions($id, $permissions);
         return $object;
     }
 
@@ -148,7 +107,7 @@ class RolesApiController extends Controller {
      */
     public function names()
     {
-        return $this->resources['role']->names();
+        return $this->getResource()->names();
     }
 
 }

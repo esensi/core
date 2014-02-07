@@ -2,9 +2,6 @@
 
 use \Exception;
 
-use Alba\Core\Resources\Resource;
-use Alba\Core\Exceptions\ResourceException;
-
 use Carbon\Carbon;
 
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +19,7 @@ use Illuminate\Auth\UserInterface;
  * @author daniel <daniel@bexarcreative.com>
  * @see Alba\Core\Exceptions\ResourceException
  */
-class UsersResourceException extends ResourceException {}
+class UsersResourceException extends \AlbaCoreResourceException {}
 
 /**
  * Users Resource
@@ -31,7 +28,7 @@ class UsersResourceException extends ResourceException {}
  * @author daniel <daniel@bexarcreative.com>
  * @see Alba\Core\Resources\Resource
  */
-class UsersResource extends Resource {
+class UsersResource extends \AlbaCoreResource {
 
     /**
      * The module name
@@ -46,20 +43,6 @@ class UsersResource extends Resource {
      * @var Alba\Core\Exceptions\ResourceException;
      */
     protected $exception = 'Alba\User\Resources\UsersResourceException';
-
-    /**
-     * The Name model
-     *
-     * @var Alba\User\Models\Name
-     */
-    protected $name;
-
-    /**
-     * The Role model
-     *
-     * @var Alba\User\Models\Role
-     */
-    protected $role;
 
     /**
      * The default attributes for searching
@@ -83,10 +66,10 @@ class UsersResource extends Resource {
      */
     public function __construct(\AlbaUser $user, \AlbaName $name, \AlbaRole $role, \AlbaTokensResource $tokensResource)
     {
-        $this->model = $user;
-        $this->name = $name;
-        $this->role = $role;
-        $this->resources['token'] = $tokensResource;
+        $this->setModel($user);
+        $this->setModel($name, 'name');
+        $this->setModel($role, 'role');
+        $this->setResource($tokensResource, 'token');
 
         $this->setDefaults($this->defaults);
         
@@ -141,7 +124,7 @@ class UsersResource extends Resource {
      */
     public function showByEmail($email)
     {
-        $object = $this->model->whereEmail($email)->first();
+        $object = $this->getModel()->whereEmail($email)->first();
         if(!$object)
         {
             $this->throwException($this->language('errors.show_by_email'));
@@ -160,7 +143,7 @@ class UsersResource extends Resource {
     public function showByActivationToken($token, $isExpired = false) {
 
         // Get the user with the matching token
-        $object = $this->model->whereActivationToken($token, $isExpired)->first();
+        $object = $this->getModel()->whereActivationToken($token, $isExpired)->first();
         if (!$object)
         {
             $this->throwException($this->language('errors.show_by_activation_token'));
@@ -180,7 +163,7 @@ class UsersResource extends Resource {
     public function showByPasswordResetToken($token, $isExpired = false) {
 
         // Get the user with the matching token
-        $object = $this->model->wherePasswordResetToken($token, $isExpired)->first();
+        $object = $this->getModel()->wherePasswordResetToken($token, $isExpired)->first();
         if (!$object)
         {
             $this->throwException($this->language('errors.show_by_password_reset_token'));
@@ -195,18 +178,18 @@ class UsersResource extends Resource {
     public function store($attributes)
     {
         // Create the user
-        $user = $this->model;
+        $user = $this->getModel();
         $user->fill(array_only($attributes, $user->getFillable()));
         $user->active = false; // new users should not be active
         $user->blocked = false; // new users should not be blocked
         $user->password_updated_at = Carbon::now();
 
         // Create the name
-        $name = $this->name;
+        $name = $this->getModel('name');
         $name->fill(array_only($attributes, $name->getFillable()));
                 
         // Get default Roles to attach to a new user
-        $roles = $this->role->whereIn('name', $this->model->defaultRoles)->get();
+        $roles = $this->getModel('role')->whereIn('name', $this->getModel()->defaultRoles)->get();
 
         // Use a transaction so everything fails if one fails
         DB::transaction(function() use ($user, $name, $roles)
@@ -335,7 +318,7 @@ class UsersResource extends Resource {
             // @todo: remove all existing activation tokens from user
 
             // Generate activation token
-            $activationToken = $this->resources['token']->createNewActivation($object);
+            $activationToken = $this->getResource('token')->createNewActivation($object);
 
             // Attach token to user
             $object->tokens()->attach($activationToken->id);
@@ -458,7 +441,7 @@ class UsersResource extends Resource {
             // @todo: remove all existing password reset tokens from user
 
             // Generate password reset token
-            $resetToken = $this->resources['token']->createNewPasswordReset($object);
+            $resetToken = $this->getResource('token')->createNewPasswordReset($object);
 
             // Attach token to user
             $object->tokens()->attach($resetToken->id);
@@ -589,7 +572,7 @@ class UsersResource extends Resource {
     public function titles($key = null)
     {
         $ttl = Config::get('alba::user.names.ttl.titles', 10);
-        $dbTags = $this->name->distinct()->remember($ttl)->listTitles($key);
+        $dbTags = $this->getModel('name')->distinct()->remember($ttl)->listTitles($key);
         $langTags = $this->language('names.titles', []);
         $configTags = array_combine($langTags, $langTags);
         $tags = array_unique(array_merge($configTags, $dbTags));
@@ -605,7 +588,7 @@ class UsersResource extends Resource {
     public function suffixes($key = null)
     {
         $ttl = Config::get('alba::user.names.ttl.suffixes', 10);
-        $dbTags = $this->name->distinct()->remember($ttl)->listSuffixes($key);
+        $dbTags = $this->getModel('name')->distinct()->remember($ttl)->listSuffixes($key);
         $langTags = $this->language('names.suffixes', []);
         $configTags = array_combine($langTags, $langTags);
         $tags = array_unique(array_merge($configTags, $dbTags));

@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
-use Alba\Core\Seeders\Seeder;
 
 /**
  * Seeder for Roles
@@ -10,7 +9,7 @@ use Alba\Core\Seeders\Seeder;
  * @author diego <diego@emersonmedia.com>
  * @author daniel <daniel@bexarcreative.com>
  */
-class RolesTableSeeder extends Seeder {
+class RolesTableSeeder extends \AlbaCoreSeeder {
 
     public function run() {
 

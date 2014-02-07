@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Input;
  * Controller for accessing RolesResource from a backend web interface
  *
  * @author daniel <daniel@bexarcreative.com>
- * @see Alba\Core\Controllers\RolesController
+ * @see Alba\User\Controllers\RolesController
  */
 class RolesAdminController extends \AlbaRolesController {
 
@@ -24,7 +24,7 @@ class RolesAdminController extends \AlbaRolesController {
      */
     protected function confirm($id, $view)
     {
-        $object = $this->resources['role']->show($id);
+        $object = $this->getApi()->show($id);
         $this->modal($view . '_confirm', ['role' => $object]);
     }
 
@@ -49,7 +49,7 @@ class RolesAdminController extends \AlbaRolesController {
     {
         // @todo what about security here?
 
-        $this->apis['role']->destroy($id);
+        $this->getApi()->destroy($id);
 
         return $this->redirect('destroy')
             ->with('message', $this->language('success.destroy'));

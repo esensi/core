@@ -13,6 +13,8 @@ use Illuminate\Routing\Controller as LaravelController;
  *
  * @author diego <diego@emersonmedia.com>
  * @author daniel <daniel@bexarcreative.com>
+ * @see Alba\Core\Resources\Resource
+ * @see Alba\Core\Controllers\ApiController
  */
 class Controller extends LaravelController {
 
@@ -36,11 +38,31 @@ class Controller extends LaravelController {
     protected $resources = [];
 
     /**
+     * The controllers injected
+     * 
+     * @var array
+     */
+    protected $controllers = [];
+
+    /**
      * The APIs injected
      * 
      * @var array
      */
     protected $apis = [];
+
+    /**
+     * Inject dependencies
+     *
+     * @param Alba\Core\Resources\Resource $resource;
+     * @param Alba\Core\Controllers\ApiController $api;
+     * @return void
+     */
+    public function __construct(\AlbaCoreResource $resource, \AlbaCoreApiController $api)
+    {
+        $this->setResource($resource);
+        $this->setApi($api);
+    }
 
 	/**
 	 * Setup the layout used by the controller.
@@ -154,7 +176,112 @@ class Controller extends LaravelController {
      */
     protected function language($key, $replacements = [])
     {
-        return $this->resources[str_singular($this->module)]->language($key, $replacements);
+        return $this->getResource()->language($key, $replacements);
+    }
+
+    /**
+     * Get the specified resource by name
+     *
+     * @param string $name of resource
+     * @return ResourceInterface
+     * 
+     */
+    public function getResource($name = null)
+    {
+        if(is_null($name))
+        {
+            $name = str_singular($this->module);
+        }
+
+        return $this->resources[$name];
+    }
+
+    /**
+     * Set the specified resource by name
+     *
+     * @param ResourceInterface $resource
+     * @param string $name of resource
+     * @return ResourceInterface
+     * 
+     */
+    public function setResource(\AlbaCoreResourceInterface $resource, $name = null)
+    {
+        if(is_null($name))
+        {
+            $name = str_singular($this->module);
+        }
+
+        return $this->resources[$name] = $resource;
+    }
+
+    /**
+     * Get the specified API by name
+     *
+     * @param string $name of API
+     * @return ApiController
+     * 
+     */
+    public function getController($name = null)
+    {
+        if(is_null($name))
+        {
+            $name = str_singular($this->module);
+        }
+
+        return $this->controllers[$name];
+    }
+
+    /**
+     * Set the specified API by name
+     *
+     * @param Controller $controller
+     * @param string $name of controller
+     * @return Controller
+     * 
+     */
+    public function setController(\AlbaCoreController $controller, $name = null)
+    {
+        if(is_null($name))
+        {
+            $name = str_singular($this->module);
+        }
+
+        return $this->controllers[$name] = $controller;
+    }
+
+    /**
+     * Get the specified API by name
+     *
+     * @param string $name of API
+     * @return ApiController
+     * 
+     */
+    public function getApi($name = null)
+    {
+        if(is_null($name))
+        {
+            $name = str_singular($this->module);
+        }
+
+        return $this->apis[$name];
+    }
+
+    /**
+     * Set the specified API by name
+     *
+     * @param ApiController $api
+     * @param string $name of api
+     * @return ApiController
+     * 
+     */
+    public function setApi(\AlbaCoreApiController $api, $name = null)
+    {
+        if(is_null($name))
+        {
+            $name = str_singular($this->module);
+        }
+
+        return $this->apis[$name] = $api;
     }
 
 }

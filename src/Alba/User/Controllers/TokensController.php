@@ -6,8 +6,6 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redirect;
 
-use Alba\Core\Controllers\Controller;
-
 /**
  * Controller for accessing TokensResource from a web interface
  *
@@ -16,7 +14,7 @@ use Alba\Core\Controllers\Controller;
  * @see Alba\User\Resources\TokensResource
  * @see Alba\User\Controllers\TokensApiController
  */
-class TokensController extends Controller {
+class TokensController extends \AlbaCoreController {
 
     /**
      * The module name
@@ -28,14 +26,14 @@ class TokensController extends Controller {
     /**
      * Inject dependencies
      *
-     * @param TokensResource $tokensResource
-     * @param TokensApiController $tokensApi
+     * @param TokensResource $resource
+     * @param TokensApiController $api
      * @return void
      */
-    public function __construct(\AlbaTokensResource $tokensResource, \AlbaTokensApiController $tokensApi)
+    public function __construct(\AlbaTokensResource $resource, \AlbaTokensApiController $api)
     {   
-        $this->resources['token'] = $tokensResource;
-        $this->apis['token'] = $tokensApi;
+        $this->setResource($resource);
+        $this->setApi($api);
     }
     
     /**
@@ -45,7 +43,7 @@ class TokensController extends Controller {
      */
     public function index()
     {
-        $paginator = $this->apis['token']->index();
+        $paginator = $this->getApi()->index();
         $collection = $paginator->getCollection();
         $this->content('index', compact('paginator', 'collection'));
     }

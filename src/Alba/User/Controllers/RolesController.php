@@ -6,8 +6,6 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redirect;
 
-use Alba\Core\Controllers\Controller;
-
 /**
  * Controller for accessing RolesResource from a web interface
  *
@@ -16,7 +14,7 @@ use Alba\Core\Controllers\Controller;
  * @see Alba\User\Resources\RolesResource
  * @see Alba\User\Controllers\RolesApiController
  */
-class RolesController extends Controller {
+class RolesController extends \AlbaCoreController {
 
     /**
      * The module name
@@ -28,14 +26,14 @@ class RolesController extends Controller {
     /**
      * Inject dependencies
      *
-     * @param RolesResource $rolesResource
-     * @param RolesApiController $rolesApi
+     * @param RolesResource $resource
+     * @param RolesApiController $api
      * @return void
      */
-    public function __construct(\AlbaRolesResource $rolesResource, \AlbaRolesApiController $rolesApi)
+    public function __construct(\AlbaRolesResource $resource, \AlbaRolesApiController $api)
     {   
-        $this->resources['role'] = $rolesResource;
-        $this->apis['role'] = $rolesApi;
+        $this->setResource($resource);
+        $this->setApi($api);
     }
     
     /**
@@ -45,7 +43,7 @@ class RolesController extends Controller {
      */
     public function index()
     {
-        $paginator = $this->apis['role']->index();
+        $paginator = $this->getApi()->index();
         $collection = $paginator->getCollection();
         $this->content('index', compact('paginator', 'collection'));
     }
@@ -67,7 +65,7 @@ class RolesController extends Controller {
      */
     public function store()
     {
-        $object = $this->apis['role']->store();
+        $object = $this->getApi()->store();
 
         return $this->redirect('store', ['id' => $object->id])
             ->with('message', $this->language('success.store'));
@@ -81,7 +79,7 @@ class RolesController extends Controller {
      */
     public function show($id)
     {
-        $object = $this->resources['role']->show($id);        
+        $object = $this->getApi()->show($id);        
         $this->content('show', ['role' => $object]);
     }
 
@@ -93,7 +91,7 @@ class RolesController extends Controller {
      */
     public function showByName($name)
     {
-        $object = $this->resources['role']->showByName($name);        
+        $object = $this->getApi()->showByName($name);        
         $this->content('show', ['role' => $object]);
     }
 
@@ -105,7 +103,7 @@ class RolesController extends Controller {
      */
     public function edit($id)
     {
-        $object = $this->resources['role']->show($id);
+        $object = $this->getApi()->show($id);
         $this->form('edit', $object);
     }
 
@@ -119,7 +117,7 @@ class RolesController extends Controller {
     protected function form($view, $object = null)
     {
         // Get options
-        $permissionsOptions = $this->resources['role']->getModel('permission')->listAlphabetically();
+        $permissionsOptions = $this->getResource()->getModel('permission')->listAlphabetically();
         $permissions = isset($object) ? $object->perms->lists('id') : [];
 
         // Parse view data
@@ -141,7 +139,7 @@ class RolesController extends Controller {
     {
         // @todo what about security here?
 
-        $object = $this->apis['role']->update($id);
+        $object = $this->getApi()->update($id);
 
         return $this->redirect('update', ['id' => $id])
             ->with('message', $this->language('success.update'));

@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Input;
  * Controller for accessing PermissionsResource from a backend web interface
  *
  * @author daniel <daniel@bexarcreative.com>
- * @see Alba\Core\Controllers\PermissionsController
+ * @see Alba\User\Controllers\PermissionsController
  */
 class PermissionsAdminController extends \AlbaPermissionsController {
     

@@ -1,26 +1,32 @@
 <?php namespace Alba\User\Controllers;
 
 use Illuminate\Support\Facades\Input;
-use Alba\Core\Controllers\Controller;
 
 /**
  * Controller for accessing PermissionResource as an API
  *
  * @author daniel <daniel@bexarcreative.com>
- * @see Alba\Core\Controllers\Controller
+ * @see Alba\Core\Controllers\ApiController
  * @see Alba\User\Resources\PermissionsResource
  */
-class PermissionsApiController extends Controller {
+class PermissionsApiController extends \AlbaCoreApiController {
 
+    /**
+     * The module name
+     * 
+     * @var string
+     */
+    protected $module = 'permission';
+    
     /**
      * Inject dependencies
      *
-     * @param PermissionsResource $permissionsResource;
+     * @param PermissionsResource $resource;
      * @return void
      */
-	public function __construct(\AlbaPermissionsResource $permissionsResource)
+	public function __construct(\AlbaPermissionsResource $resource)
 	{
-		$this->resources['permission'] = $permissionsResource;
+		$this->setResource($resource);
 	}
 
     /**
@@ -35,29 +41,7 @@ class PermissionsApiController extends Controller {
         // Filter by role
         $this->setupArrayTypeScope($params, 'roles', 'ofRole');
         
-        return $this->resources['permission']->index($params);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return Illuminate\Database\Eloquent\Model
-     */
-    public function store()
-    {
-        $attributes = Input::all();
-        return $this->resources['permission']->store($attributes);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id of object
-     * @return Illuminate\Database\Eloquent\Model
-     */
-    public function show($id)
-    {
-        return $this->resources['permission']->show($id);
+        return $this->getResource()->index($params);
     }
 
     /**
@@ -68,7 +52,7 @@ class PermissionsApiController extends Controller {
      */
     public function showByName($name)
     {
-        return $this->resources['permission']->showByName($name);
+        return $this->getResource()->showByName($name);
     }
 
     /**
@@ -79,35 +63,9 @@ class PermissionsApiController extends Controller {
      */
     public function showRoles($id)
     {
-        $object = $this->resources['permission']->show($id);
+        $object = $this->getResource()->show($id);
         $object->load('roles');
         return $object;
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param int $id of object to update
-     * @return Illuminate\Database\Eloquent\Model
-     */
-    public function update($id)
-    {
-        $attributes = Input::all();
-        $object = $this->resources['permission']->update($id, $attributes);
-        return $object;
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id of object to remove
-     * @param bool $force delete
-     * @return bool
-     * 
-     */
-    public function destroy($id)
-    {
-        return $this->resources['permission']->destroy($id);
     }
 
     /**
@@ -117,7 +75,7 @@ class PermissionsApiController extends Controller {
      */
     public function names()
     {
-        return $this->resources['permission']->names();
+        return $this->getResource()->names();
     }
 
 }

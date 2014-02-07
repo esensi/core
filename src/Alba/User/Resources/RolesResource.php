@@ -2,16 +2,13 @@
 
 use Illuminate\Support\Facades\Config;
 
-use Alba\Core\Resources\Resource;
-use Alba\Core\Exceptions\ResourceException;
-
 /**
  * Custom exception handler for RolesResource
  *
  * @author daniel <daniel@bexarcreative.com>
  * @see Alba\Core\Exceptions\ResourceException
  */
-class RolesResourceException extends ResourceException {}
+class RolesResourceException extends \AlbaCoreResourceException {}
 
 /**
  * Roles Resource
@@ -19,7 +16,7 @@ class RolesResourceException extends ResourceException {}
  * @author daniel <daniel@bexarcreative.com>
  * @see Alba\Core\Resources\Resource
  */
-class RolesResource extends Resource {
+class RolesResource extends \AlbaCoreResource {
 
     /**
      * The module name
@@ -47,23 +44,16 @@ class RolesResource extends Resource {
     ];
 
     /**
-     * The Permission model
-     *
-     * @var Alba\User\Models\Permission
-     */
-    protected $permission;
-
-    /**
      * Inject dependencies
      *
-     * @var Alba\User\Models\Role $role
+     * @var Alba\User\Models\Role $model
      * @var Alba\User\Models\Permission $permission
      * @return RolesResource;
      */
-    public function __construct(\AlbaRole $role, \AlbaPermission $permission)
+    public function __construct(\AlbaRole $model, \AlbaPermission $permission)
     {
-        $this->model = $role;
-        $this->permission = $permission;
+        $this->setModel($model);
+        $this->setModel($permission, 'permission');
         $this->setDefaults($this->defaults);
     }
 
@@ -75,7 +65,7 @@ class RolesResource extends Resource {
      */
     public function showByName($name)
     {
-        $object = $this->model->whereName($name)->first();
+        $object = $this->getModel()->whereName($name)->first();
         if(!$object)
         {
             $this->throwException($this->language('errors.show_by_name'));
@@ -131,6 +121,6 @@ class RolesResource extends Resource {
     public function names()
     {
         $ttl = Config::get('alba::role.ttl.names', 10);
-        return $this->model->whereNotNull('name')->distinct()->remember($ttl)->lists('name');
+        return $this->getModel()->whereNotNull('name')->distinct()->remember($ttl)->lists('name');
     }
 }

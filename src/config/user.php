@@ -35,6 +35,7 @@ return [
 		'AlbaUsersAdminController'	=> '\Alba\User\Controllers\UsersAdminController',
 		'AlbaUsersApiController'	=> '\Alba\User\Controllers\UsersApiController',
 		'AlbaUsersTableSeeder'		=> '\Alba\User\Seeders\UsersTableSeeder',
+		'AlbaUsersSeeder'			=> '\Alba\User\Seeders\UsersSeeder',
 	],
 
 	/*

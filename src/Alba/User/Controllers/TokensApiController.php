@@ -1,26 +1,32 @@
 <?php namespace Alba\User\Controllers;
 
 use Illuminate\Support\Facades\Input;
-use Alba\Core\Controllers\Controller;
 
 /**
  * Controller for accessing TokensResource as an API
  *
  * @author daniel <daniel@bexarcreative.com>
- * @see Alba\Core\Controllers\Controller
+ * @see Alba\Core\Controllers\ApiController
  * @see Alba\User\Resources\TokensResource
  */
-class TokensApiController extends Controller {
+class TokensApiController extends \AlbaCoreApiController {
 
+    /**
+     * The module name
+     * 
+     * @var string
+     */
+    protected $module = 'token';
+    
     /**
      * Inject dependencies
      *
-     * @param TokensResource $tokensResource;
+     * @param TokensResource $resource;
      * @return void
      */
-	public function __construct(\AlbaTokensResource $tokensResource)
+	public function __construct(\AlbaTokensResource $resource)
 	{
-		$this->resources['token'] = $tokensResource;
+		$this->setResource($resource);
 	}
 
     /**
@@ -35,29 +41,7 @@ class TokensApiController extends Controller {
         // Filter by type
         $this->setupArrayTypeScope($params, 'types', 'ofType');
 
-        return $this->resources['token']->index($params);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return Illuminate\Database\Eloquent\Model
-     */
-    public function store()
-    {
-        $attributes = Input::all();
-        return $this->resources['token']->store($attributes);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id of object
-     * @return Illuminate\Database\Eloquent\Model
-     */
-    public function show($id)
-    {
-        return $this->resources['token']->show($id);
+        return $this->getResource()->index($params);
     }
 
     /**
@@ -68,33 +52,6 @@ class TokensApiController extends Controller {
      */
     public function showByToken($token)
     {
-        return $this->resources['token']->showByToken($token);
+        return $this->getResource()->showByToken($token);
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param int $id of object to update
-     * @return Illuminate\Database\Eloquent\Model
-     */
-    public function update($id)
-    {
-        $attributes = Input::all();
-        $object = $this->resources['token']->update($id, $attributes);
-        return $object;
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id of object to remove
-     * @param bool $force delete
-     * @return bool
-     * 
-     */
-    public function destroy($id)
-    {
-        return $this->resources['token']->destroy($id);
-    }
-
 }

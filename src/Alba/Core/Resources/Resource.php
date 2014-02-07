@@ -1,11 +1,8 @@
 <?php namespace Alba\Core\Resources;
 
+use LaravelBook\Ardent\Ardent;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Config;
-use Alba\Core\Contracts\ResourceInterface;
-use Alba\Core\Controllers\Controller;
-use Alba\Core\Exceptions\ResourceException;
-use Alba\Core\Models\Model;
 
 /**
  * Core Resource controller as the base for all module Resource controllers
@@ -13,7 +10,7 @@ use Alba\Core\Models\Model;
  * @author diego <diego@emersonmedia.com>
  * @author daniel <daniel@bexarcreative.com>
  */
-class Resource extends Controller implements ResourceInterface {
+class Resource extends \AlbaCoreController implements \AlbaCoreResourceInterface {
 
     /**
      * The module name
@@ -23,25 +20,26 @@ class Resource extends Controller implements ResourceInterface {
     protected $module = 'core';
 
 	/**
-     * The resource model
+     * This is maintained for backwards compatibility.
+     * It should be removed by 0.2.x release.
      * 
-     * @var Illuminate\Database\Eloquent\Model;
+     * @var \Alba\Core\Models\Model
      */
     protected $model;
 
 	/**
-     * Injected resources
+     * Injected models
      * 
      * @var array
      */
-    protected $resources = [];
+    protected $models = [];
 
 	/**
      * The exception to be thrown
      * 
      * @var Alba\Core\Exceptions\ResourceException;
      */
-    protected $exception = 'ResourceException';
+    protected $exception = '\AlbaCoreResourceException';
     
 	/**
      * The default attributes for searching
@@ -59,12 +57,9 @@ class Resource extends Controller implements ResourceInterface {
      *
      * @return void
      */
-	public function __construct()
+	public function __construct(\AlbaCoreModel $model)
 	{
-        //@todo:  we should have a core model that has all of the ardent + eloquent properties on it plus the extras that resource uses 
-        //so that way we can make sure to just extend it and copy over any properties we want to change
-		$this->model = new Model;     
-
+		$this->setModel($model);
 		$this->setDefaults($this->defaults);
 	}
 
@@ -86,7 +81,7 @@ class Resource extends Controller implements ResourceInterface {
 			$keywords = $this->keywords;
 			if(is_string($keywords))
 				$keywords = explode(',', $keywords);
-			$fields = $this->model->searchable;
+			$fields = $this->getModel()->searchable;
 			$this->where = function( $query ) use ($keywords, $fields)
 	            {
 	                foreach($fields as $field)
@@ -100,12 +95,12 @@ class Resource extends Controller implements ResourceInterface {
 		}
 
 		// Build new query with loaded relationships
-		$query = $this->model->newQuery()->select([$this->model->getTable().'.*']);
+		$query = $this->getModel()->newQuery()->select([$this->getModel()->getTable().'.*']);
 		if ( isset($this->relationships) )
 			$query->with($this->relationships);
 		
 		// Include trashed results if model supports it
-		if ( $this->model->isSoftDeleting() && isset($this->trashed) )
+		if ( $this->getModel()->isSoftDeleting() && isset($this->trashed) )
 		{
 			switch($this->trashed)
 			{
@@ -145,8 +140,8 @@ class Resource extends Controller implements ResourceInterface {
 	 */
 	public function store($attributes)
 	{
-		$rules = $this->model->rulesForStoring;
-        $object = new $this->model;
+		$rules = $this->getModel()->rulesForStoring;
+        $object = new $this->getModel();
 		$object->fill($attributes);
 		if(!$object->save($rules))
 		{
@@ -165,7 +160,7 @@ class Resource extends Controller implements ResourceInterface {
 	public function show($id, $withTrashed = false)
 	{
 		$excludeTrashed = !$withTrashed;
-		$object = $this->model->newQuery($excludeTrashed)->find($id);
+		$object = $this->getModel()->newQuery($excludeTrashed)->find($id);
 		if(!$object)
 		{
 			$this->throwException($this->language('errors.show'));
@@ -250,17 +245,6 @@ class Resource extends Controller implements ResourceInterface {
 	}
 
 	/**
-	 * Get the resource model used
-	 *
-	 * @param string $model to return
-	 * @return Illuminate\Database\Eloquent\Model
-	 */
-	public function getModel($model = 'model')
-	{
-		return $this->{$model};
-	}
-
-	/**
 	 * Set the default attributes for searching
 	 *
 	 * @param array $defaults
@@ -319,5 +303,46 @@ class Resource extends Controller implements ResourceInterface {
     {
         $key = str_singular($this->module) . '.' .$key;
         return Lang::has('alba::' . $key) ? Lang::get('alba::' . $key, $replacements) : Lang::get($key, $replacements);
+    }
+
+    /**
+     * Get the specified model by name
+     *
+     * @param string $name of model
+     * @return Ardent
+     * 
+     */
+    public function getModel($name = null)
+    {
+        if(is_null($name))
+        {
+            $name = str_singular($this->module);
+        }
+
+        // Provided for backwards compatibility
+        // @todo remove by 0.2.x
+        return isset($this->models[$name]) ? $this->models[$name] : $this->{$name};
+    }
+
+    /**
+     * Set the specified model by name
+     *
+     * @param Ardent $model
+     * @param string $name of model
+     * @return Ardent
+     * 
+     */
+    public function setModel(Ardent $model, $name = null)
+    {
+        if(is_null($name))
+        {
+            $name = str_singular($this->module);
+            
+            // Provided for backwards compatibility
+        	// @todo remove by 0.2.x
+        	$this->model = $model;
+        }
+
+        return $this->models[$name] = $model;
     }
 }

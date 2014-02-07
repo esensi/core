@@ -1,6 +1,5 @@
 <?php namespace Alba\User\Seeders;
 
-use Alba\Core\Seeders\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 
@@ -10,7 +9,7 @@ use Illuminate\Support\Facades\Config;
  * @author diego <diego@emersonmedia.com>
  * @author daniel <daniel@bexarcreative.com>
  */
-class PermissionsTableSeeder extends Seeder {
+class PermissionsTableSeeder extends \AlbaCoreSeeder {
 
     public function run() {
 

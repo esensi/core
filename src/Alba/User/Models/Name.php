@@ -1,6 +1,5 @@
 <?php namespace Alba\User\Models;
 
-use LaravelBook\Ardent\Ardent;
 use Illuminate\Support\Facades\Log;
 
 /**
@@ -8,9 +7,10 @@ use Illuminate\Support\Facades\Log;
  *
  * @author diego <diego@emersonmedia.com>
  * @author daniel <daniel@bexarcreative.com>
+ * @see Alba\Core\Models\Model
  * @see Alba\User\Models\User
  */
-class Name extends Ardent {
+class Name extends \AlbaCoreModel {
 
     /**
      * The database table used by the model.

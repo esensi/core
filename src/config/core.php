@@ -15,6 +15,29 @@ return [
 	|
 	*/
 
+	/*
+	|--------------------------------------------------------------------------
+	| Application aliases
+	|--------------------------------------------------------------------------
+	|
+	| The following configuration options allow the developer to map aliases to
+	| controllers and models for easier customization of how Alba handles
+	| requests related to the Core module. These aliases are loaded by the
+	| service provider for this module.
+	|
+	*/
+
+	'aliases' => [
+		'AlbaCoreModel'				=> '\Alba\Core\Models\Model',
+		'AlbaCoreResource'			=> '\Alba\Core\Resources\Resource',
+		'AlbaCoreResourceException'	=> '\Alba\Core\Exceptions\ResourceException',
+		'AlbaCoreResourceInterface'	=> '\Alba\Core\Contracts\ResourceInterface',
+		'AlbaCoreController'		=> '\Alba\Core\Controllers\Controller',
+		'AlbaCoreApiController'		=> '\Alba\Core\Controllers\ApiController',
+		'AlbaCoreAdminController'	=> '\Alba\Core\Controllers\AdminController',
+		'AlbaCoreSeeder'			=> '\Alba\Core\Seeders\Seeder',
+		'AlbaCoreModuleProvider'	=> '\Alba\Core\Providers\ModuleServiceProvider',
+	],
 
 	/*
 	|--------------------------------------------------------------------------

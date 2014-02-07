@@ -1,6 +1,5 @@
 <?php namespace Alba\User\Models;
 
-use Alba\Core\Models\Model;
 use Carbon\Carbon;
 
 /**
@@ -8,9 +7,10 @@ use Carbon\Carbon;
  *
  * @author diego <diego@emersonmedia.com>
  * @author daniel <daniel@bexarcreative.com>
+ * @see Alba\Core\Models\Model
  * @see Alba\User\Models\User
  */
-class Token extends Model {
+class Token extends \AlbaCoreModel {
 
     /**
      * Types of tokens

@@ -25,7 +25,7 @@ class UsersAdminController extends \AlbaUsersController {
      */
     protected function confirm($id, $view)
     {
-        $object = $this->resources['user']->show($id);
+        $object = $this->getApi()->show($id);
         $this->modal($view . '_confirm', ['user' => $object]);
     }
 
@@ -83,7 +83,7 @@ class UsersAdminController extends \AlbaUsersController {
      */
     public function destroyConfirm($id)
     {
-        $object = $this->resources['user']->show($id, true);
+        $object = $this->getResource()->show($id, true);
         $this->modal('destroy_confirm', ['user' => $object]);
     }
 
@@ -97,7 +97,7 @@ class UsersAdminController extends \AlbaUsersController {
     {
         // @todo what about security here?
 
-        $this->apis['user']->destroy($id);
+        $this->getApi()->destroy($id);
 
         return $this->redirect('destroy')
             ->with('message', $this->language('success.destroy'));
@@ -111,7 +111,7 @@ class UsersAdminController extends \AlbaUsersController {
      */
     public function restoreConfirm($id)
     {
-        $object = $this->resources['user']->show($id, true);
+        $object = $this->getResource()->show($id, true);
         $this->modal('restore_confirm', ['user' => $object]);
     }
 
@@ -125,7 +125,7 @@ class UsersAdminController extends \AlbaUsersController {
     {
         // @todo what about security here?
 
-        $this->apis['user']->restore($id);
+        $this->getApi()->restore($id);
 
         return $this->redirectBack('restore')
             ->with('message', $this->language('success.restore'));
@@ -150,7 +150,7 @@ class UsersAdminController extends \AlbaUsersController {
      */
     public function activate($id)
     {
-        $object = $this->resources['user']->activate($id);
+        $object = $this->getResource()->activate($id);
 
         // Redirect to user profile
         return $this->redirectBack('activate.user', ['id' => $object->id])
@@ -178,7 +178,7 @@ class UsersAdminController extends \AlbaUsersController {
     {
         // @todo what about security here?
 
-        $object = $this->resources['user']->deactivate($id);
+        $object = $this->getResource()->deactivate($id);
         
         return $this->redirectBack('deactivate', ['id' => $id])
             ->with('message', $this->language('success.deactivate'));
@@ -205,7 +205,7 @@ class UsersAdminController extends \AlbaUsersController {
     {
         // @todo what about security here?
 
-        $object = $this->resources['user']->block($id);
+        $object = $this->getResource()->block($id);
 
         return $this->redirectBack('block', ['id' => $id])
             ->with('message', $this->language('success.block'));
@@ -221,7 +221,7 @@ class UsersAdminController extends \AlbaUsersController {
     {
         // @todo what about security here?
 
-        $object = $this->resources['user']->unblock($id);
+        $object = $this->getResource()->unblock($id);
         
         return $this->redirectBack('unblock', ['id' => $id])
             ->with('message', $this->language('success.unblock'));
@@ -249,10 +249,10 @@ class UsersAdminController extends \AlbaUsersController {
         // @todo what about security here?
 
         // Get user object
-        $object = $this->apis['user']->show($id);
+        $object = $this->getApi()->show($id);
         
         // Get options
-        $rolesOptions = $this->resources['user']->getModel('role')->listAlphabetically();
+        $rolesOptions = $this->getResource()->getModel('role')->listAlphabetically();
         $roles = isset($object) ? $object->roles->lists('id') : [];
 
         // Parse view data
@@ -276,7 +276,7 @@ class UsersAdminController extends \AlbaUsersController {
     {
         // @todo what about security here?
 
-        $object = $this->apis['user']->assignRoles($id);
+        $object = $this->getApi()->assignRoles($id);
 
         return $this->redirect('assign_roles', ['id' => $id])
             ->with('message', $this->language('success.assign_roles'));

@@ -10,7 +10,7 @@ use Alba\Core\Seeders\Seeder;
  * @author diego <diego@emersonmedia.com>
  * @author daniel <daniel@bexarcreative.com>
  */
-class UsersTableSeeder extends Seeder {
+class UsersTableSeeder extends \AlbaCoreSeeder {
 
     public function run() {
 

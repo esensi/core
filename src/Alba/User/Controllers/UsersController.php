@@ -6,8 +6,6 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redirect;
 
-use Alba\Core\Controllers\Controller;
-
 /**
  * Controller for accessing UsersResrouce from a web interface
  *
@@ -17,7 +15,7 @@ use Alba\Core\Controllers\Controller;
  * @see Alba\User\Resources\UsersResource
  * @see Alba\User\Controllers\UsersApiController
  */
-class UsersController extends Controller {
+class UsersController extends \AlbaCoreController {
 
     /**
      * The module name
@@ -29,14 +27,14 @@ class UsersController extends Controller {
     /**
      * Inject dependencies
      *
-     * @param UsersResource $usersResource
-     * @param UsersApiController $usersApi
+     * @param UsersResource $resource
+     * @param UsersApiController $api
      * @return void
      */
-    public function __construct(\AlbaUsersResource $usersResource, \AlbaUsersApiController $usersApi)
+    public function __construct(\AlbaUsersResource $resource, \AlbaUsersApiController $api)
     {   
-        $this->resources['user'] = $usersResource;
-        $this->apis['user'] = $usersApi;
+        $this->setResource($resource);
+        $this->setApi($api);
     }
         
     /**
@@ -46,7 +44,7 @@ class UsersController extends Controller {
      */
     public function index()
     {
-        $paginator = $this->apis['user']->index();
+        $paginator = $this->getApi()->index();
         $collection = $paginator->getCollection();
         $this->content('index', compact('paginator', 'collection'));
     }
@@ -59,8 +57,8 @@ class UsersController extends Controller {
     public function search()
     {
         // Get the models used
-        $user = $this->resources['user']->getModel();
-        $role = $this->resources['user']->getModel('role');
+        $user = $this->getResource()->getModel();
+        $role = $this->getResource()->getModel('role');
 
         // Get all the options
         $rolesOptions = $role->listAlphabetically();
@@ -107,7 +105,7 @@ class UsersController extends Controller {
      */
     public function register()
     {
-        $object = $this->apis['user']->store();
+        $object = $this->getApi()->store();
         return $this->redirect('registered')
             ->with('message', $this->language('success.register'));
     }
@@ -139,7 +137,7 @@ class UsersController extends Controller {
      */
     public function store()
     {
-        $object = $this->apis['user']->store();
+        $object = $this->getApi()->store();
 
         return $this->redirect('store', ['id' => $object->id])
             ->with('message', $this->language('success.store'));
@@ -154,7 +152,7 @@ class UsersController extends Controller {
      */
     public function show($id, $withTrashed = false)
     {
-        $object = $this->resources['user']->show($id, $withTrashed);
+        $object = $this->getResource()->show($id, $withTrashed);
         $this->content('show', ['user' => $object]);
     }
 
@@ -177,7 +175,7 @@ class UsersController extends Controller {
      */
     public function edit($id)
     {
-        $object = $this->resources['user']->show($id);
+        $object = $this->getApi()->show($id);
         $this->form('edit', $object);
     }
 
@@ -191,9 +189,9 @@ class UsersController extends Controller {
     protected function form($view, $object = null)
     {        
         // Get all the options
-        $titlesOptions = $this->resources['user']->titles('title');
-        $suffixesOptions = $this->resources['user']->suffixes('suffix');
-        $rolesOptions = $this->resources['user']->getModel('role')->listAlphabetically();
+        $titlesOptions = $this->getResource()->titles('title');
+        $suffixesOptions = $this->getResource()->suffixes('suffix');
+        $rolesOptions = $this->getResource()->getModel('role')->listAlphabetically();
         $roles = isset($object) ? $object->roles->lists('id') : [];
 
         // Parse view data
@@ -215,7 +213,7 @@ class UsersController extends Controller {
     {
         // @todo what about security here?
 
-        $object = $this->apis['user']->update($id);
+        $object = $this->getApi()->update($id);
 
         return $this->redirect('update', ['id' => $id])
             ->with('message', $this->language('success.update'));
@@ -242,7 +240,7 @@ class UsersController extends Controller {
         $credentials = Input::only(['email', 'password']);
         $extras = ['active' => true, 'blocked' => false];
         $remember = Input::get('remember', false);
-        $object = $this->resources['user']->authenticate($credentials, $extras, $remember);
+        $object = $this->getResource()->authenticate($credentials, $extras, $remember);
 
         // If login is ok, redirect to the intended URL or default to the dashboard
         $url = Input::get('url', route(Config::get('alba::user.redirects.login')));
@@ -257,7 +255,7 @@ class UsersController extends Controller {
      */
     public function logout()
     {
-        $this->resources['user']->unauthenticate();
+        $this->getResource()->unauthenticate();
         return $this->redirect('logout')
             ->with('message', $this->language('success.logout'));
     }
@@ -283,12 +281,12 @@ class UsersController extends Controller {
         // Prefer to use $id over email for admins
         if ($id) // @todo restrict to admin privileges
         {
-            $object = $this->resources['user']->show($id);
+            $object = $this->getApi()->show($id);
         }
         
         // Send activation email to user
         $email = isset($object->email) ? $object->email : Input::get('email');
-        $object = $this->resources['user']->resetPassword($email);
+        $object = $this->getResource()->resetPassword($email);
         $this->content('reset_password', ['users' => $object]);
     }
 
@@ -312,7 +310,7 @@ class UsersController extends Controller {
     public function setPassword($token)
     {
         $newPassword = Input::only('password', 'password_confirmation');
-        $object = $this->resources['user']->setPassword($token, $newPassword);
+        $object = $this->getResource()->setPassword($token, $newPassword);
 
         // Authenticate the user if not already logged in
         if ( Auth::guest() )
@@ -345,12 +343,12 @@ class UsersController extends Controller {
         // Prefer to use $id over email for admins
         if ($id) // @todo restrict to admin privileges
         {
-            $object = $this->resources['user']->show($id);
+            $object = $this->getApi()->show($id);
         }
         
         // Send activation email to user
         $email = ($id) ? $object->email : Input::get('email');
-        $object = $this->resources['user']->resetActivation($email);
+        $object = $this->getResource()->resetActivation($email);
 
         // Show confirmation page
         $this->content('reset_activation', ['user' => $object]);
@@ -378,7 +376,7 @@ class UsersController extends Controller {
     {
         // Activate the user with optional password
         $newPassword = Input::has('password') ? Input::only('password', 'password_confirmation') : null;
-        $object = $this->resources['user']->activateWithToken($token, $newPassword);
+        $object = $this->getResource()->activateWithToken($token, $newPassword);
 
         // Authenticate the user if not already logged in
         if ( Auth::guest() )

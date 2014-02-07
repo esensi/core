@@ -2,27 +2,32 @@
 
 use Illuminate\Support\Facades\Input;
 
-use Alba\Core\Controllers\Controller;
-
 /**
  * Controller for accessing UsersResource as an API
  *
  * @author diego <diego@emersonmedia.com>
  * @author daniel <daniel@bexarcreative.com>
- * @see Alba\Core\Controllers\Controller
+ * @see Alba\Core\Controllers\ApiController
  * @see Alba\User\Resources\UsersResource
  */
-class UsersApiController extends Controller {
+class UsersApiController extends \AlbaCoreApiController {
+
+    /**
+     * The module name
+     * 
+     * @var string
+     */
+    protected $module = 'user';
 
     /**
      * Inject dependencies
      *
-     * @param UsersResource $usersResource;
+     * @param UsersResource $resource;
      * @return void
      */
-	public function __construct(\AlbaUsersResource $usersResource)
+	public function __construct(\AlbaUsersResource $resource)
 	{
-		$this->resources['user'] = $usersResource;
+		$this->setResource($resource);
 	}
 
     /**
@@ -62,7 +67,7 @@ class UsersApiController extends Controller {
         // Filter by name
         $this->setupArrayTypeScope($params, 'names', 'byName');
         
-        return $this->resources['user']->index($params);
+        return $this->getResource()->index($params);
     }
 
     /**
@@ -74,12 +79,12 @@ class UsersApiController extends Controller {
     public function store($twoStep = true)
     {
         $attributes = Input::all();
-        $object = $this->resources['user']->store($attributes);
+        $object = $this->getResource()->store($attributes);
 
         // Two-step activation
         if($twoStep)
         {
-            $this->resources['user']->resetActivation($object->email, true);
+            $this->getResource()->resetActivation($object->email, true);
         }
 
         return $object;
@@ -94,20 +99,7 @@ class UsersApiController extends Controller {
      */
     public function show($id, $withTrashed = false)
     {
-        return $this->resources['user']->show($id, $withTrashed);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param int $id of object to update
-     * @return Illuminate\Database\Eloquent\Model
-     */
-    public function update($id)
-    {
-        $attributes = Input::all();
-        $object = $this->resources['user']->update($id, $attributes);
-        return $object;
+        return $this->getResource()->show($id, $withTrashed);
     }
 
     /**
@@ -124,7 +116,7 @@ class UsersApiController extends Controller {
             $roles = explode(',', $roles);
 
         // Sync roles
-        $object = $this->resources['user']->syncRoles($id, $roles);
+        $object = $this->getResource()->syncRoles($id, $roles);
         return $object;
     }
 
@@ -139,7 +131,7 @@ class UsersApiController extends Controller {
     public function destroy($id)
     {
         $force = Input::get('force');
-        return $this->resources['user']->destroy($id, $force);
+        return $this->getResource()->destroy($id, $force);
     }
 
     /**
@@ -151,7 +143,7 @@ class UsersApiController extends Controller {
      */
     public function restore($id)
     {
-        return $this->resources['user']->restore($id);
+        return $this->getResource()->restore($id);
     }
 
     /**
@@ -161,7 +153,7 @@ class UsersApiController extends Controller {
      */
     public function titles()
     {
-        return $this->resources['user']->titles();
+        return $this->getResource()->titles();
     }
 
     /**
@@ -171,7 +163,7 @@ class UsersApiController extends Controller {
      */
     public function suffixes()
     {
-        return $this->resources['user']->suffixes();
+        return $this->getResource()->suffixes();
     }
 
 }

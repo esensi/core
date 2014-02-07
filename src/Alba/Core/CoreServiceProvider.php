@@ -19,6 +19,11 @@ class CoreServiceProvider extends ModuleServiceProvider {
      */
     public function boot()
     {
+        $this->addAliases(['core']);
+
+        require __DIR__.'/filters.php';
+        require __DIR__.'/routes.php';
+
         $this->bindHTMLMacros();
     }
 

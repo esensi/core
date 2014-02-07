@@ -3,8 +3,6 @@
 use Carbon\Carbon;
 use Illuminate\Auth\UserInterface;
 use Illuminate\Support\Facades\Config;
-use Alba\Core\Resources\Resource;
-use Alba\Core\Exceptions\ResourceException;
 
 /**
  * Custom exception handler for TokensResource
@@ -13,7 +11,7 @@ use Alba\Core\Exceptions\ResourceException;
  * @author daniel <daniel@bexarcreative.com>
  * @see Alba\Core\Exceptions\ResourceException
  */
-class TokensResourceException extends ResourceException {}
+class TokensResourceException extends \AlbaCoreResourceException {}
 
 /**
  * Tokens Resource
@@ -22,7 +20,7 @@ class TokensResourceException extends ResourceException {}
  * @author daniel <daniel@bexarcreative.com>
  * @see Alba\Core\Resources\Resource
  */
-class TokensResource extends Resource {
+class TokensResource extends \AlbaCoreResource {
     
     /**
      * The module name
@@ -51,10 +49,12 @@ class TokensResource extends Resource {
 
     /**
      * Inject dependencies
+     * @var Alba\User\Models\Token $model
+     * @return TokensResource;
      **/
-    public function __construct(\AlbaToken $token)
+    public function __construct(\AlbaToken $model)
     {        
-        $this->model = $token;
+        $this->setModel($model);
         $this->setDefaults($this->defaults);
     }
 
@@ -66,7 +66,7 @@ class TokensResource extends Resource {
      */
     public function showByToken($token)
     {
-        $object = $this->model->whereToken($token)->first();
+        $object = $this->getModel()->whereToken($token)->first();
         if(!$object)
         {
             $this->throwException($this->language('errors.show_by_token'));
@@ -83,7 +83,7 @@ class TokensResource extends Resource {
      */
     public function destroyByToken($token, $force = false)
     {
-        $query = $this->model->whereToken($token);
+        $query = $this->getModel()->whereToken($token);
         return ($force) ? $query->forceDelete() : $query->delete();
     }
 
@@ -146,7 +146,7 @@ class TokensResource extends Resource {
      */
     public function route($type, $token)
     {
-        $model = $this->model;
+        $model = $this->getModel();
 
         switch($type)
         {

@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Database\Eloquent\Collection;
 use Zizaco\Entrust\HasRole;
-use Alba\Core\Models\Model;
 
 /**
  * Alba\User model
@@ -19,7 +18,7 @@ use Alba\Core\Models\Model;
  * @see Alba\User\Models\Role
  * @see Alba\User\Models\Token
  */
-class User extends Model implements UserInterface {
+class User extends \AlbaCoreModel implements UserInterface {
 
     /**
      * Include HasRole trait from Entrust

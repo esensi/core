@@ -9,9 +9,9 @@
 |
 */
 
-Route::pattern('id', '[0-9]+');
-Route::pattern('token', '[a-zA-Z0-9]+');
-Route::pattern('name', '^[a-z][a-z0-9\-_\.]+');
+Route::pattern('user_token', '[a-zA-Z0-9]+');
+Route::pattern('user_role', '^[a-z][a-z0-9\-_\.]+');
+Route::pattern('user_permission', '^[a-z][a-z0-9\-_\.]+');
 
 /*
 |--------------------------------------------------------------------------
@@ -59,7 +59,7 @@ Route::group([
 			Route::get('names', [ 'as' => 'api.role.names', 'uses' => 'AlbaRolesApiController@names' ]);
 			Route::delete('{id}', [ 'as' => 'api.role.destroy', 'uses' => 'AlbaRolesApiController@destroy' ]);
 			Route::put('{id}', [ 'as' => 'api.role.update', 'uses' => 'AlbaRolesApiController@update' ]);
-			Route::get('{name}', [ 'as' => 'api.role.show.name', 'uses' => 'AlbaRolesApiController@showByName' ]);
+			Route::get('{user_role}', [ 'as' => 'api.role.show.name', 'uses' => 'AlbaRolesApiController@showByName' ]);
 			Route::get('{id}/permissions', [ 'as' => 'api.role.show.permissions', 'before' => ['permission:module_permissions'], 'uses' => 'AlbaRolesApiController@showPermissions' ]);
 			Route::get('{id}/users', [ 'as' => 'api.role.show.users', 'before' => ['permission:module_users'], 'uses' => 'AlbaRolesApiController@showUsers' ]);
 			Route::get('{id}', [ 'as' => 'api.role.show', 'uses' => 'AlbaRolesApiController@show' ]);
@@ -76,7 +76,7 @@ Route::group([
 		{
 			Route::get('names', [ 'as' => 'api.permission.names', 'uses' => 'AlbaPermissionsApiController@names' ]);
 			Route::put('{id}', [ 'as' => 'api.permission.update', 'uses' => 'AlbaPermissionsApiController@update' ]);
-			Route::get('{name}', [ 'as' => 'api.permission.show.name', 'uses' => 'AlbaPermissionsApiController@showByName' ]);
+			Route::get('{user_permission}', [ 'as' => 'api.permission.show.name', 'uses' => 'AlbaPermissionsApiController@showByName' ]);
 			Route::get('{id}/roles', [ 'as' => 'api.permission.show.roles', 'before' => ['permission:module_permissions'], 'uses' => 'AlbaPermissionsApiController@showRoles' ]);
 			Route::get('{id}', [ 'as' => 'api.permission.show', 'uses' => 'AlbaPermissionsApiController@show' ]);
 			Route::post('/', [ 'as' => 'api.permission.store', 'uses' => 'AlbaPermissionsApiController@store' ]);
@@ -91,10 +91,10 @@ Route::group([
 		], function()
 		{
 			Route::delete('{id}', [ 'as' => 'api.token.destroy', 'uses' => 'AlbaTokensApiController@destroy' ]);
-			Route::delete('{token}', [ 'as' => 'api.token.destroy.token', 'uses' => 'AlbaTokensApiController@destroyByToken' ]);
+			Route::delete('{user_token}', [ 'as' => 'api.token.destroy.token', 'uses' => 'AlbaTokensApiController@destroyByToken' ]);
 			Route::put('{id}', [ 'as' => 'api.token.update', 'uses' => 'AlbaTokensApiController@update' ]);
 			Route::get('{id}', [ 'as' => 'api.token.show', 'uses' => 'AlbaTokensApiController@show' ]);
-			Route::get('{token}', [ 'as' => 'api.token.show.token', 'uses' => 'AlbaTokensApiController@showByToken' ]);
+			Route::get('{user_token}', [ 'as' => 'api.token.show.token', 'uses' => 'AlbaTokensApiController@showByToken' ]);
 			Route::post('/', [ 'as' => 'api.token.store', 'uses' => 'AlbaTokensApiController@store' ]);
 			Route::get('/', [ 'as' => 'api.token.index', 'uses' => 'AlbaTokensApiController@index' ]);
 		});
@@ -200,7 +200,7 @@ Route::group([
 			Route::get('{id}/edit', [ 'as' => 'admin.roles.edit', 'uses' => 'AlbaRolesAdminController@edit' ]);
 
 			// Show
-			Route::get('{name}', [ 'as' => 'admin.roles.show.name', 'uses' => 'AlbaRolesAdminController@showByName' ]);
+			Route::get('{user_role}', [ 'as' => 'admin.roles.show.name', 'uses' => 'AlbaRolesAdminController@showByName' ]);
 			Route::get('{id}', [ 'as' => 'admin.roles.show', 'uses' => 'AlbaRolesAdminController@show' ]);
 			
 			// Search / Browse
@@ -268,12 +268,12 @@ Route::group([
 ], function()
 {
 	Route::get('account', [ 'as' => 'users.account', 'before' => 'auth', 'uses' => 'AlbaUsersController@account' ]);
-	Route::match(['GET', 'POST'], 'activate/{token}', [ 'as' => 'users.activate', 'uses' => 'AlbaUsersController@activate' ]);
-	Route::get('activate-password/{token}', [ 'as' => 'users.activate-password', 'uses' => 'AlbaUsersController@activatePassword' ]);
+	Route::match(['GET', 'POST'], 'activate/{user_token}', [ 'as' => 'users.activate', 'uses' => 'AlbaUsersController@activate' ]);
+	Route::get('activate-password/{user_token}', [ 'as' => 'users.activate-password', 'uses' => 'AlbaUsersController@activatePassword' ]);
 	Route::post('reset-activation', [ 'as' => 'users.reset-activation', 'uses' => 'AlbaUsersController@resetActivation' ]);
 	Route::get('new-activation', [ 'as' => 'users.new-activation', 'uses' => 'AlbaUsersController@newActivation' ]);
-	Route::post('set-password/{token}', [ 'as' => 'users.set-password', 'uses' => 'AlbaUsersController@setPassword' ]);
-	Route::get('set-password/{token}', [ 'as' => 'users.new-password', 'uses' => 'AlbaUsersController@newPassword' ]);
+	Route::post('set-password/{user_token}', [ 'as' => 'users.set-password', 'uses' => 'AlbaUsersController@setPassword' ]);
+	Route::get('set-password/{user_token}', [ 'as' => 'users.new-password', 'uses' => 'AlbaUsersController@newPassword' ]);
 	Route::post('forgot-password', [ 'as' => 'users.reset-password', 'uses' => 'AlbaUsersController@resetPassword' ]);
 	Route::get('forgot-password', [ 'as' => 'users.forgot-password', 'uses' => 'AlbaUsersController@forgotPassword' ]);
 	Route::post('login', [ 'as' => 'users.login', 'before' => 'guest', 'uses' => 'AlbaUsersController@login' ]);

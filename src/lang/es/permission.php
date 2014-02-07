@@ -13,11 +13,11 @@ return [
 	*/
 
 	'errors' => [
-		'show'								=> 'Permission could not be found.',
-		'show_by_name'						=> 'Permission could not be found matching this name.',
-		'store'								=> 'Permission could not be created.',
-		'update'							=> 'Permission could not be saved.',
-		'no_results'						=> 'There are no permission results.',
+		'show'								=> 'El permiso no se pudo encontrar.',
+		'show_by_name'						=> 'El permiso no se pudo encontrar a juego este nombre.',
+		'store'								=> 'El permiso no pudo ser creada.',
+		'update'							=> 'El permiso no se pudo guardar.',
+		'no_results'						=> 'No hay resultados de permiso.',
 	],
 
 	/*
@@ -31,8 +31,8 @@ return [
 	*/
 
 	'success' => [
-		'store'								=> 'Permission has been created.',
-		'update'							=> 'Permission has been saved.',
+		'store'								=> 'El permiso ha sido creado.',
+		'update'							=> 'El permiso se ha guardado.',
 	],
 	
 ];

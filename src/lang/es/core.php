@@ -13,12 +13,12 @@ return [
 	*/
 
 	'errors' => [
-		'store' => 'Object could not be stored.',
-		'show' => 'Object could not be found.',
-		'update' => 'Object could not be updated.',
-		'restore' => 'Object could not be restored.',
-		'destroy' => 'Object could not be deleted.',
-		'trashing' => 'Object cannot be sent to trash.',
+		'store' => 'Objeto no podía ser almacenado.',
+		'show' => 'El objeto no se pudo encontrar.',
+		'update' => 'Objeto no pudo actualizarse.',
+		'restore' => 'El objeto no podía ser restaurada.',
+		'destroy' => 'Objeto no pudo ser eliminado.',
+		'trashing' => 'El objeto no se puede enviar a la basura.',
 	],
 
 
@@ -33,9 +33,9 @@ return [
 	*/
 
 	'messages' => [
-		'never_expires'	=> 'Never Expires',
-		'never_updated'	=> 'Never Updated',
-		'never_created' => 'Never Created',
-		'never_deleted' => 'Never Deleted',
+		'never_expires'	=> 'Nunca Caduca',
+		'never_updated'	=> 'Nunca Actualizado',
+		'never_created' => 'Nunca Creado',
+		'never_deleted' => 'Nunca Suprimido',
 	],
 ];

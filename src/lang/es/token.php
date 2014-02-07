@@ -13,10 +13,10 @@ return [
 	*/
 
 	'errors' => [
-		'show'								=> 'Token could not be found.',
-		'show_by_token'						=> 'Token could not be found matching this value.',
-		'no_results'						=> 'There are no token results.',
-		'invalid_type'						=> 'Invalid type of token: :type.',
+		'show'								=> 'Token no se pudo encontrar.',
+		'show_by_token'						=> 'Token no se pudo encontrar a juego este valor.',
+		'no_results'						=> 'No hay resultados simbólicos.',
+		'invalid_type'						=> 'Tipo no válido de token: :type.',
 	],
 	
 ];

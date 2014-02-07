@@ -13,12 +13,12 @@ return [
 	*/
 
 	'errors' => [
-		'show'								=> 'Role could not be found.',
-		'show_by_name'						=> 'Role could not be found matching this name.',
-		'store'								=> 'Role could not be created.',
-		'update'							=> 'Role could not be saved.',
-		'destroy'							=> 'Role could not be deleted.',
-		'no_results'						=> 'There are no role results.',
+		'show'								=> 'Papel no se pudo encontrar.',
+		'show_by_name'						=> 'Papel no se pudo encontrar a juego este nombre.',
+		'store'								=> 'Rol no pudo ser creada.',
+		'update'							=> 'Papel no se pudo guardar.',
+		'destroy'							=> 'Rol no se pudo eliminar.',
+		'no_results'						=> 'No hay resultados de rol.',
 	],
 
 	/*
@@ -32,9 +32,9 @@ return [
 	*/
 
 	'success' => [
-		'destroy'							=> 'Role has been deleted.',
-		'store'								=> 'Role has been created.',
-		'update'							=> 'Role has been saved.',
+		'destroy'							=> 'Papel ha sido eliminado.',
+		'store'								=> 'Papel ha sido creado.',
+		'update'							=> 'Papel se ha guardado.',
 	],
 	
 ];

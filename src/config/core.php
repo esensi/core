@@ -151,10 +151,10 @@ return [
 	*/
 
 	'stylesheets' => [
-		'googlefonts', 'jqueryui', 'bootstrap', 'fontawesome', 'application',
+		'google-fonts', 'font-awesome', 'jquery-ui', 'bootstrap-multiselect', 'bootstrap-tagsinput', 'main',
 	],
 
 	'javascripts' => [
-		'jqueryui', 'bootstrap', 'typeahead', 'application',
+		'jquery', 'jquery-ui', 'bootstrap', 'typeahead', 'main',
 	],
 ];

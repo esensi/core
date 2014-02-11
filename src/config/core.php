@@ -138,23 +138,5 @@ return [
 	*/
 
 	'dashboard' => true,
-
-	/*
-	|--------------------------------------------------------------------------
-	| Collections to be used by Basset
-	|--------------------------------------------------------------------------
-	|
-	| The following configuration options alter which collections are included
-	| in the Alba\Core layout views. Stylesheets are added to the header while
-	| javascripts are added to the footer.
-	|
-	*/
-
-	'stylesheets' => [
-		'google-fonts', 'font-awesome', 'jquery-ui', 'bootstrap-multiselect', 'bootstrap-tagsinput', 'main',
-	],
-
-	'javascripts' => [
-		'jquery', 'jquery-ui', 'bootstrap', 'typeahead', 'main',
-	],
+	
 ];

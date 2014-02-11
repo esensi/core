@@ -11,12 +11,10 @@
 		<link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
 		<title>Administration</title>
 		
-    @foreach(Config::get('alba::core.stylesheets', []) as $collection)
-    <link rel="stylesheet" href="{{ asset('builds/'. $collection . '.css') }}">
-    @endforeach
+    @styles()
 		
 		<!--[if lt IE 9]>
-		@javascripts('ie')
+		@scripts('ie')
 		<![endif]-->
 	</head>
 <body>

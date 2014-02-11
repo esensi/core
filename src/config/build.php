@@ -85,7 +85,8 @@ return [
 	|
 	| The following configuration option sets where the builds should be stored.
 	| The base path is relative to the public directory while the other paths
-	| are relative to the base path.
+	| are relative to the base path. If you make changes here be sure to change
+	| the same configurations in the Gruntfile.js.
 	|
 	*/
 

@@ -137,6 +137,6 @@ return [
 	|
 	*/
 
-	'dashboard' => true,
+	'dashboard' => false,
 	
 ];

@@ -46,8 +46,8 @@ return [
 	*/
 
 	'ttl' => [
-		'styles' => 0,
-		'scripts' => 0,
+		'styles' => 60,
+		'scripts' => 60,
 	],
 
 	/*
@@ -76,7 +76,24 @@ return [
 	|
 	*/
 
-	'versioned' => true,
+	'versions' => true,
+
+	/*
+	|--------------------------------------------------------------------------
+	| Builds Directories
+	|--------------------------------------------------------------------------
+	|
+	| The following configuration option sets where the builds should be stored.
+	| The base path is relative to the public directory while the other paths
+	| are relative to the base path.
+	|
+	*/
+
+	'directories' => [
+		'base' => 'builds',
+		'scripts' => 'scripts',
+		'styles' => 'styles',
+	],
 	
 	/*
 	|--------------------------------------------------------------------------

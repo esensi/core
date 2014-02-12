@@ -39,7 +39,7 @@ class BuildCommand extends Command {
 	public function fire()
 	{
 		// Construct the Gulp JS command
-		$gulp_command = 'gulp build';
+		$gulp_command = base_path() . '/gulp build';
 		if($this->argument('collection') != null)
 		{
 			$gulp_command .= ':' . $this->argument('collection');

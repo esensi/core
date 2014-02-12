@@ -37,6 +37,19 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
+	| Gulp Binary Location
+	|--------------------------------------------------------------------------
+	|
+	| The following configuration option sets where the "gulp" command can be
+	| found. For a local install it defaults to node_modules/.bin/gulp however
+	| if installed globally you can set it with this option.
+	|
+	*/
+
+	'binary' => base_path() . '/node_modules/.bin/gulp',
+	
+	/*
+	|--------------------------------------------------------------------------
 	| TTL configurations
 	|--------------------------------------------------------------------------
 	|

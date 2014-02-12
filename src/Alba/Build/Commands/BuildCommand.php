@@ -1,6 +1,7 @@
 <?php namespace Alba\Build\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Config;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Process\Process;
@@ -39,7 +40,8 @@ class BuildCommand extends Command {
 	public function fire()
 	{
 		// Construct the Gulp JS command
-		$gulp_command = 'gulp build';
+		$gulp_path = Config::get('alba::build.binary', base_path() . '/node_modules/.bin/gulp');
+		$gulp_command = $gulp_path . ' build';
 		if($this->argument('collection') != null)
 		{
 			$gulp_command .= ':' . $this->argument('collection');

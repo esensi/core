@@ -141,7 +141,8 @@ class Resource extends \AlbaCoreController implements \AlbaCoreResourceInterface
 	public function store($attributes)
 	{
 		$rules = $this->getModel()->rulesForStoring;
-        $object = new $this->getModel();
+        $model = $this->getModel();
+        $object = new $model();
 		$object->fill($attributes);
 		if(!$object->save($rules))
 		{

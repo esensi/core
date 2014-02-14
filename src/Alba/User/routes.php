@@ -267,6 +267,8 @@ Route::group([
 	'before' => 'error.default',
 ], function()
 {
+	Route::post('account/password', [ 'as' => 'users.update.password', 'before' => ['auth', 'error.default'], 'uses' => 'AlbaUsersController@updatePassword' ]);
+	Route::post('account/email', [ 'as' => 'users.update.email', 'before' => ['auth', 'error.default'], 'uses' => 'AlbaUsersController@updateEmail' ]);
 	Route::get('account', [ 'as' => 'users.account', 'before' => 'auth', 'uses' => 'AlbaUsersController@account' ]);
 	Route::match(['GET', 'POST'], 'activate/{user_token}', [ 'as' => 'users.activate', 'uses' => 'AlbaUsersController@activate' ]);
 	Route::get('activate-password/{user_token}', [ 'as' => 'users.activate-password', 'uses' => 'AlbaUsersController@activatePassword' ]);

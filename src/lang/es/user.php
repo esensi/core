@@ -36,6 +36,9 @@ return [
 		'no_roles'							=> 'No hay roles asignados a este usuario.',
 		'trashing'							=> 'No se puede eliminar su propia cuenta de usuario.',
 		'feature_disabled'					=> 'Esta función se ha desactivado.',
+		'old_password_mismatch'				=> 'Contraseña actual proporcionada no coincide.',
+		'update_password'					=> 'La contraseña no se pudo guardar.',
+		'update_email'						=> 'Dirección de correo electrónico no se pudo actualizar.',
 	],
 
 	/*
@@ -62,6 +65,8 @@ return [
 		'logout'							=> 'El usuario ha sido desconectado.',
 		'set_password'						=> 'El usuario ha guardado una nueva contraseña.',
 		'assign_roles'						=> 'Los roles de usuario se han actualizado.',
+		'update_email'						=> 'Dirección de correo electrónico se ha actualizado.',
+		'update_password'					=> 'La contraseña ha sido actualizado.',
 	],
 
 	/*

@@ -36,6 +36,9 @@ return [
 		'no_roles'							=> 'There are no roles assigned to this user.',
 		'trashing'							=> 'You can not delete your own user account.',
 		'feature_disabled'					=> 'This feature has been disabled.',
+		'old_password_mismatch'				=> 'Current password provided does not match.',
+		'update_password'					=> 'Password could not be saved.',
+		'update_email'						=> 'Email address could not be updated.',
 	],
 
 	/*
@@ -62,6 +65,8 @@ return [
 		'logout'							=> 'User has been logged out.',
 		'set_password'						=> 'User has saved a new password.',
 		'assign_roles'						=> 'User\'s roles have been updated.',
+		'update_email'						=> 'Email address has been updated.',
+		'update_password'					=> 'Password has been updated.',
 	],
 
 	/*

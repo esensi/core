@@ -108,6 +108,7 @@ return [
 		'new_activation'	=> 'users.new-activation',
 		'reset_activation'	=> 'users.reset-activation',
 		'activate_password' => 'users.activate-password',
+		'account' 			=> 'users.account',
 
 		// Modals
 		'activate_confirm'				=> 'users.modals.activate-confirm',
@@ -184,6 +185,8 @@ return [
 		'register' 			=> 'users.registered',
 		'store'				=> 'admin.users.show',
 		'update'			=> 'admin.users.show',
+		'update_password'	=> 'admin.users.show',
+		'update_email'		=> 'admin.users.show',
 		'login'				=> 'index',
 		'logout'			=> 'users.signin',
 		'set_password'		=> 'users.account',

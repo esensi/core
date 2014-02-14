@@ -271,7 +271,7 @@ class UsersResource extends \AlbaCoreResource {
 
         // Verify that the old password matches
         $object->old_password = $attributes['old_password'];
-        if(!Hash::check($object->old_password, $user->getOriginal('password')))
+        if(!Hash::check($object->old_password, $object->getOriginal('password')))
         {
             $this->throwException($this->language('errors.old_password_mismatch')); 
         }
@@ -297,7 +297,7 @@ class UsersResource extends \AlbaCoreResource {
     {
         $object = $this->show($id);
         $object->fill(array_only($attributes, $object->getFillable()));
-        if (!$user->save($object->rulesForUpdatingEmail))
+        if (!$object->save($object->rulesForUpdatingEmail))
         {
             $this->throwException($object->errors(), $this->language('errors.update_email'));
         }

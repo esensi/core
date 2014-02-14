@@ -178,7 +178,8 @@ class UsersResource extends \AlbaCoreResource {
     public function store($attributes)
     {
         // Create the user
-        $user = $this->getModel();
+        $model = $this->getModel();
+        $user = new $model();
         $user->fill(array_only($attributes, $user->getFillable()));
         $user->active = false; // new users should not be active
         $user->blocked = false; // new users should not be blocked
@@ -252,6 +253,56 @@ class UsersResource extends \AlbaCoreResource {
         });
 
         return $user;
+    }
+
+    /**
+     * Update the user's password
+     *
+     * @param integer $id
+     * @param string $attributes
+     * @return Model
+     * 
+     */
+    public function updatePassword($id, $attributes)
+    {
+        $object = $this->show($id);
+        $object->fill(array_only($attributes, $object->getFillable()));
+        $object->password_updated_at = Carbon::now();
+
+        // Verify that the old password matches
+        $object->old_password = $attributes['old_password'];
+        if(!Hash::check($object->old_password, $user->getOriginal('password')))
+        {
+            $this->throwException($this->language('errors.old_password_mismatch')); 
+        }
+
+        // Update the password
+        if (!$object->save($object->rulesForNewPassword))
+        {
+            $this->throwException($object->errors(), $this->language('errors.update_password'));
+        }
+
+        return $object;
+    }
+
+    /**
+     * Update the user's email address
+     *
+     * @param integer $id
+     * @param array $attributes
+     * @return Model
+     * 
+     */
+    public function updateEmail($id, $attributes)
+    {
+        $object = $this->show($id);
+        $object->fill(array_only($attributes, $object->getFillable()));
+        if (!$user->save($object->rulesForUpdatingEmail))
+        {
+            $this->throwException($object->errors(), $this->language('errors.update_email'));
+        }
+
+        return $object;
     }
 
     /**

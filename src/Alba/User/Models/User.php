@@ -83,7 +83,7 @@ class User extends \AlbaCoreModel implements UserInterface {
      * @var array
      */
     protected $fillable = [
-        'email', 'password', 'active', 'blocked', 'password_confirmation',
+        'email', 'email_confirmation', 'password', 'active', 'blocked', 'password_confirmation',
         'password_updated_at', 'activated_at', 'authenticated_at',
     ];
 
@@ -175,8 +175,10 @@ class User extends \AlbaCoreModel implements UserInterface {
      */
     public static $rules = [
         'email' => ['required', 'email', 'max:128', 'unique:users'],
+        'email_confirmation' => ['required_with:email', 'email', 'max:128', 'same:email'],
         'password' => ['required', 'alpha_num', 'between:4,256', 'confirmed'],
         'password_confirmation' => ['required_with:password', 'alpha_num', 'between:4,256'],
+        'old_password' => ['required_with:password', 'different:password', 'alpha_num', 'between:4,256'],
         'active' => ['in:true,false,1,0'],
         'blocked' => ['in:true,false,1,0'],
         'activated_at' => ['date:null'],
@@ -232,6 +234,39 @@ class User extends \AlbaCoreModel implements UserInterface {
      * @var array
      */
     public static $rulesForUpdatingPassword = ['password', 'password_confirmation', 'password_updated_at'];
+
+    /**
+     * The attribute rules used by saveNewPassword()
+     * 
+     * @var array
+     */
+    protected static $rulesForNewPassword = ['old_password', 'password', 'password_confirmation', 'password_updated_at'];
+
+    /**
+     * The attribute rules used by saveEmail()
+     * 
+     * @var array
+     */
+    protected static $rulesForUpdatingEmail = ['email', 'email_confirmation'];
+
+    /**
+     * Create a new User model instance.
+     *
+     * @param array $attributes
+     * @return User
+     */
+    public function __construct(array $attributes = [])
+    {
+        // Auto purge fields
+        $this->purgeFilters[] = function($key)
+        {
+            $purge = ['old_password'];
+            return ! in_array($key, $purge);
+        };
+
+        // Execute the parent __construct
+        parent::__construct($attributes);
+    }
 
     /**
      * Rules needed for seeding
@@ -299,6 +334,32 @@ class User extends \AlbaCoreModel implements UserInterface {
         return array_only(self::$rules, self::$rulesForUpdatingPassword);
     }
 
+    /**
+     * Rules needed for creating a new password
+     * 
+     * @return array
+     */
+    public function getRulesForNewPasswordAttribute()
+    {
+        return array_only(self::$rules, self::$rulesForNewPassword);
+    }
+
+    /**
+     * Rules needed for updating email
+     * 
+     * @return array
+     */
+    public function getRulesForUpdatingEmailAttribute()
+    { 
+        $rules = array_only(self::$rules, self::$rulesForUpdatingEmail);
+
+        // add exception for the unique constraint
+        $key = array_search('unique:users', $rules['email']);
+        $rules['email'][$key] = 'unique:users,email,' . $this->id;
+
+        return $rules;
+    }
+    
     /**
      * Rules needed for blocking
      * 

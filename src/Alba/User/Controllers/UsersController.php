@@ -220,6 +220,38 @@ class UsersController extends \AlbaCoreController {
     }
 
     /**
+     * Update the password for the specified resource in storage.
+     *
+     * @param integer $id
+     * @return void
+     */
+    public function updatePassword($id = null)
+    {
+        $object = is_null($id) ? Auth::user() : $this->getApi()->show($id);
+        $attributes = Input::only('old_password', 'password', 'password_confirmation');
+        $this->getResource()->updatePassword($object->id, $attributes);
+
+        return $this->redirect('update_password', ['id' => $id])
+            ->with('message', $this->language('success.update_password'));
+    }
+
+    /**
+     * Update the email for the specified resource in storage.
+     *
+     * @param integer $id
+     * @return void
+     */
+    public function updateEmail($id = null)
+    {
+        $object = is_null($id) ? Auth::user() : $this->getApi()->show($id);
+        $attributes = Input::only('email', 'email_confirmation');
+        $this->getResource()->updateEmail($object->id, $attributes);
+
+        return $this->redirect('update_email', ['id' => $id])
+            ->with('message', $this->language('success.update_email'));
+    }
+
+    /**
      * Show sign in page
      *
      * @return void

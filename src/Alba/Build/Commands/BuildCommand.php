@@ -1,10 +1,12 @@
 <?php namespace Alba\Build\Commands;
 
+use \RuntimeException;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessTimedOutException;
 
 class BuildCommand extends Command {
 
@@ -35,6 +37,7 @@ class BuildCommand extends Command {
 	/**
 	 * Execute the console command.
 	 *
+	 * @see http://symfony.com/blog/new-in-symfony-2-2-process-component-enhancements
 	 * @return mixed
 	 */
 	public function fire()
@@ -69,18 +72,53 @@ class BuildCommand extends Command {
 			}
 		}
 
-		// Execute the Gulp JS command
-		$process = new Process($gulp_command);
-		$process->run();
+		// Add the gulp command to the proccesses
+		$processes = [
+			new Process($gulp_command)
+		];
 
-		// Catch error output
-		if(!$process->isSuccessful())
+		// Keep the processes running without timeout
+		while( count($processes) > 0 )
 		{
-			throw new \RuntimeException($process->getErrorOutput());
-		}
+			foreach($processes as $i => $process)
+			{
+				// Start processes that haven't started yet
+				if(!$process->isStarted())
+				{
+					$process->start();
+					continue;
+				}
 
-		// Print the Gulp JS output
-		print $process->getOutput();
+				// Show incremental output
+				echo $process->getIncrementalOutput();
+
+				// Show incremental error output with highlighting
+				$output = $process->getIncrementalErrorOutput();
+				if(!empty($output))
+				{
+					$this->error(rtrim($output, "\n"));
+				}
+				
+				// Remove the process once it's stopped running
+				if(!$process->isRunning())
+				{
+					// Show success when it completes
+					if($process->isSuccessful())
+					{
+						$this->info('Builder has finished running "' . $gulp_command . '".');
+					}
+
+					// Show error when it errors out
+					else
+					{
+						$this->error('Builder encountered an error while running "' . $gulp_command . '".');
+					}
+
+					// Remove the process from those running
+					unset($processes[$i]);
+				}
+			}
+		}
 	}
 
 	/**

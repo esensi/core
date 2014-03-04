@@ -91,7 +91,7 @@ return [
 
 	'routes' => [
 		
-		'api' 		=> true,
+		'api' 		=> false,
 		'backend' 	=> true,
 		'public'	=> true,
 	],

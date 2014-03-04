@@ -485,7 +485,7 @@ class UsersResource extends \AlbaCoreResource {
         // Check if user is allowed to activate
         if (!$object->isPasswordResetAllowed())
         {
-            $this->throwException($this->language('errors.password_reset_not_allowed.'));
+            $this->throwException($this->language('errors.password_reset_not_allowed'));
         }
 
         DB::transaction(function() use ($object)

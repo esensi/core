@@ -40,7 +40,7 @@ class Resource extends \AlbaCoreController implements \AlbaCoreResourceInterface
      * @var Alba\Core\Exceptions\ResourceException;
      */
     protected $exception = '\AlbaCoreResourceException';
-    
+
 	/**
      * The default attributes for searching
      * 
@@ -97,7 +97,9 @@ class Resource extends \AlbaCoreController implements \AlbaCoreResourceInterface
 		// Build new query with loaded relationships
 		$query = $this->getModel()->newQuery()->select([$this->getModel()->getTable().'.*']);
 		if ( isset($this->relationships) )
+		{
 			$query->with($this->relationships);
+		}
 		
 		// Include trashed results if model supports it
 		if ( $this->getModel()->isSoftDeleting() && isset($this->trashed) )
@@ -106,10 +108,12 @@ class Resource extends \AlbaCoreController implements \AlbaCoreResourceInterface
 			{
 				case 'only':
 					$query->onlyTrashed();
+					break;
 
 				case '1':
 				case 'true':
 					$query->withTrashed();
+					break;
 			}
 		}
 
@@ -123,10 +127,9 @@ class Resource extends \AlbaCoreController implements \AlbaCoreResourceInterface
 		}
 
 		// Paginate the results
-		$paginator = $query->where($this->where)
-			->orderBy($this->order, $this->sort)
+		$paginator = $query->orderBy($this->order, $this->sort)
 			->paginate($this->max);
-			
+
 		// Generate paginated links
 		$queries = array_except($this->defaults, ['relationships', 'scopes', 'where']);
 		return $paginator->appends($queries);
@@ -269,10 +272,6 @@ class Resource extends \AlbaCoreController implements \AlbaCoreResourceInterface
 				$this->{$default} = $this->defaults[$default];
 			}
 		}
-
-		// Makes sure $this->where is a closure
-		if ( !isset($this->where) )
-			$this->where = function(){};
 
 		// Make sure the sort order is lowercase
 		$this->sort = strtolower($this->sort);

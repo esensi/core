@@ -14,7 +14,7 @@ return [
 
 	'errors' => [
 		'validate'							=> 'User could not be found matching this email address and password.',
-		'authenticate'						=> 'User could not be logged in because it either blocked or it is awaiting email activation.',
+		'authenticate'						=> 'Sorry! We are unable to log you in because your account is either blocked or awaiting email activation.',
 		'show'								=> 'User could not be found.',
 		'show_by_email'						=> 'User could not be found matching this email address.',
 		'show_by_activation_token'			=> 'Activation token could not be found or has already expired.',

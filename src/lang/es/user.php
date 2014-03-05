@@ -14,7 +14,7 @@ return [
 
 	'errors' => [
 		'validate'							=> 'No se encontró ningún usuario con este correo electrónico y esta contraseña.',
-		'authenticate'						=> 'El usuario no puede iniciar sesión en cualquiera de los dos, ya que bloquea o se está a la espera de activación de correo electrónico.',
+		'authenticate'						=> '¡Lo siento! Somos incapaces de hacer login en su porque su cuenta es bloqueado o en espera de activación por correo electrónico.',
 		'show'								=> 'El usuario no se pudo encontrar.',
 		'show_by_email'						=> 'No se encontró ningún usuario con este correo electrónico.',
 		'show_by_activation_token'			=> 'Señal de activación no se ha encontrado o ha expirado ya.',

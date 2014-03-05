@@ -75,25 +75,6 @@ class Resource extends \AlbaCoreController implements \AlbaCoreResourceInterface
 		if ( !empty($params) )
 			$this->setDefaults($params);
 
-		// Add full-text query on Model::$searchable columns
-		if( !empty($this->keywords) )
-		{
-			$keywords = $this->keywords;
-			if(is_string($keywords))
-				$keywords = explode(',', $keywords);
-			$fields = $this->getModel()->searchable;
-			$this->where = function( $query ) use ($keywords, $fields)
-	            {
-	                foreach($fields as $field)
-	                {
-						foreach($keywords as $keyword)
-						{
-							$query->orWhere($field, 'LIKE', '%' . $keyword . '%');
-						}
-	                }
-	            };
-		}
-
 		// Build new query with loaded relationships
 		$query = $this->getModel()->newQuery()->select([$this->getModel()->getTable().'.*']);
 		if ( isset($this->relationships) )
@@ -115,6 +96,25 @@ class Resource extends \AlbaCoreController implements \AlbaCoreResourceInterface
 					$query->withTrashed();
 					break;
 			}
+		}
+
+		// Add full-text query on Model::$searchable columns
+		if( !empty($this->keywords) )
+		{
+			$keywords = $this->keywords;
+			if(is_string($keywords))
+				$keywords = explode(',', $keywords);
+			$fields = $this->getModel()->searchable;
+			$query->where(function( $q ) use ($keywords, $fields)
+	            {
+	                foreach($fields as $field)
+	                {
+						foreach($keywords as $keyword)
+						{
+							$q->orWhere($field, 'LIKE', '%' . $keyword . '%');
+						}
+	                }
+	            });
 		}
 
 		// Build up the query using scope closures

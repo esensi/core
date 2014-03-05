@@ -67,6 +67,7 @@ return [
 		'assign_roles'						=> 'User\'s roles have been updated.',
 		'update_email'						=> 'Email address has been updated.',
 		'update_password'					=> 'Password has been updated.',
+		'reset_password'					=> 'Password has been reset and an email has been sent to :email with instructions on how to reset their password. If the user reports that they did not receive the email within 10-15 minutes, please ask them to check their spam filter, or try resetting their password again.',
 	],
 
 	/*

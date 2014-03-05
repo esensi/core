@@ -200,6 +200,7 @@ return [
 		'block'				=> 'admin.users.show',
 		'unblock'			=> 'admin.users.show',
 		'assign_roles'		=> 'admin.users.show',
+		'reset_password'	=> 'admin.users.show',
 	],
 
 ];

@@ -67,6 +67,7 @@ return [
 		'assign_roles'						=> 'Los roles de usuario se han actualizado.',
 		'update_email'						=> 'Dirección de correo electrónico se ha actualizado.',
 		'update_password'					=> 'La contraseña ha sido actualizado.',
+		'reset_password'					=> 'La contraseña ha sido restablecido y un e-mail ha sido enviado a BOB con instrucciones sobre cómo restablecer su contraseña. Si el usuario informa que no recibieron el correo electrónico dentro de 10 a 15 minutos, por favor pídale que compruebe su filtro de correo no deseado, o intentar restablecer su contraseña de nuevo.',
 	],
 
 	/*

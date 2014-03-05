@@ -624,10 +624,11 @@ class UsersResource extends \AlbaCoreResource {
     public function titles($key = null)
     {
         $ttl = Config::get('alba::user.names.ttl.titles', 10);
-        $dbTags = $this->getModel('name')->distinct()->remember($ttl)->listTitles($key);
+        $dbTags = $this->getModel('name')->remember($ttl)->listTitles($key);
         $langTags = $this->language('names.titles', []);
         $configTags = array_combine($langTags, $langTags);
         $tags = array_unique(array_merge($configTags, $dbTags));
+        unset($tags['']);
         return is_null($key) ? array_values($tags) : $tags;
     }
 
@@ -640,10 +641,11 @@ class UsersResource extends \AlbaCoreResource {
     public function suffixes($key = null)
     {
         $ttl = Config::get('alba::user.names.ttl.suffixes', 10);
-        $dbTags = $this->getModel('name')->distinct()->remember($ttl)->listSuffixes($key);
+        $dbTags = $this->getModel('name')->remember($ttl)->listSuffixes($key);
         $langTags = $this->language('names.suffixes', []);
         $configTags = array_combine($langTags, $langTags);
         $tags = array_unique(array_merge($configTags, $dbTags));
+        unset($tags['']);
         return is_null($key) ? array_values($tags) : $tags;
     }
 }

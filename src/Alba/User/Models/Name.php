@@ -151,7 +151,7 @@ class Name extends \AlbaCoreModel {
      */
     public function scopeListTitles($query, $key = null, $sort = 'asc')
     {
-        return $query->distinct()->whereNotNull('title')->orderBy('title', $sort)->lists('title', $key, $sort);
+        return $query->distinct()->orderBy('title', $sort)->lists('title', $key, $sort);
     }
 
     /**
@@ -164,6 +164,6 @@ class Name extends \AlbaCoreModel {
      */
     public function scopeListSuffixes($query, $key = null, $sort = 'asc')
     {
-        return $query->distinct()->whereNotNull('suffix')->orderBy('suffix', $sort)->lists('suffix', $key, $sort);
+        return $query->distinct()->orderBy('suffix', $sort)->lists('suffix', $key, $sort);
     }
 }

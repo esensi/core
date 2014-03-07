@@ -628,7 +628,6 @@ class UsersResource extends \AlbaCoreResource {
         $langTags = $this->language('names.titles', []);
         $configTags = array_combine($langTags, $langTags);
         $tags = array_unique(array_merge($configTags, $dbTags));
-        unset($tags['']);
         return is_null($key) ? array_values($tags) : $tags;
     }
 
@@ -645,7 +644,6 @@ class UsersResource extends \AlbaCoreResource {
         $langTags = $this->language('names.suffixes', []);
         $configTags = array_combine($langTags, $langTags);
         $tags = array_unique(array_merge($configTags, $dbTags));
-        unset($tags['']);
         return is_null($key) ? array_values($tags) : $tags;
     }
 }

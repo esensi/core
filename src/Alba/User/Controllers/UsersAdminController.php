@@ -76,6 +76,28 @@ class UsersAdminController extends \AlbaUsersController {
     }
 
     /**
+     * Send user password reset URL and redirec to user profile with success message
+     * or redirect to forgot password page with errors
+     *
+     * @param integer $id of User
+     * @return Redirect
+     */
+    public function resetPassword($id = null)
+    {
+        // Prefer to use $id over email for admins
+        if ($id) // @todo restrict to admin privileges
+        {
+            $object = $this->getApi()->show($id);
+        }
+        
+        // Send activation email to user
+        $email = isset($object->email) ? $object->email : Input::get('email');
+        $object = $this->getResource()->resetPassword($email);
+        return $this->redirect('reset_password', ['id' => $object->id])
+            ->with('message', $this->language('success.reset_password', ['email' => $object->email]));
+    }
+
+    /**
      * Show confirmation modal to destroy
      * 
      * @param integer $id

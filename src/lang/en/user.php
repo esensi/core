@@ -14,7 +14,7 @@ return [
 
 	'errors' => [
 		'validate'							=> 'User could not be found matching this email address and password.',
-		'authenticate'						=> 'User could not be logged in because it either blocked or it is awaiting email activation.',
+		'authenticate'						=> 'Sorry! We are unable to log you in because your account is either blocked or awaiting email activation.',
 		'show'								=> 'User could not be found.',
 		'show_by_email'						=> 'User could not be found matching this email address.',
 		'show_by_activation_token'			=> 'Activation token could not be found or has already expired.',
@@ -67,6 +67,7 @@ return [
 		'assign_roles'						=> 'User\'s roles have been updated.',
 		'update_email'						=> 'Email address has been updated.',
 		'update_password'					=> 'Password has been updated.',
+		'reset_password'					=> 'Password has been reset and an email has been sent to :email with instructions on how to reset their password. If the user reports that they did not receive the email within 10-15 minutes, please ask them to check their spam filter, or try resetting their password again.',
 	],
 
 	/*

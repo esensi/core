@@ -14,7 +14,7 @@ return [
 
 	'errors' => [
 		'validate'							=> 'No se encontró ningún usuario con este correo electrónico y esta contraseña.',
-		'authenticate'						=> 'El usuario no puede iniciar sesión en cualquiera de los dos, ya que bloquea o se está a la espera de activación de correo electrónico.',
+		'authenticate'						=> '¡Lo siento! Somos incapaces de hacer login en su porque su cuenta es bloqueado o en espera de activación por correo electrónico.',
 		'show'								=> 'El usuario no se pudo encontrar.',
 		'show_by_email'						=> 'No se encontró ningún usuario con este correo electrónico.',
 		'show_by_activation_token'			=> 'Señal de activación no se ha encontrado o ha expirado ya.',
@@ -67,6 +67,7 @@ return [
 		'assign_roles'						=> 'Los roles de usuario se han actualizado.',
 		'update_email'						=> 'Dirección de correo electrónico se ha actualizado.',
 		'update_password'					=> 'La contraseña ha sido actualizado.',
+		'reset_password'					=> 'La contraseña ha sido restablecido y un e-mail ha sido enviado a BOB con instrucciones sobre cómo restablecer su contraseña. Si el usuario informa que no recibieron el correo electrónico dentro de 10 a 15 minutos, por favor pídale que compruebe su filtro de correo no deseado, o intentar restablecer su contraseña de nuevo.',
 	],
 
 	/*

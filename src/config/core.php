@@ -171,7 +171,7 @@ return [
 			'tag' => 'xrate',
 
 			// Cache storage settings
-			'driver' => 'database',
+			'driver' => 'file',
 			'table' => 'cache',
 			
 			// Timeout (in minutes) an IP should be blocked

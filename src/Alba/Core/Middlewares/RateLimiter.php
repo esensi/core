@@ -122,7 +122,8 @@ class RateLimiter implements HttpKernelInterface {
         {
             // Show rate exceeded message
             $message = $this->app['translator']->get('alba::core.errors.rate_limit_exceeded', ['timeout' => $timeout]);
-            $view = $this->app['view']->make('alba::core.whoops')
+            $template = $this->app['config']->get('alba::core.views.whoops', 'alba::core.whoops');
+            $view = $this->app['view']->make($template)
                 ->with('message', $message)
                 ->with('code', self::RATE_LIMIT_STATUS_CODE)
                 ->with('error', 'Rate Limit Exceeded');

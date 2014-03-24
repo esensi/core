@@ -123,6 +123,7 @@ return [
 
 		// Error pages
 		'missing'			=> 'alba::core.missing',
+		'whoops'			=> 'alba::core.whoops',
 
 		// Modals
 		'modal'				=> 'core.modal',

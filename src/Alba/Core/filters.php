@@ -20,7 +20,6 @@ App::missing(function($exception)
 
 Route::filter('error.default', function($route, $request, $fragment = null)
 {
-
     App::error(function(Exception $exception, $code, $fromConsole)
     {
         Log::error($exception);

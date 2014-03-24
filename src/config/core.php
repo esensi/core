@@ -37,6 +37,7 @@ return [
 		'AlbaCoreAdminController'	=> '\Alba\Core\Controllers\AdminController',
 		'AlbaCoreSeeder'			=> '\Alba\Core\Seeders\Seeder',
 		'AlbaCoreModuleProvider'	=> '\Alba\Core\Providers\ModuleServiceProvider',
+		'AlbaCoreRateLimiter'		=> '\Alba\Core\Middlewares\RateLimiter',
 	],
 
 	/*
@@ -138,5 +139,44 @@ return [
 	*/
 
 	'dashboard' => false,
+
+	/*
+	|--------------------------------------------------------------------------
+	| Rate limit settings
+	|--------------------------------------------------------------------------
+	|
+	| The following configuration option specifies whether or not the rate
+	| limiter should be enabled and how it should behave. The default behavior
+	| is that it is enabled and set to reasonable levels to control
+	| potential hacking threats. More than 10 requests to the same page per
+	| minute will generate a 10 minute ban for that IP address.
+	|
+	*/
+
+	'rates' => [
+
+		// Should the limiter be enabled?
+		'enabled' => true,
+
+		// Should limits be based on unique routes?
+		'routes' => true,
+
+		// Request per minute
+		'limit' => 10,
+
+		// Cache settings
+		'cache' => [
+
+			// Namespace for tags
+			'tag' => 'xrate',
+
+			// Cache storage settings
+			'driver' => 'database',
+			'table' => 'cache',
+			
+			// Timeout (in minutes) an IP should be blocked
+			'timeout' => 10,
+		],
+	],
 	
 ];

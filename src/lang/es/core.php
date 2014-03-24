@@ -19,6 +19,7 @@ return [
 		'restore' => 'El objeto no podía ser restaurada.',
 		'destroy' => 'Objeto no pudo ser eliminado.',
 		'trashing' => 'El objeto no se puede enviar a la basura.',
+		'rate_limit_exceeded' => 'No tan rápido Handsome One! Su límite de velocidad se ha superado por lo que ha sido puesto en un tiempo de espera :timeout minutos.',
 	],
 
 

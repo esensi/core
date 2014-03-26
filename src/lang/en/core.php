@@ -19,6 +19,7 @@ return [
 		'restore' => 'Object could not be restored.',
 		'destroy' => 'Object could not be deleted.',
 		'trashing' => 'Object cannot be sent to trash.',
+		'rate_limit_exceeded' => 'Not so fast El Guapo! Your rate limit has been exceeded so you\'ve been put into a :timeout minute timeout.',
 	],
 
 

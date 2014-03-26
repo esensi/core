@@ -86,6 +86,10 @@ class RateLimiter implements HttpKernelInterface {
 
         // Get requests limit from config
         $limit = $this->app['config']->get('alba::core.rates.limit', 10);
+        $period = $this->app['config']->get('alba::core.rates.period', 1);
+        
+        // Get request timeout from config
+        $timeout = $this->app['config']->get('alba::core.rates.cache.timeout', 10);
 
         // Rate limit by IP address
         $tag = $this->app['config']->get('alba::core.rates.cache.tag', 'xrate:');
@@ -97,11 +101,8 @@ class RateLimiter implements HttpKernelInterface {
             $tag = sprintf($tag . ':%s', $this->app['router']->currentRouteName());
         }
 
-        // Get request timeout from config
-        $timeout = $this->app['config']->get('alba::core.rates.cache.timeout', 10);
-
         // Prime rate limiter as a tagged cache
-        $this->app['cache']->add($tag, 0, $timeout);
+        $this->app['cache']->add($tag, 0, $period);
 
         // Increment rate limiter count for current request
         $counter = (int) $this->app['cache']->get($tag);
@@ -110,23 +111,33 @@ class RateLimiter implements HttpKernelInterface {
         if($counter < $limit)
         {
             $counter++;
-            $this->app['cache']->put($tag, $counter, $timeout);
+            $this->app['cache']->put($tag, $counter, $period);
         }
+
+        // Put request in timeout
+        else
+        {
+            $this->app['cache']->add($tag.':timeout', true, $timeout);
+        }
+
+        // Determine if request is in timeout
+        $inTimeout = $this->app['cache']->has($tag.':timeout');
 
         // Reset cache settings
         $this->app['config']->set('cache.driver', $oldDriver);
         $this->app['config']->set('cache.table', $oldTable);
         
         // Check if counter exceeds rate limit
-        if( $counter >= $limit )
+        if( $counter >= $limit || $inTimeout )
         {
             // Show rate exceeded message
-            $message = $this->app['translator']->get('alba::core.errors.rate_limit_exceeded', ['timeout' => $timeout]);
+            $message = $this->app['translator']->get('alba::core.messages.rate_limit_exceeded');
+            $error = $this->app['translator']->get('alba::core.errors.rate_limit_exceeded', ['timeout' => $timeout]);
             $template = $this->app['config']->get('alba::core.views.whoops', 'alba::core.whoops');
             $view = $this->app['view']->make($template)
                 ->with('message', $message)
-                ->with('code', self::RATE_LIMIT_STATUS_CODE)
-                ->with('error', 'Rate Limit Exceeded');
+                ->with('error', $error)
+                ->with('code', self::RATE_LIMIT_STATUS_CODE);
             $response->setContent($view);
 
             // Set status code

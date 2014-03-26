@@ -162,8 +162,11 @@ return [
 		// Should limits be based on unique routes?
 		'routes' => true,
 
-		// Request per minute
+		// Request per period
 		'limit' => 10,
+
+		// Period duration in minutes
+		'period' => 1,
 
 		// Cache settings
 		'cache' => [

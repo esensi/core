@@ -38,5 +38,6 @@ return [
 		'never_updated'	=> 'Nunca Actualizado',
 		'never_created' => 'Nunca Creado',
 		'never_deleted' => 'Nunca Suprimido',
+		'rate_limit_exceeded' => 'Excede el Límite de Velocidad'
 	],
 ];

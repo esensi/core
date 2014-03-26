@@ -38,5 +38,6 @@ return [
 		'never_updated'	=> 'Never Updated',
 		'never_created' => 'Never Created',
 		'never_deleted' => 'Never Deleted',
+		'rate_limit_exceeded' => 'Rate Limit Exceeded',
 	],
 ];

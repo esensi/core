@@ -1,8 +1,10 @@
 <?php namespace Alba\Core;
 
 use Alba\Core\Providers\ModuleServiceProvider;
+use Alba\Core\Middlewares\RateLimiter;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\HTML;
+use Illuminate\Support\Facades\Config;
 
 /**
  * Service provider for Alba\Core module
@@ -11,6 +13,16 @@ use Illuminate\Support\Facades\HTML;
  * @author daniel <daniel@bexarcreative.com>
  */
 class CoreServiceProvider extends ModuleServiceProvider {
+
+    /**
+     * Registers the resource dependencies
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->app->middleware( new RateLimiter($this->app) );
+    }
 
     /**
      * Bootstrap the application events.

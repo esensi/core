@@ -22,7 +22,42 @@ if ( ! function_exists('build_scripts'))
      */
     function build_scripts()
     {
-        return build_assets(func_get_args(), 'scripts', 'js');
+        
+        //This will be refactored when CSS build system is also migrated to Gulp
+
+
+        //Ideal and simplistic reference to a dependency, without the md5.
+        //@Scripts('jquery')  ==>  <scritp src = "jquery-[md5].js">
+
+
+        //This is filled with the argument of @Script() call inside blade template
+        $dep_list = func_get_args();
+
+        $key = 'scripts';
+        $minutes = Config::get('alba::build.ttl.' . $key, 0);
+        $builds_dir = public_path(Config::get('alba::build.directories.base', 'builds')) . '/' . Config::get('alba::build.directories.' . $key, $key);
+        $builds_url = asset(Config::get('alba::build.directories.base', 'builds')) . '/' . Config::get('alba::build.directories.' . $key, $key);
+
+
+        
+        $script_tag_list = [];
+        $rev_manifest = json_decode(file_get_contents($builds_dir . '/rev-manifest.json'), true);
+        
+
+        foreach($dep_list as $dep):
+
+            if (isset($rev_manifest[$dep]))
+            {
+                $dep_with_rev = $rev_manifest[$dep];
+                $script_tag_list[] = '<script type="text/javascript" src="' . $builds_url . $dep_with_rev .'"></script>';
+            };
+            
+        endforeach;
+
+        // Print out each asset on it's own line
+        // It will be very common to just render only one script tag
+        return implode(PHP_EOL, $script_tag_list) . PHP_EOL;
+
     }
 }
 

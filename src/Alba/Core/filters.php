@@ -27,7 +27,14 @@ Route::filter('error.default', function($route, $request, $fragment = null)
 
     App::error(function(Alba\Core\Exceptions\ResourceException $exception, $code, $fromConsole) use ($fragment)
     {
-        Log::info($exception);
+        Log::error($exception);
+        return $exception->handleWithRedirect($fragment);
+    });
+
+    App::error(function(Alba\User\Exceptions\PermissionsFilterException $exception, $code, $fromConsole) use ($fragment)
+    {
+        Log::error($exception);
+        Request::instance()->headers->set('referer', route('users.signin'), true);
         return $exception->handleWithRedirect($fragment);
     });
 });
@@ -42,7 +49,7 @@ Route::filter('error.api', function()
 
     App::error(function(Alba\Core\Exceptions\ResourceException $exception, $code, $fromConsole)
     {
-        Log::info($exception);
+        Log::error($exception);
         return $exception->handleForApi();
     });
 });

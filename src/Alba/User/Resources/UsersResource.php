@@ -318,7 +318,13 @@ class UsersResource extends \AlbaCoreResource {
     {
         // Update user attributes
         $object = $this->show($id);
-                
+
+        // Make sure that the roles don't leave user void of a role
+        if(empty($roles))
+        {
+            $this->throwException($this->language('errors.empty_roles'));
+        }
+
         // Sync assigned roles
         try
         {

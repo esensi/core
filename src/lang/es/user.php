@@ -34,6 +34,7 @@ return [
 		'no_permission'						=> 'El usuario no tiene ":permission" permiso.',
 		'no_results'						=> 'No hay resultados del usuario.',
 		'no_roles'							=> 'No hay roles asignados a este usuario.',
+		'empty_roles'						=> 'El usuario debe guardar con al menos un rol.',
 		'trashing'							=> 'No se puede eliminar su propia cuenta de usuario.',
 		'feature_disabled'					=> 'Esta función se ha desactivado.',
 		'old_password_mismatch'				=> 'Contraseña actual proporcionada no coincide.',

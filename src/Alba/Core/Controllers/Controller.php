@@ -144,7 +144,8 @@ class Controller extends LaravelController {
     protected function redirect($key, $params = [], $back = false)
     {
         // Short circuit to referrer URL
-        if( $back && Request::header('referer') )
+        $referer = Request::header('referer');
+        if( $back && !empty($referer) )
         {
             return Redirect::back();
         }

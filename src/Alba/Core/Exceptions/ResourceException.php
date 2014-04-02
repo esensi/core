@@ -106,7 +106,8 @@ class ResourceException extends Exception {
     public function handleWithRedirect($fragment = null)
     {
         // Get redirect
-        $redirect = Request::header('referer') ? Redirect::back() : Redirect::route('users.signin');
+        $referer = Request::header('referer');
+        $redirect = empty($referer) ? Redirect::route('users.signin') : Redirect::back();
         
         // Redirect with fragment
         if($fragment)

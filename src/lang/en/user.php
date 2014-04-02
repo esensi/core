@@ -34,6 +34,7 @@ return [
 		'no_permission'						=> 'User does not have ":permission" permission.',
 		'no_results'						=> 'There are no user results.',
 		'no_roles'							=> 'There are no roles assigned to this user.',
+		'empty_roles'						=> 'User must be saved with at least one role.',
 		'trashing'							=> 'You can not delete your own user account.',
 		'feature_disabled'					=> 'This feature has been disabled.',
 		'old_password_mismatch'				=> 'Current password provided does not match.',

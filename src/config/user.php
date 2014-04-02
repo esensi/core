@@ -199,7 +199,10 @@ return [
 		'deactivate'		=> 'admin.users.show',
 		'block'				=> 'admin.users.show',
 		'unblock'			=> 'admin.users.show',
-		'assign_roles'		=> 'admin.users.show',
+		'assign_roles' => [
+			'admin'			=> 'admin.users.show',
+			'user'			=> 'index',
+		],
 		'reset_password'	=> 'admin.users.show',
 	],
 

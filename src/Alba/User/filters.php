@@ -14,6 +14,6 @@ Route::filter('permission', function($route, $request, $permission)
 {
 	if( !Entrust::can($permission) )
 	{
-		throw new \AlbaCoreResourceException(Lang::get('alba::user.errors.no_permission', ['permission' => $permission]));
+		throw new \AlbaPermissionsFilterException(Lang::get('alba::user.errors.no_permission', ['permission' => $permission]));
 	}
 });

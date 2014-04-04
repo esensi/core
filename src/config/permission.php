@@ -34,6 +34,7 @@ return [
 		'AlbaPermissionsAdminController'	=> '\Alba\User\Controllers\PermissionsAdminController',
 		'AlbaPermissionsApiController'		=> '\Alba\User\Controllers\PermissionsApiController',
 		'AlbaPermissionsTableSeeder'		=> '\Alba\User\Seeders\PermissionsTableSeeder',
+		'AlbaPermissionsFilterException'	=> '\Alba\User\Exceptions\PermissionsFilterException',
 	],
 
 	/*

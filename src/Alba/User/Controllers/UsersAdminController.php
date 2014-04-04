@@ -1,5 +1,6 @@
 <?php namespace Alba\User\Controllers;
 
+use \Entrust;
 use Illuminate\Support\Facades\Input;
 
 /**
@@ -300,7 +301,14 @@ class UsersAdminController extends \AlbaUsersController {
 
         $object = $this->getApi()->assignRoles($id);
 
-        return $this->redirect('assign_roles', ['id' => $id])
+        // Handle edge case where current user removes his own permission
+        if(!Entrust::can('module_users'))
+        {
+            return $this->redirect('assign_roles.public')
+                ->with('message', $this->language('success.assign_roles'));
+        }
+
+        return $this->redirectBack('assign_roles.admin', ['id' => $id])
             ->with('message', $this->language('success.assign_roles'));
     }
 }

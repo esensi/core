@@ -84,7 +84,7 @@ class User extends \AlbaCoreModel implements UserInterface, RemindableInterface 
      * @var array
      */
     protected $fillable = [
-        'email', 'email_confirmation', 'password', 'active', 'blocked', 'password_confirmation',
+        'email', 'email_confirmation', 'password', 'remember_token', 'active', 'blocked', 'password_confirmation',
         'password_updated_at', 'activated_at', 'authenticated_at',
     ];
 

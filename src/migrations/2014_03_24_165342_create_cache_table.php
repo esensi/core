@@ -3,6 +3,11 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
+/**
+ * Create store table for cache
+ *
+ * @author daniel <daniel@bexarcreative.com>
+ */
 class CreateCacheTable extends Migration {
 
 	/**
@@ -14,6 +19,7 @@ class CreateCacheTable extends Migration {
 	{
 		Schema::create('cache', function($table)
 		{
+			// Add table columns
 		    $table->string('key')->unique();
 		    $table->text('value');
 		    $table->integer('expiration');

@@ -271,7 +271,7 @@ class UsersController extends \AlbaCoreController {
         // Log user in
         $credentials = Input::only(['email', 'password']);
         $extras = ['active' => true, 'blocked' => false];
-        $remember = Input::get('remember', false);
+        $remember = (bool) Input::get('remember', false);
         $object = $this->getResource()->authenticate($credentials, $extras, $remember);
 
         // If login is ok, redirect to the intended URL or default to the dashboard

@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Illuminate\Auth\UserInterface;
+use Illuminate\Auth\Reminders\RemindableInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
@@ -18,7 +19,7 @@ use Zizaco\Entrust\HasRole;
  * @see Alba\User\Models\Role
  * @see Alba\User\Models\Token
  */
-class User extends \AlbaCoreModel implements UserInterface {
+class User extends \AlbaCoreModel implements UserInterface, RemindableInterface {
 
     /**
      * Include HasRole trait from Entrust
@@ -83,7 +84,7 @@ class User extends \AlbaCoreModel implements UserInterface {
      * @var array
      */
     protected $fillable = [
-        'email', 'email_confirmation', 'password', 'active', 'blocked', 'password_confirmation',
+        'email', 'email_confirmation', 'password', 'remember_token', 'active', 'blocked', 'password_confirmation',
         'password_updated_at', 'activated_at', 'authenticated_at',
     ];
 
@@ -408,6 +409,47 @@ class User extends \AlbaCoreModel implements UserInterface {
     public function getAuthPassword()
     {
         return $this->password;
+    }
+
+    /**
+     * Get the e-mail address where password reminders are sent.
+     *
+     * @return string
+     */
+    public function getReminderEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Get the token value for the "remember me" session.
+     *
+     * @return string
+     */
+    public function getRememberToken()
+    {
+        return $this->remember_token;
+    }
+
+    /**
+     * Set the token value for the "remember me" session.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setRememberToken($value)
+    {
+        $this->remember_token = $value;
+    }
+
+    /**
+     * Get the column name for the "remember me" token.
+     *
+     * @return string
+     */
+    public function getRememberTokenName()
+    {
+        return 'remember_token';
     }
 
     /**

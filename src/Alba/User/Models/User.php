@@ -988,7 +988,7 @@ class User extends \AlbaCoreModel implements UserInterface, RemindableInterface 
      */
     public function setActive($active = true)
     {
-        $this->active = $active;
+        $this->active = (int) $active;
         $this->activated_at = $active ? Carbon::now() : null;
         $rules = $this->rulesForActivating;
         if( !$active )
@@ -1026,7 +1026,7 @@ class User extends \AlbaCoreModel implements UserInterface, RemindableInterface 
      */
     public function setBlocked($blocked = true)
     {
-        $this->blocked = $blocked;
+        $this->blocked = (int) $blocked;
         return $this->save($this->rulesForBlocking);
     }
 

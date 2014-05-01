@@ -4,14 +4,14 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
-	| Configuration values for Alba\Core module
+	| Configuration values for Esensi\Core components package
 	|--------------------------------------------------------------------------
 	|
 	| The following lines contain the default configuration values for the
-	| Alba\Core module. You can publish these to your project for modification
-	| using the following Artisan command:
+	| Esensi\Core components package. You can publish these to your project for
+	| modification using the following Artisan command:
 	|
-	| php artisan config:publish emersonmedia/alba
+	| php artisan config:publish esensi/core
 	|
 	*/
 
@@ -21,47 +21,47 @@ return [
 	|--------------------------------------------------------------------------
 	|
 	| The following configuration options allow the developer to map aliases to
-	| controllers and models for easier customization of how Alba handles
-	| requests related to the Core module. These aliases are loaded by the
-	| service provider for this module.
+	| controllers and models for easier customization of how Esensi handles
+	| requests related to this components package. These aliases are loaded by
+	| the service provider for this components package.
 	|
 	*/
 
 	'aliases' => [
-		'AlbaCoreModel'				=> '\Alba\Core\Models\Model',
-		'AlbaCoreResource'			=> '\Alba\Core\Resources\Resource',
-		'AlbaCoreResourceException'	=> '\Alba\Core\Exceptions\ResourceException',
-		'AlbaCoreResourceInterface'	=> '\Alba\Core\Contracts\ResourceInterface',
-		'AlbaCoreController'		=> '\Alba\Core\Controllers\Controller',
-		'AlbaCoreApiController'		=> '\Alba\Core\Controllers\ApiController',
-		'AlbaCoreAdminController'	=> '\Alba\Core\Controllers\AdminController',
-		'AlbaCoreSeeder'			=> '\Alba\Core\Seeders\Seeder',
-		'AlbaCoreModuleProvider'	=> '\Alba\Core\Providers\ModuleServiceProvider',
-		'AlbaCoreRateLimiter'		=> '\Alba\Core\Middlewares\RateLimiter',
+		'EsensiCoreModel'				=> '\Esensi\Core\Models\Model',
+		'EsensiCoreResource'			=> '\Esensi\Core\Resources\Resource',
+		'EsensiCoreResourceException'	=> '\Esensi\Core\Exceptions\ResourceException',
+		'EsensiCoreResourceInterface'	=> '\Esensi\Core\Contracts\ResourceInterface',
+		'EsensiCoreController'			=> '\Esensi\Core\Controllers\Controller',
+		'EsensiCoreApiController'		=> '\Esensi\Core\Controllers\ApiController',
+		'EsensiCoreAdminController'		=> '\Esensi\Core\Controllers\AdminController',
+		'EsensiCoreSeeder'				=> '\Esensi\Core\Seeders\Seeder',
+		'EsensiCoreModuleProvider'		=> '\Esensi\Core\Providers\ModuleServiceProvider',
+		'EsensiCoreRateLimiter'			=> '\Esensi\Core\Middlewares\RateLimiter',
 	],
 
 	/*
 	|--------------------------------------------------------------------------
-	| Modules to load
+	| Component packages to load
 	|--------------------------------------------------------------------------
 	|
-	| The following configuration options tell Alba which modules are available.
-	| This can be useful for many things but is specifically used by the template
-	| engine to determine how to render the administrative interfaces.
+	| The following configuration options tell Esensi which component packages
+	| are available. This can be useful for many things but is specifically used
+	| by the template engine to determine how to render the administrative UI.
 	|
 	*/
 
 	'modules' => [
-		'user',
+		// 'FooBar'
 	],
 
 	/*
 	|--------------------------------------------------------------------------
-	| Configuration of module route prefixes
+	| Configuration of component package route prefixes
 	|--------------------------------------------------------------------------
 	|
 	| The following configuration options alter the route prefixes used for
-	| the administrative backend, API, and module URLs.
+	| the administrative backend, API, and component package URLs.
 	|
 	*/
 
@@ -81,7 +81,7 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
-	| Routes to be included by all modules
+	| Routes to be included by all component packages
 	|--------------------------------------------------------------------------
 	|
 	| The following configuration options alter which routes are included,
@@ -107,7 +107,7 @@ return [
 	|
 	*/
 
-	'package' => 'alba::',
+	'package' => 'esensi::',
 	
 	/*
 	|--------------------------------------------------------------------------
@@ -122,8 +122,8 @@ return [
 	'views' => [
 
 		// Error pages
-		'missing'			=> 'alba::core.missing',
-		'whoops'			=> 'alba::core.whoops',
+		'missing'			=> 'esensi::core.missing',
+		'whoops'			=> 'esensi::core.whoops',
 
 		// Modals
 		'modal'				=> 'core.modal',

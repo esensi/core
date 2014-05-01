@@ -4,14 +4,14 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
-	| Configuration values for Alba\Build module
+	| Configuration values for Esensi\Build components package
 	|--------------------------------------------------------------------------
 	|
 	| The following lines contain the default configuration values for the
-	| Alba\Build module. You can publish these to your project for modification
-	| using the following Artisan command:
+	| Esensi\Build components package. You can publish these to your project for
+	| modification using the following Artisan command:
 	|
-	| php artisan config:publish emersonmedia/alba
+	| php artisan config:publish esensi/core
 	|
 	*/
 
@@ -21,18 +21,18 @@ return [
 	|--------------------------------------------------------------------------
 	|
 	| The following configuration options allow the developer to map aliases to
-	| controllers and models for easier customization of how Alba handles
-	| requests related to this module. These aliases are loaded by the
-	| service provider for this module.
+	| controllers and models for easier customization of how Esensi handles
+	| requests related to this components package. These aliases are loaded by
+	| the service provider for this components package.
 	|
 	*/
 
 	'aliases' => [
-		'AlbaBuildCommand'			=> '\Alba\Build\Commands\BuildCommand',
-		'AlbaBuildWatchCommand'		=> '\Alba\Build\Commands\BuildWatchCommand',
-		'AlbaBuildCleanCommand'		=> '\Alba\Build\Commands\BuildCleanCommand',
-		'AlbaBuildStylesCommand'	=> '\Alba\Build\Commands\BuildStylesCommand',
-		'AlbaBuildScriptsCommand'	=> '\Alba\Build\Commands\BuildScriptsCommand',
+		'EsensiBuildCommand'			=> '\Esensi\Build\Commands\BuildCommand',
+		'EsensiBuildWatchCommand'		=> '\Esensi\Build\Commands\BuildWatchCommand',
+		'EsensiBuildCleanCommand'		=> '\Esensi\Build\Commands\BuildCleanCommand',
+		'EsensiBuildStylesCommand'		=> '\Esensi\Build\Commands\BuildStylesCommand',
+		'EsensiBuildScriptsCommand'		=> '\Esensi\Build\Commands\BuildScriptsCommand',
 	],
 
 	/*
@@ -99,7 +99,7 @@ return [
 	| The following configuration option sets where the builds should be stored.
 	| The base path is relative to the public directory while the other paths
 	| are relative to the base path. If you make changes here be sure to change
-	| the same configurations in the Gruntfile.js.
+	| the same configurations in the Gulpfile.js.
 	|
 	*/
 
@@ -115,8 +115,9 @@ return [
 	|--------------------------------------------------------------------------
 	|
 	| The following configuration options alter which collections are included
-	| in the Alba\Core layout views. Styles (CSS) are added to the header while
-	| scripts (JS) are added to the footer.
+	| in the Esensi\Core layout views by default. Styles (CSS) are added to the
+	| header while scripts (JS) are added to the footer. You can still add any
+	| asset you want manually in the header or footer from within the template.
 	|
 	*/
 

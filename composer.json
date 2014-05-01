@@ -1,7 +1,7 @@
 {
-    "name": "esensi/alba",
-    "description": "ALBA Core Modules and Components",
-    "keywords": ["emersonmedia", "alba", "laravel", "core", "user"],
+    "name": "esensi/core",
+    "description": "The foundational components of Esensi",
+    "keywords": ["emersonmedia", "esensi", "laravel", "core"],
     "authors": [
         {
             "name": "Emerson Media, LP.",
@@ -17,13 +17,19 @@
         "php": ">=5.3.0",
         "illuminate/support": "4.x"
     },
+    "suggest": {
+        "thephpleague/flysystem": "Flysystem is a filesystem abstraction which allows you to easily swap out a local filesystem for a remote one.",
+        "laravel/cashier": "Laravel Cashier provides an expressive, fluent interface to Stripe's subscription billing services.",
+        "ignited/laravel-omnipay": "Integrates the Omnipay PHP library with Laravel 4 via a ServiceProvider to make Configuring multiple payment tunnels a breeze!",
+        "anahkiasen/former": "A Laravelish way to create and format forms."
+    },
     "autoload": {
         "classmap": [
             "src/migrations"
         ],
         "psr-0": {
-            "Alba": "src/"
+            "Esensi\\Core": "src/"
         }
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "stable"
 }

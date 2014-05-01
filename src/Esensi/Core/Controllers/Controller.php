@@ -275,7 +275,7 @@ class Controller extends LaravelController {
      * @return \Esensi\Core\Controllers\ApiController
      * 
      */
-    public function setApi(\AlbaCoreApiController $api, $name = null)
+    public function setApi(\EsensiCoreApiController $api, $name = null)
     {
         if(is_null($name))
         {

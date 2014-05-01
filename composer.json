@@ -60,7 +60,7 @@
             "src/migrations"
         ],
         "psr-0": {
-            "Esensi\\Core": "src/"
+            "Esensi": "src/"
         }
     },
     "minimum-stability": "dev"

@@ -1,4 +1,4 @@
-<?php namespace \Esensi\Build\Commands;
+<?php namespace Esensi\Build\Commands;
 
 use \RuntimeException;
 use \Illuminate\Console\Command;

@@ -52,7 +52,7 @@ return [
 	*/
 
 	'modules' => [
-		// 'FooBar'
+		// 'FooBar',
 	],
 
 	/*

@@ -110,10 +110,11 @@ class Controller extends LaravelController {
      */
     protected function content($key, $data = [], $name = 'content')
     {
-        $packageKey = str_singular($this->module) . '.package';
-        $package = Config::get('esensi::' . $packageKey, Config::get($packageKey));
+        $coreNamespace = Config::get('esensi::core.namespace');
+        $namespace = str_singular($this->module) . '.namespace';
+        $package = Config::get($coreNamespace . $namespace, Config::get($namespace));
         $viewKey = str_singular($this->module) . '.views.' . $key;
-        $view = Config::get('esensi::' . $viewKey, Config::get($viewKey));
+        $view = Config::get($coreNamespace . $viewKey, Config::get($viewKey));
         return $this->layout->$name = View::make($package . $view, $data);
     }
 

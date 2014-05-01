@@ -51,8 +51,10 @@ return [
 	|
 	*/
 
-	'modules' => [
-		// 'FooBar',
+	'namespace' => 'esensi::',
+
+	'packages' => [
+
 	],
 
 	/*

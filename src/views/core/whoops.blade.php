@@ -1,4 +1,4 @@
-@extends('alba::core.default')
+@extends('esensi::core.default')
 
 @section('content')
 

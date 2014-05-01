@@ -8,7 +8,7 @@ return [
 	|--------------------------------------------------------------------------
 	|
 	| The following language lines contain the default error messages used by
-	| the Core module.
+	| the Esensi\Core components package.
 	|
 	*/
 
@@ -29,7 +29,7 @@ return [
 	|--------------------------------------------------------------------------
 	|
 	| The following language lines contain status message lines used by the
-	| Core module models.
+	| Esensi\Core components package models.
 	|
 	*/
 

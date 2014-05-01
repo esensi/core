@@ -1,5 +1,5 @@
-@include ('alba::core.header')
+@include ('esensi::core.header')
 
 @yield('content')
 
-@include ('alba::core.footer')
+@include ('esensi::core.footer')

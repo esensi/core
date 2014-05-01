@@ -1,7 +1,7 @@
 {
     "name": "esensi/core",
     "description": "The foundational components of Esensi",
-    "keywords": ["emersonmedia", "esensi", "laravel", "core"],
+    "keywords": ["emersonmedia", "esensi", "laravel", "ardent", "core"],
     "authors": [
         {
             "name": "Emerson Media, LP.",
@@ -15,7 +15,14 @@
     "license": "MIT",
     "require": {
         "php": ">=5.3.0",
-        "illuminate/support": "4.x"
+        "illuminate/support": "4.x",
+        "laravelbook/ardent": "2.4.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.0.*",
+        "mockery/mockery": "dev-master",
+        "way/generators": "1.*",
+        "way/laravel-test-helpers": "dev-master"
     },
     "suggest": {
         "thephpleague/flysystem": "Flysystem is a filesystem abstraction which allows you to easily swap out a local filesystem for a remote one.",
@@ -23,6 +30,31 @@
         "ignited/laravel-omnipay": "Integrates the Omnipay PHP library with Laravel 4 via a ServiceProvider to make Configuring multiple payment tunnels a breeze!",
         "anahkiasen/former": "A Laravelish way to create and format forms."
     },
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "laravelbook/ardent",
+                "version": "2.4.3",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/bexarcreativeinc/ardent.git",
+                    "reference": "bexarcreativeinc-master"
+                },
+                "require": {
+                    "php": ">=5.3.0",
+                    "illuminate/support": "4.x",
+                    "illuminate/database": "4.x",
+                    "illuminate/validation": "4.x"
+                },
+                "autoload": {
+                    "psr-0": {
+                        "LaravelBook\\Ardent": "src/"
+                    }
+                }
+            }
+        }
+    ],
     "autoload": {
         "classmap": [
             "src/migrations"

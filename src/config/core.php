@@ -50,12 +50,22 @@ return [
 	| by the template engine to determine how to render the administrative UI.
 	|
 	*/
+	
+	'packages' => [
+		'user'
+	],
+
+	/*
+	|--------------------------------------------------------------------------
+	| Namespace to be used by component package
+	|--------------------------------------------------------------------------
+	|
+	| The following configuration option alter which package namespace is used
+	| for all of the views. Set to empty to use the application level views.
+	|
+	*/
 
 	'namespace' => 'esensi::',
-
-	'packages' => [
-
-	],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -68,48 +78,36 @@ return [
 	*/
 
 	'prefixes' => [
+		'admin'			=> 'admin',
+		'public'		=> '',
 		'api' => [
 			'latest'	=> 'api',
 			'v1' 		=> 'api/v1',
-		],
-		'backend'		=> 'admin',
-		'modules' => [
-			'users'			=> 'users',
-			'tokens'		=> 'tokens',
-			'roles'			=> 'roles',
-			'permissions'	=> 'permissions',
-		],
+		]
 	],
 
 	/*
 	|--------------------------------------------------------------------------
-	| Routes to be included by all component packages
+	| Interfaces to be enabled by packages
 	|--------------------------------------------------------------------------
 	|
-	| The following configuration options alter which routes are included,
-	| effectively allowing the user to not use some or all of the default
-	| routes available.
+	| The following configuration options alter which interfaces are included,
+	| effectively allowing the developer to not use some or all of the default
+	| interfaces available. This is used primarily by the routes configurations.
 	|
 	*/
 
-	'routes' => [
-		
-		'api' 		=> false,
-		'backend' 	=> true,
+	// UIs
+	'ui' => [
+		'admin'		=> true,
 		'public'	=> true,
 	],
-
-	/*
-	|--------------------------------------------------------------------------
-	| Package to be used by core module
-	|--------------------------------------------------------------------------
-	|
-	| The following configuration option alter which package namespace is used
-	| for all of the views. Set to empty to use the application level views.
-	|
-	*/
-
-	'package' => 'esensi::',
+	
+	// APIs
+	'api' => [
+		'public'	=> true,
+		'admin'		=> false,
+	],
 	
 	/*
 	|--------------------------------------------------------------------------

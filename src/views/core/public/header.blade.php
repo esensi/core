@@ -9,7 +9,7 @@
 		<meta name="author" content="">
 		<meta name="generator" content="{{ gethostname() }}">
 		<link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
-		<title>Title</title>
+		<title>Esensi</title>
 		
 		@styles()
 		

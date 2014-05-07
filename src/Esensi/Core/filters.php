@@ -14,8 +14,9 @@
 
 App::missing(function($exception)
 {
-    $view = Config::get('esensi::core.views.missing', 'layouts.missing');
-    return Response::view($view, array(), 404);
+    $namespace = Config::get('esensi::core.namespace', 'esensi::');
+    $view = Config::get('esensi::core.views.public.missing', 'missing');
+    return Response::view($namespace . $view, array(), 404);
 });
 
 Route::filter('error.default', function($route, $request, $fragment = null)

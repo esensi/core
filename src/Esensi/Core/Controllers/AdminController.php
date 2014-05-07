@@ -11,6 +11,12 @@ class AdminController extends \EsensiCoreController {
     /**
      * The layout that should be used for responses.
      */
-    protected $layout = 'esensi::core.default';
-    
+    protected $layout = 'esensi::core.admin.default';
+
+    /**
+     * The UI name
+     * 
+     * @var string
+     */
+    protected $ui = 'admin';
 }

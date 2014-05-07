@@ -9,7 +9,7 @@
 		<meta name="author" content="">
 		<meta name="generator" content="{{ gethostname() }}">
 		<link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
-		<title>Administration</title>
+		<title>Esensi</title>
 		
     @styles()
 		
@@ -32,7 +32,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="{{ route('admin.dashboard') }}">Administration</a>
+        <a class="navbar-brand" href="{{ route('admin.dashboard') }}">Esensi</a>
       </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
@@ -42,8 +42,8 @@
         
           @foreach(Config::get('esensi::core.packages') as $package)
             <?php $namespace = Config::get($package.'.namespace', Config::get('esensi::core.namespace')); ?>
-            @if(Config::has($namespace.$package.'.dropdown'))
-              @include(Config::get($namespace.$package.'.dropdown'))
+            @if(Config::has($namespace . $package . '.dropdown.admin'))
+              @include($namespace . Config::get($namespace . $package . '.dropdown.admin'))
             @endif
           @endforeach
 

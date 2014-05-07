@@ -21,7 +21,7 @@ class Controller extends LaravelController {
     /**
      * The layout that should be used for responses.
      */
-    protected $layout = 'esensi::core.default';
+    protected $layout = 'esensi::core.public.default';
 
     /**
      * The module name
@@ -29,6 +29,13 @@ class Controller extends LaravelController {
      * @var string
      */
     protected $module = 'core';
+
+    /**
+     * The UI name
+     * 
+     * @var string
+     */
+    protected $ui = 'public';
 
     /**
      * The resources injected
@@ -110,12 +117,13 @@ class Controller extends LaravelController {
      */
     protected function content($key, $data = [], $name = 'content')
     {
-        $coreNamespace = Config::get('esensi::core.namespace');
+        $coreNamespace = Config::get('esensi::core.namespace', 'esensi::');
         $namespace = str_singular($this->module) . '.namespace';
         $package = Config::get($coreNamespace . $namespace, Config::get($namespace));
-        $viewKey = str_singular($this->module) . '.views.' . $key;
+        $viewKey = str_singular($this->module) . '.views.' . $this->ui . '.' . $key;
         $view = Config::get($coreNamespace . $viewKey, Config::get($viewKey));
-        return $this->layout->$name = View::make($package . $view, $data);
+        $response = $this->layout->$name = View::make($package . $view, $data);
+        return $response;
     }
 
     /**
@@ -127,8 +135,11 @@ class Controller extends LaravelController {
      */
     protected function modal($key, $data = [], $name = 'modal-body')
     {
-        $package = Config::get('esensi::core.package', 'esensi::');
-        $view = Config::get('esensi::core.views.modal', 'core.modal');
+        $coreNamespace = Config::get('esensi::core.namespace');
+        $namespace = str_singular($this->module) . '.namespace';
+        $package = Config::get($coreNamespace . $namespace, Config::get($namespace));
+        $viewKey = 'core.views.' . $this->ui . '.modal';
+        $view = Config::get($coreNamespace . $viewKey, Config::get($viewKey));
         $this->layout = $package . $view;
         $this->setupLayout();
         return $this->content($key, $data, $name);

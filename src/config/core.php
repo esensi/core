@@ -111,7 +111,7 @@ return [
 	
 	/*
 	|--------------------------------------------------------------------------
-	| Views to be used by core module
+	| Views to be used by core package
 	|--------------------------------------------------------------------------
 	|
 	| The following configuration options alter which package handles the
@@ -121,12 +121,20 @@ return [
 
 	'views' => [
 
-		// Error pages
-		'missing'			=> 'esensi::core.missing',
-		'whoops'			=> 'esensi::core.whoops',
+		// Public views
+		'public' => [
+			
+			'index'				=> 'core.public.index',
+			'missing'			=> 'core.public.missing',
+			'whoops'			=> 'core.public.whoops',
+			'modal'				=> 'core.public.modal',
+		],
 
-		// Modals
-		'modal'				=> 'core.modal',
+		// Admin views
+		'admin' => [
+			
+			'modal'					=> 'core.admin.modal',
+		],
 	],
 
 	/*

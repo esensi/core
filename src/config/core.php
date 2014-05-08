@@ -106,7 +106,7 @@ return [
 	// APIs
 	'api' => [
 		'public'	=> true,
-		'admin'		=> false,
+		'admin'		=> true,
 	],
 	
 	/*

@@ -25,15 +25,29 @@ class BuildCleanCommand extends BuildCommand {
 	 */
 	public function fire()
 	{
-		$this->call('build', ['collection' => 'clean']);
+		$this->call('build', ['task' => 'clean']);
 	}
 
 	/**
 	 * Get the console command arguments.
 	 *
+	 * This is stubbed to overwrite parent class.
+	 *
 	 * @return array
 	 */
 	protected function getArguments()
+	{
+		return [];
+	}
+
+	/**
+	 * Get the console command options.
+	 *
+	 * This is stubbed to overwrite parent class.
+	 *
+	 * @return array
+	 */
+	protected function getOptions()
 	{
 		return [];
 	}

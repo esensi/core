@@ -2,21 +2,21 @@
 
 use \Esensi\Build\Commands\BuildCommand;
 
-class BuildScriptsCommand extends BuildCommand {
+class BuildLintCommand extends BuildCommand {
 
 	/**
 	 * The console command name.
 	 *
 	 * @var string
 	 */
-	protected $name = 'build:scripts';
+	protected $name = 'build:lint';
 
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
-	protected $description = 'Builds the application\'s script assets.';
+	protected $description = 'Lint the application\'s asset for errors in formatting.';
 
 	/**
 	 * Execute the console command.
@@ -25,7 +25,7 @@ class BuildScriptsCommand extends BuildCommand {
 	 */
 	public function fire()
 	{
-		$this->call('build', ['task' => 'scripts']);
+		$this->call('build', ['task' => 'lint']);
 	}
 
 	/**
@@ -39,5 +39,17 @@ class BuildScriptsCommand extends BuildCommand {
 	{
 		return [];
 	}
-	
+
+	/**
+	 * Get the console command options.
+	 *
+	 * This is stubbed to overwrite parent class.
+	 *
+	 * @return array
+	 */
+	protected function getOptions()
+	{
+		return [];
+	}
+
 }

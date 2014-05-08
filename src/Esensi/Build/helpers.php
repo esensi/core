@@ -3,8 +3,9 @@
 if ( ! function_exists('build_styles'))
 {
     /**
-     * Ouput the stylesheets for several collections.
+     * Ouput the stylesheets for several dependencies.
      * 
+     * @param [string, [string], ...]
      * @return string
      */
     function build_styles()
@@ -16,146 +17,62 @@ if ( ! function_exists('build_styles'))
 if ( ! function_exists('build_scripts'))
 {
     /**
-     * Ouput the scripts for several collections.
+     * Ouput the scripts for several dependencies.
      * 
+     * @param [string, [string], ...]
      * @return string
      */
     function build_scripts()
     {
-        
-        //This will be refactored when CSS build system is also migrated to Gulp
-
-
-        //Ideal and simplistic reference to a dependency, without the md5.
-        //@Scripts('jquery')  ==>  <scritp src = "jquery-[md5].js">
-
-
-        //This is filled with the argument of @Script() call inside blade template
-        $dep_list = func_get_args();
-
-        $key = 'scripts';
-        $minutes = Config::get('alba::build.ttl.' . $key, 0);
-        $builds_dir = public_path(Config::get('alba::build.directories.base', 'builds')) . '/' . Config::get('alba::build.directories.' . $key, $key);
-        $builds_url = asset(Config::get('alba::build.directories.base', 'builds')) . '/' . Config::get('alba::build.directories.' . $key, $key);
-
-
-        
-        $script_tag_list = [];
-        $rev_manifest = json_decode(file_get_contents($builds_dir . '/rev-manifest.json'), true);
-        
-
-        foreach($dep_list as $dep):
-
-            if (isset($rev_manifest[$dep]))
-            {
-                $dep_with_rev = $rev_manifest[$dep];
-                $script_tag_list[] = '<script type="text/javascript" src="' . $builds_url . $dep_with_rev .'"></script>';
-            };
-            
-        endforeach;
-
-        // Print out each asset on it's own line
-        // It will be very common to just render only one script tag
-        return implode(PHP_EOL, $script_tag_list) . PHP_EOL;
-
+        return build_assets(func_get_args(), 'scripts', 'js');
     }
 }
 
 if ( ! function_exists('build_assets'))
 {
     /**
-     * Ouput the assets for several collections.
+     * Ouput the assets for several dependencies.
      * 
-     * @param array $collections
+     * @param array $dependencies
      * @param string $key
      * @param string $extension
      * @return string
      */
-    function build_assets($collections = [], $key, $extension)
+    function build_assets($dependencies = [], $key, $extension)
     {
-        $responses = [];
-        $minutes = Config::get('esensi::build.ttl.' . $key, 0);
-        $environments = Config::get('esensi::build.environments', ['production']);
-        $versions = Config::get('esensi::build.versions', false);
+        $assets = [];
+
         $builds_dir = public_path(Config::get('esensi::build.directories.base', 'builds')) . '/' . Config::get('esensi::build.directories.' . $key, $key);
         $builds_url = asset(Config::get('esensi::build.directories.base', 'builds')) . '/' . Config::get('esensi::build.directories.' . $key, $key);
+        $manifest = json_decode(file_get_contents($builds_dir . '/rev-manifest.json'), true);
 
-        // Use config assets if no assets were passed
-        if( empty($collections) )
+        // Map dependencies to the latest revision
+        foreach($dependencies as $dependency)
         {
-            $collections = Config::get('esensi::build.' . $key, []);
-        }
-        
-        // Calculate the signatures of all assets
-        $cache_key = 'build.' . md5(implode('_', $collections));
-        $signatures = Cache::remember($cache_key, $minutes, function() use ($collections, $extension, $builds_dir)
+            // Add extension to dependency
+            $dependency .= '.' . $extension;
+
+            // Only include dependencies that are built
+            if (isset($manifest[$dependency]))
             {
-                $signatures = [];
-                foreach($collections as $collection):
-                    $file_path = $builds_dir . '/' . $collection . '.' . $extension;
-                    if(file_exists($file_path))
-                    {
-                        $signatures[] = substr(md5_file($file_path), 0, 8);
-                    }
-                    else
-                    {
-                        $i = array_search($collection, $collections);
-                        unset($collections[$i]);
-                    }
-                endforeach;
-                return array_combine($collections, $signatures);
-            });
-
-        // Group assets on production environment
-        if(in_array(App::environment(), $environments)):
-        
-            // Get signature of combined file
-            $signature = substr(md5(implode('_', array_values($signatures))), 0, 8);
-            $file_path = $builds_dir . '/collection-' . $signature . '.' . $extension;
-
-            // Build combined collection file
-            if(!file_exists($file_path))
-            {
-                $data = '';
-                foreach($signatures as $collection => $sig):
-                    $data .= file_get_contents($builds_dir . '/' . $collection . '-' . $sig . '.' . $extension) . PHP_EOL;
-                endforeach;
-                file_put_contents($file_path, $data);
-            }
-
-            switch($key)
-            {
-                case 'scripts':
-                    $responses[] = '<script type="text/javascript" src="' . $builds_url . '/collection-' . $signature . '.' . $extension . '"></script>';
-                    break;
-
-                case 'styles':
-                    $responses[] = '<link rel="stylesheet" href="' . $builds_url . '/collection-' . $signature . '.' . $extension . '">';
-                    break;
-            }
-        
-        // Single assets on non-production environments
-        else:
-        
-            // Single assets on non-production environments
-            foreach($signatures as $collection => $sig):
+                // Get the latest revision
+                $revision = $manifest[$dependency];
                 
+                // Generate HTML for including the dependency
                 switch($key)
                 {
-                    case 'scripts':
-                        $responses[] = '<script type="text/javascript" src="' . $builds_url . '/' . $collection . ($versions ? '-' . $sig : null) . '.' . $extension . '"></script>';
+                    case 'styles':
+                        $assets[] = '<link rel="stylesheet" href="' . $builds_url . '/' . $revision .'">';
                         break;
 
-                    case 'styles':
-                        $responses[] = '<link rel="stylesheet" href="' . $builds_url . '/' . $collection . ($versions ? '-' . $sig : null) . '.' . $extension . '">';
+                    case 'scripts':
+                        $assets[] = '<script type="text/javascript" src="' . $builds_url . '/' . $revision .'"></script>';
                         break;
                 }
-
-            endforeach;
-
-        endif;
+            }
+        }
 
         // Print out each asset on it's own line
-        return implode(PHP_EOL, $responses) . PHP_EOL;
+        return implode(PHP_EOL, $assets) . PHP_EOL;
     }
 }

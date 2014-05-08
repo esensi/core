@@ -42,7 +42,7 @@ class BuildServiceProvider extends ModuleServiceProvider {
         // Get Blade compiler
         $blade = $this->app['view']->getEngineResolver()->resolve('blade')->getCompiler();
 
-        // Add @scripts($collection1, $collection2, $collectionN)
+        // Add @scripts($dependency1, $dependency2, $dependencyN)
         $blade->extend(function($value, $compiler)
         {
             $matcher = $compiler->createMatcher('scripts');
@@ -50,7 +50,7 @@ class BuildServiceProvider extends ModuleServiceProvider {
             return preg_replace($matcher, '$1<?php echo build_scripts$2; ?>', $value);
         });
 
-        // Add @styles($collection1, $collection2, $collectionN)
+        // Add @styles($dependency1, $dependency2, $dependencyN)
         $blade->extend(function($value, $compiler)
         {
             $matcher = $compiler->createMatcher('styles');

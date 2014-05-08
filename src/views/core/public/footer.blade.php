@@ -1,9 +1,5 @@
 
-	@scripts()
-
-	<!--[if lt IE 10]>
-	@scripts('cors')
-	<![endif]-->
+	@scripts('application')
 
 </body>
 </html>

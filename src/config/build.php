@@ -33,6 +33,9 @@ return [
 		'EsensiBuildCleanCommand'		=> '\Esensi\Build\Commands\BuildCleanCommand',
 		'EsensiBuildStylesCommand'		=> '\Esensi\Build\Commands\BuildStylesCommand',
 		'EsensiBuildScriptsCommand'		=> '\Esensi\Build\Commands\BuildScriptsCommand',
+		'EsensiBuildImagesCommand'		=> '\Esensi\Build\Commands\BuildImagesCommand',
+		'EsensiBuildFontsCommand'		=> '\Esensi\Build\Commands\BuildFontsCommand',
+		'EsensiBuildLintCommand'		=> '\Esensi\Build\Commands\BuildLintCommand',
 	],
 
 	/*
@@ -47,21 +50,6 @@ return [
 	*/
 
 	'binary' => base_path() . '/node_modules/.bin/gulp',
-	
-	/*
-	|--------------------------------------------------------------------------
-	| TTL configurations
-	|--------------------------------------------------------------------------
-	|
-	| The following configuration options set the Time-to-Live (TTL) for
-	| asset version caching. Values should be specified in minutes.
-	|
-	*/
-
-	'ttl' => [
-		'styles' => 60,
-		'scripts' => 60,
-	],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -69,27 +57,14 @@ return [
 	|--------------------------------------------------------------------------
 	|
 	| The following configuration options set which environments should be
-	| treated as "production" environments. These environments will combine
-	| collections of assets into one file.
+	| treated as "production" environments. In these environments the build
+	| commands will always run with the --production switch.
 	|
 	*/
 
 	'environments' => [
 		'production'
 	],
-
-	/*
-	|--------------------------------------------------------------------------
-	| Versioning
-	|--------------------------------------------------------------------------
-	|
-	| The following configuration option sets whether or not non-production
-	| environments should use the versioned assets (which are typically minified)
-	| or if they should use the non-versioned ones.
-	|
-	*/
-
-	'versions' => true,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -105,36 +80,10 @@ return [
 
 	'directories' => [
 		'base' => 'builds',
+		'fonts' => 'fonts',
+		'images' => 'images',
 		'scripts' => 'scripts',
 		'styles' => 'styles',
 	],
-	
-	/*
-	|--------------------------------------------------------------------------
-	| Collections to be used by build_styles() and build_scripts()
-	|--------------------------------------------------------------------------
-	|
-	| The following configuration options alter which collections are included
-	| in the Esensi\Core layout views by default. Styles (CSS) are added to the
-	| header while scripts (JS) are added to the footer. You can still add any
-	| asset you want manually in the header or footer from within the template.
-	|
-	*/
 
-	'styles' => [
-		'google-fonts',
-		'font-awesome',
-		'jquery-ui',
-		'bootstrap-multiselect',
-		'bootstrap-tagsinput',
-		'application',
-	],
-
-	'scripts' => [
-		'jquery',
-		'jquery-ui',
-		'bootstrap',
-		'typeahead',
-		'application',
-	],
 ];

@@ -11,16 +11,20 @@
 		<link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
 		<title>Esensi</title>
 		
-    @styles()
-		
-		<!--[if lt IE 9]>
-		@scripts('ie')
-		<![endif]-->
+    @styles('application')
+    
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+      <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+      <![endif]-->
 	</head>
-<body>
+<body class="public {{ str_replace('.', '-', Route::currentRouteName()) }}">
 	<!--[if lt IE 8]>
-		<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
-	<![endif]-->
+  <div class="alert alert-info">
+    <strong>Heads up!</strong> You're using an older web browser, so some parts of this site may not work properly. You might want to try to <a href="http://whatbrowser.org/" class="alert-link">upgrade your browser</a>. You'll find that many websites work and look better, and you'll be safer online!
+  </div>
+  <![endif]-->
 
   @if (Auth::check())
   <div class="navbar navbar-default navbar-static-top" role="navigation">

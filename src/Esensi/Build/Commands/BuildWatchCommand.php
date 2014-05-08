@@ -25,11 +25,13 @@ class BuildWatchCommand extends BuildCommand {
 	 */
 	public function fire()
 	{
-		$this->call('build', ['collection' => 'watch']);
+		$this->call('build', ['task' => 'watch']);
 	}
 
 	/**
 	 * Get the console command arguments.
+	 *
+	 * This is stubbed to overwrite parent class.
 	 *
 	 * @return array
 	 */

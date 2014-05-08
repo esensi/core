@@ -2,6 +2,7 @@
 
 use \RuntimeException;
 use \Illuminate\Console\Command;
+use \Illuminate\Support\Facades\App;
 use \Illuminate\Support\Facades\Config;
 use \Symfony\Component\Console\Input\InputOption;
 use \Symfony\Component\Console\Input\InputArgument;
@@ -46,31 +47,51 @@ class BuildCommand extends Command {
 		$gulp_path = Config::get('esensi::build.binary', base_path() . '/node_modules/.bin/gulp');
 		$gulp_command = $gulp_path . ' build';
 		
-		if($this->argument('collection') != null)
+		$task = $this->argument('task');
+		if($task != null)
 		{
-			$gulp_command .= ':' . $this->argument('collection');
+			$gulp_command .= ':' . $task;
 
-			// Show watching...
-			if($this->argument('collection') == 'watch')
+			// Show subtask process
+			switch($task)
 			{
-				$this->info('Builder is now watching for asset changes...');
-			}
+				case 'watch':
+					$this->info('Builder is now watching for asset changes...');
+					break;
 
-			// Show building...
-			if($this->argument('collection') == 'styles')
-			{
-				$this->info('Builder is now building stylesheets...');
-			}
-			if($this->argument('collection') == 'scripts')
-			{
-				$this->info('Builder is now building scripts...');
-			}
+				case 'clean':
+					$this->info('Builder is now cleaning old asset builds...');
+					break;
 
-			// Show cleaning...
-			if($this->argument('collection') == 'clean')
-			{
-				$this->info('Builder is now cleaning old asset builds...');
+				case 'lint':
+					$this->info('Builder is now linting assets...');
+					break;
+
+				case 'styles':
+					$this->info('Builder is now building stylesheets...');
+					break;
+
+				case 'scripts':
+					$this->info('Builder is now building scripts...');
+					break;
+
+				case 'images':
+					$this->info('Builder is now building images...');
+					break;
+
+				case 'fonts':
+					$this->info('Builder is now building fonts...');
+					break;
 			}
+		}
+
+		// Compare environment to configured environments for production
+		$is_production = in_array(App::environment(), Config::get('esensi::build.environments', ['production']));
+
+		// Run in production mode
+		if($is_production || $this->option('production') === true)
+		{
+			$gulp_command .= ' --production';
 		}
 
 		// Add the gulp command to the proccesses
@@ -130,7 +151,7 @@ class BuildCommand extends Command {
 	protected function getArguments()
 	{
 		return [
-			['collection', InputArgument::OPTIONAL, 'A collection to build.'],
+			['task', InputArgument::OPTIONAL, 'A task to run.'],
 		];
 	}
 
@@ -140,8 +161,10 @@ class BuildCommand extends Command {
 	 * @return array
 	 */
 	protected function getOptions()
-	{
-		return [];
+	{	
+		return [
+			['production', 'p', InputOption::VALUE_NONE, 'Optimizes the build for production'],
+		];
 	}
 
 }

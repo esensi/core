@@ -2,21 +2,21 @@
 
 use \Esensi\Build\Commands\BuildCommand;
 
-class BuildScriptsCommand extends BuildCommand {
+class BuildFontsCommand extends BuildCommand {
 
 	/**
 	 * The console command name.
 	 *
 	 * @var string
 	 */
-	protected $name = 'build:scripts';
+	protected $name = 'build:fonts';
 
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
-	protected $description = 'Builds the application\'s script assets.';
+	protected $description = 'Builds the application\'s font assets.';
 
 	/**
 	 * Execute the console command.
@@ -25,7 +25,7 @@ class BuildScriptsCommand extends BuildCommand {
 	 */
 	public function fire()
 	{
-		$this->call('build', ['task' => 'scripts']);
+		$this->call('build', ['task' => 'fonts']);
 	}
 
 	/**
@@ -39,5 +39,5 @@ class BuildScriptsCommand extends BuildCommand {
 	{
 		return [];
 	}
-	
+
 }

@@ -25,11 +25,13 @@ class BuildStylesCommand extends BuildCommand {
 	 */
 	public function fire()
 	{
-		$this->call('build', ['collection' => 'styles']);
+		$this->call('build', ['task' => 'styles']);
 	}
 
 	/**
 	 * Get the console command arguments.
+	 *
+	 * This is stubbed to overwrite parent class.
 	 *
 	 * @return array
 	 */

@@ -42,9 +42,13 @@ if ( ! function_exists('build_assets'))
     {
         $assets = [];
 
+        // Get build configs
         $builds_dir = public_path(Config::get('esensi::build.directories.base', 'builds')) . '/' . Config::get('esensi::build.directories.' . $key, $key);
         $builds_url = asset(Config::get('esensi::build.directories.base', 'builds')) . '/' . Config::get('esensi::build.directories.' . $key, $key);
         $manifest = json_decode(file_get_contents($builds_dir . '/rev-manifest.json'), true);
+
+        // Babysit dependencies so we don't have duplications
+        $dependencies = array_unique($dependencies);
 
         // Map dependencies to the latest revision
         foreach($dependencies as $dependency)

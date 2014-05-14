@@ -68,8 +68,10 @@ class RateLimiter implements HttpKernelInterface {
      */
     public function rateLimit(SymfonyRequest $request, SymfonyResponse $response)
     {
+        $namespace = $this->app['config']->get('esensi::core.namespace');
+
         // Only rate limit if enabled
-        if( !$this->app['config']->get('esensi::core.rates.enabled') )
+        if( !$this->app['config']->get($namespace . 'core.rates.enabled') )
         {
             return $response;
         }
@@ -79,24 +81,24 @@ class RateLimiter implements HttpKernelInterface {
         $oldTable = $this->app['config']->get('cache.table');
 
         // Setup cache to use cache table
-        $driver = $this->app['config']->get('esensi::core.rates.cache.driver', 'database');
-        $table = $this->app['config']->get('esensi::core.rates.cache.table', 'cache');
+        $driver = $this->app['config']->get($namespace . 'core.rates.cache.driver', 'database');
+        $table = $this->app['config']->get($namespace . 'core.rates.cache.table', 'cache');
         $this->app['config']->set('cache.driver', $driver);
         $this->app['config']->set('cache.table', $table);
 
         // Get requests limit from config
-        $limit = $this->app['config']->get('esensi::core.rates.limit', 10);
-        $period = $this->app['config']->get('esensi::core.rates.period', 1);
+        $limit = $this->app['config']->get($namespace . 'core.rates.limit', 10);
+        $period = $this->app['config']->get($namespace . 'core.rates.period', 1);
         
         // Get request timeout from config
-        $timeout = $this->app['config']->get('esensi::core.rates.cache.timeout', 10);
+        $timeout = $this->app['config']->get($namespace . 'core.rates.cache.timeout', 10);
 
         // Rate limit by IP address
-        $tag = $this->app['config']->get('esensi::core.rates.cache.tag', 'xrate:');
+        $tag = $this->app['config']->get($namespace . 'core.rates.cache.tag', 'xrate:');
         $tag = sprintf($tag . ':%s', $request->getClientIp());
         
         // Rate limit by route address
-        if( $this->app['config']->get('esensi::core.rates.routes') )
+        if( $this->app['config']->get($namespace . 'core.rates.routes') )
         {
             $tag = sprintf($tag . ':%s', $this->app['router']->currentRouteName());
         }
@@ -130,11 +132,14 @@ class RateLimiter implements HttpKernelInterface {
         // Check if counter exceeds rate limit
         if( $counter >= $limit || $inTimeout )
         {
+            // Load the language files because Laravel doesn't seem to have loaded them by now
+            $this->app['translation.loader']->addNamespace('esensi', __DIR__ . '/../../../lang');
+
             // Show rate exceeded message
-            $message = $this->app['translator']->get('esensi::core.messages.rate_limit_exceeded');
-            $error = $this->app['translator']->get('esensi::core.errors.rate_limit_exceeded', ['timeout' => $timeout]);
-            $template = $this->app['config']->get('esensi::core.views.whoops', 'esensi::core.whoops');
-            $view = $this->app['view']->make($template)
+            $message = $this->app['translator']->get($namespace . 'core.messages.rate_limit_exceeded');
+            $error = $this->app['translator']->get($namespace . 'core.errors.rate_limit_exceeded', ['timeout' => $timeout]);
+            $template = $this->app['config']->get($namespace . 'core.views.public.whoops', 'whoops');
+            $view = $this->app['view']->make($namespace . $template)
                 ->with('message', $message)
                 ->with('error', $error)
                 ->with('code', self::RATE_LIMIT_STATUS_CODE);

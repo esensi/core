@@ -1,7 +1,6 @@
 <?php namespace Esensi\Core;
 
 use \Esensi\Core\Providers\PackageServiceProvider;
-use \Esensi\Core\Middlewares\RateLimiter;
 use \Illuminate\Pagination\Paginator;
 use \Illuminate\Support\Facades\HTML;
 use \Illuminate\Support\Facades\Config;
@@ -15,23 +14,13 @@ use \Illuminate\Support\Facades\Config;
 class CoreServiceProvider extends PackageServiceProvider {
 
     /**
-     * Registers the resource dependencies
-     *
-     * @return void
-     */
-    public function register()
-    {
-        $this->app->middleware( new RateLimiter($this->app) );
-    }
-
-    /**
      * Bootstrap the application events.
      *
      * @return void
      */
     public function boot()
     {
-        $this->package('esensi/core', 'esensi', __DIR__.'/../..');
+        $this->package('esensi/core', 'esensi', __DIR__ . '/../..');
 
         $this->addAliases(['core', 'build']);
 

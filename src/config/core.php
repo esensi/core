@@ -38,6 +38,7 @@ return [
         'EsensiCoreSeeder'              => '\Esensi\Core\Seeders\Seeder',
         'EsensiCorePackageProvider'     => '\Esensi\Core\Providers\PackageServiceProvider',
         'EsensiCoreRateLimiter'         => '\Esensi\Core\Middlewares\RateLimiter',
+        'EsensiCoreRateLimiterProvider' => '\Esensi\Core\Providers\RateLimiterServiceProvider',
     ],
 
     /*

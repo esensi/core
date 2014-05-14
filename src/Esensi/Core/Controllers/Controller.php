@@ -163,8 +163,9 @@ class Controller extends LaravelController {
         }
 
         // Redirect to intended route
-        $redirectKey = str_singular($this->package) . '.redirects.' . $key;
-        $redirect = Config::get('esensi::'.$redirectKey, Config::get($redirectKey, 'index'));
+        $namespace = Config::get('esensi::'.$this->package.'.namespace', Config::get('esensi::core.namespace', 'esensi::'));
+        $redirectKey = str_singular($this->package) . '.redirects.' . $this->ui . '.' . $key;
+        $redirect = Config::get($namespace . $redirectKey, Config::get($redirectKey, 'index'));
         return Redirect::route($redirect, $params);
     }
 

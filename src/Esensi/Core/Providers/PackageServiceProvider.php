@@ -10,7 +10,7 @@ use \Illuminate\Support\ServiceProvider;
  *
  * @author daniel <daniel@bexarcreative.com>
  */
-class ModuleServiceProvider extends ServiceProvider {
+class PackageServiceProvider extends ServiceProvider {
 
     /**
      * Indicates if loading of the provider is deferred.

@@ -5,7 +5,7 @@ use \Illuminate\Support\Facades\Lang;
 use \Illuminate\Support\Facades\Config;
 
 /**
- * Core Resource controller as the base for all module Resource controllers
+ * Core Resource controller as the base for all package Resource controllers
  *
  * @author diego <diego@emersonmedia.com>
  * @author daniel <daniel@bexarcreative.com>
@@ -13,19 +13,11 @@ use \Illuminate\Support\Facades\Config;
 class Resource extends \EsensiCoreController implements \EsensiCoreResourceInterface {
 
     /**
-     * The module name
+     * The package name
      * 
      * @var string
      */
-    protected $module = 'core';
-
-	/**
-     * This is maintained for backwards compatibility.
-     * It should be removed by 0.2.x release.
-     * 
-     * @var \Esensi\Core\Models\Model
-     */
-    protected $model;
+    protected $package = 'core';
 
 	/**
      * Injected models
@@ -301,7 +293,7 @@ class Resource extends \EsensiCoreController implements \EsensiCoreResourceInter
      */
     protected function language($key, $replacements = [])
     {
-        $key = str_singular($this->module) . '.' .$key;
+        $key = str_singular($this->package) . '.' .$key;
         return Lang::has('esensi::' . $key) ? Lang::get('esensi::' . $key, $replacements) : Lang::get($key, $replacements);
     }
 
@@ -316,7 +308,7 @@ class Resource extends \EsensiCoreController implements \EsensiCoreResourceInter
     {
         if(is_null($name))
         {
-            $name = str_singular($this->module);
+            $name = str_singular($this->package);
         }
 
         // Provided for backwards compatibility
@@ -336,7 +328,7 @@ class Resource extends \EsensiCoreController implements \EsensiCoreResourceInter
     {
         if(is_null($name))
         {
-            $name = str_singular($this->module);
+            $name = str_singular($this->package);
             
             // Provided for backwards compatibility
         	// @todo remove by 0.2.x

@@ -36,7 +36,7 @@ return [
 		'EsensiCoreApiController'		=> '\Esensi\Core\Controllers\ApiController',
 		'EsensiCoreAdminController'		=> '\Esensi\Core\Controllers\AdminController',
 		'EsensiCoreSeeder'				=> '\Esensi\Core\Seeders\Seeder',
-		'EsensiCoreModuleProvider'		=> '\Esensi\Core\Providers\ModuleServiceProvider',
+		'EsensiCorePackageProvider'		=> '\Esensi\Core\Providers\PackageServiceProvider',
 		'EsensiCoreRateLimiter'			=> '\Esensi\Core\Middlewares\RateLimiter',
 	],
 

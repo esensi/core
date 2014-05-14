@@ -1,6 +1,6 @@
 <?php namespace Esensi\Build;
 
-use \Esensi\Core\Providers\ModuleServiceProvider;
+use \Esensi\Core\Providers\PackageServiceProvider;
 use \Illuminate\Support\Facades\Config;
 use \Illuminate\Support\Facades\Event;
 
@@ -9,7 +9,7 @@ use \Illuminate\Support\Facades\Event;
  *
  * @author daniel <daniel@bexarcreative.com>
  */
-class BuildServiceProvider extends ModuleServiceProvider {
+class BuildServiceProvider extends PackageServiceProvider {
 
     /**
      * Registers the resource dependencies

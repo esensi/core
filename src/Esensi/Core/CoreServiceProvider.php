@@ -1,6 +1,6 @@
 <?php namespace Esensi\Core;
 
-use \Esensi\Core\Providers\ModuleServiceProvider;
+use \Esensi\Core\Providers\PackageServiceProvider;
 use \Esensi\Core\Middlewares\RateLimiter;
 use \Illuminate\Pagination\Paginator;
 use \Illuminate\Support\Facades\HTML;
@@ -12,7 +12,7 @@ use \Illuminate\Support\Facades\Config;
  * @author diego <diego@emersonmedia.com>
  * @author daniel <daniel@bexarcreative.com>
  */
-class CoreServiceProvider extends ModuleServiceProvider {
+class CoreServiceProvider extends PackageServiceProvider {
 
     /**
      * Registers the resource dependencies

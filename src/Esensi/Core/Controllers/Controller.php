@@ -9,7 +9,7 @@ use \Illuminate\Support\Facades\View;
 use \Illuminate\Routing\Controller as LaravelController;
 
 /**
- * Core controller for base features of all module controllers
+ * Core controller for base features of all package controllers
  *
  * @author diego <diego@emersonmedia.com>
  * @author daniel <daniel@bexarcreative.com>
@@ -24,11 +24,11 @@ class Controller extends LaravelController {
     protected $layout = 'esensi::core.public.default';
 
     /**
-     * The module name
+     * The package name
      * 
      * @var string
      */
-    protected $module = 'core';
+    protected $package = 'core';
 
     /**
      * The UI name
@@ -118,9 +118,9 @@ class Controller extends LaravelController {
     protected function content($key, $data = [], $name = 'content')
     {
         $coreNamespace = Config::get('esensi::core.namespace', 'esensi::');
-        $namespace = str_singular($this->module) . '.namespace';
+        $namespace = str_singular($this->package) . '.namespace';
         $package = Config::get($coreNamespace . $namespace, Config::get($namespace));
-        $viewKey = str_singular($this->module) . '.views.' . $this->ui . '.' . $key;
+        $viewKey = str_singular($this->package) . '.views.' . $this->ui . '.' . $key;
         $view = Config::get($coreNamespace . $viewKey, Config::get($viewKey));
         $response = $this->layout->$name = View::make($package . $view, $data);
         return $response;
@@ -136,7 +136,7 @@ class Controller extends LaravelController {
     protected function modal($key, $data = [], $name = 'modal-body')
     {
         $coreNamespace = Config::get('esensi::core.namespace');
-        $namespace = str_singular($this->module) . '.namespace';
+        $namespace = str_singular($this->package) . '.namespace';
         $package = Config::get($coreNamespace . $namespace, Config::get($namespace));
         $viewKey = 'core.views.' . $this->ui . '.modal';
         $view = Config::get($coreNamespace . $viewKey, Config::get($viewKey));
@@ -163,7 +163,7 @@ class Controller extends LaravelController {
         }
 
         // Redirect to intended route
-        $redirectKey = str_singular($this->module) . '.redirects.' . $key;
+        $redirectKey = str_singular($this->package) . '.redirects.' . $key;
         $redirect = Config::get('esensi::'.$redirectKey, Config::get($redirectKey, 'index'));
         return Redirect::route($redirect, $params);
     }
@@ -203,7 +203,7 @@ class Controller extends LaravelController {
     {
         if(is_null($name))
         {
-            $name = str_singular($this->module);
+            $name = str_singular($this->package);
         }
 
         return $this->resources[$name];
@@ -221,7 +221,7 @@ class Controller extends LaravelController {
     {
         if(is_null($name))
         {
-            $name = str_singular($this->module);
+            $name = str_singular($this->package);
         }
 
         return $this->resources[$name] = $resource;
@@ -238,7 +238,7 @@ class Controller extends LaravelController {
     {
         if(is_null($name))
         {
-            $name = str_singular($this->module);
+            $name = str_singular($this->package);
         }
 
         return $this->controllers[$name];
@@ -256,7 +256,7 @@ class Controller extends LaravelController {
     {
         if(is_null($name))
         {
-            $name = str_singular($this->module);
+            $name = str_singular($this->package);
         }
 
         return $this->controllers[$name] = $controller;
@@ -273,7 +273,7 @@ class Controller extends LaravelController {
     {
         if(is_null($name))
         {
-            $name = str_singular($this->module);
+            $name = str_singular($this->package);
         }
 
         return $this->apis[$name];
@@ -291,7 +291,7 @@ class Controller extends LaravelController {
     {
         if(is_null($name))
         {
-            $name = str_singular($this->module);
+            $name = str_singular($this->package);
         }
 
         return $this->apis[$name] = $api;

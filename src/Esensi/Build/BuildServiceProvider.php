@@ -18,15 +18,15 @@ class BuildServiceProvider extends PackageServiceProvider {
      */
     public function register()
     {
-    	require __DIR__ . '/helpers.php';
+        require __DIR__ . '/helpers.php';
 
         Event::listen('artisan.start', function(\Illuminate\Console\Application $artisan)
-		{
-			foreach(Config::get('esensi::build.aliases', []) as $alias => $command)
-			{
-				$artisan->add(new $command());
-			}
-		});
+        {
+            foreach(Config::get('esensi::build.aliases', []) as $alias => $command)
+            {
+                $artisan->add(new $command());
+            }
+        });
     }
 
     /**

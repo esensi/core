@@ -12,37 +12,37 @@ use \Illuminate\Database\Seeder as LaravelSeeder;
  */
 class Seeder extends LaravelSeeder {
 
-	/**
-	 * Run before the database seeds.
-	 *
-	 * @return void
-	 */
-	public function beforeRun()
-	{
-		Model::unguard();
-	}
+    /**
+     * Run before the database seeds.
+     *
+     * @return void
+     */
+    public function beforeRun()
+    {
+        Model::unguard();
+    }
 
-	/**
-	 * Run the database seeds.
-	 *
-	 * @return void
-	 */
-	public function run()
-	{
-		$this->call('\DatabaseSeeder');
-	}
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $this->call('\DatabaseSeeder');
+    }
 
-	/**
-	 * Run after the database seeds.
-	 *
-	 * @return void
-	 */
-	public function afterRun()
-	{
-		Model::reguard();
-	}
+    /**
+     * Run after the database seeds.
+     *
+     * @return void
+     */
+    public function afterRun()
+    {
+        Model::reguard();
+    }
 
-	/**
+    /**
      * Save model or fail by showing errors
      *
      * @param Model $model
@@ -52,24 +52,24 @@ class Seeder extends LaravelSeeder {
     public function saveOrFail(Model $model, $rules = null)
     {
 
-    	if ( is_null($rules) )
-    	{
-    		$res = $model->save();
-    	}
-    	else
-    	{
-    		$res = $model->save($rules);
-    	}
+        if ( is_null($rules) )
+        {
+            $res = $model->save();
+        }
+        else
+        {
+            $res = $model->save($rules);
+        }
 
-	    if(!$res)
-	    {
-	        $class = get_class($model);
-	        $errors = implode("\n- ", $model->errors()->all());
-	        $this->command->error("$class could not be seeded:");
-	        $this->command->line('- '.$errors);
-	        exit();
-		}
+        if(!$res)
+        {
+            $class = get_class($model);
+            $errors = implode("\n- ", $model->errors()->all());
+            $this->command->error("$class could not be seeded:");
+            $this->command->line('- '.$errors);
+            exit();
+        }
 
-	}
-	
+    }
+    
 }

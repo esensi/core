@@ -26,7 +26,7 @@ class PackageServiceProvider extends ServiceProvider {
      */
     public function register()
     {
-        
+
     }
 
     /**
@@ -36,7 +36,7 @@ class PackageServiceProvider extends ServiceProvider {
      */
     public function boot()
     {
-        
+
     }
 
     /**

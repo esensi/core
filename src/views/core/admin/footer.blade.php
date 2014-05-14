@@ -1,6 +1,6 @@
-	<div id="esensiModal" role="dialog" aria-labelledby="esensiModalLabel" aria-hidden="true" class="modal fade"></div>
+  <div id="esensiModal" role="dialog" aria-labelledby="esensiModalLabel" aria-hidden="true" class="modal fade"></div>
 
-	@scripts('application')
+  @scripts('application')
 
 </body>
 </html>

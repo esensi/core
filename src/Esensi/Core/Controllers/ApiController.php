@@ -14,12 +14,12 @@ class ApiController extends \EsensiCoreController {
     /**
      * Inject dependencies
      *
-     * @param \Esensi\Core\Resources\Resource $resource;
+     * @param \Esensi\Core\Contracts\RepositoryInterface $repository;
      * @return void
      */
-    public function __construct(\EsensiCoreResource $resource)
+    public function __construct(RepositoryInterface $repository)
     {
-        $this->setResource($resource);
+        $this->setRepository($repository);
     }
 
     /**
@@ -29,8 +29,10 @@ class ApiController extends \EsensiCoreController {
      */
     public function index()
     {
-        $params = Input::only('max', 'order', 'sort', 'keywords');
-        return $this->getResource()->index($params);
+        $options = Input::only('max', 'order', 'sort', 'keywords');
+        return $this->getRepository()
+            ->setOptions($options)
+            ->index();
     }
 
     /**
@@ -40,44 +42,45 @@ class ApiController extends \EsensiCoreController {
      */
     public function store()
     {
-        $attributes = Input::all();
-        return $this->getResource()->store($attributes);
+        return $this->getRepository()
+            ->store(Input::all());
     }
 
     /**
      * Display the specified resource.
      *
-     * @param int $id of object
+     * @param integer $id of object
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function show($id)
+    public function show(integer $id)
     {
-        return $this->getResource()->show($id);
+        return $this->getRepository()
+            ->show($id);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param int $id of object to update
+     * @param integer $id of object to update
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function update($id)
+    public function update(integer $id)
     {
-        $attributes = Input::all();
-        return $this->getResource()->update($id, $attributes);
+        return $this->getRepository()
+            ->update($id, Input::all());
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id of object to remove
-     * @param bool $force delete
-     * @return bool
+     * @param integer $id of object to remove
+     * @return boolean
      * 
      */
-    public function destroy($id)
+    public function destroy(integer $id)
     {
-        return $this->getResource()->destroy($id);
+        return $this->getRepository()
+            ->destroy($id);
     }
 
 }

@@ -84,7 +84,7 @@ class ApiController extends Controller implements ExceptionHandlerInterface,
      */
     public function index()
     {
-        $filters = Input::only('max', 'order', 'sort', 'keywords');
+        $filters = Input::only('max', 'order', 'sort', 'keywords', 'trashed');
         return $this->getRepository()
             ->setFilters($filters)
             ->index();

@@ -53,7 +53,7 @@ trait FilterableRepositoryTrait{
         $this->bindFilters();
 
         // Set primary selection to the model's table
-        $query->select([$model->getTable().'.*']);
+        $query->select([$query->getModel()->getTable().'.*']);
 
         // Filter with relationships
         $this->filterRelationships($query);
@@ -190,9 +190,9 @@ trait FilterableRepositoryTrait{
     public function addScope($name, $args = [])
     {
         // Convert mixed to array
-        $args = is_array($arr) ? $arr : explode(',', $args);
+        $args = is_array($args) ? $args : explode(',', $args);
         $args = array_values($args);
-        
+
         // Only add the scope if the args are not empty
         $test = implode('', $args);
         if( ! empty($test) )
@@ -222,7 +222,7 @@ trait FilterableRepositoryTrait{
      */
     public function mergeFilters(array $filters = [])
     {
-        $this->filters = array_merge($this->filters, $filters);
+        $this->filters = array_merge($this->filters, array_filter($filters));
         $this->bindFilters();
     }
 
@@ -236,13 +236,13 @@ trait FilterableRepositoryTrait{
         // Assign filters as properties
         foreach( $this->filters as $key => $value )
         {
-            $this->{$key} = $value;
+            $this->$key = $value;
         }
 
         // Make sure the sort order is lowercase
         $this->sort = strtolower( (string) $this->sort);
 
         // Make sure the max is a positive integer
-        $this->max = max(0, (integer) $this->sort);
+        $this->max = max(0, (integer) $this->max);
     }
 }

@@ -1,36 +1,12 @@
 <?php namespace Esensi\Core\Traits;
 
-use \Esensi\Core\Traits\TrashableRepositoryTrait;
-use \Esensi\Core\Traits\FilterableRepositoryTrait;
-
 /**
  * Trait implementation of a resource repository
  *
  * @author daniel <daniel@bexarcreative.com>
  * @see \Esensi\Core\Contracts\ResourcefulRepositoryInterface
- * @see \Esensi\Core\Traits\TrashableRepositoryTrait
- * @see \Esensi\Core\Traits\CruddableRepositoryTrait
- * @see \Esensi\Core\Traits\ModeledRepositoryTrait
- * @see \Esensi\Core\Traits\FilterableRepositoryTrait
  */
 trait ResourcefulRepositoryTrait{
-
-    /**
-     * Make this repository perform trashing operations
-     *
-     * @see \Esensi\Core\Traits\TrashableRepositoryTrait
-     * @see \Esensi\Core\Traits\CruddableRepositoryTrait
-     * @see \Esensi\Core\Traits\ModeledRepositoryTrait
-     */
-    use TrashableRepositoryTrait;
-
-    /**
-     * Make this repository use filters and pagination
-     *
-     * @see \Esensi\Core\Traits\FilterableRepositoryTrait
-     * @see \Esensi\Core\Traits\ModeledRepositoryTrait
-     */
-    use FilterableRepositoryTrait;
 
     /**
      * Display a listing of the resource.
@@ -69,18 +45,6 @@ trait ResourcefulRepositoryTrait{
     public function show(integer $id)
     {
         return $this->read($id);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param integer $id of resource to update
-     * @param array $attributes to update on the resource
-     * @return object
-     */
-    public function update(integer $id, array $attributes)
-    {
-        $this->update($id, $attributes);
     }
 
     /**

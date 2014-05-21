@@ -1,25 +1,78 @@
 <?php namespace Esensi\Core\Controllers;
 
+use \Esensi\Core\Interfaces\ExceptionHandlerInterface;
+use \Esensi\Core\Interfaces\RepositoryInjectedInterface;
+use \Esensi\Core\Exceptions\RepositoryException;
+use \Esensi\Core\Traits\ApiExceptionHandlerTrait;
+use \Esensi\Core\Traits\RepositoryInjectedTrait;
+
+use \Illuminate\Support\Facades\App;
 use \Illuminate\Support\Facades\Input;
+use \Illuminate\Routing\Controller;
 
 /**
- * Controller for accessing Resource as an API
+ * Controller for accessing repositories as an API
  *
  * @author daniel <daniel@bexarcreative.com>
- * @see \Esensi\Core\Controllers\Controller
- * @see \Esensi\Core\Resources\Resource
  */
-class ApiController extends \EsensiCoreController {
+class ApiController extends Controller implements ExceptionHandlerInterface,
+    RepositoryInjectedInterface,
+    PackagedInterface {
+
+    /**
+     * Make exceptions return a standard API exception format
+     *
+     * @see \Esensi\Core\Traits\ApiExceptionHandlerTrait
+     */
+    use ApiExceptionHandlerTrait;
+
+    /**
+     * Make use of Repository injection
+     *
+     * @see \Esensi\Core\Traits\RepositoryInjectedTrait
+     */
+    use RepositoryInjectedTrait;
+
+    /**
+     * Package this controller
+     *
+     * @see \Esensi\Core\Traits\PackagedTrait
+     */
+    use PackagedTrait;
 
     /**
      * Inject dependencies
      *
-     * @param \Esensi\Core\Contracts\RepositoryInterface $repository;
-     * @return void
+     * @param \Esensi\Core\Repositories\Repository $repository
+     * @return \Esensi\Core\Controllers\ApiController
      */
-    public function __construct(RepositoryInterface $repository)
+    public function __construct(Repository $repository)
     {
         $this->setRepository($repository);
+        $this->beforeFilter('@filterRequest');
+    }
+
+    /**
+     * Binds error handlers for exceptions
+     *
+     * @param Route $route
+     * @param Request $request
+     * @return mixed
+     */
+    protected function filterRequest($route, $request)
+    {
+        $class = $this;
+        App::error(function(Exception $exception, $code, $fromConsole) use ($class)
+        {
+            Log::error($exception);
+            return $class->handleException($exception);
+        });
+
+        App::error(function(RepositoryException $exception, $code, $fromConsole) use ($class)
+        {
+            Log::error($exception);
+            return $class->handleException($exception);
+        });
     }
 
     /**
@@ -29,9 +82,9 @@ class ApiController extends \EsensiCoreController {
      */
     public function index()
     {
-        $options = Input::only('max', 'order', 'sort', 'keywords');
+        $filters = Input::only('max', 'order', 'sort', 'keywords');
         return $this->getRepository()
-            ->setOptions($options)
+            ->setFilters($filters)
             ->index();
     }
 
@@ -49,7 +102,7 @@ class ApiController extends \EsensiCoreController {
     /**
      * Display the specified resource.
      *
-     * @param integer $id of object
+     * @param integer $id of resource
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function show(integer $id)
@@ -61,7 +114,7 @@ class ApiController extends \EsensiCoreController {
     /**
      * Update the specified resource in storage.
      *
-     * @param integer $id of object to update
+     * @param integer $id of resource to update
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function update(integer $id)
@@ -73,7 +126,7 @@ class ApiController extends \EsensiCoreController {
     /**
      * Remove the specified resource from storage.
      *
-     * @param integer $id of object to remove
+     * @param integer $id of resource to remove
      * @return boolean
      * 
      */

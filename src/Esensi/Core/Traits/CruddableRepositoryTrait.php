@@ -1,46 +1,57 @@
 <?php namespace Esensi\Core\Traits;
 
-use \Esensi\Core\Traits\ModeledRepositoryTrait;
-
 /**
  * Trait implementation of CRUD repository
  *
  * @author daniel <daniel@bexarcreative.com>
  * @see \Esensi\Core\Contracts\CruddableRepositoryInterface
- * @see \Esensi\Core\Traits\ModeledRepositoryTrait
  */
 trait CruddableRepositoryTrait{
-
-    /**
-     * Make this repository use active record models
-     *
-     * @see \Esensi\Core\Traits\ModeledRepositoryTrait
-     */
-    use ModeledRepositoryTrait;
 
     /**
      * Store a newly created resource in storage.
      *
      * @param array $attributes to store on the resource
+     * @throws \Esensi\Core\Exceptions\RepositoryException
      * @return object
      */
     public function create(array $attributes)
     {
-        return $this->getModel()
-            ->fill($attributes)
-            ->save();
+        // Create a new resource
+        $model = $this->getModel();
+        $object =  new $model;
+
+        // Fill the resource attributes
+        $object->fill($attributes);
+
+        // Throw an error if the resource could not be updated
+        if( ! $object->save() )
+        {
+            $this->throwException( $object->errors(), $this->error('create') );
+        }
+
+        return $object;
     }
 
     /**
      * Read the specified resource from storage.
      *
      * @param integer $id of resource
+     * @throws \Esensi\Core\Exceptions\RepositoryException
      * @return object
      */
     public function read(integer $id)
     {
-        return $this->getModel()
-            ->find($id);
+        // Get the resource
+        $object = $this->getModel()->find($id);
+
+        // Throw an error if the resource could not be found
+        if( ! $object )
+        {
+            $this->throwException( $this->error('read') );
+        }
+
+        return $object;
     }
 
     /**
@@ -48,32 +59,57 @@ trait CruddableRepositoryTrait{
      *
      * @param integer $id of resource to update
      * @param array $attributes to update on the resource
+     * @throws \Esensi\Core\Exceptions\RepositoryException
      * @return object
      */
     public function update(integer $id, array $attributes)
     {
-        return $this->show($id)
-            ->fill($attributes)
-            ->save();
+        // Get the resource
+        $object =  $this->read($id);
+
+        // Fill the resource attributes
+        $object->fill($attributes);
+
+        // Throw an error if the resource could not be updated
+        if( ! $object->save() )
+        {
+            $this->throwException( $object->errors(), $this->error('update') );
+        }
+
+        return $object;
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param integer $id of resource to remove
+     * @throws \Esensi\Core\Exceptions\RepositoryException
      * @return boolean
      */
     public function delete(integer $id)
     {
-        $model = $this->show($id);
+        // Get the resource
+        $object = $this->read($id);
         
         // Force deletes on soft-deleted models
-        if( method_exists( $model, 'isSoftDeleting' ) && $model->isSoftDeleting() )
+        if( method_exists( $object, 'isSoftDeleting' ) && $object->isSoftDeleting() )
         {
-            return $model->forceDelete();
+            $result = $object->forceDelete();
         }
 
-        return $model->delete();
+        // Delete regular models
+        else
+        {
+            $result = $object->delete();
+        }
+
+        // Throw an exception if resource could not be deleted
+        if( $result === false )
+        {
+            $this->throwException( $this->error('delete') );
+        }
+
+        return $result;
     }
 
 }

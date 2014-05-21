@@ -18,39 +18,3 @@ App::missing(function($exception)
     $view = Config::get('esensi::core.views.public.missing', 'missing');
     return Response::view($namespace . $view, array(), 404);
 });
-
-Route::filter('error.default', function($route, $request, $fragment = null)
-{
-    App::error(function(Exception $exception, $code, $fromConsole)
-    {
-        Log::error($exception);
-    });
-
-    App::error(function(\Esensi\Core\Exceptions\ResourceException $exception, $code, $fromConsole) use ($fragment)
-    {
-        Log::error($exception);
-        return $exception->handleWithRedirect($fragment);
-    });
-
-    App::error(function(\Esensi\User\Exceptions\PermissionsFilterException $exception, $code, $fromConsole) use ($fragment)
-    {
-        Log::error($exception);
-        Request::instance()->headers->set('referer', route('users.signin'), true);
-        return $exception->handleWithRedirect($fragment);
-    });
-});
-
-Route::filter('error.api', function()
-{
-
-    App::error(function(Exception $exception, $code, $fromConsole)
-    {
-        Log::error($exception);
-    });
-
-    App::error(function(\Esensi\Core\Exceptions\ResourceException $exception, $code, $fromConsole)
-    {
-        Log::error($exception);
-        return $exception->handleForApi();
-    });
-});

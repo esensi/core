@@ -3,12 +3,12 @@
 use \Illuminate\Database\Eloquent\Model;
 
 /**
- * Trait implementation of modeled repository interface
+ * Trait implementation of model injection interface
  *
  * @author daniel <daniel@bexarcreative.com>
- * @see \Esensi\Core\Contracts\ModeledRepositoryInterface
+ * @see \Esensi\Core\Contracts\ModelInjectedInterface
  */
-trait ModeledRepositoryTrait{
+trait ModelInjectedTrait{
 
     /**
      * Injected models
@@ -18,22 +18,10 @@ trait ModeledRepositoryTrait{
     protected $models = [];
 
     /**
-     * Inject model dependencies
-     *
-     * @param \Illuminate\Database\Eloquent\Model
-     * @return RepositoryInterface
-     */
-    public function __construct( Model $model )
-    {
-        $this->setModel( $model, 'default' );
-    }
-
-    /**
      * Get the specified model by name
      *
      * @param string $name (optional) of model
      * @return \Illuminate\Database\Eloquent\Model
-     * 
      */
     public function getModel( string $name = null )
     {
@@ -47,7 +35,6 @@ trait ModeledRepositoryTrait{
      * @param \Illuminate\Database\Eloquent\Model $model
      * @param string $name (optional) of model
      * @return void
-     * 
      */
     public function setModel( Model $model, string $name = null )
     {

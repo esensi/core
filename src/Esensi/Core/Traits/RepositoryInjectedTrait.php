@@ -1,0 +1,44 @@
+<?php namespace Esensi\Core\Traits;
+
+use \Esensi\Core\Repositories\Repository;
+
+/**
+ * Trait implementation of repository injection interface
+ *
+ * @author daniel <daniel@bexarcreative.com>
+ * @see \Esensi\Core\Contracts\RepositoryInjectedInterface
+ */
+trait RepositoryInjectedTrait{
+
+    /**
+     * Injected repositories
+     * 
+     * @var array of \Esensi\Core\Repository\Repository
+     */
+    protected $repositories = [];
+
+    /**
+     * Get the specified repository by name
+     *
+     * @param string $name (optional) of repository
+     * @return \Esensi\Core\Repository\Repository
+     */
+    public function getRepository( string $name = null )
+    {
+        $name = is_null( $name ) ? 'default' : $name;
+        return $this->repositories[ $name ];
+    }
+
+    /**
+     * Set the specified repository by name
+     *
+     * @param \Esensi\Core\Repository\Repository $repository
+     * @param string $name (optional) of repository
+     * @return void
+     */
+    public function setRepository( Repository $repository, string $name = null )
+    {
+        $name = is_null( $name ) ? 'default' : $name;
+        $this->repositories[ $name ] = $repository;
+    }
+}

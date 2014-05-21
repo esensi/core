@@ -1,22 +1,12 @@
 <?php namespace Esensi\Core\Traits;
 
-use \Esensi\Core\Traits\ModeledRepositoryTrait;
-
 /**
  * Trait implementation of filterable repository interface
  *
  * @author daniel <daniel@bexarcreative.com>
  * @see \Esensi\Core\Contracts\FilterableRepositoryInterface
- * @see \Esensi\Core\Traits\ModeledRepositoryTrait
  */
 trait FilterableRepositoryTrait{
-
-    /**
-     * Make this repository use active record models
-     *
-     * @see \Esensi\Core\Traits\ModeledRepositoryTrait
-     */
-    use ModeledRepositoryTrait;
 
     /**
      * Keywords to filter resource by
@@ -26,11 +16,11 @@ trait FilterableRepositoryTrait{
     protected $keywords = [];
 
     /**
-     * Filter options
+     * Filters
      *
      * @var array
      */
-    protected $options = [
+    protected $filters = [
         'order' => 'id',
         'sort' => 'asc',
         'max' => 25,
@@ -59,8 +49,8 @@ trait FilterableRepositoryTrait{
      */
     public function filter($query)
     {
-        // Bind options in case it wasn't already done
-        $this->bindOptions();
+        // Bind filters in case it wasn't already done
+        $this->bindFilters();
 
         // Set primary selection to the model's table
         $query->select([$model->getTable().'.*']);
@@ -89,7 +79,7 @@ trait FilterableRepositoryTrait{
     protected function paginate($query)
     {
         return $query->paginate($this->max)
-            ->appends($this->options);
+            ->appends($this->filters);
     }
 
     /**
@@ -194,48 +184,57 @@ trait FilterableRepositoryTrait{
      * Add a scope filter
      * 
      * @param string $name of scope closure
-     * @param array $args to pass to closure
+     * @param mixed $args to pass to closure
      * @return void
      */
-    public function addScope(string $name, array $args = [])
+    public function addScope(string $name, $args = [])
     {
-        $this->scopes[ $name ] = $args;
-        $this->options['scopes'] = $this->scopes;
+        // Convert mixed to array
+        $args = is_array($arr) ? $arr : explode(',', $args);
+        $args = array_values($args);
+        
+        // Only add the scope if the args are not empty
+        $test = implode('', $args);
+        if( ! empty($test) )
+        {
+            $this->scopes[ $name ] = $args;
+            $this->filters['scopes'] = $this->scopes;
+        }
     }
 
     /**
-     * Set the filter options
+     * Set the filter
      * 
-     * @param array $options
+     * @param array $filters
      * @return void
      */
-    public function setOptions(array $options = [])
+    public function setFilters(array $filters = [])
     {
-        $this->options = $options;
-        $this->bindOptions();
+        $this->filters = $filters;
+        $this->bindFilters();
     }
 
     /**
-     * Merge the existing filter options with new filter options
+     * Merge the existing filters with new filters
      *
-     * @param array $options
+     * @param array $filters
      * @return void
      */
-    public function mergeOptions(array $options = [])
+    public function mergeFilters(array $filters = [])
     {
-        $this->options = array_merge($this->options, $options);
-        $this->bindOptions();
+        $this->filters = array_merge($this->filters, $filters);
+        $this->bindFilters();
     }
 
     /**
-     * Bind the options as properties
+     * Bind the filters as properties
      *
      * @return void
      */
-    protected function bindOptions()
+    protected function bindFilters()
     {
-        // Assign options as properties
-        foreach( $this->options as $key => $value )
+        // Assign filters as properties
+        foreach( $this->filters as $key => $value )
         {
             $this->{$key} = $value;
         }

@@ -1,71 +1,122 @@
 <?php namespace Esensi\Core\Traits;
 
-use \Esensi\Core\Traits\CruddableRepositoryTrait;
-
 /**
  * Trait implementation of trashable repository interface
  *
  * @author daniel <daniel@bexarcreative.com>
  * @see \Esensi\Core\Contracts\TrashableRepositoryInterface
- * @see \Esensi\Core\Traits\CruddableRepositoryTrait
- * @see \Esensi\Core\Traits\ModeledRepositoryTrait
  */
 trait TrashableRepositoryTrait{
 
     /**
-     * Make this repository alias the CRUD methods
+     * Read the specified resource from storage even if trashed.
      *
-     * @see \Esensi\Core\Traits\CruddableRepositoryTrait
-     * @see \Esensi\Core\Traits\ModeledRepositoryTrait
+     * @param integer $id of resource
+     * @throws \Esensi\Core\Exceptions\RepositoryException
+     * @return object
      */
-    use CruddableRepositoryTrait;
+    public function retrieve(integer $id)
+    {
+        // Get the resource
+        $object = $this->getModel()
+            ->withTrashed()
+            ->find($id);
+
+        // Throw an error if resource is not found
+        if( ! $object )
+        {
+            $this->throwException( $this->error('retrieve') );
+        }
+
+        return $object;
+    }
 
     /**
      * Hide the specified resource in storage.
      *
      * @param integer $id of resource to trash
+     * @throws \Esensi\Core\Exceptions\RepositoryException
      * @return boolean
      */
     public function trash(integer $id)
     {
-        return $this->read($id)
+        // Soft delete a resource
+        $result = $this->retrieve($id)
             ->delete();
+
+        // Throw an error if resource could not be deleted
+        if( ! $result )
+        {
+            $this->throwException( $this->error('trash') );
+        }
+
+        return $result;
     }
 
     /**
      * Restore the specified resource to storage.
      *
      * @param integer $id of resource to recover
+     * @throws \Esensi\Core\Exceptions\RepositoryException
      * @return boolean
      */
     public function restore(integer $id)
     {
-        return $this->read($id)
+        // Restore a trashed resource
+        $result = $this->retrieve($id)
             ->restore();
+
+        // Throw an error if resource could not be restored
+        if( ! $result )
+        {
+            $this->throwException( $this->error('restore') );
+        }
+
+        return $result;
     }
 
     /**
      * Remove all trashed resources from storage.
      *
+     * @throws \Esensi\Core\Exceptions\RepositoryException
      * @return boolean
      */
     public function purge()
     {
-        return $this->getModel()
+        // Force delete all the trashed resources
+        $result = $this->getModel()
             ->onlyTrashed()
             ->forceDelete();
+
+        // Throw an error if resources could not be deleted
+        if( ! $result )
+        {
+            $this->throwException( $this->error('purge') );
+        }
+
+        return $result;
     }
 
     /**
      * Restore all trashed resources from storage.
      *
+     * @throws \Esensi\Core\Exceptions\RepositoryException
      * @return boolean
      */
     public function recover()
     {
-        return $this->getModel()
+        // Restore all the trashed resources
+        $result = $this->getModel()
             ->onlyTrashed()
             ->restore();
+
+        // Throw an error if resources could not be restored
+        if( ! $result )
+        {
+            $this->throwException( $this->error('recover') );
+        }
+
+        return $result;
     }
 
 }

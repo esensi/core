@@ -1,6 +1,6 @@
 <?php namespace Esensi\Core\Contracts;
 
-use \Esensi\Core\Exceptions\RepositoryException;
+use \EsensiCoreRepositoryException as RepositoryException;
 
 /**
  * Exception Handler Interface

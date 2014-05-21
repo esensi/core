@@ -1,7 +1,6 @@
 <?php namespace Esensi\Core\Traits;
 
 use \Exception;
-use \Esensi\Core\Exceptions\RepositoryException;
 
 /**
  * Trait that permits the repository to throw a custom exception
@@ -16,7 +15,7 @@ trait ExceptionalRepositoryTrait{
      * 
      * @var \Esensi\Core\Exceptions\RepositoryException
      */
-    protected $exception = '\Esensi\Core\Exceptions\RepositoryException';
+    protected $exception = '\EsensiCoreRepositoryException';
 
     /**
      * Throw an exception for this repository

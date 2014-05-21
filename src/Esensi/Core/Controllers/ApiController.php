@@ -1,10 +1,10 @@
 <?php namespace Esensi\Core\Controllers;
 
+use \EsensiCoreRepositoryException as RepositoryException;
+use \EsensiCoreRepository as Repository;
 use \Esensi\Core\Contracts\ExceptionHandlerInterface;
 use \Esensi\Core\Contracts\RepositoryInjectedInterface;
 use \Esensi\Core\Contracts\PackagedInterface;
-use \Esensi\Core\Exceptions\RepositoryException;
-use \Esensi\Core\Repositories\Repository;
 use \Esensi\Core\Traits\ApiExceptionHandlerTrait;
 use \Esensi\Core\Traits\RepositoryInjectedTrait;
 use \Esensi\Core\Traits\PackagedTrait;
@@ -73,7 +73,6 @@ class ApiController extends Controller implements ExceptionHandlerInterface,
 
         App::error(function(RepositoryException $exception, $code, $fromConsole) use ($class)
         {
-            Log::error($exception);
             return $class->handleException($exception);
         });
     }

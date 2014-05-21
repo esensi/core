@@ -1,7 +1,6 @@
 <?php namespace Esensi\Core\Traits;
 
-use \Exception;
-use \Esensi\Core\Exceptions\RepositoryException;
+use \EsensiCoreRepositoryException as RepositoryException;
 
 /**
  * Trait that handles redirects for API controllers

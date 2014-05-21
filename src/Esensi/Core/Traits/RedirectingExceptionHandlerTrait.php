@@ -1,6 +1,6 @@
 <?php namespace Esensi\Core\Traits;
 
-use \Esensi\Core\Exceptions\RepositoryException;
+use \EsensiCoreRepositoryException as RepositoryException;
 use \Illuminate\Support\Facades\Input;
 use \Illuminate\Support\Facades\Session;
 use \Illuminate\Support\Facades\Redirect;

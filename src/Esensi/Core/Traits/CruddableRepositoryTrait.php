@@ -40,7 +40,7 @@ trait CruddableRepositoryTrait{
      * @throws \Esensi\Core\Exceptions\RepositoryException
      * @return object
      */
-    public function read(integer $id)
+    public function read($id)
     {
         // Get the resource
         $object = $this->getModel()->find($id);
@@ -62,7 +62,7 @@ trait CruddableRepositoryTrait{
      * @throws \Esensi\Core\Exceptions\RepositoryException
      * @return object
      */
-    public function update(integer $id, array $attributes)
+    public function update($id, array $attributes)
     {
         // Get the resource
         $object =  $this->read($id);
@@ -86,7 +86,7 @@ trait CruddableRepositoryTrait{
      * @throws \Esensi\Core\Exceptions\RepositoryException
      * @return boolean
      */
-    public function delete(integer $id)
+    public function delete($id)
     {
         // Get the resource
         $object = $this->read($id);

@@ -1,4 +1,4 @@
-<?php namespace Esensi\Core\Traits;
+<?php namespace Esensi\Core\Contracts;
 
 use \Esensi\Core\Repositories\Repository;
 
@@ -15,7 +15,7 @@ interface RepositoryInjectedInterface{
      * @param string $name (optional) of repository
      * @return \Esensi\Core\Repository\Repository
      */
-    public function getRepository( string $name = null );
+    public function getRepository( $name = null );
 
     /**
      * Set the specified repository by name
@@ -24,5 +24,6 @@ interface RepositoryInjectedInterface{
      * @param string $name (optional) of repository
      * @return void
      */
-    public function setRepository( Repository $repository, string $name = null );
+    public function setRepository( Repository $repository, $name = null );
+
 }

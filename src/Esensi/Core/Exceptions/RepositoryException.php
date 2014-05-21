@@ -29,7 +29,7 @@ class RepositoryException extends Exception implements RepositoryExceptionInterf
      * @var Exception $previous
      * @return RepositoryException
      */
-    public function __construct($bag, string $message = null, $code = 0, Exception $previous = null)
+    public function __construct($bag, $message = null, $code = 0, Exception $previous = null)
     {
 
         // Make sure there's always a message

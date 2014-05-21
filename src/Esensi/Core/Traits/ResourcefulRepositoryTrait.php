@@ -42,7 +42,7 @@ trait ResourcefulRepositoryTrait{
      * @param integer $id of resource
      * @return object
      */
-    public function show(integer $id)
+    public function show($id)
     {
         return $this->read($id);
     }
@@ -53,7 +53,7 @@ trait ResourcefulRepositoryTrait{
      * @param integer $id of resource to remove
      * @return boolean
      */
-    public function destroy(integer $id)
+    public function destroy($id)
     {
         return $this->delete($id);
     }

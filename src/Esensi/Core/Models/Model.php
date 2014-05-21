@@ -8,8 +8,8 @@ use \Illuminate\Support\Facades\Lang;
  * \Esensi\Model model
  *
  * @author daniel <daniel@bexarcreative.com>
- * @see Illuminate\Database\Eloquent\Model
- * @see LaravelBook\Ardent\Ardent
+ * @see \Illuminate\Database\Eloquent\Model
+ * @see \LaravelBook\Ardent\Ardent
  */
 class Model extends Ardent {
 

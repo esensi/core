@@ -14,7 +14,7 @@ interface TrashableRepositoryInterface{
      * @throws \Esensi\Core\Exceptions\RepositoryException
      * @return object
      */
-    public function retrieve(integer $id);
+    public function retrieve($id);
 
     /**
      * Hide the specified resource in storage.
@@ -23,16 +23,16 @@ interface TrashableRepositoryInterface{
      * @throws \Esensi\Core\Exceptions\RepositoryException
      * @return boolean
      */
-    public function trash(integer $id);
+    public function trash($id);
 
     /**
-     * Show the specified resource in storage.
+     * Restore the specified resource to storage.
      *
      * @param integer $id of resource to recover
      * @throws \Esensi\Core\Exceptions\RepositoryException
      * @return boolean
      */
-    public function recover(integer $id);
+    public function restore($id);
 
     /**
      * Remove all trashed resources from storage.
@@ -43,11 +43,11 @@ interface TrashableRepositoryInterface{
     public function purge();
 
     /**
-     * Recover all trashed resources from storage.
+     * Restore all trashed resources from storage.
      *
      * @throws \Esensi\Core\Exceptions\RepositoryException
      * @return boolean
      */
-    public function restore();
+    public function recover();
 
 }

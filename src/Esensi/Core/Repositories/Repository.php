@@ -5,6 +5,7 @@ use \Esensi\Core\Contracts\ExceptionalRepositoryInterface;
 use \Esensi\Core\Contracts\FilterableRepositoryInterface;
 use \Esensi\Core\Contracts\ModelInjectedInterface;
 use \Esensi\Core\Contracts\PackagedInterface;
+use \Esensi\Core\Contracts\RepositoryInjectedInterface;
 use \Esensi\Core\Contracts\ResourcefulRepositoryInterface;
 use \Esensi\Core\Contracts\TrashableRepositoryInterface;
 use \Esensi\Core\Traits\CruddableRepositoryTrait;
@@ -12,10 +13,11 @@ use \Esensi\Core\Traits\ExceptionalRepositoryTrait;
 use \Esensi\Core\Traits\FilterableRepositoryTrait;
 use \Esensi\Core\Traits\ModelInjectedTrait;
 use \Esensi\Core\Traits\PackagedTrait;
+use \Esensi\Core\Traits\RepositoryInjectedTrait;
 use \Esensi\Core\Traits\ResourcefulRepositoryTrait;
 use \Esensi\Core\Traits\TrashableRepositoryTrait;
 
-use \Illuminate\Database\Eloquent\Model;
+use \Esensi\Core\Models\Model;
 
 /**
  * Complete implementation of repository interfaces
@@ -52,7 +54,7 @@ class Repository implements CruddableRepositoryInterface,
     use FilterableRepositoryTrait;
 
     /**
-     * Make this repository use active record models
+     * Make this repository use injected models
      *
      * @see \Esensi\Core\Traits\ModelInjectedTrait
      */
@@ -64,6 +66,13 @@ class Repository implements CruddableRepositoryInterface,
      * @see \Esensi\Core\Traits\PackagedTrait
      */
     use PackagedTrait;
+
+    /**
+     * Make this repository use injected repositories
+     *
+     * @see \Esensi\Core\Traits\RepositoryInjectedTrait
+     */
+    use RepositoryInjectedTrait;
 
     /**
      * Make this repository a resource adapter
@@ -82,7 +91,7 @@ class Repository implements CruddableRepositoryInterface,
     /**
      * Inject dependencies
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param \Esensi\Core\Models\Model $model
      * @return \Esensi\Core\Repositories\Repository
      */
     public function __construct( Model $model )

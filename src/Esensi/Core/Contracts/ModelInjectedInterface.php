@@ -15,15 +15,15 @@ interface ModelInjectedInterface{
      * @param string $name (optional) of model
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function getModel( string $name = null );
+    public function getModel( $name = null );
 
     /**
      * Set the specified model by name
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param \Esensi\Core\Models\Model $model
      * @param string $name (optional) of model
      * @return void
      */
-    public function setModel( Model $model, string $name = null );
+    public function setModel( Model $model, $name = null );
 
 }

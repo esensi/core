@@ -1,10 +1,13 @@
 <?php namespace Esensi\Core\Controllers;
 
-use \Esensi\Core\Interfaces\ExceptionHandlerInterface;
-use \Esensi\Core\Interfaces\RepositoryInjectedInterface;
+use \Esensi\Core\Contracts\ExceptionHandlerInterface;
+use \Esensi\Core\Contracts\RepositoryInjectedInterface;
+use \Esensi\Core\Contracts\PackagedInterface;
 use \Esensi\Core\Exceptions\RepositoryException;
+use \Esensi\Core\Repositories\Repository;
 use \Esensi\Core\Traits\ApiExceptionHandlerTrait;
 use \Esensi\Core\Traits\RepositoryInjectedTrait;
+use \Esensi\Core\Traits\PackagedTrait;
 
 use \Illuminate\Support\Facades\App;
 use \Illuminate\Support\Facades\Input;
@@ -59,7 +62,7 @@ class ApiController extends Controller implements ExceptionHandlerInterface,
      * @param Request $request
      * @return mixed
      */
-    protected function filterRequest($route, $request)
+    public function filterRequest($route, $request)
     {
         $class = $this;
         App::error(function(Exception $exception, $code, $fromConsole) use ($class)
@@ -105,7 +108,7 @@ class ApiController extends Controller implements ExceptionHandlerInterface,
      * @param integer $id of resource
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function show(integer $id)
+    public function show($id)
     {
         return $this->getRepository()
             ->show($id);
@@ -117,7 +120,7 @@ class ApiController extends Controller implements ExceptionHandlerInterface,
      * @param integer $id of resource to update
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function update(integer $id)
+    public function update($id)
     {
         return $this->getRepository()
             ->update($id, Input::all());
@@ -128,9 +131,8 @@ class ApiController extends Controller implements ExceptionHandlerInterface,
      *
      * @param integer $id of resource to remove
      * @return boolean
-     * 
      */
-    public function destroy(integer $id)
+    public function destroy($id)
     {
         return $this->getRepository()
             ->destroy($id);

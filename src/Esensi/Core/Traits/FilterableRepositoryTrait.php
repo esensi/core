@@ -9,14 +9,14 @@
 trait FilterableRepositoryTrait{
 
     /**
-     * Keywords to filter resource by
+     * The keywords to filter resource by
      *
      * @var array
      */
     protected $keywords = [];
 
     /**
-     * Filters
+     * The filters
      *
      * @var array
      */
@@ -187,7 +187,7 @@ trait FilterableRepositoryTrait{
      * @param mixed $args to pass to closure
      * @return void
      */
-    public function addScope(string $name, $args = [])
+    public function addScope($name, $args = [])
     {
         // Convert mixed to array
         $args = is_array($arr) ? $arr : explode(',', $args);

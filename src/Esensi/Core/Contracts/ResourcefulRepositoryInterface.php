@@ -28,7 +28,7 @@ interface ResourcefulRepositoryInterface{
      * @param integer $id of resource
      * @return object
      */
-    public function show(integer $id);
+    public function show($id);
 
     /**
      * Update the specified resource in storage.
@@ -37,7 +37,7 @@ interface ResourcefulRepositoryInterface{
      * @param array $attributes to update on the resource
      * @return object
      */
-    public function update(integer $id, array $attributes);
+    public function update($id, array $attributes);
 
     /**
      * Remove the specified resource from storage.
@@ -45,6 +45,6 @@ interface ResourcefulRepositoryInterface{
      * @param integer $id of resource to remove
      * @return boolean
      */
-    public function destroy(integer $id);
+    public function destroy($id);
 
 }

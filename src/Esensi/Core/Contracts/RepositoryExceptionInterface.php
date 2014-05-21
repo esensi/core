@@ -8,7 +8,7 @@ use \Exception;
  * @author diego <diego@emersonmedia.com>
  * @author daniel <daniel@bexarcreative.com>
  */
-interface RepositoryExceptionInterface extends Extension {
+interface RepositoryExceptionInterface {
 
     /**
      * Construct the exception
@@ -19,7 +19,7 @@ interface RepositoryExceptionInterface extends Extension {
      * @var Exception $previous
      * @return RepositoryException
      */
-    public function __construct($bag, string $message = null, $code = 0, Exception $previous = null);
+    public function __construct($bag, $message = null, $code = 0, Exception $previous = null);
 
     /**
      * Get the bag property

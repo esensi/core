@@ -23,9 +23,9 @@ trait RepositoryInjectedTrait{
      * @param string $name (optional) of repository
      * @return \Esensi\Core\Repository\Repository
      */
-    public function getRepository( string $name = null )
+    public function getRepository( $name = null )
     {
-        $name = is_null( $name ) ? 'default' : $name;
+        $name = is_null( $name ) ? $this->package : $name;
         return $this->repositories[ $name ];
     }
 
@@ -36,9 +36,9 @@ trait RepositoryInjectedTrait{
      * @param string $name (optional) of repository
      * @return void
      */
-    public function setRepository( Repository $repository, string $name = null )
+    public function setRepository( Repository $repository, $name = null )
     {
-        $name = is_null( $name ) ? 'default' : $name;
+        $name = is_null( $name ) ? $this->package : $name;
         $this->repositories[ $name ] = $repository;
     }
 }

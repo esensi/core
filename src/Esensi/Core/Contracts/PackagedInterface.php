@@ -1,4 +1,4 @@
-<?php namespace Esensi\Core\Interfaces;
+<?php namespace Esensi\Core\Contracts;
 
 /**
  * Packaged interface
@@ -8,15 +8,6 @@
 interface PackagedInterface{
 
     /**
-     * Setup the layout used by the controller.
-     * This is part of Laravel's internal controller
-     * layout handlers. It should stay here.
-     *
-     * @return void
-     */
-    function setupLayout();
-
-    /**
      * Generate a subview for the layout
      *
      * @param string $key to view config
@@ -24,7 +15,7 @@ interface PackagedInterface{
      * @param string $name (optional) of content
      * @return \Illuminate\View\View
      */
-    function content(string $key, array $data = [], string $name = null);
+    function content($key, array $data = [], $name = null);
 
     /**
      * Generate a modal view
@@ -34,15 +25,16 @@ interface PackagedInterface{
      * @param string $name (optional) of content
      * @return \Illuminate\View\View
      */
-    function modal(string $key, array $data = [], string $name = null);
+    function modal($key, array $data = [], $name = null);
 
     /**
      * Get a configuration line
      *
      * @param string $key to config line
+     * @param mixed $default (optional)
      * @return mixed
      */
-    function config(string $key);
+    function config($key, $default = null);
 
     /**
      * Get the package namespace
@@ -58,7 +50,7 @@ interface PackagedInterface{
      * @param array $replacements (optional) in language line
      * @return string
      */
-    function language(string $key, array $replacements = []);
+    function language($key, array $replacements = []);
 
     /**
      * Get an error language line
@@ -67,7 +59,7 @@ interface PackagedInterface{
      * @param array $replacements (optional) in language line
      * @return string
      */
-    function error(string $key, array $replacements = []);
+    function error($key, array $replacements = []);
 
     /**
      * Get a message language line
@@ -76,7 +68,7 @@ interface PackagedInterface{
      * @param array $replacements (optional) in language line
      * @return string
      */
-    function message(string $key, array $replacements = []);
+    function message($key, array $replacements = []);
     /**
      * Generate a redirect
      *
@@ -84,7 +76,7 @@ interface PackagedInterface{
      * @param array $params (optional) to construct route
      * @return \Illuminate\Routing\Redirector
      */
-    function redirect(string $key, array $params = []);
+    function redirect($key, array $params = []);
 
     /**
      * Generate a redirect back
@@ -93,6 +85,6 @@ interface PackagedInterface{
      * @param array $params (optional) to construct route
      * @return \Illuminate\Routing\Redirector
      */
-    function back(string $key, array $params = []);
+    function back($key, array $params = []);
 
 }

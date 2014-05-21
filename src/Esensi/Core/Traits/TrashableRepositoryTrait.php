@@ -15,7 +15,7 @@ trait TrashableRepositoryTrait{
      * @throws \Esensi\Core\Exceptions\RepositoryException
      * @return object
      */
-    public function retrieve(integer $id)
+    public function retrieve($id)
     {
         // Get the resource
         $object = $this->getModel()
@@ -38,7 +38,7 @@ trait TrashableRepositoryTrait{
      * @throws \Esensi\Core\Exceptions\RepositoryException
      * @return boolean
      */
-    public function trash(integer $id)
+    public function trash($id)
     {
         // Soft delete a resource
         $result = $this->retrieve($id)
@@ -60,7 +60,7 @@ trait TrashableRepositoryTrait{
      * @throws \Esensi\Core\Exceptions\RepositoryException
      * @return boolean
      */
-    public function restore(integer $id)
+    public function restore($id)
     {
         // Restore a trashed resource
         $result = $this->retrieve($id)

@@ -29,10 +29,9 @@ return [
 
     'aliases' => [
         'EsensiCoreModel'               => '\Esensi\Core\Models\Model',
-        'EsensiCoreResource'            => '\Esensi\Core\Resources\Resource',
-        'EsensiCoreResourceException'   => '\Esensi\Core\Exceptions\ResourceException',
-        'EsensiCoreResourceInterface'   => '\Esensi\Core\Contracts\ResourceInterface',
-        'EsensiCoreController'          => '\Esensi\Core\Controllers\Controller',
+        'EsensiCoreRepository'          => '\Esensi\Core\Repositories\Repository',
+        'EsensiCoreRepositoryException' => '\Esensi\Core\Exceptions\RepositoryException',
+        'EsensiCoreController'          => '\Esensi\Core\Controllers\PublicController',
         'EsensiCoreApiController'       => '\Esensi\Core\Controllers\ApiController',
         'EsensiCoreAdminController'     => '\Esensi\Core\Controllers\AdminController',
         'EsensiCoreSeeder'              => '\Esensi\Core\Seeders\Seeder',

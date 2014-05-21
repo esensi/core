@@ -49,7 +49,7 @@ class Seeder extends LaravelSeeder {
      * @param  array $rules Optional rules for save method
      * @return void
      */
-    public function saveOrFail(Model $model, $rules = null)
+    public function saveOrFail(Model $model, array $rules = [])
     {
 
         if ( is_null($rules) )
@@ -71,5 +71,5 @@ class Seeder extends LaravelSeeder {
         }
 
     }
-    
+
 }

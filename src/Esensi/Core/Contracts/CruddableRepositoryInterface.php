@@ -21,7 +21,7 @@ interface CruddableRepositoryInterface{
      * @param integer $id of resource
      * @return object
      */
-    public function read(integer $id);
+    public function read($id);
 
     /**
      * Update the specified resource in storage.
@@ -30,7 +30,7 @@ interface CruddableRepositoryInterface{
      * @param array $attributes to update on the resource
      * @return object
      */
-    public function update(integer $id, array $attributes);
+    public function update($id, array $attributes);
 
     /**
      * Remove the specified resource from storage.
@@ -38,6 +38,6 @@ interface CruddableRepositoryInterface{
      * @param integer $id of resource to remove
      * @return boolean
      */
-    public function delete(integer $id);
+    public function delete($id);
 
 }

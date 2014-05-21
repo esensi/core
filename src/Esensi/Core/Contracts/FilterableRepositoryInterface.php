@@ -55,14 +55,14 @@ interface FilterableRepositoryInterface{
      */
     function filterScopes($query);
 
-    /**
+/**
      * Add a scope filter
      * 
      * @param string $name of scope closure
      * @param mixed $args to pass to closure
      * @return void
      */
-    public function addScope(string $name, array $args = []);
+    public function addScope($name, $args = []);
 
     /**
      * Set the filter

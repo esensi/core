@@ -89,7 +89,7 @@ class AdminController extends ApiController {
      * @param integer $id of resource
      * @return \Illuminate\View\View
      */
-    public function show(integer $id)
+    public function show($id)
     {
         // Get the resource using the parent API
         $object = parent::show($id);
@@ -104,7 +104,7 @@ class AdminController extends ApiController {
      * @param integer $id of resource
      * @return \Illuminate\View\View
      */
-    public function edit(integer $id)
+    public function edit($id)
     {
         // Get the resource
         $object = $this->show($id);
@@ -119,7 +119,7 @@ class AdminController extends ApiController {
      * @param integer $id of resource to update
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function update(integer $id)
+    public function update($id)
     {
         // Use the parent API to update the resource
         $response = parent::update($id);
@@ -150,7 +150,7 @@ class AdminController extends ApiController {
      * @return boolean
      * 
      */
-    public function destroy(integer $id)
+    public function destroy($id)
     {
         // Use the parent API to remove the resource
         $response = parent::destroy($id);

@@ -18,6 +18,6 @@ interface ExceptionalRepositoryInterface{
      * @param Exception $previous exception
      * @return void
      */
-    public function throwException($bag, string $message = null, $code = 0, Exception $previous = null);
+    public function throwException($bag, $message = null, $code = 0, Exception $previous = null);
 
 }

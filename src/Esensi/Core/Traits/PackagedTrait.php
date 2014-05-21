@@ -18,13 +18,6 @@ trait PackagedTrait{
     protected $package = 'core';
 
     /**
-     * The layout that should be used for responses.
-     *
-     * @var string
-     */
-    protected $layout = '';
-
-    /**
      * The UI name
      * 
      * @var string
@@ -54,17 +47,17 @@ trait PackagedTrait{
      * @param string $name (optional) of content
      * @return \Illuminate\View\View
      */
-    protected function content(string $key, array $data = [], string $name = null)
+    protected function content($key, array $data = [], $name = null)
     {
         // Assign a default content name
         $name = is_null($name) ? 'content' : $name;
 
         // Get the confg line for the view
         $line = $this->config('views.' . $this->ui . '.' . $key);
-        
+
         // Nest the view into the layout
-        $view = App::make('view')->make($package . $view, $data);
-        $this->layout->$name = $response;
+        $view = App::make('view')->make($this->namespacing() . $line, $data);
+        $this->layout->$name = $view;
         
         return $view;
     }
@@ -77,7 +70,7 @@ trait PackagedTrait{
      * @param string $name (optional) of content
      * @return \Illuminate\View\View
      */
-    protected function modal(string $key, array $data = [], string $name = null)
+    protected function modal($key, array $data = [], $name = null)
     {
         // Change default layout to modal layout
         $layout = $this->namespacing() . 'core.views.' . $this->ui . '.modal';
@@ -92,13 +85,19 @@ trait PackagedTrait{
      * Get a configuration line
      *
      * @param string $key to config line
+     * @param mixed $default (optional)
      * @return mixed
      */
-    protected function config(string $key)
+    protected function config($key, $default = null)
     {
-        $namespace = 'esensi::';
-        $line = str_singular($this->package) . '.' .$key;
+        // Get the config file loader
         $loader = App::make('config');
+
+        // Get the root namespace
+        $namespace = stripos($key, '::') === false ? $this->namespacing() : '';
+
+        // Get the packaged line
+        $line = str_singular($this->package) . '.' .$key;
 
         // Use local namespaced package
         if( $loader->has($namespace . $line) )
@@ -106,10 +105,16 @@ trait PackagedTrait{
             return $loader->get($namespace . $line);
         }
 
+        // Use package namespaced package
+        elseif( $loader->has($namespace . $key) )
+        {
+            return $loader->get($namespace . $key);
+        }
+
         // Use global namespaced package
         else
         {
-            return $loader->get($line);
+            return $loader->get($line, $default);
         }
     }
 
@@ -120,9 +125,13 @@ trait PackagedTrait{
      */
     protected function namespacing()
     {
-        $core = $this->config('esensi::core.namespace');
-        $package = str_singular($this->package) . '.namespace';
-        return $this->config($core . $package);
+        // Get the config file loader
+        $loader = App::make('config');
+
+        // Get the package namespace or default to the root
+        $namespace = $loader->get('esensi::core.namespace', 'esensi::');
+        $line = str_singular($this->package) . '.namespace';
+        return $loader->get($namespace . $line, $namespace);
     }
 
     /**
@@ -132,7 +141,7 @@ trait PackagedTrait{
      * @param array $replacements (optional) in language line
      * @return string
      */
-    protected function language(string $key, array $replacements = [])
+    protected function language($key, array $replacements = [])
     {
         $namespace = 'esensi::';
         $line = str_singular($this->package) . '.' .$key;
@@ -158,7 +167,7 @@ trait PackagedTrait{
      * @param array $replacements (optional) in language line
      * @return string
      */
-    protected function error(string $key, array $replacements = [])
+    protected function error($key, array $replacements = [])
     {
         return $this->language('errors.' . $key, $replacements);
     }
@@ -170,7 +179,7 @@ trait PackagedTrait{
      * @param array $replacements (optional) in language line
      * @return string
      */
-    protected function message(string $key, array $replacements = [])
+    protected function message($key, array $replacements = [])
     {
         return $this->language('messages.' . $key, $replacements);
     }
@@ -182,7 +191,7 @@ trait PackagedTrait{
      * @param array $params (optional) to construct route
      * @return \Illuminate\Routing\Redirector
      */
-    protected function redirect(string $key, array $params = [])
+    protected function redirect($key, array $params = [])
     {
         // Redirect to intended route
         $route = $this->config('redirects.' . $this->ui . '.' . $key);
@@ -196,7 +205,7 @@ trait PackagedTrait{
      * @param array $params (optional) to construct route
      * @return \Illuminate\Routing\Redirector
      */
-    protected function back(string $key, array $params = [])
+    protected function back($key, array $params = [])
     {
         // Short circuit to referrer URL or follow redirect
         $referer = App::make('request')->header('referer');

@@ -17,6 +17,7 @@
       <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/es5-shim/2.0.8/es5-shim.min.js">
       <![endif]-->
   </head>
 <body class="public {{ str_replace('.', '-', Route::currentRouteName()) }}">

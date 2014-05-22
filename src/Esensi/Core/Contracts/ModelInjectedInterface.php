@@ -13,7 +13,7 @@ interface ModelInjectedInterface{
      * Get the specified model by name
      *
      * @param string $name (optional) of model
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Esensi\Core\Models\Model
      */
     public function getModel( $name = null );
 

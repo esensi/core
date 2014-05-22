@@ -1,0 +1,86 @@
+<?php namespace Esensi\Core\Traits;
+
+use \Illuminate\Support\Facades\Input;
+
+/**
+ * Trait implementation of dumpster controller interface
+ *
+ * @author daniel <daniel@bexarcreative.com>
+ * @see \Esensi\Core\Contracts\DumpsterControllerInterface
+ */
+trait DumpsterControllerTrait {
+
+    /**
+     * Display a listing of the trashed resources.
+     *
+     * @return void
+     */
+    public function dumpster()
+    {
+        Input::merge(['trashed' => 'only']);
+        $this->index();
+    }
+
+    /**
+     * Trash the specified resource in storage.
+     *
+     * @param integer $id of resource to trash
+     * @return \Illuminate\Routing\Redirector
+     */
+    public function trash($id)
+    {
+        // Use the parent API to trash the resource
+        $response = parent::trash($id);
+
+        // Redirect back with message
+        return $this->back( 'trashed' )
+            ->with('message', $this->message('trashed') );
+    }
+
+    /**
+     * Restore the specified resource in storage.
+     *
+     * @param integer $id of resource to restore
+     * @return \Illuminate\Routing\Redirector
+     */
+    public function restore($id)
+    {
+        // Use the parent API to restore the resource
+        $response = parent::restore($id);
+
+        // Redirect back with message
+        return $this->back( 'restored' )
+            ->with('message', $this->message('restored') );
+    }
+
+    /**
+     * Purge the trashed resources from storage.
+     *
+     * @return \Illuminate\Routing\Redirector
+     */
+    public function purge()
+    {
+        // Use the parent API to purge the resource
+        $response = parent::purge();
+
+        // Redirect back with message
+        return $this->back( 'purged' )
+            ->with('message', $this->message('purged') );
+    }
+
+    /**
+     * Recover the trashed resources in storage.
+     *
+     * @return \Illuminate\Routing\Redirector
+     */
+    public function recover()
+    {
+        // Use the parent API to recover the resource
+        $response = parent::recover();
+
+        // Redirect back with message
+        return $this->back( 'recovered' )
+            ->with('message', $this->message('recovered') );
+    }
+
+}

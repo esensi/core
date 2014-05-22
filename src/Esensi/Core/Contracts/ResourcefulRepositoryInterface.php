@@ -10,7 +10,7 @@ interface ResourcefulRepositoryInterface{
     /**
      * Display a listing of the resource.
      *
-     * @return void
+     * @return \Illuminate\Pagination\Paginator
      */
     public function index();
 
@@ -18,7 +18,7 @@ interface ResourcefulRepositoryInterface{
      * Store a newly created resource in storage.
      *
      * @param array $attributes to store on the resource
-     * @return object
+     * @return \Esensi\Core\Models\Model
      */
     public function store(array $attributes);
 
@@ -26,7 +26,7 @@ interface ResourcefulRepositoryInterface{
      * Display the specified resource.
      *
      * @param integer $id of resource
-     * @return object
+     * @return \Esensi\Core\Models\Model
      */
     public function show($id);
 
@@ -35,7 +35,7 @@ interface ResourcefulRepositoryInterface{
      *
      * @param integer $id of resource to update
      * @param array $attributes to update on the resource
-     * @return object
+     * @return \Esensi\Core\Models\Model
      */
     public function update($id, array $attributes);
 

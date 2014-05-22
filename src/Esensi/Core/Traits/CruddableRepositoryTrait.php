@@ -13,7 +13,7 @@ trait CruddableRepositoryTrait{
      *
      * @param array $attributes to store on the resource
      * @throws \Esensi\Core\Exceptions\RepositoryException
-     * @return object
+     * @return \Esensi\Core\Models\Model
      */
     public function create(array $attributes)
     {
@@ -38,7 +38,7 @@ trait CruddableRepositoryTrait{
      *
      * @param integer $id of resource
      * @throws \Esensi\Core\Exceptions\RepositoryException
-     * @return object
+     * @return \Esensi\Core\Models\Model
      */
     public function read($id)
     {
@@ -60,7 +60,7 @@ trait CruddableRepositoryTrait{
      * @param integer $id of resource to update
      * @param array $attributes to update on the resource
      * @throws \Esensi\Core\Exceptions\RepositoryException
-     * @return object
+     * @return \Esensi\Core\Models\Model
      */
     public function update($id, array $attributes)
     {

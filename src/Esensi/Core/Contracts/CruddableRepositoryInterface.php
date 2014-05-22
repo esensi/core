@@ -11,7 +11,7 @@ interface CruddableRepositoryInterface{
      * Store a newly created resource in storage.
      *
      * @param array $attributes to store on the resource
-     * @return object
+     * @return \Esensi\Core\Models\Model
      */
     public function create(array $attributes);
 
@@ -19,7 +19,7 @@ interface CruddableRepositoryInterface{
      * Read the specified resource from storage.
      *
      * @param integer $id of resource
-     * @return object
+     * @return \Esensi\Core\Models\Model
      */
     public function read($id);
 
@@ -28,7 +28,7 @@ interface CruddableRepositoryInterface{
      *
      * @param integer $id of resource to update
      * @param array $attributes to update on the resource
-     * @return object
+     * @return \Esensi\Core\Models\Model
      */
     public function update($id, array $attributes);
 

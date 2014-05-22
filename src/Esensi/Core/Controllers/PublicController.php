@@ -1,10 +1,8 @@
 <?php namespace Esensi\Core\Controllers;
 
-use \Esensi\Core\Controllers\ApiController;
-use \Esensi\Core\Exceptions\RepositoryException;
+use \EsensiCoreApiController as ApiController;
+use \Esensi\Core\Contracts\ExceptionHandlerInterface;
 use \Esensi\Core\Traits\RedirectingExceptionHandlerTrait;
-
-use \Illuminate\Support\Facades\App;
 
 /**
  * Public controller for non-administrative GUIs
@@ -13,7 +11,8 @@ use \Illuminate\Support\Facades\App;
  * @see \Esensi\Core\Controllers\ApiController
  * @see \Esensi\Core\Traits\RedirectingExceptionHandlerTrait
  */
-class PublicController extends ApiController {
+class PublicController extends ApiController implements
+    ExceptionHandlerInterface {
 
     /**
      * Make exceptions return a redirect with flash exception errors

@@ -73,8 +73,8 @@ trait PackagedTrait{
     protected function modal($key, array $data = [], $name = null)
     {
         // Change default layout to modal layout
-        $layout = $this->namespacing() . 'core.views.' . $this->ui . '.modal';
-        $this->layout = $this->layout;
+        $line = $this->namespacing() . 'core.views.' . $this->ui . '.modal';
+        $this->layout = $this->namespacing() . $this->config($line);
         $this->setupLayout();
         
         // Just return the response from the proxy call
@@ -210,6 +210,7 @@ trait PackagedTrait{
         // Short circuit to referrer URL or follow redirect
         $referer = App::make('request')->header('referer');
         $redirect = !empty($referer) ? App::make('redirect')->back() : $this->redirect($key, $params);
+        return $redirect;
     }
 
 }

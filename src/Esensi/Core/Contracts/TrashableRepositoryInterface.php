@@ -12,7 +12,7 @@ interface TrashableRepositoryInterface{
      *
      * @param integer $id of resource
      * @throws \Esensi\Core\Exceptions\RepositoryException
-     * @return object
+     * @return \Esensi\Core\Models\Model
      */
     public function retrieve($id);
 

@@ -11,7 +11,7 @@ trait ResourcefulRepositoryTrait{
     /**
      * Display a listing of the resource.
      *
-     * @return void
+     * @return \Illuminate\Pagination\Paginator
      */
     public function index()
     {
@@ -29,7 +29,7 @@ trait ResourcefulRepositoryTrait{
      * Store a newly created resource in storage.
      *
      * @param array $attributes to store on the resource
-     * @return object
+     * @return \Esensi\Core\Models\Model
      */
     public function store(array $attributes)
     {
@@ -40,7 +40,7 @@ trait ResourcefulRepositoryTrait{
      * Display the specified resource.
      *
      * @param integer $id of resource
-     * @return object
+     * @return \Esensi\Core\Models\Model
      */
     public function show($id)
     {

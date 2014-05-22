@@ -2,6 +2,7 @@
 
 use \Esensi\Core\Contracts\CruddableRepositoryInterface;
 use \Esensi\Core\Contracts\ExceptionalRepositoryInterface;
+use \Esensi\Core\Contracts\FindableRepositoryInterface;
 use \Esensi\Core\Contracts\FilterableRepositoryInterface;
 use \Esensi\Core\Contracts\ModelInjectedInterface;
 use \Esensi\Core\Contracts\PackagedInterface;
@@ -10,6 +11,7 @@ use \Esensi\Core\Contracts\ResourcefulRepositoryInterface;
 use \Esensi\Core\Contracts\TrashableRepositoryInterface;
 use \Esensi\Core\Traits\CruddableRepositoryTrait;
 use \Esensi\Core\Traits\ExceptionalRepositoryTrait;
+use \Esensi\Core\Traits\FindableRepositoryTrait;
 use \Esensi\Core\Traits\FilterableRepositoryTrait;
 use \Esensi\Core\Traits\ModelInjectedTrait;
 use \Esensi\Core\Traits\PackagedTrait;
@@ -26,6 +28,7 @@ use \Esensi\Core\Models\Model;
  */
 class Repository implements CruddableRepositoryInterface,
     ExceptionalRepositoryInterface,
+    FindableRepositoryInterface,
     FilterableRepositoryInterface,
     ModelInjectedInterface,
     PackagedInterface,
@@ -52,6 +55,13 @@ class Repository implements CruddableRepositoryInterface,
      * @see \Esensi\Core\Traits\FilterableRepositoryTrait
      */
     use FilterableRepositoryTrait;
+
+    /**
+     * Make this repository use find aliases
+     *
+     * @see \Esensi\Core\Traits\FindableRepositoryTrait
+     */
+    use FindableRepositoryTrait;
 
     /**
      * Make this repository use injected models

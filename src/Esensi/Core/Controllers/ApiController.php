@@ -1,7 +1,7 @@
 <?php namespace Esensi\Core\Controllers;
 
-use \EsensiCoreRepositoryException as RepositoryException;
 use \EsensiCoreRepository as Repository;
+use \EsensiCoreRepositoryException as RepositoryException;
 use \Esensi\Core\Contracts\ExceptionHandlerInterface;
 use \Esensi\Core\Contracts\RepositoryInjectedInterface;
 use \Esensi\Core\Contracts\PackagedInterface;
@@ -65,11 +65,6 @@ class ApiController extends Controller implements ExceptionHandlerInterface,
     public function filterRequest($route, $request)
     {
         $class = $this;
-        App::error(function(Exception $exception, $code, $fromConsole) use ($class)
-        {
-            Log::error($exception);
-            return $class->handleException($exception);
-        });
 
         App::error(function(RepositoryException $exception, $code, $fromConsole) use ($class)
         {
@@ -93,7 +88,7 @@ class ApiController extends Controller implements ExceptionHandlerInterface,
     /**
      * Store a newly created resource in storage.
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Esensi\Core\Models\Model
      */
     public function store()
     {
@@ -105,7 +100,7 @@ class ApiController extends Controller implements ExceptionHandlerInterface,
      * Display the specified resource.
      *
      * @param integer $id of resource
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Esensi\Core\Models\Model
      */
     public function show($id)
     {
@@ -117,7 +112,7 @@ class ApiController extends Controller implements ExceptionHandlerInterface,
      * Update the specified resource in storage.
      *
      * @param integer $id of resource to update
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Esensi\Core\Models\Model
      */
     public function update($id)
     {
@@ -131,10 +126,56 @@ class ApiController extends Controller implements ExceptionHandlerInterface,
      * @param integer $id of resource to remove
      * @return boolean
      */
-    public function destroy($id)
+    public function delete($id)
     {
         return $this->getRepository()
             ->destroy($id);
+    }
+
+    /**
+     * Trash the specified resource in storage.
+     *
+     * @param integer $id of resource to trash
+     * @return boolean
+     */
+    public function trash($id)
+    {
+        return $this->getRepository()
+            ->trash($id);
+    }
+
+    /**
+     * Restore the specified resource in storage.
+     *
+     * @param integer $id of resource to restore
+     * @return boolean
+     */
+    public function restore($id)
+    {
+        return $this->getRepository()
+            ->restore($id);
+    }
+
+    /**
+     * Purge the trashed resources from storage.
+     *
+     * @return boolean
+     */
+    public function purge()
+    {
+        return $this->getRepository()
+            ->purge();
+    }
+
+    /**
+     * Recover the trashed resources in storage.
+     *
+     * @return boolean
+     */
+    public function recover()
+    {
+        return $this->getRepository()
+            ->recover();
     }
 
 }

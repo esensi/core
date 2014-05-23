@@ -28,14 +28,14 @@ return [
     */
 
     'aliases' => [
-        'EsensiBuildCommand'            => '\Esensi\Build\Commands\BuildCommand',
-        'EsensiBuildWatchCommand'       => '\Esensi\Build\Commands\BuildWatchCommand',
-        'EsensiBuildCleanCommand'       => '\Esensi\Build\Commands\BuildCleanCommand',
-        'EsensiBuildStylesCommand'      => '\Esensi\Build\Commands\BuildStylesCommand',
-        'EsensiBuildScriptsCommand'     => '\Esensi\Build\Commands\BuildScriptsCommand',
-        'EsensiBuildImagesCommand'      => '\Esensi\Build\Commands\BuildImagesCommand',
-        'EsensiBuildFontsCommand'       => '\Esensi\Build\Commands\BuildFontsCommand',
-        'EsensiBuildLintCommand'        => '\Esensi\Build\Commands\BuildLintCommand',
+        'EsensiBuildCommand'        => '\Esensi\Build\Commands\BuildCommand',
+        'EsensiBuildWatchCommand'   => '\Esensi\Build\Commands\BuildWatchCommand',
+        'EsensiBuildCleanCommand'   => '\Esensi\Build\Commands\BuildCleanCommand',
+        'EsensiBuildStylesCommand'  => '\Esensi\Build\Commands\BuildStylesCommand',
+        'EsensiBuildScriptsCommand' => '\Esensi\Build\Commands\BuildScriptsCommand',
+        'EsensiBuildImagesCommand'  => '\Esensi\Build\Commands\BuildImagesCommand',
+        'EsensiBuildFontsCommand'   => '\Esensi\Build\Commands\BuildFontsCommand',
+        'EsensiBuildLintCommand'    => '\Esensi\Build\Commands\BuildLintCommand',
     ],
 
     /*
@@ -79,11 +79,11 @@ return [
     */
 
     'directories' => [
-        'base' => 'builds',
-        'fonts' => 'fonts',
-        'images' => 'images',
+        'base'    => 'builds',
+        'fonts'   => 'fonts',
+        'images'  => 'images',
         'scripts' => 'scripts',
-        'styles' => 'styles',
+        'styles'  => 'styles',
     ],
 
 ];

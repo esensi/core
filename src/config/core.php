@@ -99,14 +99,14 @@ return [
 
     // UIs
     'ui' => [
-        'admin'     => true,
-        'public'    => true,
+        'admin'  => true,
+        'public' => true,
     ],
     
     // APIs
     'api' => [
-        'public'    => true,
-        'admin'     => true,
+        'public' => true,
+        'admin'  => true,
     ],
     
     /*
@@ -124,16 +124,16 @@ return [
         // Public views
         'public' => [
             
-            'index'             => 'core.public.index',
-            'missing'           => 'core.public.missing',
-            'whoops'            => 'core.public.whoops',
-            'modal'             => 'core.public.modal',
+            'index'   => 'core.public.index',
+            'missing' => 'core.public.missing',
+            'whoops'  => 'core.public.whoops',
+            'modal'   => 'core.public.modal',
         ],
 
         // Admin views
         'admin' => [
             
-            'modal'                 => 'core.admin.modal',
+            'modal'   => 'core.admin.modal',
         ],
     ],
 
@@ -166,25 +166,25 @@ return [
 
         // Should the limiter be enabled?
         'enabled' => true,
-
+        
         // Should limits be based on unique routes?
-        'routes' => true,
-
+        'routes'  => true,
+        
         // Request per period
-        'limit' => 10,
-
+        'limit'   => 10,
+        
         // Period duration in minutes
-        'period' => 1,
+        'period'  => 1,
 
         // Cache settings
         'cache' => [
 
             // Namespace for tags
-            'tag' => 'xrate',
-
+            'tag'     => 'xrate',
+            
             // Cache storage settings
-            'driver' => 'file',
-            'table' => 'cache',
+            'driver'  => 'file',
+            'table'   => 'cache',
             
             // Timeout (in minutes) an IP should be blocked
             'timeout' => 10,

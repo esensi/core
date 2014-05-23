@@ -41,7 +41,8 @@ trait TrashableRepositoryTrait{
     public function trash($id)
     {
         // Soft delete a resource
-        $result = $this->retrieve($id)
+        // Can't trash a trashed resource
+        $result = $this->read($id)
             ->delete();
 
         // Throw an error if resource could not be deleted
@@ -56,20 +57,32 @@ trait TrashableRepositoryTrait{
     /**
      * Restore the specified resource to storage.
      *
+     * @todo make restoration rules be part of Ardent
      * @param integer $id of resource to recover
      * @throws \Esensi\Core\Exceptions\RepositoryException
      * @return boolean
      */
     public function restore($id)
     {
-        // Restore a trashed resource
-        $result = $this->retrieve($id)
-            ->restore();
+        // Retrieve a trashed resource
+        $object = $this->retrieve($id);
+        
+        // Make sure that the rules are not used with
+        // the save() that restore() does
+        $oldRules = $object::$rules;
+        $object::$rules = [];
+
+        // Restore the object
+        $result = $object->restore();
+
+        // Make sure we re-apply the rules after the restore()
+        $object::$rules = $oldRules;
 
         // Throw an error if resource could not be restored
         if( ! $result )
         {
-            $this->throwException( $this->error('restore') );
+            dd($object->errors());
+            $this->throwException( $object->errors(), $this->error('restore') );
         }
 
         return $result;

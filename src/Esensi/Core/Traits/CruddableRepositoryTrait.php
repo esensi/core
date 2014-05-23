@@ -87,19 +87,25 @@ trait CruddableRepositoryTrait{
      * @return boolean
      */
     public function delete($id)
-    {
-        // Get the resource
-        $object = $this->read($id);
-        
+    {   
         // Force deletes on soft-deleted models
-        if( method_exists( $object, 'forceDelete' ) )
+        if( method_exists( $this->getModel(), 'forceDelete' ) )
         {
+            // Get the resource
+            $object = $this->retrieve($id);
+
+            // Forcibly delete this trashable resource
+            // Use trash() if you want to soft delete it
             $result = $object->forceDelete();
         }
 
         // Delete regular models
         else
         {
+            // Get the resource
+            $object = $this->read($id);
+
+            // Do a regular delete on this resource
             $result = $object->delete();
         }
 

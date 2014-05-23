@@ -110,7 +110,7 @@ trait ResourceControllerTrait {
     public function delete($id)
     {
         // Use the parent API to remove the resource
-        $response = parent::destroy($id);
+        $response = parent::delete($id);
 
         // Redirect back with message
         return $this->redirect( 'deleted' )

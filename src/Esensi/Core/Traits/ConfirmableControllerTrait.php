@@ -9,19 +9,44 @@
 trait ConfirmableControllerTrait {
 
     /**
+     * Actions that require using retrieve instead of restore
+     * 
+     * @var array
+     */
+    protected $trashableActions = [ 'restore', 'delete' ];
+
+    /**
      * Display a confirmation modal for the specified resource action.
      *
-     * @param integer $id
      * @param string $action
-     * @return \Illuminate\View\View
+     * @param integer $id (optional)
+     * @return void
      */
-    public function confirm($id, $action)
+    public function confirm($action, $id = null)
     {
-        // Get the resource from parent API
-        $object = parent::show($id);
+        $data = [];
+
+        // Get the object from the parent API
+        if( ! is_null($id) )
+        {
+            // Get the resource out of the trash
+            if( in_array($action, $this->trashableActions)
+                && method_exists($object, 'retrieve') )
+            {
+                $object = parent::retrieve($id);
+            }
+
+            // Get the resource from the parent API
+            else
+            {
+                $object = parent::show($id);
+            }
+
+            $data = [ $this->package => $object ];
+        }
 
         // Render confirmation modal
-        $this->modal( $action . '_confirm', [ $this->package => $object ] );
+        $this->modal( $action . '_confirm', $data );
     }
 
     /**
@@ -41,7 +66,7 @@ trait ConfirmableControllerTrait {
         if( substr($method, -7, 7) == 'Confirm' && method_exists($this, $callable) )
         {
             $action = snake_case($callable);
-            array_push($parameters, $action);
+            array_unshift($parameters, $action);
             return call_user_func_array([ $this, 'confirm' ], $parameters);
         }
 

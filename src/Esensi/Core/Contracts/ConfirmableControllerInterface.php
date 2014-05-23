@@ -10,10 +10,10 @@ interface ConfirmableControllerInterface{
     /**
      * Display a confirmation modal for the specified resource action.
      *
-     * @param integer $id
      * @param string $action
-     * @return \Illuminate\View\View
+     * @param integer $id (optional)
+     * @return void
      */
-    public function confirm($id, $action);
+    public function confirm($action, $id = null);
 
 }

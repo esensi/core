@@ -106,7 +106,7 @@ class Repository implements CruddableRepositoryInterface,
      */
     public function __construct( Model $model )
     {
-        $this->setModel( $model, 'default' );
+        $this->setModel( $model );
     }
 
 }

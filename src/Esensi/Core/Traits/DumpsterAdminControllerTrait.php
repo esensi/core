@@ -24,4 +24,20 @@ trait DumpsterAdminControllerTrait {
      */
     use DumpsterControllerTrait;
 
+    /**
+     * Overwrite the show method to use retrieve()
+     * since some of the resources will be trashed
+     *
+     * @param integer $id of resource
+     * @return void
+     */
+    public function show($id)
+    {
+        // Get the resource using the parent API
+        $object = parent::retrieve($id);
+
+        // Render show view
+        $this->content( 'show', [ $this->package => $object ] );
+    }
+
 }

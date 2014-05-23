@@ -16,7 +16,7 @@ trait ResourcefulRepositoryTrait{
     public function index()
     {
         // Get a new query builder
-        $query = $this->getModel()->newQuery();
+        $query = $this->getModel()->query();
 
         // Filter the resources
         $this->filter($query);

@@ -129,7 +129,30 @@ class ApiController extends Controller implements ExceptionHandlerInterface,
     public function delete($id)
     {
         return $this->getRepository()
-            ->destroy($id);
+            ->delete($id);
+    }
+
+    /**
+     * Alias for delete method
+     *
+     * @param integer $id of resource to remove
+     * @return boolean
+     */
+    public function destroy($id)
+    {
+        return $this->delete($id);
+    }
+
+    /**
+     * Retrieve the specified resource out of storage.
+     *
+     * @param integer $id of resource to retrieve
+     * @return \Esensi\Core\Models\Model
+     */
+    public function retrieve($id)
+    {
+        return $this->getRepository()
+            ->retrieve($id);
     }
 
     /**

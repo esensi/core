@@ -271,4 +271,5 @@ class Model extends Ardent {
     {
         return $query->orderBy($column, $sort)->lists($column, $key);
     }
+
 }

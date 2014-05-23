@@ -34,7 +34,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/bexarcreativeinc/ardent.git"
+            "url": "https://github.com/emersonmedia/ardent.git"
         }
     ],
     "autoload": {

@@ -92,7 +92,7 @@ trait CruddableRepositoryTrait{
         $object = $this->read($id);
         
         // Force deletes on soft-deleted models
-        if( method_exists( $object, 'isSoftDeleting' ) && $object->isSoftDeleting() )
+        if( method_exists( $object, 'forceDelete' ) )
         {
             $result = $object->forceDelete();
         }

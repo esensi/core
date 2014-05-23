@@ -28,7 +28,7 @@ class Model extends Ardent {
     protected $with = [];
 
     /**
-     * Attributes that Eloquent will conver to Carbon dates
+     * Attributes that Eloquent will convert to Carbon dates
      *
      * @var array
      */
@@ -68,13 +68,6 @@ class Model extends Ardent {
      * @var array
      */
     protected $fillable = [];
-
-    /**
-     * Enable soft deletes on model
-     *
-     * @var boolean
-     */
-    protected $softDelete = false;
 
     /**
      * The attributes that can be full-text searched

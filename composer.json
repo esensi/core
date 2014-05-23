@@ -16,8 +16,7 @@
     "require": {
         "php": ">=5.4.0",
         "illuminate/support": "4.x",
-        "laravelbook/ardent": "2.4.3",
-        "crhayes/blade-partials": "dev-master"
+        "laravelbook/ardent": "2.4.3"
     },
     "require-dev": {
         "phpunit/phpunit": "4.0.*",

@@ -31,7 +31,7 @@ trait ConfirmableControllerTrait {
         {
             // Get the resource out of the trash
             if( in_array($action, $this->trashableActions)
-                && method_exists($object, 'retrieve') )
+                && method_exists($this->getRepository(), 'retrieve') )
             {
                 $object = parent::retrieve($id);
             }

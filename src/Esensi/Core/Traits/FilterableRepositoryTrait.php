@@ -250,9 +250,9 @@ trait FilterableRepositoryTrait{
         }
 
         // Make sure the sort order is lowercase
-        //$this->sort = strtolower( (string) $this->sort);
+        $this->sort = strtolower( (string) $this->sort);
 
         // Make sure the max is a positive integer
-        //$this->max = max(0, (integer) $this->max);
+        $this->max = max(0, (integer) $this->max);
     }
 }

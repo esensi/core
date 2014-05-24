@@ -11,6 +11,6 @@
 
 <script type="text/javascript">
 
-	Esensi.modal.init()
+	Esensi.modal.init();
 
 </script>

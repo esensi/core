@@ -62,6 +62,8 @@ trait FindableRepositoryTrait{
             $message = $this->error('find_by', $params);
             $this->throwException( $message );
         }
+
+        return $object;
     }
 
     /**

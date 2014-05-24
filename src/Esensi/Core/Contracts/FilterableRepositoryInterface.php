@@ -21,7 +21,7 @@ interface FilterableRepositoryInterface{
      * @param object $query builder
      * @return array
      */
-    function paginate($query);
+    public function paginate($query);
 
     /**
      * Filter query with relationships
@@ -55,17 +55,24 @@ interface FilterableRepositoryInterface{
      */
     function filterScopes($query);
 
-/**
+    /**
      * Add a scope filter
      * 
      * @param string $name of scope closure
      * @param mixed $args to pass to closure
      * @return void
      */
-    public function addScope($name, $args = []);
+    public function addScope($name, $args);
 
     /**
-     * Set the filter
+     * Get the filters
+     * 
+     * @return array
+     */
+    public function getFilters();
+
+    /**
+     * Set the filters
      * 
      * @param array $filters
      * @return void

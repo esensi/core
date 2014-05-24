@@ -76,7 +76,7 @@ trait FilterableRepositoryTrait{
      * @param object $query builder
      * @return array
      */
-    protected function paginate($query)
+    public function paginate($query)
     {
         return $query->paginate($this->max)
             ->appends($this->filters);
@@ -136,16 +136,16 @@ trait FilterableRepositoryTrait{
     protected function filterKeywords($query)
     {
         // Get the model's searchable attributes
-        $attributes = $this->getModel()->searchableAttributes;
+        $attributes = $this->getModel()->searchable;
 
         // Enable filter if model has searchable attributes
-        if( !empty($attributes) && ! empty($this->keywords) )
+        if( ! empty($attributes) && ! empty($this->keywords) )
         {
             // Get an array of keywords
             $keywords = $this->keywords;
             if( is_string($keywords) )
             {
-                $keywords = explode(',', trim(',', $keywords));
+                $keywords = explode(',', trim($keywords, ', '));
             }
 
             // Query results that have attributes containing the keywords
@@ -187,15 +187,15 @@ trait FilterableRepositoryTrait{
      * @param mixed $args to pass to closure
      * @return void
      */
-    public function addScope($name, $args = [])
+    public function addScope($name, $args)
     {
         // Convert mixed to array
-        $args = is_array($args) ? $args : explode(',', $args);
+        $args = is_array($args) ? $args : explode(',', trim($args, ', '));
         $args = array_values($args);
+        $args = array_filter($args);
 
         // Only add the scope if the args are not empty
-        $test = implode('', $args);
-        if( ! empty($test) )
+        if( ! empty($args) )
         {
             $this->scopes[ $name ] = $args;
             $this->filters['scopes'] = $this->scopes;
@@ -203,7 +203,17 @@ trait FilterableRepositoryTrait{
     }
 
     /**
-     * Set the filter
+     * Get the filters
+     * 
+     * @return array
+     */
+    public function getFilters()
+    {
+        return $this->filters;
+    }
+
+    /**
+     * Set the filters
      * 
      * @param array $filters
      * @return void
@@ -240,9 +250,9 @@ trait FilterableRepositoryTrait{
         }
 
         // Make sure the sort order is lowercase
-        $this->sort = strtolower( (string) $this->sort);
+        //$this->sort = strtolower( (string) $this->sort);
 
         // Make sure the max is a positive integer
-        $this->max = max(0, (integer) $this->max);
+        //$this->max = max(0, (integer) $this->max);
     }
 }

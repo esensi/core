@@ -1,7 +1,7 @@
 {
     "name": "esensi/core",
     "description": "The foundational components of Esensi",
-    "keywords": ["emersonmedia", "esensi", "laravel", "ardent", "core"],
+    "keywords": ["emersonmedia", "esensi", "laravel", "core"],
     "authors": [
         {
             "name": "Emerson Media, LP.",
@@ -15,8 +15,7 @@
     "license": "MIT",
     "require": {
         "php": ">=5.4.0",
-        "illuminate/support": "4.x",
-        "laravelbook/ardent": "dev-master",
+        "illuminate/support": "4.2.*",
         "crhayes/blade-partials": "dev-master"
     },
     "require-dev": {
@@ -32,12 +31,6 @@
         "ignited/laravel-omnipay": "Integrates the Omnipay PHP library with Laravel 4 via a ServiceProvider to make Configuring multiple payment tunnels a breeze!",
         "anahkiasen/former": "A Laravelish way to create and format forms."
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/emersonmedia/ardent.git"
-        }
-    ],
     "autoload": {
         "classmap": [
             "src/migrations"

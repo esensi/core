@@ -16,6 +16,7 @@
     "require": {
         "php": ">=5.4.0",
         "illuminate/support": "4.2.*",
+        "magniloquent/magniloquent": "dev-master",
         "crhayes/blade-partials": "dev-master"
     },
     "require-dev": {

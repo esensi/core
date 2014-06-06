@@ -28,7 +28,7 @@ return [
     */
 
     'aliases' => [
-        'EsensiCoreModel'               => '\Esensi\Core\Models\Model',
+        'EsensiModel'                   => '\Esensi\Core\Models\Model',
         'EsensiCoreRepository'          => '\Esensi\Core\Repositories\Repository',
         'EsensiCoreRepositoryException' => '\Esensi\Core\Exceptions\RepositoryException',
         'EsensiCorePublicController'    => '\Esensi\Core\Controllers\PublicController',
@@ -50,7 +50,7 @@ return [
     | by the template engine to determine how to render the administrative UI.
     |
     */
-    
+
     'packages' => [
         'user'
     ],
@@ -102,13 +102,13 @@ return [
         'admin'  => true,
         'public' => true,
     ],
-    
+
     // APIs
     'api' => [
         'public' => true,
         'admin'  => true,
     ],
-    
+
     /*
     |--------------------------------------------------------------------------
     | Views to be used by core package
@@ -123,7 +123,7 @@ return [
 
         // Public views
         'public' => [
-            
+
             'index'   => 'core.public.index',
             'missing' => 'core.public.missing',
             'whoops'  => 'core.public.whoops',
@@ -132,7 +132,7 @@ return [
 
         // Admin views
         'admin' => [
-            
+
             'modal'   => 'core.admin.modal',
         ],
     ],
@@ -166,13 +166,13 @@ return [
 
         // Should the limiter be enabled?
         'enabled' => true,
-        
+
         // Should limits be based on unique routes?
         'routes'  => true,
-        
+
         // Request per period
         'limit'   => 10,
-        
+
         // Period duration in minutes
         'period'  => 1,
 
@@ -181,14 +181,14 @@ return [
 
             // Namespace for tags
             'tag'     => 'xrate',
-            
+
             // Cache storage settings
             'driver'  => 'file',
             'table'   => 'cache',
-            
+
             // Timeout (in minutes) an IP should be blocked
             'timeout' => 10,
         ],
     ],
-    
+
 ];

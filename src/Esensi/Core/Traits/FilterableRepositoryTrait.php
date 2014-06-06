@@ -182,7 +182,7 @@ trait FilterableRepositoryTrait{
 
     /**
      * Add a scope filter
-     * 
+     *
      * @param string $name of scope closure
      * @param mixed $args to pass to closure
      * @return void
@@ -192,7 +192,14 @@ trait FilterableRepositoryTrait{
         // Convert mixed to array
         $args = is_array($args) ? $args : explode(',', trim($args, ', '));
         $args = array_values($args);
-        $args = array_filter($args);
+        $args = array_filter($args, function($arg)
+        {
+            if(!is_numeric($arg) && empty($arg))
+            {
+                return false;
+            }
+            return true;
+        });
 
         // Only add the scope if the args are not empty
         if( ! empty($args) )
@@ -204,7 +211,7 @@ trait FilterableRepositoryTrait{
 
     /**
      * Get the filters
-     * 
+     *
      * @return array
      */
     public function getFilters()
@@ -214,7 +221,7 @@ trait FilterableRepositoryTrait{
 
     /**
      * Set the filters
-     * 
+     *
      * @param array $filters
      * @return void
      */

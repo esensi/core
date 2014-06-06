@@ -1,17 +1,17 @@
 <?php namespace Esensi\Core\Models;
 
 use \Carbon\Carbon;
-use \LaravelBook\Ardent\Ardent;
+use \Magniloquent\Magniloquent\Magniloquent;
 use \Illuminate\Support\Facades\Lang;
 
 /**
- * \Esensi\Model model
+ * Default base model
  *
  * @author daniel <daniel@bexarcreative.com>
  * @see \Illuminate\Database\Eloquent\Model
- * @see \LaravelBook\Ardent\Ardent
+ * @see \Magniloquent\Magniloquent\Magniloquent
  */
-class Model extends Ardent {
+class Model extends Magniloquent {
 
     /**
      * The database table used by the model.
@@ -28,34 +28,6 @@ class Model extends Ardent {
     protected $with = [];
 
     /**
-     * Attributes that Eloquent will convert to Carbon dates
-     *
-     * @var array
-     */
-    protected $dateAttributes = ['created_at', 'updated_at', 'deleted_at'];
-
-    /**
-     * Attributes that Ardent should Hash
-     *
-     * @var array
-     */
-    public static $passwordAttributes = [];
-
-    /**
-     * Ardent should automatically hash the $passwordAttributes
-     *
-     * @var boolean
-     */
-    public $autoHashPasswordAttributes = true;
-
-    /**
-     * Removes the _confirmation type fields
-     *
-     * @var boolean
-     */
-    public $autoPurgeRedundantAttributes = true;
-
-    /**
      * The attributes excluded from the model's JSON form.
      *
      * @var array
@@ -70,6 +42,20 @@ class Model extends Ardent {
     protected $fillable = [];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [];
+
+    /**
      * The attributes that can be full-text searched
      *
      * @var array
@@ -77,14 +63,51 @@ class Model extends Ardent {
     public $searchable = [];
 
     /**
+     * The attributes to purge before saving
+     *
+     * @var array
+     */
+    protected static $purgeable = [];
+
+    /**
+     * Relationships that model should set up
+     *
+     * @var array
+     */
+    protected static $relationships = [];
+
+    /**
+     * The attribute rules that model will validate against
+     *
+     * @var array
+     */
+    public static $rules = [
+
+        // Rules that apply for any type of write
+        'save' => [
+
+        ],
+
+        // Rules that apply for creates
+        'create' => [
+
+        ],
+
+        // Rules that apply for updates
+        'update' => [
+
+        ],
+    ];
+
+    /**
      * Options for trashed status dropdowns
      *
      * @var array
      */
     public $trashedOptions = [
-        1       => 'Any Trashed',
-        'only'  => 'Trashed',
-        0       => 'Not Trashed',
+        1      => 'Any Trashed',
+        'only' => 'Trashed',
+        0      => 'Not Trashed',
     ];
 
     /**
@@ -93,7 +116,7 @@ class Model extends Ardent {
      * @var array
      */
     public $orderOptions = [
-        'id'    => 'ID',
+        'id' => 'ID',
     ];
 
     /**
@@ -102,8 +125,8 @@ class Model extends Ardent {
      * @var array
      */
     public $sortOptions = [
-        'asc'   => 'Ascending',
-        'desc'  => 'Descending',
+        'asc'  => 'Ascending',
+        'desc' => 'Descending',
     ];
 
     /**
@@ -112,100 +135,11 @@ class Model extends Ardent {
      * @var array
      */
     public $maxOptions = [
-        10      => '10 Per Page',
-        25      => '25 Per Page',
-        50      => '50 Per Page',
-        100     => '100 Per Page',
+        10  => '10 Per Page',
+        25  => '25 Per Page',
+        50  => '50 Per Page',
+        100 => '100 Per Page',
     ];
-
-    /**
-     * Relationships that Ardent should set up
-     * 
-     * @var array
-     */
-    public static $relationsData = [];
-
-    /**
-     * The attribute rules that Ardent will validate against
-     * 
-     * @var array
-     */
-    public static $rules = [];
-
-    /**
-     * The attribute rules used by seeder
-     * 
-     * @var array
-     */
-    public static $rulesForSeeding = [];
-
-    /**
-     * The attribute rules used by store()
-     * 
-     * @var array
-     */
-    public static $rulesForStoring = [];
-
-    /**
-     * The attribute rules used by update()
-     * 
-     * @var array
-     */
-    public static $rulesForUpdating = [];
-
-    /**
-     * Get the date type fields that should be converted to Carbon dates
-     *
-     * @return array
-     */
-    public function getDates()
-    {
-        return $this->dateAttributes;
-    }
-
-    /**
-     * Rules needed for seeding
-     * 
-     * @return array
-     */    
-    public function getRulesForSeedingAttribute()
-    {
-        return array_only(self::$rules, self::$rulesForSeeding);
-    }
-
-    /**
-     * Rules needed for storing
-     * 
-     * @return array
-     */    
-    public function getRulesForStoringAttribute()
-    {
-        return array_only(self::$rules, self::$rulesForStoring);
-    }
-
-    /**
-     * Rules needed for updating
-     * 
-     * @return array
-     */
-    public function getRulesForUpdatingAttribute()
-    {
-        $rules = array_only(self::$rules, self::$rulesForUpdating);
-
-        // add exception for the unique constraint
-        foreach(array_keys($rules) as $attribute)
-        {
-            foreach($rules[$attribute] as $i => $rule)
-            {
-                if(starts_with($rule, 'unique'))
-                {
-                    $rules[$attribute][$i] = $rule.','.$this->id;
-                }
-            }
-        }
-
-        return $rules;
-    }
 
     /**
      * Returns the number of minutes since the creation time
@@ -262,13 +196,14 @@ class Model extends Ardent {
      * Builds a query scope to return object alphabetically for a dropdown list
      *
      * @param \Illuminate\Database\Query\Builder $query
-     * @param string $column to order by
-     * @param string $key to use in returned array
-     * @param string $sort direction
-     * @return array [$key => $name]
+     * @param string $column (optional) to order by
+     * @param string $key (optional) to use in returned array
+     * @param string $sort (optional) direction
+     * @return array
      */
-    public function scopeListAlphabetically($query, $column, $key = null, $sort = 'asc')
+    public function scopeListAlphabetically($query, $column = null, $key = null, $sort = 'asc')
     {
+        $column = is_null($column) ? $this->getKeyName() : $column;
         return $query->orderBy($column, $sort)->lists($column, $key);
     }
 

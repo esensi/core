@@ -16,7 +16,7 @@
     "require": {
         "php": ">=5.4.0",
         "illuminate/support": "4.2.*",
-        "magniloquent/magniloquent": "dev-master",
+        "watson/validating": "0.7.*",
         "crhayes/blade-partials": "dev-master"
     },
     "require-dev": {
@@ -29,7 +29,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/emersonmedia/magniloquent.git"
+            "url": "https://github.com/emersonmedia/validating.git"
         }
     ],
     "suggest": {

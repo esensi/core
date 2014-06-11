@@ -1,7 +1,17 @@
 <?php namespace Esensi\Core\Models;
 
 use \Carbon\Carbon;
-use \Magniloquent\Magniloquent\Magniloquent;
+use \Esensi\Core\Contracts\EncryptingModelInterface;
+use \Esensi\Core\Contracts\HashingModelInterface;
+use \Esensi\Core\Contracts\PurgingModelInterface;
+use \Esensi\Core\Contracts\RelatingModelInterface;
+use \Esensi\Core\Contracts\ValidatingModelInterface;
+use \Esensi\Core\Traits\EncryptingModelTrait;
+use \Esensi\Core\Traits\HashingModelTrait;
+use \Esensi\Core\Traits\PurgingModelTrait;
+use \Esensi\Core\Traits\RelatingModelTrait;
+use \Esensi\Core\Traits\ValidatingModelTrait;
+use \Illuminate\Database\Eloquent\Model as Eloquent;
 use \Illuminate\Support\Facades\Lang;
 
 /**
@@ -9,9 +19,53 @@ use \Illuminate\Support\Facades\Lang;
  *
  * @author daniel <daniel@bexarcreative.com>
  * @see \Illuminate\Database\Eloquent\Model
- * @see \Magniloquent\Magniloquent\Magniloquent
+ * @see \Esensi\Core\Contracts\EncryptingModelInterface
+ * @see \Esensi\Core\Contracts\HashingModelInterface
+ * @see \Esensi\Core\Contracts\PurgingModelInterface
+ * @see \Esensi\Core\Contracts\RelatingModelInterface
+ * @see \Esensi\Core\Contracts\ValidatingModelInterface
  */
-class Model extends Magniloquent {
+class Model extends Eloquent implements
+    EncryptingModelInterface,
+    HashingModelInterface,
+    PurgingModelInterface,
+    RelatingModelInterface,
+    ValidatingModelInterface {
+
+    /**
+     * Make model encrypt attributes
+     *
+     * @see \Esensi\Core\Traits\EncryptingModelTrait
+     */
+    use EncryptingModelTrait;
+
+    /**
+     * Make model hash attributes
+     *
+     * @see \Esensi\Core\Traits\HashingModelTrait
+     */
+    use HashingModelTrait;
+
+    /**
+     * Make model purge attributes
+     *
+     * @see \Esensi\Core\Traits\PurgingModelTrait
+     */
+    use PurgingModelTrait;
+
+    /**
+     * Make model use properties for model relationships
+     *
+     * @see \Esensi\Core\Traits\RelatingModelTrait
+     */
+    use RelatingModelTrait;
+
+    /**
+     * Make model validate attributes
+     *
+     * @see \Esensi\Core\Traits\ValidatingModelTrait
+     */
+    use ValidatingModelTrait;
 
     /**
      * The database table used by the model.
@@ -56,6 +110,13 @@ class Model extends Magniloquent {
     protected $dates = [];
 
     /**
+     * The attribute rules that model will validate against
+     *
+     * @var array
+     */
+    public $rules = [];
+
+    /**
      * The attributes that can be full-text searched
      *
      * @var array
@@ -67,37 +128,37 @@ class Model extends Magniloquent {
      *
      * @var array
      */
-    protected static $purgeable = [];
+    protected $purgeable = [];
+
+    /**
+     * The attributes to hash before saving
+     *
+     * @var array
+     */
+    protected $hashable = [];
+
+    /**
+     * The attributes to encrypt when set and
+     * decrypt when gotten
+     *
+     * @var array
+     */
+    protected $encryptable = [];
 
     /**
      * Relationships that model should set up
      *
      * @var array
      */
-    protected static $relationships = [];
+    protected $relationships = [];
 
     /**
-     * The attribute rules that model will validate against
+     * Whether the model should inject it's identifier to the unique
+     * validation rules before attempting validation.
      *
-     * @var array
+     * @var boolean
      */
-    public static $rules = [
-
-        // Rules that apply for any type of write
-        'save' => [
-
-        ],
-
-        // Rules that apply for creates
-        'create' => [
-
-        ],
-
-        // Rules that apply for updates
-        'update' => [
-
-        ],
-    ];
+    protected $injectIdentifier = true;
 
     /**
      * Options for trashed status dropdowns
@@ -140,6 +201,53 @@ class Model extends Magniloquent {
         50  => '50 Per Page',
         100 => '100 Per Page',
     ];
+
+    /**
+     * Dynamically call methods
+     *
+     * @param  string $method
+     * @param  array  $parameters
+     * @return mixed
+     */
+    public function __call( $method, $parameters )
+    {
+        // Dynamically call the relationship
+        if ( $this->isRelationship( $method ) )
+        {
+            return $this->callRelationship( $method );
+        }
+
+        // Default Eloquent dynamic caller
+        return parent::__call($method, $parameters);
+    }
+
+    /**
+     * Dynamically retrieve attributes
+     *
+     * @param  string $key
+     * @return mixed
+     */
+    public function __get( $key )
+    {
+        // Dynamically get the relationship
+        if ( $this->isRelationship( $key ) )
+        {
+            // Load the relationship if not yet loaded
+            if ( ! array_key_exists( $key, $this->getRelations() ) )
+            {
+                $relation = $this->callRelationships($key);
+
+                // Cache the relationship for later
+                $this->setRelation( $key, $relation->getResults() );
+            }
+
+            // Reuse loaded relationship
+            return $this->getRelation( $key );
+        }
+
+        // Default Eloquent dynamic getter
+        return parent::__get($key);
+    }
 
     /**
      * Returns the number of minutes since the creation time

@@ -19,6 +19,7 @@ trait TrashableRepositoryTrait{
     {
         // Get the resource
         $object = $this->getModel()
+            ->query()
             ->withTrashed()
             ->find($id);
 

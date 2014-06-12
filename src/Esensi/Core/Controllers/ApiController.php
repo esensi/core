@@ -18,9 +18,10 @@ use \Illuminate\Routing\Controller;
  *
  * @author daniel <daniel@bexarcreative.com>
  */
-class ApiController extends Controller implements ExceptionHandlerInterface,
-    RepositoryInjectedInterface,
-    PackagedInterface {
+class ApiController extends Controller implements
+    ExceptionHandlerInterface,
+    PackagedInterface,
+    RepositoryInjectedInterface {
 
     /**
      * Make exceptions return a standard API exception format
@@ -30,18 +31,18 @@ class ApiController extends Controller implements ExceptionHandlerInterface,
     use ApiExceptionHandlerTrait;
 
     /**
-     * Make use of Repository injection
-     *
-     * @see \Esensi\Core\Traits\RepositoryInjectedTrait
-     */
-    use RepositoryInjectedTrait;
-
-    /**
      * Package this controller
      *
      * @see \Esensi\Core\Traits\PackagedTrait
      */
     use PackagedTrait;
+
+    /**
+     * Make use of Repository injection
+     *
+     * @see \Esensi\Core\Traits\RepositoryInjectedTrait
+     */
+    use RepositoryInjectedTrait;
 
     /**
      * Inject dependencies

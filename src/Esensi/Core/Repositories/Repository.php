@@ -8,7 +8,6 @@ use \Esensi\Core\Contracts\ModelInjectedInterface;
 use \Esensi\Core\Contracts\PackagedInterface;
 use \Esensi\Core\Contracts\RepositoryInjectedInterface;
 use \Esensi\Core\Contracts\ResourcefulRepositoryInterface;
-use \Esensi\Core\Contracts\TrashableRepositoryInterface;
 use \Esensi\Core\Traits\CruddableRepositoryTrait;
 use \Esensi\Core\Traits\ExceptionalRepositoryTrait;
 use \Esensi\Core\Traits\FindableRepositoryTrait;
@@ -17,8 +16,6 @@ use \Esensi\Core\Traits\ModelInjectedTrait;
 use \Esensi\Core\Traits\PackagedTrait;
 use \Esensi\Core\Traits\RepositoryInjectedTrait;
 use \Esensi\Core\Traits\ResourcefulRepositoryTrait;
-use \Esensi\Core\Traits\TrashableRepositoryTrait;
-
 use \Esensi\Core\Models\Model;
 
 /**
@@ -26,14 +23,14 @@ use \Esensi\Core\Models\Model;
  *
  * @author daniel <daniel@bexarcreative.com>
  */
-class Repository implements CruddableRepositoryInterface,
+class Repository implements
+    CruddableRepositoryInterface,
     ExceptionalRepositoryInterface,
     FindableRepositoryInterface,
     FilterableRepositoryInterface,
     ModelInjectedInterface,
     PackagedInterface,
-    ResourcefulRepositoryInterface,
-    TrashableRepositoryInterface {
+    ResourcefulRepositoryInterface {
 
     /**
      * Make this repository use a CRUD interface
@@ -90,13 +87,6 @@ class Repository implements CruddableRepositoryInterface,
      * @see \Esensi\Core\Traits\ResourcefulRepositoryTrait
      */
     use ResourcefulRepositoryTrait;
-
-    /**
-     * Make this repository use trashable models
-     *
-     * @see \Esensi\Core\Traits\TrashableRepositoryTrait
-     */
-    use TrashableRepositoryTrait;
 
     /**
      * Inject dependencies

@@ -52,6 +52,6 @@ interface PurgingModelInterface {
      *
      * @return void
      */
-    function purgeAttributes();
+    public function purgeAttributes();
 
 }

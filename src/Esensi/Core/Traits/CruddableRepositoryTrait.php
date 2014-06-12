@@ -17,17 +17,14 @@ trait CruddableRepositoryTrait{
      */
     public function create(array $attributes)
     {
-        // Create a new resource
+        // Fill the model attributes
         $model = $this->getModel();
-        $object =  new $model;
-
-        // Fill the resource attributes
-        $object->fill($attributes);
+        $object = new $model( array_only($attributes, $model->getFillable()) );
 
         // Throw an error if the resource could not be updated
         if( ! $object->save() )
         {
-            $this->throwException( $object->errors(), $this->error('create') );
+            $this->throwException( $object->getErrors(), $this->error('create') );
         }
 
         return $object;
@@ -43,7 +40,8 @@ trait CruddableRepositoryTrait{
     public function read($id)
     {
         // Get the resource
-        $object = $this->getModel()->find($id);
+        $object = $this->getModel()
+            ->find( $id );
 
         // Throw an error if the resource could not be found
         if( ! $object )
@@ -65,15 +63,13 @@ trait CruddableRepositoryTrait{
     public function update($id, array $attributes)
     {
         // Get the resource
-        $object =  $this->read($id);
-
-        // Fill the resource attributes
-        $object->fill($attributes);
+        $object = $this->read( $id );
+        $object->fill( array_only($attributes, $model->getFillable()) );
 
         // Throw an error if the resource could not be updated
         if( ! $object->save() )
         {
-            $this->throwException( $object->errors(), $this->error('update') );
+            $this->throwException( $object->getErrors(), $this->error('update') );
         }
 
         return $object;
@@ -87,7 +83,7 @@ trait CruddableRepositoryTrait{
      * @return boolean
      */
     public function delete($id)
-    {   
+    {
         // Force deletes on soft-deleted models
         if( method_exists( $this->getModel(), 'forceDelete' ) )
         {

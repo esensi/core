@@ -1,6 +1,5 @@
 <?php namespace Esensi\Core\Models;
 
-use \Carbon\Carbon;
 use \Esensi\Core\Contracts\EncryptingModelInterface;
 use \Esensi\Core\Contracts\HashingModelInterface;
 use \Esensi\Core\Contracts\PurgingModelInterface;
@@ -13,6 +12,7 @@ use \Esensi\Core\Traits\RelatingModelTrait;
 use \Esensi\Core\Traits\ValidatingModelTrait;
 use \Illuminate\Database\Eloquent\Model as Eloquent;
 use \Illuminate\Support\Facades\Lang;
+use \Illuminate\Support\Str;
 
 /**
  * Default base model
@@ -146,7 +146,7 @@ class Model extends Eloquent implements
     protected $encryptable = [];
 
     /**
-     * Relationships that model should set up
+     * Relationships that the model should set up
      *
      * @var array
      */
@@ -158,7 +158,7 @@ class Model extends Eloquent implements
      *
      * @var boolean
      */
-    protected $injectIdentifier = true;
+    protected $injectUniqueIdentifier = true;
 
     /**
      * Options for trashed status dropdowns
@@ -232,72 +232,70 @@ class Model extends Eloquent implements
         // Dynamically get the relationship
         if ( $this->isRelationship( $key ) )
         {
-            // Load the relationship if not yet loaded
-            if ( ! array_key_exists( $key, $this->getRelations() ) )
+            // Use the relationship already loaded
+            if ( array_key_exists( $key, $this->getRelations() ) )
             {
-                $relation = $this->callRelationships($key);
-
-                // Cache the relationship for later
-                $this->setRelation( $key, $relation->getResults() );
+                return $this->getRelation( $key );
             }
 
-            // Reuse loaded relationship
-            return $this->getRelation( $key );
+            return $this->getRelationshipFromMethod($key, camel_case($key));
+        }
+
+        // Dynamically get the decrypted attributes
+        if ( $this->isEncryptable( $key ) )
+        {
+            // Decrypt only encrypted values
+            if( $this->isEncrypted( $key ) )
+            {
+                return $this->getEncryptedAttribute( $key );
+            }
+        }
+
+        // Dynamically get time since attributes
+        $normalized = strtolower(snake_case( $key ));
+        $attribute = str_replace(['time_since_', 'time_till_'], ['', ''], $normalized);
+        if ( ( Str::startsWith( $normalized, 'time_since_' ) || Str::startsWith( $normalized, 'time_till_' ) )
+            && in_array( $attribute . '_at', $this->getDates() ) )
+        {
+            // Convert the attribute to a Carbon date
+            $value = $this->getAttributeFromArray( $attribute . '_at');
+
+            // Show label if date has not been set
+            if( is_null($value) )
+            {
+                return Lang::get('esensi::core.labels.never_' . $attribute);
+            }
+
+            // Show human readable date
+            $date = $this->asDateTime( $value );
+            return $date->diffForHumans();
         }
 
         // Default Eloquent dynamic getter
-        return parent::__get($key);
+        return parent::__get( $key );
     }
 
     /**
-     * Returns the number of minutes since the creation time
+     * Dynamically set attributes
      *
-     * @return string
+     * @param  string $key
+     * @param  mixed $value
+     * @return mixed
      */
-    public function getTimeSinceCreatedAttribute()
+    public function __set( $key, $value )
     {
-        // Short circuit for models that have not been created
-        if( is_null($this->created_at) )
+        // Dynamically set the encrypted attributes
+        if ( $this->isEncryptable( $key ) )
         {
-            return Lang::get('esensi::core.messages.never_created');
+            // Encrypt only decrypted values
+            if ( $this->isDecrypted( $key ) )
+            {
+                return $this->setEncryptingAttribute( $key, $value );
+            }
         }
 
-        $date = new Carbon($this->created_at);
-        return $date->diffForHumans();
-    }
-
-    /**
-     * Returns the number of minutes since the update time
-     *
-     * @return string
-     */
-    public function getTimeSinceUpdatedAttribute()
-    {
-        // Short circuit for models that have not been updated
-        if( is_null($this->updated_at) )
-        {
-            return Lang::get('esensi::core.messages.never_updated');
-        }
-
-        $date = new Carbon($this->updated_at);
-        return $date->diffForHumans();
-    }
-
-    /**
-     * Returns the number of minutes since the deleted time
-     *
-     * @return string
-     */
-    public function getTimeSinceDeletedAttribute()
-    {
-        // Short circuit for models that have not been deleted
-        if( is_null($this->deleted_at) )
-        {
-            return Lang::get('esensi::core.messages.never_deleted');
-        }
-
-        $date = new Carbon($this->deleted_at);
-        return $date->diffForHumans();
+        // Default Eloquent dynamic setter
+        return parent::__set( $key, $value );
     }
 
     /**

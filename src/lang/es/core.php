@@ -62,10 +62,13 @@ return [
     */
 
     'labels' => [
-        'never_expires' => 'Nunca Caduca',
-        'never_updated' => 'Nunca Actualizado',
-        'never_created' => 'Nunca Creado',
-        'never_deleted' => 'Nunca Suprimido',
+        'never_expires'          => 'Nunca Caduca',
+        'never_updated'          => 'Nunca Actualizado',
+        'never_created'          => 'Nunca Creado',
+        'never_deleted'          => 'Nunca Suprimido',
+        'never_authenticated'    => 'Nunca Conectado',
+        'never_activated'        => 'Nunca Activado',
+        'never_password_updated' => 'Nunca Ajuste',
     ],
 
 ];

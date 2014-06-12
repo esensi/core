@@ -1,5 +1,6 @@
 <?php namespace Esensi\Core\Traits;
 
+use \Esensi\Core\Models\ValidatingModelObserver;
 use \Watson\Validating\ValidatingTrait;
 
 /**
@@ -16,5 +17,15 @@ trait ValidatingModelTrait{
      * @see \Watson\Validating\ValidatingTrait
      */
     use ValidatingTrait;
+
+    /**
+     * Boot the trait's observers
+     *
+     * @return void
+     */
+    public static function bootValidatingTrait()
+    {
+        static::observe(new ValidatingModelObserver);
+    }
 
 }

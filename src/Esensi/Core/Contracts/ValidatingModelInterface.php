@@ -48,7 +48,7 @@ interface ValidatingModelInterface {
      *
      * @return boolean
      */
-    public function getInjectedUniqueIdentifier();
+    public function getInjectUniqueIdentifier();
 
     /**
      * Set whether or not the model will add its unique
@@ -57,7 +57,7 @@ interface ValidatingModelInterface {
      * @param  boolean
      * @return void
      */
-    public function setInjectedUniqueIdentifier( $value );
+    public function setInjectUniqueIdentifier( $value );
 
     /**
      * Get the model
@@ -76,10 +76,11 @@ interface ValidatingModelInterface {
     /**
      * Set all the validation rules
      *
+     * @todo strong type the array $rules
      * @param  array $rules
      * @return void
      */
-    public function setRules( array $rules );
+    public function setRules( $rules );
 
     /**
      * Get a validation ruleset if it exists
@@ -92,11 +93,12 @@ interface ValidatingModelInterface {
     /**
      * Set a validation ruleset
      *
+     * @todo strong type the array $rules
      * @param  array $rules for ruleset
      * @param  string $ruleset (optional) name
      * @return void
      */
-    public function setRuleset( array $rules, $ruleset = 'saving');
+    public function setRuleset( $rules, $ruleset = 'saving');
 
     /**
      * Get the custom validation messages being used by the model
@@ -108,10 +110,11 @@ interface ValidatingModelInterface {
     /**
      * Set the custom validation messages to be used by the model
      *
+     * @todo strong type the array $message
      * @param  array $messages
      * @return void
      */
-    public function setMessages( array $messages );
+    public function setMessages( $messages );
 
     /**
      * Get the validation error message for the model

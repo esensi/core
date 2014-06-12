@@ -60,10 +60,13 @@ return [
     */
 
     'labels' => [
-        'never_expires' => 'Never Expires',
-        'never_updated' => 'Never Updated',
-        'never_created' => 'Never Created',
-        'never_deleted' => 'Never Deleted',
+        'never_expires'          => 'Never Expires',
+        'never_updated'          => 'Never Updated',
+        'never_created'          => 'Never Created',
+        'never_deleted'          => 'Never Deleted',
+        'never_authenticated'    => 'Never Logged In',
+        'never_activated'        => 'Never Activated',
+        'never_password_updated' => 'Never Set',
     ],
 
 ];

@@ -31,6 +31,7 @@ return [
         'EsensiModel'                   => '\Esensi\Core\Models\Model',
         'EsensiCoreRepository'          => '\Esensi\Core\Repositories\Repository',
         'EsensiCoreRepositoryException' => '\Esensi\Core\Exceptions\RepositoryException',
+        'EsensiCoreTrashableRepository' => '\Esensi\Core\Repositories\TrashableRepository',
         'EsensiCorePublicController'    => '\Esensi\Core\Controllers\PublicController',
         'EsensiCoreApiController'       => '\Esensi\Core\Controllers\ApiController',
         'EsensiCoreAdminController'     => '\Esensi\Core\Controllers\AdminController',

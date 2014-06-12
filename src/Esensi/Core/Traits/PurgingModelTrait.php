@@ -1,5 +1,8 @@
 <?php namespace Esensi\Core\Traits;
 
+use \Esensi\Core\Models\PurgingModelObserver;
+use \Illuminate\Support\Str;
+
 /**
  * Trait that implements the PurgingModelInterface
  *
@@ -9,18 +12,21 @@
 trait PurgingModelTrait{
 
     /**
-     * The attributes that are purgeable
-     *
-     * @var array
-     */
-    protected $purgeable = [];
-
-    /**
      * Whether the model is purging or not
      *
      * @var boolean
      */
     protected $purging = true;
+
+    /**
+     * Boot the trait's observers
+     *
+     * @return void
+     */
+    public static function bootPurgingModelTrait()
+    {
+        static::observe(new PurgingModelObserver);
+    }
 
     /**
      * Get the purgeable attributes
@@ -74,7 +80,8 @@ trait PurgingModelTrait{
      */
     public function isPurgeable( $attribute )
     {
-        return in_array( $attribute, $this->getPurgeable() );
+        return $this->getPurging()
+            && in_array( $attribute, $this->getPurgeable() );
     }
 
     /**
@@ -82,7 +89,7 @@ trait PurgingModelTrait{
      *
      * @return void
      */
-    function purgeAttributes()
+    public function purgeAttributes()
     {
         // Get the attribute keys
         $keys = array_keys( $this->attributes );

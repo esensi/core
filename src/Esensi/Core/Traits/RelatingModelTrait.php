@@ -8,15 +8,9 @@ use \Illuminate\Database\Eloquent\Relations\MorphTo;
  * Trait that implements the RelatingModelInterface
  *
  * @author daniel <daniel@bexarcreative.com>
+ * @see \Esensi\Core\Contracts\RelatingModelInterface
  */
 trait RelatingModelTrait {
-
-    /**
-     * The relationships that this trait should setup
-     *
-     * @var array
-     */
-    protected $relationships = [];
 
     /**
      * Return the relationship configurations
@@ -46,7 +40,7 @@ trait RelatingModelTrait {
      */
     public function isRelationship( $name )
     {
-        return array_key_exists( $this->relationships[ $name ] );
+        return array_key_exists( $name, $this->relationships );
     }
 
     /**
@@ -61,7 +55,6 @@ trait RelatingModelTrait {
         $args = $this->getRelationship( $name );
 
         $method = array_shift( $args );
-
         return call_user_func_array( [ $this, $method ], $args );
     }
 

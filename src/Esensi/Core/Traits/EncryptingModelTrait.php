@@ -1,7 +1,7 @@
 <?php namespace Esensi\Core\Traits;
 
-use \Eloquent\Support\Facades\Crypt;
-use \Eloquent\Encryption\DecryptException;
+use \Illuminate\Support\Facades\Crypt;
+use \Illuminate\Encryption\DecryptException;
 
 /**
  * Trait that implements the EncryptingModelInterface
@@ -10,13 +10,6 @@ use \Eloquent\Encryption\DecryptException;
  * @see \Esensi\Core\Contracts\EncryptionModelInterface
  */
 trait EncryptingModelTrait {
-
-    /**
-     * The attributes that are encryptable
-     *
-     * @var array
-     */
-    protected $encryptable = [];
 
     /**
      * Whether the model is encrypting or not
@@ -77,7 +70,8 @@ trait EncryptingModelTrait {
      */
     public function isEncryptable( $attribute )
     {
-        return in_array( $attribute, $this->getEncryptable() );
+        return $this->getEncrypting()
+            && in_array( $attribute, $this->getEncryptable() );
     }
 
     /**
@@ -90,7 +84,7 @@ trait EncryptingModelTrait {
     {
         try
         {
-            Crypt::decrypt( $this->{$attribute} );
+            Crypt::decrypt( $this->$attribute );
         }
         catch (DecryptException $exception)
         {
@@ -120,7 +114,7 @@ trait EncryptingModelTrait {
     {
         foreach( $this->getEncryptable() as $attribute )
         {
-            $this->setEncryptingAttribute( $attribute, $this->{$attribute} );
+            $this->setEncryptingAttribute( $attribute, $this->$attribute );
         }
     }
 

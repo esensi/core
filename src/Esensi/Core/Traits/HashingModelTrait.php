@@ -1,20 +1,15 @@
 <?php namespace Esensi\Core\Traits;
 
-use \Eloquent\Support\Facades\Hash;
+use \Esensi\Core\Models\HashingModelObserver;
+use \Illuminate\Support\Facades\Hash;
 
 /**
  * Trait that implements the HashingModelInterface
  *
  * @author daniel <daniel@bexarcreative.com>
+ * @see \Esensi\Core\Contracts\HashingModelInterface
  */
 trait HashingModelTrait {
-
-    /**
-     * The attributes that are hashable
-     *
-     * @var array
-     */
-    protected $hashable = [];
 
     /**
      * Whether the model is hashing or not
@@ -22,6 +17,16 @@ trait HashingModelTrait {
      * @var boolean
      */
     protected $hashing = true;
+
+    /**
+     * Boot the trait's observers
+     *
+     * @return void
+     */
+    public static function bootHashingModelTrait()
+    {
+        static::observe(new HashingModelObserver);
+    }
 
     /**
      * Get the hashable attributes
@@ -75,7 +80,8 @@ trait HashingModelTrait {
      */
     public function isHashable( $attribute )
     {
-        return in_array( $attribute, $this->getHashable() );
+        return $this->getHashing()
+            && in_array( $attribute, $this->getHashable() );
     }
 
     /**
@@ -86,7 +92,7 @@ trait HashingModelTrait {
      */
     public function isHashed( $attribute )
     {
-        $info = password_get_info( $this->{$attribute} );
+        $info = password_get_info( $this->$attribute );
         return $info['algo'] !== 0;
     }
 
@@ -99,7 +105,7 @@ trait HashingModelTrait {
     {
         foreach( $this->getHashable() as $attribute )
         {
-            $this->setHashingAttribute( $attribute, $this->{$attribute} );
+            $this->setHashingAttribute( $attribute, $this->$attribute );
         }
     }
 

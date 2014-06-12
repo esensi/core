@@ -1,6 +1,6 @@
 <?php namespace Esensi\Core\Seeders;
 
-use \Magniloquent\Magniloquent\Magniloquent as Model;
+use \EsensiModel as Model;
 use \Illuminate\Database\Seeder as LaravelSeeder;
 
 /**
@@ -45,16 +45,15 @@ class Seeder extends LaravelSeeder {
     /**
      * Save model or fail by showing errors
      *
-     * @param  \Magniloquent\Magniloquent\Magniloquent $model
+     * @param \Esensi\Core\Models\Model $model
      * @return void
      */
     public function saveOrFail(Model $model)
     {
-        $model->save([], true);
-        if( ! $model->isSaved() )
+        if( ! $model->save() )
         {
             $class = get_class($model);
-            $errors = implode("\n- ", $model->errors()->all());
+            $errors = implode("\n- ", $model->getErrors()->all());
             $this->command->error("$class could not be seeded:");
             $this->command->line('- '.$errors);
             exit();

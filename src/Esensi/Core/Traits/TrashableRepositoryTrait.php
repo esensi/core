@@ -68,21 +68,13 @@ trait TrashableRepositoryTrait{
         // Retrieve a trashed resource
         $object = $this->retrieve($id);
 
-        // Make sure that the rules are not used with
-        // the save() that restore() does
-        $oldRules = $object::$rules;
-        $object::$rules = ['save' => [], 'update' => [], 'create' => []];
-
         // Restore the object
         $result = $object->restore();
 
-        // Make sure we re-apply the rules after the restore()
-        $object::$rules = $oldRules;
-
         // Throw an error if resource could not be restored
-        if( ! $object->isValid() )
+        if( ! $result )
         {
-            $this->throwException( $object->errors(), $this->error('restore') );
+            $this->throwException( $object->getErrors(), $this->error('restore') );
         }
 
         return $result;

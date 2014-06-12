@@ -92,7 +92,7 @@ trait PurgingModelTrait{
     public function purgeAttributes()
     {
         // Get the attribute keys
-        $keys = array_keys( $this->attributes );
+        $keys = array_keys( $this->getAttributes() );
 
         // Filter out keys that should purged
         $attributes = array_filter( $keys,
@@ -120,7 +120,7 @@ trait PurgingModelTrait{
             });
 
         // Keep only the attributes that were not purged
-        $this->attributes = array_intersect( $this->attributes, array_flip( $attributes ) );
+        $this->attributes = array_intersect_key( $this->getAttributes(), array_flip( $attributes ) );
     }
 
 }

@@ -263,6 +263,8 @@ class Model extends Eloquent implements
             // Show label if date has not been set
             if( is_null($value) )
             {
+                // Load the language files because Laravel doesn't seem to have loaded them by now
+                Lang::addNamespace('esensi', __DIR__ . '/../../../lang');
                 return Lang::get('esensi::core.labels.never_' . $attribute);
             }
 

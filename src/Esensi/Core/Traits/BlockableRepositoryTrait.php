@@ -29,8 +29,8 @@ trait BlockableRepositoryTrait {
         // Block
         $object->blocked = 1;
 
-        // Block the resource
-        if( ! $object->save() )
+        // Validate the resource
+        if ( $object->isInvalid('blocking') || ! $object->save() )
         {
             $this->throwException($object->getErrors(), $this->error('block'));
         }
@@ -59,8 +59,8 @@ trait BlockableRepositoryTrait {
         // Unblock
         $object->blocked = 0;
 
-        // Unblock the resource
-        if( ! $object->save() )
+        // Validate the resource
+        if ( $object->isInvalid('unblocking') || ! $object->save() )
         {
             $this->throwException($object->getErrors(), $this->error('unblock'));
         }

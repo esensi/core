@@ -52,7 +52,7 @@ class Seeder extends LaravelSeeder {
     {
         if( ! $model->save() )
         {
-            $class = get_class($model);
+            $class = class_basename($model);
 
             $errors = implode("\n- ", $model->getErrors()->all());
             $this->command->error("\n$class could not be seeded:");
@@ -63,7 +63,6 @@ class Seeder extends LaravelSeeder {
 
             exit();
         }
-
     }
 
 }

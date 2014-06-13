@@ -64,7 +64,7 @@ trait CruddableRepositoryTrait{
     {
         // Get the resource
         $object = $this->read( $id );
-        $object->fill( array_only($attributes, $model->getFillable()) );
+        $object->fill( array_only($attributes, $object->getFillable()) );
 
         // Throw an error if the resource could not be updated
         if( ! $object->save() )

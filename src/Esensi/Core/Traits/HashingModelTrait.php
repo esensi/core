@@ -117,6 +117,7 @@ trait HashingModelTrait {
      */
     public function hash( $value )
     {
+        \Log::info('hashed ('. $value .') ... '.class_basename($this));
         return Hash::make( $value );
     }
 
@@ -145,7 +146,8 @@ trait HashingModelTrait {
         $this->$attribute = $value;
 
         // See if attribute needs hashing
-        $needsHashing = $this->isDirty( $attribute ) || ! $this->isHashed( $attribute );
+        $needsHashing = $this->getAttribute( $attribute )
+            && ( $this->isDirty( $attribute ) || ! $this->isHashed( $attribute ) );
 
         // Do the hashing if it needs it
         if ( $needsHashing )

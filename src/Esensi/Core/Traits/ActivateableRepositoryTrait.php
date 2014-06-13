@@ -29,12 +29,12 @@ trait ActivateableRepositoryTrait {
             $this->throwException($this->error('activation_not_allowed'));
         }
 
-        // Activate
+        // Activate the resource
         $object->active = 1;
         $object->activated_at = Carbon::now();
 
-        // Activate the resource
-        if ( ! $object->save() )
+        // Validate the resource
+        if ( $object->isInvalid('activating') || ! $object->save() )
         {
             $this->throwException($object->getErrors(), $this->error('activate'));
         }
@@ -60,12 +60,12 @@ trait ActivateableRepositoryTrait {
             $this->throwException($this->error('deactivation_not_allowed'));
         }
 
-        // Deactivate
+        // Deactivate the resource
         $object->active = 0;
         $object->activated_at = null;
 
-        // Deactivate the resource
-        if( ! $object->save() )
+        // Validate the resource
+        if ( $object->isInvalid('deactivating') || ! $object->save() )
         {
             $this->throwException($object->getErrors(), $this->error('deactivate'));
         }

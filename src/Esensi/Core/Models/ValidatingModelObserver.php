@@ -16,7 +16,7 @@ class ValidatingModelObserver extends ValidatingObserver{
      * Listener validates against the restoring ruleset.
      *
      * @param \Illuminate\Database\Eloquent\Model $model
-     * @return bool
+     * @return boolean
      */
     public function restoring( $model )
     {
@@ -26,9 +26,9 @@ class ValidatingModelObserver extends ValidatingObserver{
     /**
      * Perform validation with the specified ruleset.
      *
-     * @param  object  $model
-     * @param  string  $event
-     * @return bool
+     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param string $event name
+     * @return boolean
      */
     protected function performValidation($model, $event)
     {

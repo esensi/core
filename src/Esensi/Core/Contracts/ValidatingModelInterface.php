@@ -134,7 +134,7 @@ interface ValidatingModelInterface {
     /**
      * Returns whether the model is invalid or not
      *
-     * @param string $reulset name
+     * @param string $ruleset name
      * @return boolean
      */
     public function isInvalid( $ruleset = 'saving' );

@@ -117,7 +117,6 @@ trait HashingModelTrait {
      */
     public function hash( $value )
     {
-        \Log::info('hashed ('. $value .') ... '.class_basename($this));
         return Hash::make( $value );
     }
 

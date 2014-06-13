@@ -26,11 +26,22 @@ use \Illuminate\Support\Str;
  * @see \Esensi\Core\Contracts\ValidatingModelInterface
  */
 class Model extends Eloquent implements
-    EncryptingModelInterface,
+    //EncryptingModelInterface,
     HashingModelInterface,
     PurgingModelInterface,
     RelatingModelInterface,
     ValidatingModelInterface {
+
+    /**
+     * Make model validate attributes.
+     *
+     * This comes first even though it is out of alphabetical
+     * order because it is important that it is booted before
+     * hashing and purging traits.
+     *
+     * @see \Esensi\Core\Traits\ValidatingModelTrait
+     */
+    use ValidatingModelTrait;
 
     /**
      * Make model encrypt attributes
@@ -59,13 +70,6 @@ class Model extends Eloquent implements
      * @see \Esensi\Core\Traits\RelatingModelTrait
      */
     use RelatingModelTrait;
-
-    /**
-     * Make model validate attributes
-     *
-     * @see \Esensi\Core\Traits\ValidatingModelTrait
-     */
-    use ValidatingModelTrait;
 
     /**
      * The database table used by the model.
@@ -241,7 +245,7 @@ class Model extends Eloquent implements
             return $this->getRelationshipFromMethod($key, camel_case($key));
         }
 
-        // Dynamically get the decrypted attributes
+        // Dynamically get the encrypted attributes
         if ( $this->isEncryptable( $key ) )
         {
             // Decrypt only encrypted values
@@ -252,7 +256,7 @@ class Model extends Eloquent implements
         }
 
         // Dynamically get time since attributes
-        $normalized = strtolower(snake_case( $key ));
+        $normalized = Str::snake( $key );
         $attribute = str_replace(['time_since_', 'time_till_'], ['', ''], $normalized);
         if ( ( Str::startsWith( $normalized, 'time_since_' ) || Str::startsWith( $normalized, 'time_till_' ) )
             && in_array( $attribute . '_at', $this->getDates() ) )

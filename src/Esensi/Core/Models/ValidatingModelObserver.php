@@ -23,4 +23,23 @@ class ValidatingModelObserver extends ValidatingObserver{
         return $this->performValidation( $model, 'restoring' );
     }
 
+    /**
+     * Perform validation with the specified ruleset.
+     *
+     * @param  object  $model
+     * @param  string  $event
+     * @return bool
+     */
+    protected function performValidation($model, $event)
+    {
+        // If the model has validating enabled, perform it.
+        if ($model->getValidating() && $model->getRuleset($event))
+        {
+            if( $model->isValid($event) === false )
+            {
+                return false;
+            }
+        }
+    }
+
 }

@@ -53,9 +53,14 @@ class Seeder extends LaravelSeeder {
         if( ! $model->save() )
         {
             $class = get_class($model);
+
             $errors = implode("\n- ", $model->getErrors()->all());
-            $this->command->error("$class could not be seeded:");
+            $this->command->error("\n$class could not be seeded:");
             $this->command->line('- '.$errors);
+
+            $this->command->comment("\n$class attributes:");
+            $this->command->line($model->toJson(JSON_PRETTY_PRINT));
+
             exit();
         }
 

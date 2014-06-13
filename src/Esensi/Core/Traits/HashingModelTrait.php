@@ -105,7 +105,7 @@ trait HashingModelTrait {
     {
         foreach( $this->getHashable() as $attribute )
         {
-            $this->setHashingAttribute( $attribute, $this->$attribute );
+            $this->setHashingAttribute( $attribute, $this->getAttribute($attribute) );
         }
     }
 
@@ -142,7 +142,7 @@ trait HashingModelTrait {
     function setHashingAttribute( $attribute, $value )
     {
         // Set the attribute value like normal
-        $this->attributes[ $attribute ] = $value;
+        $this->$attribute = $value;
 
         // See if attribute needs hashing
         $needsHashing = $this->isDirty( $attribute ) || ! $this->isHashed( $attribute );
@@ -150,7 +150,7 @@ trait HashingModelTrait {
         // Do the hashing if it needs it
         if ( $needsHashing )
         {
-            $this->attributes[ $attribute ] = $this->hash( $value );
+            $this->attributes[ $attribute ] = $this->hash( $this->getAttribute( $attribute ) );
         }
     }
 

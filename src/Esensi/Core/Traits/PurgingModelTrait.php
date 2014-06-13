@@ -98,6 +98,12 @@ trait PurgingModelTrait{
         $attributes = array_filter( $keys,
             function( $key )
             {
+                // Remove attributes that should be purged
+                if ( in_array( $key, $this->getPurgeable() ) )
+                {
+                    return false;
+                }
+
                 // Remove attributes containing _confirmation suffix
                 if ( Str::endsWith( $key, '_confirmation' ) )
                 {
@@ -106,12 +112,6 @@ trait PurgingModelTrait{
 
                 // Remove attributes containing _ prefix
                 if ( Str::startsWith( $key, '_' ) )
-                {
-                    return false;
-                }
-
-                // Remove attributes that should be purged
-                if ( in_array( $key, $this->getPurgeable() ) )
                 {
                     return false;
                 }

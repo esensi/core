@@ -114,7 +114,7 @@ trait EncryptingModelTrait {
     {
         foreach( $this->getEncryptable() as $attribute )
         {
-            $this->setEncryptingAttribute( $attribute, $this->$attribute );
+            $this->setEncryptingAttribute( $attribute, $this->getAttribute($attribute) );
         }
     }
 
@@ -148,7 +148,7 @@ trait EncryptingModelTrait {
      */
     function getEncryptedAttribute( $attribute )
     {
-        return $this->decrypt( $this->attributes[ $attribute ] );
+        return $this->decrypt( $this->getAttribute($attribute) );
     }
 
     /**

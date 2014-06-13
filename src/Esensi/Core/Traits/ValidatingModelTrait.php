@@ -23,7 +23,14 @@ trait ValidatingModelTrait{
      *
      * @return void
      */
-    public static function bootValidatingTrait()
+    public static function bootValidatingTrait(){ }
+
+    /**
+     * Boot the trait's observers
+     *
+     * @return void
+     */
+    public static function bootValidatingModelTrait()
     {
         static::observe(new ValidatingModelObserver);
     }

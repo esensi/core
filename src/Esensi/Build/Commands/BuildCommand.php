@@ -44,9 +44,13 @@ class BuildCommand extends Command {
     public function fire()
     {
         // Construct the Gulp JS command
-        $gulp_path = Config::get('esensi::build.binary', base_path() . '/node_modules/.bin/gulp');
+        $gulp_path = Config::get('esensi::build.binary');
+        if( ! $gulp_path )
+        {
+            $gulp_path = base_path() . '/node_modules/.bin/gulp';
+        }
         $gulp_command = $gulp_path . ' build';
-        
+
         $task = $this->argument('task');
         if($task != null)
         {
@@ -120,7 +124,7 @@ class BuildCommand extends Command {
                 {
                     $this->error(rtrim($output, "\n"));
                 }
-                
+
                 // Remove the process once it's stopped running
                 if(!$process->isRunning())
                 {
@@ -161,7 +165,7 @@ class BuildCommand extends Command {
      * @return array
      */
     protected function getOptions()
-    {   
+    {
         return [
             ['production', 'p', InputOption::VALUE_NONE, 'Optimizes the build for production'],
         ];

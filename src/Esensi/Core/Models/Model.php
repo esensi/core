@@ -26,7 +26,7 @@ use \Illuminate\Support\Str;
  * @see \Esensi\Core\Contracts\ValidatingModelInterface
  */
 class Model extends Eloquent implements
-    //EncryptingModelInterface,
+    EncryptingModelInterface,
     HashingModelInterface,
     PurgingModelInterface,
     RelatingModelInterface,

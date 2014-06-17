@@ -1,5 +1,6 @@
 <?php namespace Esensi\Core\Models;
 
+use \Illuminate\Database\Eloquent\Model;
 use \Watson\Validating\ValidatingObserver;
 
 /**
@@ -18,28 +19,9 @@ class ValidatingModelObserver extends ValidatingObserver{
      * @param \Illuminate\Database\Eloquent\Model $model
      * @return boolean
      */
-    public function restoring( $model )
+    public function restoring(Model $model )
     {
         return $this->performValidation( $model, 'restoring' );
-    }
-
-    /**
-     * Perform validation with the specified ruleset.
-     *
-     * @param \Illuminate\Database\Eloquent\Model $model
-     * @param string $event name
-     * @return boolean
-     */
-    protected function performValidation($model, $event)
-    {
-        // If the model has validating enabled, perform it.
-        if ($model->getValidating() && $model->getRuleset($event))
-        {
-            if( $model->isValid($event) === false )
-            {
-                return false;
-            }
-        }
     }
 
 }

@@ -17,7 +17,8 @@
         "php": ">=5.4.0",
         "illuminate/support": "4.2.*",
         "watson/validating": "0.7.*",
-        "crhayes/blade-partials": "dev-master"
+        "crhayes/blade-partials": "dev-master",
+        "esensi/model": "0.3.x"
     },
     "require-dev": {
         "phpunit/phpunit": "4.0.*",
@@ -29,7 +30,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/emersonmedia/validating.git"
+            "url": "https://github.com/esensi/core.git"
         }
     ],
     "suggest": {

@@ -131,7 +131,18 @@ trait PackagedTrait{
         // Get the package namespace or default to the root
         $namespace = $loader->get('esensi::core.namespace', 'esensi::');
         $line = str_singular($this->package) . '.namespace';
-        return $loader->get($namespace . $line, $namespace);
+        
+        // Use the packaged namespace
+        if( $loader->has($namespace . $line) )
+        {
+            return $loader->get($namespace . $line);
+        }
+        
+        // Use the global namespace or default to root namespace
+        else
+        {
+            $loader->get($line, $namespace);
+        }
     }
 
     /**

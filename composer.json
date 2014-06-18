@@ -16,7 +16,6 @@
     "require": {
         "php": ">=5.4.0",
         "illuminate/support": "4.2.*",
-        "watson/validating": "dev-develop",
         "crhayes/blade-partials": "dev-master",
         "esensi/model": "0.3.x"
     },
@@ -30,11 +29,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/esensi/core.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/dalabarge/validating.git"
+            "url": "https://github.com/esensi/model.git"
         }
     ],
     "suggest": {

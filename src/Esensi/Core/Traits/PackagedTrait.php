@@ -12,14 +12,14 @@ trait PackagedTrait{
 
     /**
      * The package name
-     * 
+     *
      * @var string
      */
     protected $package = 'core';
 
     /**
      * The UI name
-     * 
+     *
      * @var string
      */
     protected $ui = 'public';
@@ -58,7 +58,7 @@ trait PackagedTrait{
         // Nest the view into the layout
         $view = App::make('view')->make($this->namespacing() . $line, $data);
         $this->layout->$name = $view;
-        
+
         return $view;
     }
 
@@ -76,7 +76,7 @@ trait PackagedTrait{
         $line = $this->namespacing() . 'core.views.' . $this->ui . '.modal';
         $this->layout = $this->namespacing() . $this->config($line);
         $this->setupLayout();
-        
+
         // Just return the response from the proxy call
         return $this->content($key, $data, $name);
     }
@@ -131,13 +131,13 @@ trait PackagedTrait{
         // Get the package namespace or default to the root
         $namespace = $loader->get('esensi::core.namespace', 'esensi::');
         $line = str_singular($this->package) . '.namespace';
-        
+
         // Use the packaged namespace
         if( $loader->has($namespace . $line) )
         {
             return $loader->get($namespace . $line);
         }
-        
+
         // Use the global namespace or default to root namespace
         else
         {
@@ -154,7 +154,7 @@ trait PackagedTrait{
      */
     protected function language($key, array $replacements = [])
     {
-        $namespace = 'esensi::';
+        $namespace = $this->namespacing();
         $line = str_singular($this->package) . '.' .$key;
         $loader = App::make('translator');
 
@@ -165,9 +165,17 @@ trait PackagedTrait{
         }
 
         // Use global namespaced package
-        else
+        elseif( $loader->has($line) )
         {
             return $loader->get($line, $replacements);
+        }
+
+        // Load the core as default
+        else
+        {
+            // Load the language files because Laravel doesn't seem to have loaded them by now
+            $loader->addNamespace('esensi', __DIR__ . '/../../../lang');
+            return $loader->get('esensi::core.' . $key, $replacements);
         }
     }
 

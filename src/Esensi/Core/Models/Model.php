@@ -55,11 +55,18 @@ class Model extends BaseModel {
     protected $dates = [];
 
     /**
-     * The attribute rules that model will validate against
+     * The default rules that the model will validate against.
      *
      * @var array
      */
-    public $rules = [];
+    protected $rules = [];
+
+    /**
+     * The rulesets that the model will validate against.
+     *
+     * @var array
+     */
+    protected $rulesets = [];
 
     /**
      * The attributes that can be full-text searched

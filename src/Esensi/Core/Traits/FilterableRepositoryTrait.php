@@ -4,6 +4,7 @@
  * Trait implementation of filterable repository interface
  *
  * @author daniel <daniel@bexarcreative.com>
+ * @author diego <diego@emersonmedia.com>
  * @see \Esensi\Core\Contracts\FilterableRepositoryInterface
  */
 trait FilterableRepositoryTrait{
@@ -227,9 +228,20 @@ trait FilterableRepositoryTrait{
      */
     public function setFilters(array $filters = [])
     {
-        $this->filters = $filters;
+        // Validate that each filter has value, if not use the default
+        foreach ($filters as $key => $value)
+        {
+            //Only overwrite default filters if the key has value
+            if (isset($value))
+            {
+                $this->filters[$key] = $value;
+            }
+        }
+
         $this->bindFilters();
     }
+
+
 
     /**
      * Merge the existing filters with new filters
@@ -242,6 +254,7 @@ trait FilterableRepositoryTrait{
         $this->filters = array_merge($this->filters, array_filter($filters));
         $this->bindFilters();
     }
+
 
     /**
      * Bind the filters as properties

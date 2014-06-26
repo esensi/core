@@ -231,6 +231,8 @@ trait FilterableRepositoryTrait{
         $this->bindFilters();
     }
 
+
+
     /**
      * Merge the existing filters with new filters
      *
@@ -242,6 +244,7 @@ trait FilterableRepositoryTrait{
         $this->filters = array_merge($this->filters, array_filter($filters));
         $this->bindFilters();
     }
+
 
     /**
      * Bind the filters as properties

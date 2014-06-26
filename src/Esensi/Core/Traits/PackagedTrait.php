@@ -6,6 +6,7 @@ use \Illuminate\Support\Facades\App;
  * Traits for helping with package configurations
  *
  * @author daniel <daniel@bexarcreative.com>
+ * @author diego <diego@emersonmedia.com>
  * @see \Esensi\Core\Contracts\PackagedInterface
  */
 trait PackagedTrait{
@@ -86,8 +87,18 @@ trait PackagedTrait{
     protected function modal($key, array $data = [], $name = null)
     {
         // Change default layout to modal layout
-        $line = $this->namespacing() . 'core.views.' . $this->ui . '.modal';
-        $this->layout = $this->namespacing() . $this->config($line);
+        $namespace = $this->namespacing();
+        $line = $namespace . $this->package . '.views.' . $this->ui . '.modal';
+
+        // Check to see if the config line is defined
+        if (empty($this->config($line)))
+        {
+            // The config line is not defined, so look for it on the esensi::core package
+            $namespace = "esensi::";
+            $line =  $namespace . 'core.views.' . $this->ui . '.modal';
+        }
+
+        $this->layout = $namespace . $this->config($line);
         $this->setupLayout();
 
         // Just return the response from the proxy call

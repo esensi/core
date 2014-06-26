@@ -17,6 +17,7 @@ use \Illuminate\Routing\Controller;
  * Controller for accessing repositories as an API
  *
  * @author daniel <daniel@bexarcreative.com>
+ * @author diego <diego@emersonmedia.com>
  */
 class ApiController extends Controller implements
     ExceptionHandlerInterface,
@@ -81,9 +82,9 @@ class ApiController extends Controller implements
     public function index()
     {
         $filters = Input::only('max', 'order', 'sort', 'keywords', 'trashed');
-        return $this->getRepository()
-            ->setFilters($filters)
-            ->index();
+        $repository = $this->getRepository();
+        $repository->mergeFilters($filters);
+        return $repository->index();
     }
 
     /**

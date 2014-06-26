@@ -88,17 +88,18 @@ trait PackagedTrait{
     {
         // Change default layout to modal layout
         $namespace = $this->namespacing();
-        $line = $namespace . $this->package . '.views.' . $this->ui . '.modal';
+        $line = 'views.' . $this->ui . '.modal';
 
         // Check to see if the config line is defined
-        if (empty($this->config($line)))
+        $line = $this->config($line);
+        if (empty($line))
         {
             // The config line is not defined, so look for it on the esensi::core package
-            $namespace = "esensi::";
-            $line =  $namespace . 'core.views.' . $this->ui . '.modal';
+            $namespace = "esensi/core::";
+            $line =  App::make('config')->get($namespace . 'core.views.' . $this->ui . '.modal');
         }
+        $this->layout = $namespace . $line;
 
-        $this->layout = $namespace . $this->config($line);
         $this->setupLayout();
 
         // Just return the response from the proxy call
@@ -195,6 +196,10 @@ trait PackagedTrait{
         }
 
         // Load the core as default
+        elseif( $loader->has('esensi/'.$this->package.'::' . $line))
+        {
+            return $loader->get('esensi/'.$this->package.'::' . $line, $replacements);
+        }
         else
         {
             return $loader->get('esensi/core::core.' . $key, $replacements);

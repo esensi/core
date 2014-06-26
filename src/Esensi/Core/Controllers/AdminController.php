@@ -34,11 +34,11 @@ class AdminController extends ApiController implements
      *
      * @var string
      */
-    protected $layout = 'esensi::core.admin.default';
+    protected $layout = 'esensi/core::core.admin.default';
 
     /**
      * The UI name
-     * 
+     *
      * @var string
      */
     protected $ui = 'admin';

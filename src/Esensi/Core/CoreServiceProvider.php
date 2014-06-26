@@ -20,9 +20,10 @@ class CoreServiceProvider extends PackageServiceProvider {
      */
     public function boot()
     {
-        $this->package('esensi/core', 'esensi', __DIR__ . '/../..');
+        $this->package('esensi/core', 'esensi/core', __DIR__ . '/../..');
+        $this->package('esensi/build', 'esensi/build', __DIR__ . '/../..');
 
-        $this->addAliases(['core', 'build']);
+        $this->addAliases('esensi/core', ['core', 'build']);
 
         require __DIR__ . '/filters.php';
         require __DIR__ . '/routes.php';

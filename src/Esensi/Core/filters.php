@@ -14,7 +14,7 @@
 
 App::missing(function($exception)
 {
-    $namespace = Config::get('esensi::core.namespace', 'esensi::');
-    $view = Config::get('esensi::core.views.public.missing', 'missing');
+    $namespace = Config::get('esensi/core::core.namespace', 'esensi/core::');
+    $view = Config::get('esensi/core::core.views.public.missing', 'missing');
     return Response::view($namespace . $view, array(), 404);
 });

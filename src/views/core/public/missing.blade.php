@@ -1,4 +1,4 @@
-@extends(Config::get('esensi::core.namespace', 'esensi::').'core.public.default')
+@extends(Config::get('esensi/core::core.namespace', 'esensi/core::').'core.public.default')
 
 @section('content')
 

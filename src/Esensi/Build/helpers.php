@@ -4,7 +4,7 @@ if ( ! function_exists('build_styles'))
 {
     /**
      * Ouput the stylesheets for several dependencies.
-     * 
+     *
      * @param [string, [string], ...]
      * @return string
      */
@@ -18,7 +18,7 @@ if ( ! function_exists('build_scripts'))
 {
     /**
      * Ouput the scripts for several dependencies.
-     * 
+     *
      * @param [string, [string], ...]
      * @return string
      */
@@ -32,7 +32,7 @@ if ( ! function_exists('build_assets'))
 {
     /**
      * Ouput the assets for several dependencies.
-     * 
+     *
      * @param array $dependencies
      * @param string $key
      * @param string $extension
@@ -43,8 +43,8 @@ if ( ! function_exists('build_assets'))
         $assets = [];
 
         // Get build configs
-        $builds_dir = public_path(Config::get('esensi::build.directories.base', 'builds')) . '/' . Config::get('esensi::build.directories.' . $key, $key);
-        $builds_url = asset(Config::get('esensi::build.directories.base', 'builds')) . '/' . Config::get('esensi::build.directories.' . $key, $key);
+        $builds_dir = public_path(Config::get('esensi/core::build.directories.base', 'builds')) . '/' . Config::get('esensi/core::build.directories.' . $key, $key);
+        $builds_url = asset(Config::get('esensi/core::build.directories.base', 'builds')) . '/' . Config::get('esensi/core::build.directories.' . $key, $key);
         $manifest = json_decode(file_get_contents($builds_dir . '/rev-manifest.json'), true);
 
         // Babysit dependencies so we don't have duplications
@@ -61,7 +61,7 @@ if ( ! function_exists('build_assets'))
             {
                 // Get the latest revision
                 $revision = $manifest[$dependency];
-                
+
                 // Generate HTML for including the dependency
                 switch($key)
                 {

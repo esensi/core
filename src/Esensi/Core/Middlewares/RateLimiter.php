@@ -68,7 +68,7 @@ class RateLimiter implements HttpKernelInterface {
      */
     public function rateLimit(SymfonyRequest $request, SymfonyResponse $response)
     {
-        $namespace = $this->app['config']->get('esensi::core.namespace');
+        $namespace = $this->app['config']->get('esensi/core::core.namespace');
 
         // Only rate limit if enabled
         if( !$this->app['config']->get($namespace . 'core.rates.enabled') )
@@ -89,14 +89,14 @@ class RateLimiter implements HttpKernelInterface {
         // Get requests limit from config
         $limit = $this->app['config']->get($namespace . 'core.rates.limit', 10);
         $period = $this->app['config']->get($namespace . 'core.rates.period', 1);
-        
+
         // Get request timeout from config
         $timeout = $this->app['config']->get($namespace . 'core.rates.cache.timeout', 10);
 
         // Rate limit by IP address
         $tag = $this->app['config']->get($namespace . 'core.rates.cache.tag', 'xrate:');
         $tag = sprintf($tag . ':%s', $request->getClientIp());
-        
+
         // Rate limit by route address
         if( $this->app['config']->get($namespace . 'core.rates.routes') )
         {
@@ -128,13 +128,10 @@ class RateLimiter implements HttpKernelInterface {
         // Reset cache settings
         $this->app['config']->set('cache.driver', $oldDriver);
         $this->app['config']->set('cache.table', $oldTable);
-        
+
         // Check if counter exceeds rate limit
         if( $counter >= $limit || $inTimeout )
         {
-            // Load the language files because Laravel doesn't seem to have loaded them by now
-            $this->app['translation.loader']->addNamespace('esensi', __DIR__ . '/../../../lang');
-
             // Show rate exceeded message
             $message = $this->app['translator']->get($namespace . 'core.messages.rate_limit_exceeded');
             $error = $this->app['translator']->get($namespace . 'core.errors.rate_limit_exceeded', ['timeout' => $timeout]);

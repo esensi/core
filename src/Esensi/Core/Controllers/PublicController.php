@@ -26,6 +26,6 @@ class PublicController extends ApiController implements
      *
      * @var string
      */
-    protected $layout = 'esensi::core.public.default';
+    protected $layout = 'esensi/core::core.public.default';
 
 }

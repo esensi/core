@@ -1,5 +1,5 @@
-@include ( Config::get('esensi::core.namespace', 'esensi::') . 'core.public.header')
+@include ( Config::get('esensi/core::core.namespace', 'esensi/core::') . 'core.public.header')
 
 @yield('content')
 
-@include (Config::get('esensi::core.namespace', 'esensi::') . 'core.public.footer')
+@include (Config::get('esensi/core::core.namespace', 'esensi/core::') . 'core.public.footer')

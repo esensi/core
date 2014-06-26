@@ -42,10 +42,11 @@ class PackageServiceProvider extends ServiceProvider {
     /**
     * Add all of the component packages's aliases
     *
+    * @param string $namespace to look for packages
     * @param mixed $packages to get config for
     * @return void
     */
-    public function addAliases($packages)
+    public function addAliases($namespace, $packages)
     {
         // Make sure we're dealing with an array
         if(is_string($packages))
@@ -58,7 +59,7 @@ class PackageServiceProvider extends ServiceProvider {
         foreach($packages as $package)
         {
             // Map aliases to classes from the config
-            foreach(Config::get('esensi::'.$package.'.aliases') as $alias => $class)
+            foreach(Config::get($namespace.'::'.$package.'.aliases') as $alias => $class)
             {
                 $aliasLoader->alias($alias, $class);
             }

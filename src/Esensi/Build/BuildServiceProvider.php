@@ -22,7 +22,7 @@ class BuildServiceProvider extends PackageServiceProvider {
 
         Event::listen('artisan.start', function(\Illuminate\Console\Application $artisan)
         {
-            foreach(Config::get('esensi::build.aliases', []) as $alias => $command)
+            foreach(Config::get('esensi/core::build.aliases', []) as $alias => $command)
             {
                 $artisan->add(new $command());
             }
@@ -37,7 +37,7 @@ class BuildServiceProvider extends PackageServiceProvider {
     public function boot()
     {
         // Bind build class aliases
-        $this->addAliases(['build']);
+        $this->addAliases('esensi/core', ['build']);
 
         // Get Blade compiler
         $blade = $this->app['view']->getEngineResolver()->resolve('blade')->getCompiler();
@@ -46,7 +46,7 @@ class BuildServiceProvider extends PackageServiceProvider {
         $blade->extend(function($value, $compiler)
         {
             $matcher = $compiler->createMatcher('scripts');
-            
+
             return preg_replace($matcher, '$1<?php echo build_scripts$2; ?>', $value);
         });
 
@@ -54,7 +54,7 @@ class BuildServiceProvider extends PackageServiceProvider {
         $blade->extend(function($value, $compiler)
         {
             $matcher = $compiler->createMatcher('styles');
-            
+
             return preg_replace($matcher, '$1<?php echo build_styles$2; ?>', $value);
         });
     }

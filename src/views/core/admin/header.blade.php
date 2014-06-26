@@ -10,9 +10,9 @@
     <meta name="generator" content="{{ gethostname() }}">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     <title>Esensi</title>
-    
+
     @styles('application')
-    
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
       <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -40,14 +40,16 @@
       </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
-          @if(Config::get('esensi::core.dashboard', true))
+          @if(Config::get('esensi/core::core.dashboard', true))
           <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
           @endif
-        
-          @foreach(Config::get('esensi::core.packages') as $package)
-            <?php $namespace = Config::get($package.'.namespace', Config::get('esensi::core.namespace')); ?>
+
+          @foreach(Config::get('esensi/core::core.packages') as $package)
+            <?php $namespace = Config::get('esensi/'.$package.'::'.$package.'.namespace', Config::get('esensi/core::core.namespace')); ?>
             @if(Config::has($namespace . $package . '.dropdown.admin'))
               @include($namespace . Config::get($namespace . $package . '.dropdown.admin'))
+            @elseif(Config::has('esensi/'.$package.'::'.$package.'.dropdown.admin'))
+              @include('esensi/'.$package.'::'.Config::get('esensi/'.$package.'::'.$package.'.dropdown.admin'))
             @endif
           @endforeach
 

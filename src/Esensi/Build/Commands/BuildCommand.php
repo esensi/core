@@ -44,7 +44,7 @@ class BuildCommand extends Command {
     public function fire()
     {
         // Construct the Gulp JS command
-        $gulp_path = Config::get('esensi::build.binary');
+        $gulp_path = Config::get('esensi/core::build.binary');
         if( ! $gulp_path )
         {
             $gulp_path = base_path() . '/node_modules/.bin/gulp';
@@ -90,7 +90,7 @@ class BuildCommand extends Command {
         }
 
         // Compare environment to configured environments for production
-        $is_production = in_array(App::environment(), Config::get('esensi::build.environments', ['production']));
+        $is_production = in_array(App::environment(), Config::get('esensi/core::build.environments', ['production']));
 
         // Run in production mode
         if($is_production || $this->option('production') === true)

@@ -17,7 +17,7 @@
         "php": ">=5.4.0",
         "illuminate/support": "4.2.*",
         "crhayes/blade-partials": "dev-master",
-        "esensi/model": "0.3.x"
+        "esensi/model": "0.3.*"
     },
     "require-dev": {
         "phpunit/phpunit": "4.0.*",
@@ -26,12 +26,6 @@
         "way/generators": "1.*",
         "way/laravel-test-helpers": "dev-master"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/esensi/model.git"
-        }
-    ],
     "suggest": {
         "thephpleague/flysystem": "Flysystem is a filesystem abstraction which allows you to easily swap out a local filesystem for a remote one.",
         "laravel/cashier": "Laravel Cashier provides an expressive, fluent interface to Stripe's subscription billing services.",

@@ -210,6 +210,22 @@ trait FilterableRepositoryTrait{
     }
 
     /**
+     * Add a boolean scope filter
+     *
+     * @param string $name of scope closure
+     * @param boolean $value to pass to closure
+     * @return void
+     */
+    public function addBooleanScope($name, $value)
+    {
+        if( is_numeric($value) && ($value == 0 || $value == 1))
+        {
+            $repository->mergeFilters([$name => $value]);
+            $repository->addScope('where' . studly_case($name), [(int) $value]);
+        }
+    }
+
+    /**
      * Get the filters
      *
      * @return array
@@ -265,4 +281,5 @@ trait FilterableRepositoryTrait{
         // Make sure the max is a positive integer
         $this->max = max(0, (integer) $this->max);
     }
+
 }

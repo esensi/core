@@ -57,7 +57,7 @@ interface FilterableRepositoryInterface{
 
     /**
      * Add a scope filter
-     * 
+     *
      * @param string $name of scope closure
      * @param mixed $args to pass to closure
      * @return void
@@ -65,15 +65,24 @@ interface FilterableRepositoryInterface{
     public function addScope($name, $args);
 
     /**
+     * Add a boolean scope filter
+     *
+     * @param string $name of scope closure
+     * @param boolean $value to pass to closure
+     * @return void
+     */
+    public function addBooleanScope($name, $value);
+
+    /**
      * Get the filters
-     * 
+     *
      * @return array
      */
     public function getFilters();
 
     /**
      * Set the filters
-     * 
+     *
      * @param array $filters
      * @return void
      */
@@ -93,4 +102,5 @@ interface FilterableRepositoryInterface{
      * @return void
      */
     function bindFilters();
+
 }

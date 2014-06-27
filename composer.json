@@ -30,7 +30,8 @@
         "thephpleague/flysystem": "Flysystem is a filesystem abstraction which allows you to easily swap out a local filesystem for a remote one.",
         "laravel/cashier": "Laravel Cashier provides an expressive, fluent interface to Stripe's subscription billing services.",
         "ignited/laravel-omnipay": "Integrates the Omnipay PHP library with Laravel 4 via a ServiceProvider to make Configuring multiple payment tunnels a breeze!",
-        "anahkiasen/former": "A Laravelish way to create and format forms."
+        "anahkiasen/former": "A Laravelish way to create and format forms.",
+        "doctrine/dbal": "Database Abstraction Layer, needed for specific cases, like schema and table renames."
     },
     "autoload": {
         "classmap": [

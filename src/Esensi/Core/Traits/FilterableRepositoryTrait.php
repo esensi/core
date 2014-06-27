@@ -220,8 +220,8 @@ trait FilterableRepositoryTrait{
     {
         if( is_numeric($value) && ($value == 0 || $value == 1))
         {
-            $repository->mergeFilters([$name => $value]);
-            $repository->addScope('where' . studly_case($name), [(int) $value]);
+            $this->mergeFilters([$name => $value]);
+            $this->addScope('where' . studly_case($name), [(int) $value]);
         }
     }
 

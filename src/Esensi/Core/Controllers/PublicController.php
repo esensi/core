@@ -1,6 +1,6 @@
 <?php namespace Esensi\Core\Controllers;
 
-use \EsensiCoreApiController as ApiController;
+use \EsensiCoreApiController as Controller;
 use \Esensi\Core\Contracts\ExceptionHandlerInterface;
 use \Esensi\Core\Traits\RedirectingExceptionHandlerTrait;
 
@@ -11,7 +11,7 @@ use \Esensi\Core\Traits\RedirectingExceptionHandlerTrait;
  * @see \Esensi\Core\Controllers\ApiController
  * @see \Esensi\Core\Traits\RedirectingExceptionHandlerTrait
  */
-class PublicController extends ApiController implements
+class PublicController extends Controller implements
     ExceptionHandlerInterface {
 
     /**

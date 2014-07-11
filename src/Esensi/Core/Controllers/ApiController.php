@@ -11,6 +11,7 @@ use \Esensi\Core\Traits\PackagedTrait;
 
 use \Illuminate\Support\Facades\App;
 use \Illuminate\Support\Facades\Input;
+use \Illuminate\Support\Facades\Response;
 use \Illuminate\Routing\Controller;
 
 /**
@@ -70,7 +71,7 @@ class ApiController extends Controller implements
 
         App::error(function(RepositoryException $exception, $code, $fromConsole) use ($class)
         {
-            return $class->handleException($exception);
+            return Response::json($class->handleException($exception), 400);
         });
     }
 
@@ -108,6 +109,22 @@ class ApiController extends Controller implements
     {
         return $this->getRepository()
             ->show($id);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @example $api->showWithRelated($id, 'related1+related2+relatedN')
+     *
+     * @param integer $id of resource
+     * @param  string $relationship to load on the resource
+     * @return \Esensi\Core\Models\Model
+     */
+    public function showWithRelated($id, $relationship)
+    {
+        $relationship = explode('+', $relationship);
+        return $this->getRepository()
+            ->findWithRelated($id, $relationship);
     }
 
     /**

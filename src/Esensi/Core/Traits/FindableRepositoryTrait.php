@@ -92,4 +92,30 @@ trait FindableRepositoryTrait{
         return $objects;
     }
 
+    /**
+     * Display the specified resource with loaded relationships.
+     *
+     * @param integer $id of resource
+     * @param array $relationship to load on resource
+     * @return \Esensi\Core\Models\Model
+     */
+    public function findWithRelated($id, array $relationship)
+    {
+        // Get the resource
+        $object = $this->read($id);
+
+        // Throw an exception if the relationship is not related
+        foreach($relationship as $related)
+        {
+            if( ! $object->isRelationship($related) )
+            {
+                $this->throwException( $this->error('not_related', ['relationship' => $related]) );
+            }
+        }
+
+        // Load the relationships
+        $object->load($relationship);
+        return $object;
+    }
+
 }

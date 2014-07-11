@@ -8,7 +8,7 @@ use \Esensi\Model\Traits\SoftDeletingModelTrait;
  * Soft Deleting Model
  *
  * @package Esensi\Core
- * @author Daniel LaBarge <wishlist@emersonmedia.com>
+ * @author Daniel LaBarge <dalabarge@emersonmedia.com>
  * @copyright 2014 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com

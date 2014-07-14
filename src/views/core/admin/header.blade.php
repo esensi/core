@@ -50,6 +50,8 @@
               @include($namespace . Config::get($namespace . $package . '.dropdown.admin'))
             @elseif(Config::has('esensi/'.$package.'::'.$package.'.dropdown.admin'))
               @include('esensi/'.$package.'::'.Config::get('esensi/'.$package.'::'.$package.'.dropdown.admin'))
+            @elseif(Config::has($package.'.dropdown.admin'))
+              @include(Config::get($package.'.dropdown.admin'))
             @endif
           @endforeach
 

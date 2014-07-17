@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <meta name="generator" content="{{ gethostname() }}">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
-    <title>Esensi</title>
+    <title>Esensi – Administration</title>
 
     @styles('application')
 
@@ -22,52 +22,48 @@
 <body class="public {{ str_replace('.', '-', Route::currentRouteName()) }}">
   <!--[if lt IE 8]>
   <div class="alert alert-info">
-    <strong>Heads up!</strong> You're using an older web browser, so some parts of this site may not work properly. You might want to try to <a href="http://whatbrowser.org/" class="alert-link">upgrade your browser</a>. You'll find that many websites work and look better, and you'll be safer online!
+    <strong>Heads up!</strong> You're using an older web browser, so some parts of this site may not work properly.
+    You might want to try to <a href="http://whatbrowser.org/" class="alert-link">upgrade your browser</a>.
+    You'll find that many websites work and look better, and you'll be safer online!
   </div>
   <![endif]-->
 
   @if (Auth::check())
-  <div class="navbar navbar-default navbar-static-top" role="navigation">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-          <span class="sr-only">Toggle Menu</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="{{ route('admin.dashboard') }}">Esensi</a>
-      </div>
-      <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-          @if(Config::get('esensi/core::core.dashboard', true))
+    <div class="sidebar navmenu navmenu-default navmenu-fixed-left offcanvas-sm">
+      <a class="sidebar-logo navbar-brand" href="{{ route('admin.dashboard') }}">esensi</a>
+      <ul class="sidebar-menu nav navmenu-nav">
+        @if(Config::get('esensi/core::core.dashboard', true))
           <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+        @endif
+        @foreach(Config::get('esensi/core::core.packages') as $package)
+          <?php $namespace = Config::get('esensi/'.$package.'::'.$package.'.namespace', Config::get('esensi/core::core.namespace')); ?>
+          @if(Config::has($namespace . $package . '.dropdown.admin'))
+            @include($namespace . Config::get($namespace . $package . '.dropdown.admin'))
+          @elseif(Config::has('esensi/'.$package.'::'.$package.'.dropdown.admin'))
+            @include('esensi/'.$package.'::'.Config::get('esensi/'.$package.'::'.$package.'.dropdown.admin'))
+          @elseif(Config::has($package.'.dropdown.admin'))
+            @include(Config::get($package.'.dropdown.admin'))
           @endif
-
-          @foreach(Config::get('esensi/core::core.packages') as $package)
-            <?php $namespace = Config::get('esensi/'.$package.'::'.$package.'.namespace', Config::get('esensi/core::core.namespace')); ?>
-            @if(Config::has($namespace . $package . '.dropdown.admin'))
-              @include($namespace . Config::get($namespace . $package . '.dropdown.admin'))
-            @elseif(Config::has('esensi/'.$package.'::'.$package.'.dropdown.admin'))
-              @include('esensi/'.$package.'::'.Config::get('esensi/'.$package.'::'.$package.'.dropdown.admin'))
-            @elseif(Config::has($package.'.dropdown.admin'))
-              @include(Config::get($package.'.dropdown.admin'))
-            @endif
-          @endforeach
-
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <li><a href="{{ route('admin.users.show', Auth::user()->id) }}">
-            <i class="fa fa-user fa-fw"></i> {{ Auth::user()->fullName }}</a></li>
-          <li class="dropdown">
-            <a href="{{ route('admin.users.show', Auth::user()->id) }}" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog fa-fw"></i></a>
-            <ul class="dropdown-menu pull-right">
-                <li><a href="{{ route('admin.users.edit', Auth::user()->id) }}">Edit My User</a></li>
-                <li><a href="{{ route('users.logout') }}">Logout</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
+        @endforeach
+      </ul>
     </div>
-  </div>
+
+    <div class="header navbar navbar-default navbar-fixed-top">
+      <button type="button" class="header-toggle navbar-toggle hidden-md hidden-lg" data-toggle="offcanvas" data-target=".navmenu" data-canvas="body">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <ul class="header-menu nav navbar-nav navbar-right">
+        <li class="hidden-xs"><a href="{{ route('admin.users.show', Auth::user()->id) }}">
+          <i class="fa fa-user fa-fw"></i> {{ Auth::user()->fullName }}</a></li>
+        <li class="dropdown">
+          <a href="{{ route('admin.users.show', Auth::user()->id) }}" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog fa-fw"></i></a>
+          <ul class="dropdown-menu pull-right">
+              <li><a href="{{ route('admin.users.edit', Auth::user()->id) }}">Edit My User</a></li>
+              <li><a href="{{ route('users.logout') }}">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
   @endif

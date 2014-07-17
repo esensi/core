@@ -46,7 +46,7 @@ trait CruddableRepositoryTrait{
         // Throw an error if the resource could not be found
         if( ! $object )
         {
-            $this->throwException( $this->error('read') );
+            $this->throwException( $this->error('read'), null, 404);
         }
 
         return $object;

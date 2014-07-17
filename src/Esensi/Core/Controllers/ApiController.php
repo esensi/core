@@ -71,7 +71,7 @@ class ApiController extends Controller implements
 
         App::error(function(RepositoryException $exception, $code, $fromConsole) use ($class)
         {
-            return Response::json($class->handleException($exception), 400);
+            return $class->handleException($exception);
         });
     }
 

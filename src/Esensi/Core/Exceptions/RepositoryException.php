@@ -63,7 +63,7 @@ class RepositoryException extends Exception implements RepositoryExceptionInterf
             }
             else
             {
-                $bag = new MessageBag();
+                $bag = new MessageBag([]);
             }
         }
 

@@ -1,6 +1,7 @@
 <?php namespace Esensi\Core\Traits;
 
 use \EsensiCoreRepositoryException as RepositoryException;
+use \Illuminate\Support\Facades\Response;
 
 /**
  * Trait that handles redirects for API controllers
@@ -20,7 +21,9 @@ trait ApiExceptionHandlerTrait{
     {
         $errors = $exception->getErrors();
         $message = $exception->getMessage();
-        return compact('errors', 'message');
+        $code = $exception->getCode() ?: 400;
+        $content = array_filter(compact('errors', 'message'));
+        return Response::json($content, $code);
     }
 
 }

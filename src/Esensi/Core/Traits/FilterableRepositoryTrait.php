@@ -79,7 +79,7 @@ trait FilterableRepositoryTrait{
     public function paginate($query)
     {
         return $query->paginate($this->max)
-            ->appends($this->filters);
+            ->appends(array_except($this->filters, ['scopes']));
     }
 
     /**

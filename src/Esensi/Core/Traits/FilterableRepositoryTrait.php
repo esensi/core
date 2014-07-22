@@ -192,7 +192,7 @@ trait FilterableRepositoryTrait{
         // Convert mixed to array
         $args = is_array($args) ? $args : explode(',', trim($args, ', '));
         $args = array_values($args);
-        $args = array_filter($args, function($arg)
+        $arrs = array_filter($args, function($arg)
         {
             if(!is_numeric($arg) && empty($arg))
             {
@@ -202,9 +202,9 @@ trait FilterableRepositoryTrait{
         });
 
         // Only add the scope if the args are not empty
-        if( ! empty($args) )
+        if( ! empty($args) && $args == $arrs)
         {
-            $this->scopes[ $name ] = $args;
+            $this->scopes[ $name ] = $arrs;
             $this->filters['scopes'] = $this->scopes;
         }
     }

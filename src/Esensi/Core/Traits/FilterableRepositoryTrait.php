@@ -9,6 +9,13 @@
 trait FilterableRepositoryTrait{
 
     /**
+     * The IDs to filter resource by
+     *
+     * @var array
+     */
+    protected $ids = [];
+
+    /**
      * The keywords to filter resource by
      *
      * @var array
@@ -60,6 +67,9 @@ trait FilterableRepositoryTrait{
 
         // Filter for trashed resources
         $this->filterTrashed($query);
+
+        // Filter for resources by IDs
+        $this->filterIds($query);
 
         // Filter for resources by keyword
         $this->filterKeywords($query);
@@ -124,6 +134,32 @@ trait FilterableRepositoryTrait{
             {
                 $query;
             }
+        }
+    }
+
+    /**
+     * Filter resources by IDs
+     *
+     * @param object $query builder
+     * @return void
+     */
+    protected function filterIds($query)
+    {
+        // Get the model's key name
+        $key = $this->getModel()->getKeyName();
+
+        // Enable filter if model has IDs
+        if( ! empty($this->ids) )
+        {
+            // Get an array of IDs
+            $ids = $this->ids;
+            if( is_string($ids) )
+            {
+                $ids = explode(',', trim($ids, ', '));
+            }
+
+            // Query results for the IDs
+            $query->whereIn($key, $ids);
         }
     }
 

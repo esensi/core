@@ -105,6 +105,13 @@ class Model extends BaseModel {
     protected $relationships = [];
 
     /**
+     * Extra attributes to be added to pivot relationships.
+     *
+     * @var array
+     */
+    protected $relationshipPivots = [];
+
+    /**
      * Whether the model should inject it's identifier to the unique
      * validation rules before attempting validation.
      *

@@ -24,6 +24,7 @@ return [
         'restore'             => 'Object could not be restored.',
         'purge'               => 'Objects could not be purged from trash.',
         'recover'             => 'Objects could not be recovered from trash.',
+        'not_related'         => 'Object does not have a :relationship relationship.',
         'rate_limit_exceeded' => 'Not so fast El Guapo! Your rate limit has been exceeded so you\'ve been put into a :timeout minute timeout.',
     ],
 

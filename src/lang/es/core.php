@@ -24,6 +24,7 @@ return [
         'restore'             => 'El objeto no podía ser restaurada.',
         'purge'               => 'Los objetos no pueden ser purgados de la basura.',
         'recover'             => 'Los objetos no pueden ser recuperados de la basura.',
+        'not_related'         => 'El objeto no tiene una :relationship relacionado.',
         'rate_limit_exceeded' => 'No tan rápido Handsome One! Su límite de velocidad se ha superado por lo que ha sido puesto en un tiempo de espera :timeout minutos.',
     ],
 

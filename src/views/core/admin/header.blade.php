@@ -31,7 +31,7 @@
   @if (Auth::check())
     <div class="sidebar navmenu navmenu-default navmenu-fixed-left offcanvas-sm">
       <a class="sidebar-logo navbar-brand" href="{{ route('admin.dashboard') }}">esensi</a>
-      <ul class="sidebar-menu nav navmenu-nav">
+      <ul id="sidebarMenu" class="sidebar-menu nav navmenu-nav">
         @if(Config::get('esensi/core::core.dashboard', true))
           <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
         @endif

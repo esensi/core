@@ -16,6 +16,7 @@
     "require": {
         "php": ">=5.4.0",
         "illuminate/support": "4.2.*",
+        "league/stack-robots": "~1.0",
         "crhayes/blade-partials": "dev-master",
         "esensi/model": "0.3.*"
     },

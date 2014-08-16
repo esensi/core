@@ -225,6 +225,9 @@ trait FilterableRepositoryTrait{
      */
     public function addScope($name, $args)
     {
+        // Make sure that scopes match the filters
+        $this->scopes = array_merge($this->scopes ?: [], $this->filters['scopes'] ?: []);
+
         // Convert mixed to array
         $args = is_array($args) ? $args : explode(',', trim($args, ', '));
         $args = array_values($args);
@@ -308,7 +311,7 @@ trait FilterableRepositoryTrait{
         // Assign filters as properties
         foreach( $this->filters as $key => $value )
         {
-            $this->$key = $value;
+            $this->{$key} = $value;
         }
 
         // Make sure the sort order is lowercase

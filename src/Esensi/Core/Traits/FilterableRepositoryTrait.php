@@ -226,7 +226,8 @@ trait FilterableRepositoryTrait{
     public function addScope($name, $args)
     {
         // Make sure that scopes match the filters
-        $this->scopes = array_merge($this->scopes ?: [], $this->filters['scopes'] ?: []);
+        $scopes = isset($this->filters['scopes']) ? $this->filters['scopes'] : [];
+        $this->scopes = array_merge($this->scopes ?: [], $scopes);
 
         // Convert mixed to array
         $args = is_array($args) ? $args : explode(',', trim($args, ', '));

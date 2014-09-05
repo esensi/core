@@ -26,7 +26,7 @@ trait TrashableRepositoryTrait{
         // Throw an error if resource is not found
         if( ! $object )
         {
-            $this->throwException( $this->error('retrieve') );
+            $this->throwException( [], $this->error('retrieve') );
         }
 
         return $object;
@@ -41,15 +41,17 @@ trait TrashableRepositoryTrait{
      */
     public function trash($id)
     {
+        // Retrieve an untrashed resource
+        $object = $this->read($id);
+
         // Soft delete a resource
         // Can't trash a trashed resource
-        $result = $this->read($id)
-            ->delete();
+        $result = $object->delete();
 
         // Throw an error if resource could not be deleted
         if( ! $result )
         {
-            $this->throwException( $this->error('trash') );
+            $this->throwException( $object->getErrors(), $this->error('trash') );
         }
 
         return $result;
@@ -96,7 +98,7 @@ trait TrashableRepositoryTrait{
         // Throw an error if resources could not be deleted
         if( ! $result )
         {
-            $this->throwException( $this->error('purge') );
+            $this->throwException( [], $this->error('purge') );
         }
 
         return $result;
@@ -118,7 +120,7 @@ trait TrashableRepositoryTrait{
         // Throw an error if resources could not be restored
         if( ! $result )
         {
-            $this->throwException( $this->error('recover') );
+            $this->throwException( [], $this->error('recover') );
         }
 
         return $result;

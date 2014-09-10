@@ -97,7 +97,7 @@ trait ResourceControllerTrait {
         $object = parent::update($id);
 
         // Redirect back with message
-        return $this->back('updated', ['id' => $object->id])
+        return $this->redirect('updated', ['id' => $object->id])
             ->with('message', $this->message('updated') );
     }
 

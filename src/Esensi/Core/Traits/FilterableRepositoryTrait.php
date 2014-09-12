@@ -258,7 +258,7 @@ trait FilterableRepositoryTrait{
      */
     public function addBooleanScope($name, $value)
     {
-        if( is_numeric($value) && ($value == 0 || $value == 1))
+        if( (is_bool($value) || is_numeric($value)) && ($value == 0 || $value == 1))
         {
             $this->mergeFilters([$name => $value]);
             $this->addScope('where' . studly_case($name), [(int) $value]);
@@ -286,8 +286,6 @@ trait FilterableRepositoryTrait{
         $this->filters = $filters;
         $this->bindFilters();
     }
-
-
 
     /**
      * Merge the existing filters with new filters

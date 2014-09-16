@@ -1,5 +1,5 @@
 
-  @scripts('application')
+  @scripts('public')
 
 </body>
 </html>

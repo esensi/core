@@ -11,7 +11,7 @@
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     <title>Esensi – Administration</title>
 
-    @styles('application')
+    @styles('admin')
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
       <!--[if lt IE 9]>
@@ -20,7 +20,7 @@
       <![endif]-->
   </head>
 <body class="admin {{ str_replace('.', '-', Route::currentRouteName()) }}">
-  <!--[if lt IE 8]>
+  <!--[if lt IE 9]>
   <div class="alert alert-info">
     <strong>Heads up!</strong> You're using an older web browser, so some parts of this site may not work properly.
     You might want to try to <a href="http://whatbrowser.org/" class="alert-link">upgrade your browser</a>.
@@ -55,15 +55,15 @@
         <span class="icon-bar"></span>
       </button>
       <ul class="header-menu nav navbar-nav navbar-right">
-        <li class="hidden-xs"><a href="{{ route('admin.users.show', Auth::user()->id) }}">
-          <i class="fa fa-user fa-fw"></i> {{ Auth::user()->fullName }}</a></li>
-        <li class="dropdown">
-          <a href="{{ route('admin.users.show', Auth::user()->id) }}" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog fa-fw"></i></a>
-          <ul class="dropdown-menu pull-right">
-              <li><a href="{{ route('admin.users.edit', Auth::user()->id) }}">Edit My User</a></li>
-              <li><a href="{{ route('users.logout') }}">Logout</a></li>
+        <li class="dropdown hidden-xs">
+          <a href="{{ route('admin.users.show', Auth::user()->id) }}" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-user fa-fw"></i> {{ Auth::user()->fullName }}</a>
+          <ul class="dropdown-menu">
+              <li><a href="{{ route('admin.users.edit', Auth::user()->id) }}">Edit My Profile</a></li>
+              <li><a href="{{ route('users.logout') }}">Logout &rarr;</a></li>
           </ul>
         </li>
+        <li><a href="{{ route('index') }}"><i class="fa fa-sign-out fa-fw"></i></a></li>
       </ul>
     </div>
   @endif

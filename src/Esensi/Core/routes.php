@@ -10,6 +10,6 @@
 */
 
 Route::pattern('id', '[0-9]+');
-Route::pattern('slug', '[a-z][a-z0-9\-\_]+');
+Route::pattern('slug', '[a-zA-Z][a-zA-Z0-9\-\_]+');
 Route::pattern('token', '[a-zA-Z0-9]+');
 Route::pattern('relationship', '[a-zA-Z0-9\_\-\+]+');

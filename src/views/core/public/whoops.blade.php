@@ -4,7 +4,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-lg-4 col-lg-offset-4">
+    <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title text-center">{{ $code or 500 }} - {{ $message or "Internal Server Error"}}</h3>

@@ -45,7 +45,11 @@ if ( ! function_exists('build_assets'))
         // Get build configs
         $builds_dir = public_path(Config::get('esensi/core::build.directories.base', 'builds')) . '/' . Config::get('esensi/core::build.directories.' . $key, $key);
         $builds_url = asset(Config::get('esensi/core::build.directories.base', 'builds')) . '/' . Config::get('esensi/core::build.directories.' . $key, $key);
-        $manifest = json_decode(file_get_contents($builds_dir . '/rev-manifest.json'), true);
+
+        // Compile the manifest files
+        $manifest_file = $builds_dir . '/rev-manifest.json';
+        if( ! file_exists($manifest_file) ) return;
+        $manifest = json_decode(file_get_contents($manifest_file), true);
 
         // Babysit dependencies so we don't have duplications
         $dependencies = array_unique($dependencies);

@@ -1,5 +1,5 @@
 @if( $errors->any() || Session::has('message'))
-  <div class="alert alert-{{ $errors->any() ? 'danger' : 'success' }}">
+  <div class="alert alert-{{ $errors->any() ? 'danger' : 'warning' }}">
     @if ($errors->any())
       @if ($errors->first() != Session::get('message'))
       {{ Session::get('message') }}

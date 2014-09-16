@@ -6,7 +6,7 @@
 
   </div>
 
-  @scripts('application')
+  @scripts('admin')
 
 </body>
 </html>

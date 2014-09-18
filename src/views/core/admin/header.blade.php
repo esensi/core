@@ -46,6 +46,11 @@
           @endif
         @endforeach
       </ul>
+      @if(Config::get('esensi/core::core.attribution.enable', true))
+        <div class="sidebar-attribution">
+          <a href="{{ Config::get('esensi/core::core.attribution.url', 'http://github.com/esensi') }}" target="_blank">{{ Config::get('esensi/core::core.attribution.name') }}</a>
+        </div>
+      @endif
     </div>
 
     <div class="header navbar navbar-default navbar-fixed-top">

@@ -152,6 +152,23 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Attribution link
+    |--------------------------------------------------------------------------
+    |
+    | The following configuration option specifies whether the backend should
+    | show or hide the attribution menu item.
+    |
+    */
+
+    'attribution' => [
+
+        'enable' => true,
+        'url'    => 'http://github.com/esensi',
+        'name'   => 'Powered by Esensi',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Rate limit settings
     |--------------------------------------------------------------------------
     |

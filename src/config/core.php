@@ -163,7 +163,7 @@ return [
     'attribution' => [
 
         'enable' => true,
-        'url'    => 'http://github.com/esensi',
+        'url'    => 'http://esen.si',
         'name'   => 'Powered by Esensi',
     ],
 

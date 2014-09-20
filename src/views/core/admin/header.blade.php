@@ -61,10 +61,10 @@
       </button>
       <ul class="header-menu nav navbar-nav navbar-right">
         <li class="dropdown hidden-xs">
-          <a href="{{ route('admin.users.show', Auth::user()->id) }}" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="fa fa-user fa-fw"></i> {{ Auth::user()->fullName }}</a>
+          <a href="{{ route('admin.users.account') }}" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-user fa-fw"></i> {{ !empty(Auth::user()->full_name) ? Auth::user()->full_name : Auth::user()->email }}</a>
           <ul class="dropdown-menu">
-              <li><a href="{{ route('admin.users.edit', Auth::user()->id) }}">Edit My Profile</a></li>
+              <li><a href="{{ route('admin.users.account.edit') }}">Edit My Profile</a></li>
               <li><a href="{{ route('users.logout') }}">Logout &rarr;</a></li>
           </ul>
         </li>

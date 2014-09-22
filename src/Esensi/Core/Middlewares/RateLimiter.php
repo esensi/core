@@ -68,10 +68,10 @@ class RateLimiter implements HttpKernelInterface {
      */
     public function rateLimit(SymfonyRequest $request, SymfonyResponse $response)
     {
-        $namespace = $this->app['config']->get('esensi/core::core.namespace');
+        $namespace = 'esensi/core::';
 
         // Only rate limit if enabled
-        if( !$this->app['config']->get($namespace . 'core.rates.enabled') )
+        if( ! $this->app['config']->get($namespace.'core.rates.enabled') )
         {
             return $response;
         }
@@ -136,6 +136,7 @@ class RateLimiter implements HttpKernelInterface {
             $message = $this->app['translator']->get($namespace . 'core.messages.rate_limit_exceeded');
             $error = $this->app['translator']->get($namespace . 'core.errors.rate_limit_exceeded', ['timeout' => $timeout]);
             $template = $this->app['config']->get($namespace . 'core.views.public.whoops', 'whoops');
+            $namespace = $this->app['config']->get($namespace.'core.namespace');
             $view = $this->app['view']->make($namespace . $template)
                 ->with('message', $message)
                 ->with('error', $error)

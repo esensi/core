@@ -188,6 +188,9 @@ return [
         // Should limits be based on unique routes?
         'routes'  => true,
 
+        // Should route uniqueness be based on the route parameters?
+        'parameters'  => true,
+
         // Request per period
         'limit'   => 10,
 

@@ -98,9 +98,17 @@ class RateLimiter implements HttpKernelInterface {
         $tag = sprintf($tag . ':%s', $request->getClientIp());
 
         // Rate limit by route address
-        if( $this->app['config']->get($namespace . 'core.rates.routes') )
+        if( $this->app['router']->current() && $this->app['config']->get($namespace . 'core.rates.routes') )
         {
+            // Add the route name to the rate tag
             $tag = sprintf($tag . ':%s', $this->app['router']->currentRouteName());
+
+            // Add the route parameters to the rate tag
+            $parameters = $this->app['router']->current()->parameters();
+            if( ! empty($parameters) && $this->app['config']->get($namespace . 'core.rates.parameters'))
+            {
+                $tag = sprintf($tag . ':%s', implode(',', $parameters));
+            }
         }
 
         // Prime rate limiter as a tagged cache
@@ -132,24 +140,41 @@ class RateLimiter implements HttpKernelInterface {
         // Check if counter exceeds rate limit
         if( $counter >= $limit || $inTimeout )
         {
-            // Show rate exceeded message
+            // Get rate exceeded message
             $message = $this->app['translator']->get($namespace . 'core.messages.rate_limit_exceeded');
             $error = $this->app['translator']->get($namespace . 'core.errors.rate_limit_exceeded', ['timeout' => $timeout]);
-            $template = $this->app['config']->get($namespace . 'core.views.public.whoops', 'whoops');
-            $namespace = $this->app['config']->get($namespace.'core.namespace');
-            $view = $this->app['view']->make($namespace . $template)
-                ->with('message', $message)
-                ->with('error', $error)
-                ->with('code', self::RATE_LIMIT_STATUS_CODE);
-            $response->setContent($view);
+            $code = self::RATE_LIMIT_STATUS_CODE;
+            $data = compact('message', 'error', 'code');
 
             // Set status code
-            $response->setStatusCode(self::RATE_LIMIT_STATUS_CODE);
+            $response->setStatusCode($code);
+
+            // Provide a JSON response to API controllers
+            if( $request->ajax() || $request->wantsJson() )
+            {
+                $response->headers->set('Content-Type', 'application/json');
+                $response->setContent(json_encode($data));
+            }
+
+            // Provide an HTML response to UI controllers
+            else
+            {
+                $template = $this->app['config']->get($namespace . 'core.views.public.whoops', 'whoops');
+                $namespace = $this->app['config']->get($namespace.'core.namespace');
+                $response->headers->set('Content-Type', 'text/html');
+                $response->setContent( $this->app['view']->make($namespace . $template, $data) );
+            }
         }
 
         // Set X-RateLimit headers
         $response->headers->set('X-Ratelimit-Limit', $limit, false);
         $response->headers->set('X-Ratelimit-Remaining', $limit - (int)$counter, false);
+
+        // Enable X-RateLimit-Tag header in debug mode
+        if($this->app['config']->get('app.debug') == true)
+        {
+            $response->headers->set('X-Ratelimit-Tag', $tag, false);
+        }
 
         return $response;
     }

@@ -7,14 +7,14 @@
     <div class="panel-container">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title text-center">{{ $code or 500 }} - {{ $message or "Internal Server Error"}}</h3>
+          <h3 class="panel-title text-center">We'll Be Right Back</h3>
         </div>
         <div class="panel-body">
-          <p>{{ $error or null}} If you think you've received this message in error please <a href="mailto:{{ Config::get('mail.from.address') }}">contact us to report this error.</a></p>
+          <p>We are conducting a bit of maintenance right now. This web application will be back just as soon as we're finished!</p>
         </div>
       </div>
       <ul class="nav nav-pills nav-justified">
-        <li><a href="{{ route('index') }}">&larr; Return to Home Page</a></li>
+        <li><a href="mailto:{{ Config::get('mail.from.address') }}"><i class="fa fa-fw fa-envelope"></i> Contact Support</a></li>
       </ul>
     </div>
   </div>

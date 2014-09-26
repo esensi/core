@@ -21,8 +21,16 @@
       <![endif]-->
   </head>
 <body class="public {{ str_replace('.', '-', Route::currentRouteName()) }}">
-  <!--[if lt IE 9]>
+  <!--[if lt IE 8]>
   <div class="alert alert-info">
     <strong>Heads up!</strong> You're using an older web browser, so some parts of this site may not work properly. You might want to try to <a href="http://whatbrowser.org/" class="alert-link">upgrade your browser</a>. You'll find that many websites work and look better, and you'll be safer online!
   </div>
   <![endif]-->
+
+  <div class="container">
+    <div class="row">
+      <div class="logo">
+        <img src="http://placehold.it/300x100/FFFFFF/D9E4E3&text=esensi" alt="Esensi" />
+      </div>
+    </div>
+  </div>

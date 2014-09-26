@@ -20,7 +20,7 @@
       <![endif]-->
   </head>
 <body class="admin {{ str_replace('.', '-', Route::currentRouteName()) }}">
-  <!--[if lt IE 9]>
+  <!--[if lt IE 8]>
   <div class="alert alert-info">
     <strong>Heads up!</strong> You're using an older web browser, so some parts of this site may not work properly.
     You might want to try to <a href="http://whatbrowser.org/" class="alert-link">upgrade your browser</a>.

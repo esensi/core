@@ -18,3 +18,12 @@ App::missing(function($exception)
     $view = Config::get('esensi/core::core.views.public.missing', 'missing');
     return Response::view($namespace . $view, array(), 404);
 });
+
+App::error(function(Symfony\Component\HttpKernel\Exception\NotFoundHttpException $exception, $code)
+{
+    Log::error('NotFoundHttpException (' . Request::fullUrl() . ')');
+
+    $namespace = Config::get('esensi/core::core.namespace', 'esensi/core::');
+    $view = Config::get('esensi/core::core.views.public.missing', 'missing');
+    return Response::view($namespace . $view, array(), 404);
+});

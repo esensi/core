@@ -85,7 +85,7 @@ trait CruddableRepositoryTrait{
     public function delete($id)
     {
         // Force deletes on soft-deleted models
-        if( method_exists( $this->getModel(), 'forceDelete' ) )
+        if( method_exists( $this->getModel(), 'restore' ) )
         {
             // Get the resource
             $object = $this->retrieve($id);

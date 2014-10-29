@@ -63,6 +63,26 @@ class CollectionTest extends PHPUnit {
     /**
      * @test
      */
+    public function it_creates_an_empty_collection_from_empty_string()
+    {
+        $collection = Collection::parseMixed('');
+        $this->assertInstanceOf('\Esensi\Core\Utils\Collection', $collection);
+        $this->assertTrue($collection->isEmpty());
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_an_empty_collection_from_empty_array()
+    {
+        $collection = Collection::parseMixed([]);
+        $this->assertInstanceOf('\Esensi\Core\Utils\Collection', $collection);
+        $this->assertTrue($collection->isEmpty());
+    }
+
+    /**
+     * @test
+     */
     public function it_doesnt_accept_input_other_than_string_or_array()
     {
         foreach ($this->notAllowedInputs as $elem)

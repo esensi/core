@@ -16,14 +16,22 @@ class Collection extends BaseCollection {
      * creates the collection using each of those exploded values.
      *
      * @param string|array $input The values to include as items in the collection
+     * @param string $separator The string to use as separator when exploding the string $input
      * @return Collection
      * @throws \InvalidArgumentException
      */
-    public static function parseMixed($input)
+    public static function parseMixed($input, $separator = ',')
     {
         if (is_string($input))
         {
-            $input = explode(',', $input);
+            if (empty($input))
+            {
+                $input = [];
+            }
+            else
+            {
+                $input = explode($separator, $input);
+            }
         }
         if (!is_array($input))
         {

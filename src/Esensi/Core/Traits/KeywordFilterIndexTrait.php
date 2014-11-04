@@ -13,7 +13,7 @@ trait KeywordFilterIndexTrait {
     /**
      * Get the options needed by keyword filter drawer.
      *
-     * @return void
+     * @return array
      */
     protected function keywordFilterOptions()
     {
@@ -23,17 +23,25 @@ trait KeywordFilterIndexTrait {
         $sortOptions = $model->sortOptions;
         $maxOptions = $model->maxOptions;
 
-        // Return the options needed by the view
-        $data = compact('orderOptions', 'sortOptions', 'maxOptions');
-        $inputs = Input::only('order', 'sort', 'max', 'keywords');
-
-        // Convert arrays used in text inputs to comma-separated values
-        if(is_array($inputs['keywords']))
+        // Combine the options needed by the view
+        $options = compact('orderOptions', 'sortOptions', 'maxOptions');
+        
+        // Apply default filter fallbacks for missing inputs
+        $inputs  = Input::all();
+        $filters = $this->getRepository()->getFilters();
+        $keys    = ['order', 'sort', 'max', 'keywords'];
+        foreach($keys as $key)
         {
-            $inputs['keywords'] = implode(', ', $inputs['keywords']);
+            $options[ $key ] = array_get($inputs, $key, array_get($filters, $key, null));
         }
 
-        return array_merge($inputs, $data);
+        // Convert arrays used in text inputs to comma-separated values
+        if(is_array($options['keywords']))
+        {
+            $options['keywords'] = implode(', ', $options['keywords']);
+        }
+
+        return $options;
     }
 
     /**

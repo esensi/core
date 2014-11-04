@@ -29,6 +29,7 @@ return [
 
     'aliases' => [
         'EsensiModel'                   => '\Esensi\Core\Models\Model',
+        'EsensiCollection'              => '\Esensi\Core\Models\Collection',
         'EsensiCoreRepository'          => '\Esensi\Core\Repositories\Repository',
         'EsensiCoreRepositoryException' => '\Esensi\Core\Exceptions\RepositoryException',
         'EsensiCoreTrashableRepository' => '\Esensi\Core\Repositories\TrashableRepository',

@@ -9,7 +9,7 @@ use \Esensi\Core\Validators\DateValidator;
  *
  * @author Daniel LaBarge <dalabarge@emersonmedia.com>
  */
-class ValidatorProvider extends PackageServiceProvider {
+class ValidatorServiceProvider extends PackageServiceProvider {
 
     /**
      * Bootstrap the application events.

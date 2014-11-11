@@ -126,10 +126,11 @@ return [
         // Public views
         'public' => [
 
-            'index'   => 'core.public.index',
-            'missing' => 'core.public.missing',
-            'whoops'  => 'core.public.whoops',
-            'modal'   => 'core.public.modal',
+            'index'       => 'core.public.index',
+            'missing'     => 'core.public.missing',
+            'whoops'      => 'core.public.whoops',
+            'modal'       => 'core.public.modal',
+            'maintenance' => 'core.public.maintenance',
         ],
 
         // Admin views

@@ -1,7 +1,7 @@
 <?php
 
 use \PHPUnit_Framework_TestCase as PHPUnit;
-use Esensi\Core\Utils\Collection;
+use Esensi\Core\Models\Collection;
 
 /**
  * Tests for the Collection class
@@ -36,7 +36,7 @@ class CollectionTest extends PHPUnit {
     public function it_creates_a_collection_from_single_value_string()
     {
         $collection = Collection::parseMixed($this->singleString);
-        $this->assertInstanceOf('\Esensi\Core\Utils\Collection', $collection);
+        $this->assertInstanceOf('\Esensi\Core\Models\Collection', $collection);
         $this->assertEquals($this->expectedSingleStringArray, $collection->all());
     }
 
@@ -46,7 +46,7 @@ class CollectionTest extends PHPUnit {
     public function it_creates_a_collection_from_multiple_value_string()
     {
         $collection = Collection::parseMixed($this->multipleString);
-        $this->assertInstanceOf('\Esensi\Core\Utils\Collection', $collection);
+        $this->assertInstanceOf('\Esensi\Core\Models\Collection', $collection);
         $this->assertEquals($this->expectedMultipleStringArray, $collection->all());
     }
 
@@ -56,7 +56,7 @@ class CollectionTest extends PHPUnit {
     public function it_creates_a_collection_from_array()
     {
         $collection = Collection::parseMixed($this->array);
-        $this->assertInstanceOf('\Esensi\Core\Utils\Collection', $collection);
+        $this->assertInstanceOf('\Esensi\Core\Models\Collection', $collection);
         $this->assertEquals($this->array, $collection->all());
     }
 
@@ -66,7 +66,7 @@ class CollectionTest extends PHPUnit {
     public function it_creates_an_empty_collection_from_empty_string()
     {
         $collection = Collection::parseMixed('');
-        $this->assertInstanceOf('\Esensi\Core\Utils\Collection', $collection);
+        $this->assertInstanceOf('\Esensi\Core\Models\Collection', $collection);
         $this->assertTrue($collection->isEmpty());
     }
 
@@ -76,7 +76,7 @@ class CollectionTest extends PHPUnit {
     public function it_creates_an_empty_collection_from_empty_array()
     {
         $collection = Collection::parseMixed([]);
-        $this->assertInstanceOf('\Esensi\Core\Utils\Collection', $collection);
+        $this->assertInstanceOf('\Esensi\Core\Models\Collection', $collection);
         $this->assertTrue($collection->isEmpty());
     }
 
@@ -91,7 +91,7 @@ class CollectionTest extends PHPUnit {
             {
                 $collection = Collection::parseMixed($elem);
             }
-            catch (\InvalidArgumentException $e)
+            catch (\Exception $e)
             {
                 continue;
             }

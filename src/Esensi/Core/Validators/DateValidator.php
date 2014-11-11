@@ -1,6 +1,7 @@
 <?php namespace Esensi\Core\Validators;
 
 use \Carbon\Carbon;
+use \Esensi\Core\Traits\ValidatorTrait;
 use \Illuminate\Validation\Validator;
 use \InvalidArgumentException;
 
@@ -8,11 +9,17 @@ use \InvalidArgumentException;
  * Validation handlers for comparing dates against other attributes.
  *
  * @author Daniel LaBarge <daniel@bexarcreative.com>
- * @see \Illuminate\Validation\Validator
  * @link http://www.neontsunami.com/post/greater-than-and-less-than-validation-in-laravel-4
  * @link http://daylerees.com/codebright/validation
  */
-class DateValidator extends Validator {
+class DateValidator {
+
+    /**
+     * Make this class behave like a Validator.
+     *
+     * @see \Esensi\Core\Traits\ValidatorTrait
+     */
+    use ValidatorTrait;
 
     /**
      * Validate that the date is before another attribute date
@@ -20,17 +27,17 @@ class DateValidator extends Validator {
      * @param string $attribute
      * @param  mixed $value
      * @param  array $parameters
-     * @param  Validator $validator
+     * @param  \Illuminate\Validation\Validator $validator
      * @return boolean
      */
     public function validateBeforeOther($attribute, $value, $parameters, Validator $validator)
     {
         // Require at least one parameter
-        $this->requireParameterCount(1, $parameters, 'before_limit');
+        $this->requireParameterCount(1, $parameters, 'before_other');
 
         // Get the other value
         $otherField = $parameters[0];
-        $otherValue = $validator->getValue($otherField);
+        $otherValue = $this->getValue($otherField, $validator->getData(), $validator->getFiles());
 
         // Convert the values to dates if not already
         $value      = $this->asDateFromValue($value);
@@ -60,17 +67,17 @@ class DateValidator extends Validator {
      * @param string $attribute
      * @param  mixed $value
      * @param  array $parameters
-     * @param  Validator $validator
+     * @param  \Illuminate\Validation\Validator $validator
      * @return boolean
      */
     public function validateAfterOther($attribute, $value, $parameters, Validator $validator)
     {
         // Require at least one parameter
-        $this->requireParameterCount(1, $parameters, 'after_limit');
+        $this->requireParameterCount(1, $parameters, 'after_other');
 
         // Get the other value
         $otherField = $parameters[0];
-        $otherValue = $validator->getValue($otherField);
+        $otherValue = $this->getValue($otherField, $validator->getData(), $validator->getFiles());
 
         // Convert the values to dates if not already
         $value      = $this->asDateFromValue($value);

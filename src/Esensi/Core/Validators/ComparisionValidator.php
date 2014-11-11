@@ -1,16 +1,25 @@
 <?php namespace Esensi\Core\Validators;
 
+use \Carbon\Carbon;
+use \Esensi\Core\Traits\ValidatorTrait;
 use \Illuminate\Validation\Validator;
+use \InvalidArgumentException;
 
 /**
  * Validation handlers for comparing values as greater or lesser than other values.
  *
  * @author Daniel LaBarge <dalabarge@emersonmedia.com>
- * @see \Illuminate\Validation\Validator
  * @link http://www.neontsunami.com/post/greater-than-and-less-than-validation-in-laravel-4
  * @link http://daylerees.com/codebright/validation
  */
-class ComparisonValidator extends Validator {
+class ComparisonValidator{
+
+    /**
+     * Make this class behave like a Validator.
+     *
+     * @see \Esensi\Core\Traits\ValidatorTrait
+     */
+    use ValidatorTrait;
 
     /**
      * Validate that the value is less than another attribute
@@ -18,16 +27,16 @@ class ComparisonValidator extends Validator {
      * @param string $attribute
      * @param  mixed $value
      * @param  array $parameters
-     * @param  Validator $validator
+     * @param  \Illuminate\Validation\Validator $validator
      * @return boolean
      */
-    public function validateLess($attribute, $value, $parameters, Validator $validator)
+    public function validateLessThanOther($attribute, $value, $parameters, Validator $validator)
     {
         // Require at least one parameter
-        $this->requireParameterCount(1, $parameters, 'less');
+        $this->requireParameterCount(1, $parameters, 'less_than_other');
 
         $otherField = $parameters[0];
-        $otherValue = $validator->getValue($otherField);
+        $otherValue = $this->getValue($otherField, $validator->getData(), $validator->getFiles());
         return isset($otherValue) && $value <= $otherValue;
     }
 
@@ -40,7 +49,7 @@ class ComparisonValidator extends Validator {
      * @param  array $parameters
      * @return string
      */
-    public function replaceLess($message, $attribute, $rule, $parameters)
+    public function replaceLessThanOther($message, $attribute, $rule, $parameters)
     {
         return str_replace(':other', str_replace('_', ' ', $parameters[0]), $message);
     }
@@ -51,16 +60,16 @@ class ComparisonValidator extends Validator {
      * @param string $attribute
      * @param  mixed $value
      * @param  array $parameters
-     * @param  Validator $validator
+     * @param  \Illuminate\Validation\Validator $validator
      * @return boolean
      */
-    public function validateGreater($attribute, $value, $parameters, Validator $validator)
+    public function validateGreaterThanOther($attribute, $value, $parameters, Validator $validator)
     {
         // Require at least one parameter
-        $this->requireParameterCount(1, $parameters, 'greater');
+        $this->requireParameterCount(1, $parameters, 'greater_than_other');
 
         $otherField = $parameters[0];
-        $otherValue = $validator->getValue($otherField);
+        $otherValue = $this->getValue($otherField, $validator->getData(), $validator->getFiles());
         return isset($otherValue) && $value >= $otherValue;
     }
 
@@ -73,7 +82,7 @@ class ComparisonValidator extends Validator {
      * @param  array $parameters
      * @return string
      */
-    public function replaceGreater($message, $attribute, $rule, $parameters)
+    public function replaceGreaterThanOther($message, $attribute, $rule, $parameters)
     {
         return str_replace(':other', str_replace('_', ' ', $parameters[0]), $message);
     }

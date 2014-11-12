@@ -16,26 +16,44 @@ class Collection extends BaseCollection {
      * Strings are assumed to be delimeter separated and are converted to arrays.
      *
      * @param mixed $items The values to include as items in the collection
-     * @param string $delimeter (optional) for array parsing
+     * @param string $delimiter (optional) for array parsing
      * @return \Esensi\Core\Models\Collection
      */
-    public static function parseMixed($items, $delimeter = ',')
+    public static function parseMixed($items, $delimiter = ',')
     {
         // Convert delimiter separated item strings
         // @example: foo,bar,baz => [foo, bar, baz]
-        if( ! is_string($items) )
+        if( is_string($items) )
         {
-            $items = explode($delimeter, trim($items, " ".$delimiter));
+            // Removes any ',' that exist at the beginning or the end,
+            // like in ',1,2,3,4,'.
+            $items = explode($delimiter, trim($items, $delimiter));
+        }
+
+        if (! is_array($items) )
+        {
+            $items = [$items];
         }
 
         // Clean up any empty values
-        if( is_array($items) )
+        $items = array_filter($items, function($input)
         {
-            $items = array_filter($items);
-        }
+            // null and blank strings are the only ones skipped
+            if (
+                (is_null($input)) or
+                (is_string($input) and trim($input) == '' )
+            ) {
+                return false;
+            }
+
+            return true;
+
+        });
+
 
         // Return late static binding Collection
         return new static($items);
+
     }
 
 } 

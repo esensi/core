@@ -19,25 +19,26 @@ class CollectionTest extends PHPUnit {
      */
     public function setUp()
     {
-        $this->singleString = '1';
-        $this->expectedSingleStringArray = ['1'];
+        $this->multipleString = ',1,2,3,4,5,0,';
+        $this->expectedMultipleStringArray = ['1', '2', '3', '4', '5', '0'];
 
-        $this->multipleString = '1,2,3,4,5';
-        $this->expectedMultipleStringArray = ['1', '2', '3', '4', '5'];
+        $this->array = ['1', '2', 3, true, false, 'blabla', 0, 0.0, '0'];
 
-        $this->array = ['1', '2', 3, true, false];
-
-        $this->notAllowedInputs = [1, true, new Collection([]), 1.12];
+        $this->skippedInputs = [' ', '   ', null];
+        $this->skippedInputs2 = ' ,    ,';
     }
 
     /**
      * @test
      */
-    public function it_creates_a_collection_from_single_value_string()
+    public function it_creates_a_collection_from_single_values()
     {
-        $collection = Collection::parseMixed($this->singleString);
-        $this->assertInstanceOf('\Esensi\Core\Models\Collection', $collection);
-        $this->assertEquals($this->expectedSingleStringArray, $collection->all());
+        foreach ($this->array as $elem)
+        {
+            $collection = Collection::parseMixed($elem);
+            $this->assertInstanceOf('\Esensi\Core\Models\Collection', $collection);
+            $this->assertEquals([$elem], $collection->all());
+        }
     }
 
     /**
@@ -46,6 +47,7 @@ class CollectionTest extends PHPUnit {
     public function it_creates_a_collection_from_multiple_value_string()
     {
         $collection = Collection::parseMixed($this->multipleString);
+        //var_dump($collection->all());
         $this->assertInstanceOf('\Esensi\Core\Models\Collection', $collection);
         $this->assertEquals($this->expectedMultipleStringArray, $collection->all());
     }
@@ -83,20 +85,15 @@ class CollectionTest extends PHPUnit {
     /**
      * @test
      */
-    public function it_doesnt_accept_input_other_than_string_or_array()
+    public function it_skips_blanks_and_null_elements()
     {
-        foreach ($this->notAllowedInputs as $elem)
-        {
-            try
-            {
-                $collection = Collection::parseMixed($elem);
-            }
-            catch (\Exception $e)
-            {
-                continue;
-            }
-            $this->fail("It should've thrown an InvalidArgumentException!");
-        }
+        $collection = Collection::parseMixed($this->skippedInputs);
+        $this->assertInstanceOf('\Esensi\Core\Models\Collection', $collection);
+        $this->assertTrue($collection->isEmpty());
+
+        $collection = Collection::parseMixed($this->skippedInputs2);
+        $this->assertInstanceOf('\Esensi\Core\Models\Collection', $collection);
+        $this->assertTrue($collection->isEmpty());
     }
 
 }

@@ -37,7 +37,7 @@ class ComparisonValidator{
 
         $otherField = $parameters[0];
         $otherValue = $this->getValue($otherField, $validator->getData(), $validator->getFiles());
-        return isset($otherValue) && $value <= $otherValue;
+        return isset($otherValue) && is_numeric($value) && is_numeric($otherValue) && $value <= $otherValue;
     }
 
     /**
@@ -70,7 +70,7 @@ class ComparisonValidator{
 
         $otherField = $parameters[0];
         $otherValue = $this->getValue($otherField, $validator->getData(), $validator->getFiles());
-        return isset($otherValue) && $value >= $otherValue;
+        return isset($otherValue) && is_numeric($value) && is_numeric($otherValue) && $value >= $otherValue;
     }
 
     /**

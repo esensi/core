@@ -234,7 +234,7 @@ trait FilterableRepositoryTrait{
         $args = array_values($args);
         $arrs = array_filter($args, function($arg)
         {
-            if(!is_numeric($arg) && empty($arg))
+            if( ! is_numeric($arg) && ! is_bool($arg) && empty($arg) )
             {
                 return false;
             }

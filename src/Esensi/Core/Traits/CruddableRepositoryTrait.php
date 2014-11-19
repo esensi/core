@@ -92,7 +92,10 @@ trait CruddableRepositoryTrait{
 
             // Forcibly delete this trashable resource
             // Use trash() if you want to soft delete it
-            $result = $object->forceDelete();
+            $object->forceDelete();
+            // Returning true to enforce method contract
+            // (Laravel's forceDelete() currently returns void)
+            return true;
         }
 
         // Delete regular models
@@ -103,6 +106,8 @@ trait CruddableRepositoryTrait{
 
             // Do a regular delete on this resource
             $result = $object->delete();
+            // Result is always going to have a bool value here, as we are
+            // working with an existing model at this point.
         }
 
         // Throw an exception if resource could not be deleted

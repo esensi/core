@@ -68,7 +68,7 @@
               <li><a href="{{ route('users.logout') }}">Logout &rarr;</a></li>
           </ul>
         </li>
-        <li><a href="{{ route('index') }}"><i class="fa fa-sign-out fa-fw"></i></a></li>
+        @include('esensi/core::core.admin.logout');
       </ul>
     </div>
   @endif

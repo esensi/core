@@ -154,6 +154,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Logout link
+    |--------------------------------------------------------------------------
+    |
+    | The following configuration option specifies whether the backend should
+    | show logout menu item (true) or simply redirect to the frontend (false).
+    |
+    */
+
+    'logout' => false,
+
+    /*
+    |--------------------------------------------------------------------------
     | Attribution link
     |--------------------------------------------------------------------------
     |

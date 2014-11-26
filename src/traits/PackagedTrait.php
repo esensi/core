@@ -137,10 +137,7 @@ trait PackagedTrait{
         }
 
         // Use global namespaced package
-        else
-        {
-            return $loader->get($line, $default);
-        }
+        return $loader->get($line, $default);
     }
 
     /**
@@ -157,17 +154,16 @@ trait PackagedTrait{
         $namespace = $loader->get('esensi/'.$this->package.'::'.$this->package.'.namespace', 'esensi/core::');
         $line = str_singular($this->package) . '.namespace';
 
-        // Use the packaged namespace
+        // Use the package's namespace config
+        // @example esensi/user::user.namespace
         if( $loader->has($namespace . $line) )
         {
             return $loader->get($namespace . $line);
         }
 
-        // Use the global namespace or default to root namespace
-        else
-        {
-            return $loader->get('esensi/'.$this->package.'::'.$line, $namespace);
-        }
+        // Use the global namespace
+        // @example user.namespace
+        return $loader->get($line, '');
     }
 
     /**

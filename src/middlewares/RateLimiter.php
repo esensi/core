@@ -168,7 +168,7 @@ class RateLimiter implements HttpKernelInterface {
 
         // Set X-RateLimit headers
         $response->headers->set('X-Ratelimit-Limit', $limit, false);
-        $response->headers->set('X-Ratelimit-Remaining', $limit - (int)$counter, false);
+        $response->headers->set('X-Ratelimit-Remaining', $limit - (int) $counter, false);
 
         // Enable X-RateLimit-Tag header in debug mode
         if($this->app['config']->get('app.debug') == true)

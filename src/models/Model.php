@@ -10,7 +10,7 @@ use \Illuminate\Support\Str;
  * @author daniel <daniel@bexarcreative.com>
  * @see \Esensi\Model\Model
  */
-class Model extends BaseModel {
+abstract class Model extends BaseModel {
 
     /**
      * The database table used by the model.

@@ -11,7 +11,7 @@ use \Esensi\Core\Traits\RedirectingExceptionHandlerTrait;
  * @see \Esensi\Core\Controllers\ApiController
  * @see \Esensi\Core\Traits\RedirectingExceptionHandlerTrait
  */
-class PublicController extends Controller implements
+abstract class PublicController extends Controller implements
     ExceptionHandlerInterface {
 
     /**

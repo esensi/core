@@ -9,7 +9,7 @@ use \Esensi\Core\Repositories\Repository;
  *
  * @author daniel <daniel@bexarcreative.com>
  */
-class TrashableRepository extends Repository implements
+abstract class TrashableRepository extends Repository implements
     TrashableRepositoryInterface {
 
     /**

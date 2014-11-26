@@ -20,7 +20,7 @@ use \Illuminate\Routing\Controller;
  * @author daniel <daniel@bexarcreative.com>
  * @author diego <diego@emersonmedia.com>
  */
-class ApiController extends Controller implements
+abstract class ApiController extends Controller implements
     ExceptionHandlerInterface,
     PackagedInterface,
     RepositoryInjectedInterface {

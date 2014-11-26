@@ -15,7 +15,7 @@ use \Esensi\Core\Traits\DumpsterAdminControllerTrait;
  * @see \Esensi\Core\Controllers\ApiController
  * @see \Esensi\Core\Traits\RedirectingExceptionHandlerTrait
  */
-class AdminController extends Controller implements
+abstract class AdminController extends Controller implements
     ConfirmableControllerInterface,
     DumpsterControllerInterface,
     ExceptionHandlerInterface,

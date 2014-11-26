@@ -126,17 +126,39 @@ return [
         // Public views
         'public' => [
 
-            'index'       => 'core.public.index',
-            'missing'     => 'core.public.missing',
-            'whoops'      => 'core.public.whoops',
-            'modal'       => 'core.public.modal',
-            'maintenance' => 'core.public.maintenance',
+            'index'       => 'esensi/core::core.public.index',
+            'missing'     => 'esensi/core::core.public.missing',
+            'whoops'      => 'esensi/core::core.public.whoops',
+            'modal'       => 'esensi/core::core.admin.modal',
+            'maintenance' => 'esensi/core::core.public.maintenance',
         ],
 
         // Admin views
         'admin' => [
 
-            'modal'   => 'core.admin.modal',
+            'modal'   => 'esensi/core::core.admin.modal',
+        ],
+    ],
+
+    'partials' => [
+
+        // Public partials
+        'public' => [
+
+            'errors'  => 'esensi/core::core.admin.partials.errors',
+            'footer'  => 'esensi/core::core.public.partials.footer',
+            'header'  => 'esensi/core::core.public.partials.header',
+        ],
+
+        // Admin partials
+        'admin' => [
+
+            'account' => 'esensi/core::core.admin.partials.dropdown',
+            'drawer'  => 'esensi/core::core.admin.partials.drawer',
+            'errors'  => 'esensi/core::core.admin.partials.errors',
+            'footer'  => 'esensi/core::core.admin.partials.footer',
+            'header'  => 'esensi/core::core.admin.partials.header',
+            'logout'  => 'esensi/core::core.admin.partials.logout',
         ],
     ],
 
@@ -179,6 +201,24 @@ return [
         'enable' => true,
         'url'    => 'http://esen.si',
         'name'   => 'Powered by Esensi',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Meta data
+    |--------------------------------------------------------------------------
+    |
+    | The following configuration options provide HTML meta data tags to the
+    | header templates.
+    |
+    */
+
+    'metadata' => [
+
+        'keywords'    => 'emersonmedia esensi laravel boilerplate framework platform',
+        'description' => 'Esensi is an awesome boilerplate application.',
+        'author'      => 'Esensi',
+        'generator'   => gethostname(),
     ],
 
     /*

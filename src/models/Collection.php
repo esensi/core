@@ -56,4 +56,4 @@ class Collection extends BaseCollection {
 
     }
 
-} 
+}

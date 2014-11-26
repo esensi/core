@@ -1,5 +1,5 @@
 <div class="drawer">
-  {{ Form::open([ 'route' => $route , 'method' => 'GET']) }}
+  {{ Form::open([ 'route' => isset($route) ? $route : Route::currentRouteName() , 'method' => 'GET']) }}
     <div class="row">
       <div class="col-sm-6">
         <div class="form-group">

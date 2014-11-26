@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -9,12 +9,12 @@
     /* CSS RESET
     ================================================*/
     #outlook a {padding:0;}
-    body{width:100% !important; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; margin:0; padding:0;} 
+    body{width:100% !important; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; margin:0; padding:0;}
     .ExternalClass {width:100%;}
     .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {line-height: 100%;}
     #backgroundTable {margin:0; padding:0; width:100% !important; line-height: 100% !important;}
-    img {outline:none; text-decoration:none; -ms-interpolation-mode: bicubic;} 
-    a img {border:none;} 
+    img {outline:none; text-decoration:none; -ms-interpolation-mode: bicubic;}
+    a img {border:none;}
     .image_fix {display:block;}
     p {margin: 1em 0; line-height: 1.25; }
     h1, h2, h3, h4, h5, h6 {color: black !important;  line-height: 1.25; }
@@ -28,7 +28,7 @@
     /* MOBILE TARGETING
     ================================================*/
     @media only screen and (max-device-width: 480px) {
-        
+
         a[href^="tel"],
         a[href^="sms"] {
             text-decoration: none;
@@ -64,7 +64,7 @@
         }
     }
     @media only screen and (-webkit-min-device-pixel-ratio: 2) {
-        /* Put your iPhone 4g styles in here */ 
+        /* Put your iPhone 4g styles in here */
     }
     /* Android targeting */
     @media only screen and (-webkit-device-pixel-ratio:.75){
@@ -78,7 +78,7 @@
     }
 
   </style>
-  
+
   <!--[if IEMobile 7]>
   <style type="text/css">
 
@@ -94,12 +94,12 @@
 <body>
   <table cellpadding="0" cellspacing="0" border="0" id="backgroundTable">
     <tr>
-      <td style="padding-left: 25px; padding-right: 25px; padding-bottom: 25px;" valign="top"> 
-        
+      <td style="padding-left: 25px; padding-right: 25px; padding-bottom: 25px;" valign="top">
+
         @yield('content')
 
       </td>
     </tr>
-  </table>  
+  </table>
 </body>
 </html>

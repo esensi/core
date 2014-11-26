@@ -21,7 +21,7 @@ class CoreServiceProvider extends PackageServiceProvider {
     public function boot()
     {
         // Bind core class aliases
-        $this->package('esensi/core', 'esensi/core', __DIR__ . '/../..');
+        $this->package('esensi/core', 'esensi/core', __DIR__);
         $this->addAliases('esensi/core', ['core']);
 
         // Add core filters and route patterns

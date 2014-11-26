@@ -6,10 +6,10 @@ use Esensi\Core\Models\Collection;
 /**
  * Tests for the Collection class
  *
- * @package Esensi\Model
+ * @package Esensi\Core
  * @author diego <diego@emersonmedia.com>
  * @copyright 2014 Emerson Media LP
- * @license https://github.com/esensi/model/blob/master/LICENSE.txt MIT License
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
 class CollectionTest extends PHPUnit {

@@ -31,7 +31,7 @@
             "src/migrations"
         ],
         "psr-4": {
-            "Esensi\\Build\\": "src/"
+            "Esensi\\Core\\": "src/"
         }
     },
     "minimum-stability": "dev"

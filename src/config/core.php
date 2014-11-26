@@ -59,18 +59,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Namespace to be used by component package
-    |--------------------------------------------------------------------------
-    |
-    | The following configuration option alter which package namespace is used
-    | for all of the views. Set to empty to use the application level views.
-    |
-    */
-
-    'namespace' => 'esensi/core::',
-
-    /*
-    |--------------------------------------------------------------------------
     | Configuration of component package route prefixes
     |--------------------------------------------------------------------------
     |

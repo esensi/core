@@ -1,6 +1,7 @@
 <?php namespace Esensi\Core\Traits;
 
 use \Illuminate\Support\Facades\App;
+use \Illuminate\Support\NamespacedItemResolver as Resolver;
 
 /**
  * Traits for helping with package configurations
@@ -10,6 +11,13 @@ use \Illuminate\Support\Facades\App;
  * @see \Esensi\Core\Contracts\PackagedInterface
  */
 trait PackagedTrait{
+
+    /**
+     * The namespace that should be used by the package.
+     *
+     * @var string
+     */
+    protected $namespacing = 'esensi/core';
 
     /**
      * The package name
@@ -41,6 +49,51 @@ trait PackagedTrait{
     }
 
     /**
+     * Get the package namespace
+     *
+     * @return string
+     */
+    protected function namespacing()
+    {
+        return $this->namespacing ? trim($this->namespacing, '::') . '::' : '';
+    }
+
+    /**
+     * Resolve a namespaced line
+     *
+     * @param \Illuminate\Support\NamespacedItemResolver $resolver
+     * @param string $key to config line
+     * @param mixed $arguments (optional)
+     * @return string
+     */
+    protected function resolve(Resolver $resolver, $key, $arguments = null)
+    {
+        // Get the package namespace
+        $namespace = stripos($key, '::') === false ? $this->namespacing() : '';
+
+        // Get the package line
+        $line = str_singular($this->package) . '.' .$key;
+
+        // Use package namespace line
+        // @example: esensi/<package>::<package>.foo
+        if( $resolver->has($namespace . $line) )
+        {
+            return $resolver->get($namespace . $line, $arguments);
+        }
+
+        // Use global namespace line
+        // @example: <package>.foo
+        if( $resolver->has($line) )
+        {
+            return $resolver->get($line, $arguments);
+        }
+
+        // Use core namespace line
+        // @example: esensi/core:core.foo
+        return $resolver->get('esensi/core::core.' . $key, $arguments);
+    }
+
+    /**
      * Generate a subview for the layout
      *
      * @param string $key to view config
@@ -57,21 +110,7 @@ trait PackagedTrait{
         $line = $this->config('views.' . $this->ui . '.' . $key);
 
         // Nest the view into the layout
-        $loader = App::make('view');
-        if($loader->exists($this->namespacing() . $line))
-        {
-            $view = $loader->make($this->namespacing() . $line, $data);
-        }
-        elseif($loader->exists('esensi/'. $this->package . '::' . $line))
-        {
-            $view = $loader->make('esensi/'. $this->package . '::' . $line, $data);
-        }
-        else
-        {
-            $view = $loader->make($line, $data);
-        }
-
-        $this->layout->$name = $view;
+        $this->layout->$name = $loader->make($line, $data);
 
         return $view;
     }
@@ -86,16 +125,12 @@ trait PackagedTrait{
      */
     protected function modal($key, array $data = [], $name = null)
     {
-        // Change default layout to modal layout
-        $namespace = $this->namespacing();
-        $line = 'views.' . $this->ui . '.modal';
-
         // Check to see if the config line is defined
-        $line = $this->config($line);
+        $line = $this->config('views.' . $this->ui . '.modal');
         if (empty($line))
         {
             // The config line is not defined, so look for it on the esensi::core package
-            $line =  App::make('config')->get('esensi/core::core.views.' . $this->ui . '.modal');
+            $line =  $this->config('esensi/core::core.views.' . $this->ui . '.modal');
         }
         $this->layout = $line;
 
@@ -114,55 +149,19 @@ trait PackagedTrait{
      */
     protected function config($key, $default = null)
     {
-        // Get the config file loader
-        $loader = App::make('config');
-
-        // Get the root namespace
-        $namespace = stripos($key, '::') === false ? $this->namespacing() : '';
-
-        // Get the packaged line
-        $line = str_singular($this->package) . '.' .$key;
-
-        // Use local namespaced package
-        if( $loader->has($namespace . $line) )
-        {
-            return $loader->get($namespace . $line);
-        }
-
-        // Use package namespaced package
-        elseif( $loader->has('esensi/'.$this->package.'::' . $line) )
-        {
-            return $loader->get('esensi/'.$this->package.'::' . $line);
-        }
-
-        // Use global namespaced package
-        return $loader->get($line, $default);
+        return $this->resolve(App::make('config'), $key, $default);
     }
 
     /**
-     * Get the package namespace
+     * Get a TTL configuration line
      *
-     * @return string
+     * @param string $key to config line
+     * @param mixed $default (optional)
+     * @return mixed
      */
-    protected function namespacing()
+    protected function ttl($key, $default = null)
     {
-        // Get the config file loader
-        $loader = App::make('config');
-
-        // Get the package namespace or default to the root
-        $namespace = $loader->get('esensi/'.$this->package.'::'.$this->package.'.namespace', 'esensi/core::');
-        $line = str_singular($this->package) . '.namespace';
-
-        // Use the package's namespace config
-        // @example esensi/user::user.namespace
-        if( $loader->has($namespace . $line) )
-        {
-            return $loader->get($namespace . $line);
-        }
-
-        // Use the global namespace
-        // @example user.namespace
-        return $loader->get($line, '');
+        return $this->config('ttl.' . $key, $default);
     }
 
     /**
@@ -174,31 +173,7 @@ trait PackagedTrait{
      */
     protected function language($key, array $replacements = [])
     {
-        $namespace = $this->namespacing();
-        $line = str_singular($this->package) . '.' .$key;
-        $loader = App::make('translator');
-
-        // Use local namespaced package
-        if( $loader->has($namespace . $line) )
-        {
-            return $loader->get($namespace . $line, $replacements);
-        }
-
-        // Use global namespaced package
-        elseif( $loader->has($line) )
-        {
-            return $loader->get($line, $replacements);
-        }
-
-        // Load the core as default
-        elseif( $loader->has('esensi/'.$this->package.'::' . $line))
-        {
-            return $loader->get('esensi/'.$this->package.'::' . $line, $replacements);
-        }
-        else
-        {
-            return $loader->get('esensi/core::core.' . $key, $replacements);
-        }
+        return $this->resolve(App::make('translator'), $key, $replacements);
     }
 
     /**
@@ -226,6 +201,30 @@ trait PackagedTrait{
     }
 
     /**
+     * Get an option language line
+     *
+     * @param string $key to language config line
+     * @param array $replacements (optional) in language line
+     * @return string
+     */
+    protected function option($key, array $replacements = [])
+    {
+        return $this->language('options.' . $key, $replacements);
+    }
+
+    /**
+     * Get a subject language line
+     *
+     * @param string $key to language config line
+     * @param array $replacements (optional) in language line
+     * @return string
+     */
+    protected function subject($key, array $replacements = [])
+    {
+        return $this->language('subjects.' . $key, $replacements);
+    }
+
+    /**
      * Generate a redirect
      *
      * @param string $key to route config
@@ -250,7 +249,7 @@ trait PackagedTrait{
     {
         // Short circuit to referrer URL or follow redirect
         $referer = App::make('request')->header('referer');
-        $redirect = !empty($referer) ? App::make('redirect')->back() : $this->redirect($key, $params);
+        $redirect = ! empty($referer) ? App::make('redirect')->back() : $this->redirect($key, $params);
         return $redirect;
     }
 

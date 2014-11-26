@@ -23,7 +23,7 @@ use \Esensi\Core\Models\Model;
  *
  * @author daniel <daniel@bexarcreative.com>
  */
-abstract class Repository implements
+class Repository implements
     CruddableRepositoryInterface,
     ExceptionalRepositoryInterface,
     FindableRepositoryInterface,

@@ -69,7 +69,7 @@
 
             <a href="{{ route('admin.users.account') }}" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-user fa-fw"></i>
-              {{ Auth::user()->display_name or 'User Account' }}
+              {{ Auth::user()->display_name }}
             </a>
 
             @include(Config::get('esensi/core::core.partials.admin.account'))

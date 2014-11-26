@@ -95,10 +95,9 @@ trait PackagedTrait{
         if (empty($line))
         {
             // The config line is not defined, so look for it on the esensi::core package
-            $namespace = "esensi/core::";
-            $line =  App::make('config')->get($namespace . 'core.views.' . $this->ui . '.modal');
+            $line =  App::make('config')->get('esensi/core::core.views.' . $this->ui . '.modal');
         }
-        $this->layout = $namespace . $line;
+        $this->layout = $line;
 
         $this->setupLayout();
 

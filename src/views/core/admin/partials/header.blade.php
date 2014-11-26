@@ -76,7 +76,7 @@
 
           </li>
 
-          @include(Config::get('esensi/core::core.partials.admin.logout'));
+          @include(Config::get('esensi/core::core.partials.admin.logout'))
 
         </ul>
       </div>

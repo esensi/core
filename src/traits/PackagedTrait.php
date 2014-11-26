@@ -110,7 +110,7 @@ trait PackagedTrait{
         $line = $this->config('views.' . $this->ui . '.' . $key);
 
         // Nest the view into the layout
-        $this->layout->$name = $loader->make($line, $data);
+        $this->layout->$name = App::make('view')->make($line, $data);
 
         return $view;
     }

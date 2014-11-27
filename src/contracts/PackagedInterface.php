@@ -37,11 +37,13 @@ interface PackagedInterface{
     function config($key, $default = null);
 
     /**
-     * Get the package namespace
+     * Get a TTL configuration line
      *
-     * @return string
+     * @param string $key to config line
+     * @param mixed $default (optional)
+     * @return mixed
      */
-    function namespacing();
+    function ttl($key, $default = null);
 
     /**
      * Get a language line
@@ -69,6 +71,25 @@ interface PackagedInterface{
      * @return string
      */
     function message($key, array $replacements = []);
+
+    /**
+     * Get an option language line
+     *
+     * @param string $key to language config line
+     * @param array $replacements (optional) in language line
+     * @return string
+     */
+    function option($key, array $replacements = []);
+
+    /**
+     * Get an subject language line
+     *
+     * @param string $key to language config line
+     * @param array $replacements (optional) in language line
+     * @return string
+     */
+    function subject($key, array $replacements = []);
+
     /**
      * Generate a redirect
      *
@@ -86,5 +107,40 @@ interface PackagedInterface{
      * @return \Illuminate\Routing\Redirector
      */
     function back($key, array $params = []);
+
+    /**
+     * Fire a namespaced event until the first non-null response.
+     *
+     * @param string $name of event to fire
+     * @param array $arguments (optional) to pass to event
+     * @return mixed
+     */
+    function eventUntil($name, array $arguments = []);
+
+    /**
+     * Fire a namespaced event.
+     *
+     * @param string $name of event to fire
+     * @param array $arguments (optional) to pass to event
+     * @return mixed
+     */
+    function eventFire($name, array $arguments = []);
+
+    /**
+     * Queue a namespaced event.
+     *
+     * @param string $name of event to queue
+     * @param array $arguments (optional) to pass to event
+     * @return mixed
+     */
+    function eventQueue($name, array $arguments = []);
+
+    /**
+     * Flush namespaced events.
+     *
+     * @param string $name of event to flush
+     * @return mixed
+     */
+    function eventFlush($name);
 
 }

@@ -254,4 +254,65 @@ trait PackagedTrait{
         return $redirect;
     }
 
+    /**
+     * Make the name of the event from the called class.
+     *
+     * @example "Esensi/Class/Foo" returns "esensi"
+     *
+     * @param string $name of event
+     * @return string
+     */
+    protected function getNamespacedEventName($name)
+    {
+        $namespace = head(explode('\\', strtolower(get_called_class())));
+        return $namespace . '.' . $this->package . '.' . $name;
+    }
+
+    /**
+     * Fire a namespaced event until the first non-null response.
+     *
+     * @param string $name of event to fire
+     * @param array $arguments (optional) to pass to event
+     * @return mixed
+     */
+    protected function eventUntil($name, array $arguments = [])
+    {
+        return App::make('events')->until($this->getNamespacedEventName($name), $arguments);
+    }
+
+    /**
+     * Fire a namespaced event.
+     *
+     * @param string $name of event to fire
+     * @param array $arguments (optional) to pass to event
+     * @return mixed
+     */
+    protected function eventFire($name, array $arguments = [])
+    {
+        return App::make('events')->fire($this->getNamespacedEventName($name), $arguments);
+    }
+
+    /**
+     * Queue a namespaced event.
+     *
+     * @param string $name of event to queue
+     * @param array $arguments (optional) to pass to event
+     * @return mixed
+     */
+    protected function eventQueue($name, array $arguments = [])
+    {
+        return App::make('events')->queue($this->getNamespacedEventName($name), $arguments);
+    }
+
+    /**
+     * Flush namespaced events.
+     *
+     * @param string $name of event to flush
+     * @return mixed
+     */
+    protected function eventFlush($name)
+    {
+        return App::make('events')->flush($this->getNamespacedEventName($name));
+    }
+
 }

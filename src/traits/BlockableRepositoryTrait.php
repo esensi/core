@@ -26,6 +26,9 @@ trait BlockableRepositoryTrait {
             $this->throwException($this->error('blocking_not_allowed'));
         }
 
+        // Fire before listeners
+        $this->eventUntil('blocking', [ $object ] );
+
         // Block
         $object->blocked = 1;
 
@@ -34,6 +37,9 @@ trait BlockableRepositoryTrait {
         {
             $this->throwException($object->getErrors(), $this->error('block'));
         }
+
+        // Fire after listeners
+        $this->eventFire('blocked', [ $object ] );
 
         return $object;
     }
@@ -56,6 +62,9 @@ trait BlockableRepositoryTrait {
             $this->throwException($this->error('unblocking_not_allowed'));
         }
 
+        // Fire before listeners
+        $this->eventUntil('blocking', [ $object ] );
+
         // Unblock
         $object->blocked = 0;
 
@@ -64,6 +73,9 @@ trait BlockableRepositoryTrait {
         {
             $this->throwException($object->getErrors(), $this->error('unblock'));
         }
+
+        // Fire after listeners
+        $this->eventFire('unblocked', [ $object ] );
 
         return $object;
     }

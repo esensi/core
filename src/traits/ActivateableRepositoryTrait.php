@@ -29,6 +29,9 @@ trait ActivateableRepositoryTrait {
             $this->throwException($this->error('activation_not_allowed'));
         }
 
+        // Fire before listeners
+        $this->eventUntil('activating', [ $object ] );
+
         // Activate the resource
         $object->active = 1;
         $object->activated_at = Carbon::now();
@@ -38,6 +41,9 @@ trait ActivateableRepositoryTrait {
         {
             $this->throwException($object->getErrors(), $this->error('activate'));
         }
+
+        // Fire after listeners
+        $this->eventFire('activated', [ $object ] );
 
         return $object;
     }
@@ -60,6 +66,9 @@ trait ActivateableRepositoryTrait {
             $this->throwException($this->error('deactivation_not_allowed'));
         }
 
+        // Fire before listeners
+        $this->eventUntil('deactivating', [ $object ] );
+
         // Deactivate the resource
         $object->active = 0;
         $object->activated_at = null;
@@ -69,6 +78,9 @@ trait ActivateableRepositoryTrait {
         {
             $this->throwException($object->getErrors(), $this->error('deactivate'));
         }
+
+        // Fire after listeners
+        $this->eventFire('deactivated', [ $object ] );
 
         return $object;
     }

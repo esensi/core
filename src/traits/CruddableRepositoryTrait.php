@@ -21,11 +21,17 @@ trait CruddableRepositoryTrait{
         $model = $this->getModel();
         $object = new $model( array_only($attributes, $model->getFillable()) );
 
+        // Fire before listeners
+        $this->eventUntil('creating', [ $object ] );
+
         // Throw an error if the resource could not be updated
         if( ! $object->save() )
         {
             $this->throwException( $object->getErrors(), $this->error('create') );
         }
+
+        // Fire after listeners
+        $this->eventFire('created', [ $object ] );
 
         return $object;
     }
@@ -64,6 +70,11 @@ trait CruddableRepositoryTrait{
     {
         // Get the resource
         $object = $this->read( $id );
+
+        // Fire before listeners
+        $this->eventUntil('updating', [ $object ] );
+
+        // Fill the attributes
         $object->fill( array_only($attributes, $object->getFillable()) );
 
         // Throw an error if the resource could not be updated
@@ -71,6 +82,9 @@ trait CruddableRepositoryTrait{
         {
             $this->throwException( $object->getErrors(), $this->error('update') );
         }
+
+        // Fire after listeners
+        $this->eventFire('updated', [ $object ] );
 
         return $object;
     }
@@ -90,12 +104,16 @@ trait CruddableRepositoryTrait{
             // Get the resource
             $object = $this->retrieve($id);
 
+            // Fire before listeners
+            $this->eventUntil('deleting', [ $object ] );
+
             // Forcibly delete this trashable resource
             // Use trash() if you want to soft delete it
             $object->forceDelete();
-            // Returning true to enforce method contract
-            // (Laravel's forceDelete() currently returns void)
-            return true;
+
+            // Returning true to enforce method contract because
+            // Laravel's forceDelete() currently returns void
+            $result = true;
         }
 
         // Delete regular models
@@ -104,10 +122,13 @@ trait CruddableRepositoryTrait{
             // Get the resource
             $object = $this->read($id);
 
+            // Fire before listeners
+            $this->eventUntil('deleting', [ $object ] );
+
             // Do a regular delete on this resource
-            $result = $object->delete();
             // Result is always going to have a bool value here, as we are
             // working with an existing model at this point.
+            $result = $object->delete();
         }
 
         // Throw an exception if resource could not be deleted
@@ -115,6 +136,9 @@ trait CruddableRepositoryTrait{
         {
             $this->throwException( $this->error('delete') );
         }
+
+        // Fire after listeners
+        $this->eventFire('deleted', [ $object ] );
 
         return $result;
     }

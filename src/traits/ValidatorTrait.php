@@ -44,7 +44,7 @@ trait ValidatorTrait {
     {
         if (count($parameters) < $count)
         {
-            throw new \InvalidArgumentException('Validation rule ' . $rule .' requires at least ' . $count . ' parameters.');
+            throw new InvalidArgumentException('Validation rule ' . $rule .' requires at least ' . $count . ' parameters.');
         }
     }
 

@@ -44,6 +44,9 @@ trait TrashableRepositoryTrait{
         // Retrieve an untrashed resource
         $object = $this->read($id);
 
+        // Fire before listeners
+        $this->eventUntil('trashing', [ $object ] );
+
         // Soft delete a resource
         // Can't trash a trashed resource
         $result = $object->delete();
@@ -53,6 +56,9 @@ trait TrashableRepositoryTrait{
         {
             $this->throwException( $object->getErrors(), $this->error('trash') );
         }
+
+        // Fire after listeners
+        $this->eventFire('trashed', [ $object ] );
 
         return $result;
     }
@@ -70,6 +76,9 @@ trait TrashableRepositoryTrait{
         // Retrieve a trashed resource
         $object = $this->retrieve($id);
 
+        // Fire before listeners
+        $this->eventUntil('restoring', [ $object ] );
+
         // Restore the object
         $result = $object->restore();
 
@@ -78,6 +87,9 @@ trait TrashableRepositoryTrait{
         {
             $this->throwException( $object->getErrors(), $this->error('restore') );
         }
+
+        // Fire after listeners
+        $this->eventFire('restored', [ $object ] );
 
         return $result;
     }
@@ -90,6 +102,9 @@ trait TrashableRepositoryTrait{
      */
     public function purge()
     {
+        // Fire before listeners
+        $this->eventUntil('purging');
+
         // Force delete all the trashed resources
         $result = $this->getModel()
             ->onlyTrashed()
@@ -100,6 +115,9 @@ trait TrashableRepositoryTrait{
         {
             $this->throwException( [], $this->error('purge') );
         }
+
+        // Fire after listeners
+        $this->eventFire('purged');
 
         return $result;
     }
@@ -112,6 +130,9 @@ trait TrashableRepositoryTrait{
      */
     public function recover()
     {
+        // Fire before listeners
+        $this->eventUntil('recovering');
+
         // Restore all the trashed resources
         $result = $this->getModel()
             ->onlyTrashed()
@@ -122,6 +143,9 @@ trait TrashableRepositoryTrait{
         {
             $this->throwException( [], $this->error('recover') );
         }
+
+        // Fire after listeners
+        $this->eventFire('recovered');
 
         return $result;
     }

@@ -124,10 +124,16 @@ class RateLimiter implements HttpKernelInterface {
             $this->app['cache']->put($tag, $counter, $period);
         }
 
-        // Put request in timeout
-        else
+        // Put request in timeout if not already in timeout
+        elseif( ! $this->app['cache']->has($tag.':timeout') )
         {
+            // Add timeout
             $this->app['cache']->add($tag.':timeout', true, $timeout);
+
+            // Fire event listener
+            $ip    = $request->getClientIp();
+            $route = $this->app['router']->currentRouteName();
+            Event::fire('esensi.core.rate_exceeded', compact('ip', 'route', 'limit', 'timeout'));
         }
 
         // Determine if request is in timeout

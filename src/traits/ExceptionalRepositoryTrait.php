@@ -12,7 +12,7 @@ trait ExceptionalRepositoryTrait{
 
     /**
      * The exception to be thrown
-     * 
+     *
      * @var \Esensi\Core\Exceptions\RepositoryException
      */
     protected $exception = '\EsensiCoreRepositoryException';
@@ -26,7 +26,7 @@ trait ExceptionalRepositoryTrait{
      * @param Exception $previous exception
      * @return void
      */
-    public function throwException($bag, $message = null, $code = 0, Exception $previous = null)
+    public function throwException($bag, $message = null, $code = 400, Exception $previous = null)
     {
         $exception = $this->exception;
         throw new $exception($bag, $message, $code, $previous);

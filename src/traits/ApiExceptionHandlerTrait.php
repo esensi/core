@@ -2,6 +2,7 @@
 
 use \EsensiCoreRepositoryException as RepositoryException;
 use \Illuminate\Support\Facades\Response;
+use \Illuminate\Support\Facades\Input;
 
 /**
  * Trait that handles redirects for API controllers
@@ -19,10 +20,11 @@ trait ApiExceptionHandlerTrait{
      */
     protected function handleException(RepositoryException $exception)
     {
-        $errors = $exception->getErrors();
+        $data    = Input::all();
+        $errors  = $exception->getErrors();
         $message = $exception->getMessage();
-        $code = $exception->getCode() ?: 400;
-        $content = array_filter(compact('errors', 'message'));
+        $code    = $exception->getCode() ? $exception->getCode() : 400;
+        $content = array_filter(compact('errors', 'message', 'code', 'data'));
         return Response::json($content, $code);
     }
 

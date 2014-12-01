@@ -28,6 +28,7 @@ trait RedirectingExceptionHandlerTrait{
 
         // Send redirect
         return $redirect->with('message', $exception->getMessage())
+            ->with('code', $exception->getCode())
             ->withErrors($exception->getBag())
             ->withInput();
     }

@@ -1,6 +1,6 @@
 <?php namespace Esensi\Core\Traits;
 
-use \Esensi\Models\Collection;
+use \Esensi\Core\Models\Collection;
 use \Esensi\Support\Facades\DB;
 
 /**

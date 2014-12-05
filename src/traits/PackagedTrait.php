@@ -2,6 +2,7 @@
 
 use \Illuminate\Support\Facades\App;
 use \Illuminate\Support\NamespacedItemResolver as Resolver;
+use \InvalidArgumentException;
 
 /**
  * Traits for helping with package configurations
@@ -100,6 +101,7 @@ trait PackagedTrait{
      * @param array $data (optional) to be passed to view
      * @param string $name (optional) of content
      * @return \Illuminate\View\View
+     * @throws \InvalidArgumentException
      */
     protected function content($key, array $data = [], $name = null)
     {
@@ -107,7 +109,12 @@ trait PackagedTrait{
         $name = is_null($name) ? 'content' : $name;
 
         // Get the confg line for the view
-        $line = $this->config('views.' . $this->ui . '.' . $key);
+        $config = 'views.' . $this->ui . '.' . $key;
+        $line = $this->config($config);
+        if( is_null($line) )
+        {
+            throw new InvalidArgumentException('View config line ['.$config.'] not found.');
+        }
 
         // Nest the view into the layout
         $view = App::make('view')->make($line, $data);

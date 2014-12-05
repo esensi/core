@@ -111,7 +111,7 @@ trait ConfirmableControllerTrait {
             $confirm = $isBulk ? 'confirmBulk' : 'confirm';
 
             // Prepare action and parameters to pass to confirm method
-            $action = $isBulk ? snake_case(Route::getParameter('action')) : snake_case($callable);
+            $action = $isBulk ? snake_case(Route::current()->getParameter('action')) : snake_case($callable);
             array_unshift($parameters, $action);
 
             // Call the confirmation method

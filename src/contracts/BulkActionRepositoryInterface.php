@@ -5,7 +5,7 @@
  *
  * @author daniel <daniel@bexarcreative.com>
  */
-trait BulkActionRepositoryTrait {
+interface BulkActionRepositoryInterface {
 
     /**
      * Bulk delete the specified resources in storage.

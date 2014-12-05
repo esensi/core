@@ -45,7 +45,7 @@ trait ConfirmableControllerTrait {
             }
 
             // Pass obkect under the singular package named variable to the view
-            $data = [ $this->package => $object ];
+            $data = [ $this->package => $object, 'id' => $id ];
         }
 
         // Render confirmation modal
@@ -81,7 +81,7 @@ trait ConfirmableControllerTrait {
                 ->findIn('id', $ids);
 
             // Pass collection under the plural package named variable to the view
-            $data = [ str_plural($this->package) => $collection ];
+            $data = [ str_plural($this->package) => $collection, 'ids' => $ids ];
         }
 
         // Render confirmation modal

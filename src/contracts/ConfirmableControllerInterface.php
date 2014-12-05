@@ -16,4 +16,13 @@ interface ConfirmableControllerInterface{
      */
     public function confirm($action, $id = null);
 
+    /**
+     * Display a confirmation modal for the specified resource bulk action.
+     *
+     * @param string $action
+     * @param string|array $ids (optional)
+     * @return void
+     */
+    public function confirmBulk($action, $ids = null);
+
 }

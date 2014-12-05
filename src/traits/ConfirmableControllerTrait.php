@@ -1,6 +1,7 @@
 <?php namespace Esensi\Core\Traits;
 
 use \Esensi\Core\Models\Collection;
+use \Illuminate\Support\Facades\Route;
 
 /**
  * Trait implementation of confirmable controller interface
@@ -15,7 +16,7 @@ trait ConfirmableControllerTrait {
      *
      * @var array
      */
-    protected $trashableActions = [ 'restore', 'delete' ];
+    protected $trashableActions = [ 'restore', 'delete', 'bulkRestore', 'bulkDelete' ];
 
     /**
      * Display a confirmation modal for the specified resource action.
@@ -105,12 +106,13 @@ trait ConfirmableControllerTrait {
         // Re-route call to a confirmation method
         if( substr($method, -7, 7) == 'Confirm' && method_exists($this, $callable) )
         {
-            // Prepare action and parameters to pass to confirm method
-            $action = snake_case($callable);
-            array_unshift($parameters, $action);
-
             // Determine confirmation method to use: confirmBulk() or confirm()
-            $confirm = substr($method, 0, 4) == 'bulk' ? 'confirmBulk' : 'confirm';
+            $isBulk = substr($method, 0, 4) == 'bulk';
+            $confirm = $isBulk ? 'confirmBulk' : 'confirm';
+
+            // Prepare action and parameters to pass to confirm method
+            $action = $isBulk ? snake_case(Route::getParameter('action')) : snake_case($callable);
+            array_unshift($parameters, $action);
 
             // Call the confirmation method
             return call_user_func_array([ $this, $confirm ], $parameters);

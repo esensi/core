@@ -45,9 +45,19 @@ interface FindableRepositoryInterface{
      *
      * @param string $attribute to find by
      * @param array $values to match attribute against
+     * @param boolean $inTrash (optional)
      * @throws \Esensi\Core\Exceptions\RepositoryException
      * @return array
      */
-    public function findIn($attribute, array $values = []);
+    public function findIn($attribute, array $values = [], $inTrash = false);
+
+    /**
+     * Display the specified resource with loaded relationships.
+     *
+     * @param integer $id of resource
+     * @param array $relationship to load on resource
+     * @return \Esensi\Core\Models\Model
+     */
+    public function findWithRelated($id, array $relationship);
 
 }

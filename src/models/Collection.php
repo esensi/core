@@ -16,7 +16,7 @@ class Collection extends BaseCollection {
      * Strings are assumed to be delimeter separated and are converted to arrays.
      *
      * @param mixed $items The values to include as items in the collection
-     * @param string $delimiter (optional) for array parsing
+     * @param string|array $delimiter (optional) for array parsing
      * @return \Esensi\Core\Models\Collection
      */
     public static function parseMixed($items, $delimiter = ',')
@@ -26,8 +26,10 @@ class Collection extends BaseCollection {
         if( is_string($items) )
         {
             // Removes any ',' that exist at the beginning or the end,
-            // like in ',1,2,3,4,'.
-            $items = explode($delimiter, trim($items, $delimiter));
+            // like in ',1,2,3,4,'
+            $separator = '|';
+            $items = str_replace($delimiter, $separator, $items);
+            $items = explode($separator, trim($items, $separator));
         }
 
         if (! is_array($items) )

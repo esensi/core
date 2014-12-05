@@ -20,7 +20,7 @@ trait BulkActionRepositoryTrait {
     protected function bulkAction($action, $ids)
     {
         // Get a collection of resources
-        $collection = Collection::parseMixed($ids);
+        $collection = Collection::parseMixed($ids, [',', '+', ' ']);
 
         // Run in a transaction for all or nothing behavior
         DB::transaction(function() use ($collection, $action)
@@ -29,9 +29,12 @@ trait BulkActionRepositoryTrait {
             $collection->each(function($id)
             {
                 // Repository@<action>($id)
-                call_user_func_array([$this, $action], [$id]);
+                call_user_func_array([$this, studly_case($action)], [$id]);
             });
         });
+
+        // Fire bulk after event listeners
+        $this->eventFire('bulk.' . snake_case($action), $collection->all());
 
         return $collection->count();
     }

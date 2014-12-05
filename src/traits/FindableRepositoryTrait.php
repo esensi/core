@@ -71,15 +71,23 @@ trait FindableRepositoryTrait{
      *
      * @param string $attribute to find by
      * @param array $values to match attribute against
+     * @param boolean $inTrash (optional)
      * @throws \Esensi\Core\Exceptions\RepositoryException
      * @return array
      */
-    public function findIn($attribute, array $values = [])
+    public function findIn($attribute, array $values = [], $inTrash = false)
     {
+        // Prepare a model query
+        $query = $this->getModel()->query();
+
+        // Look in trash too
+        if( $inTrash )
+        {
+            $query->withTrashed();
+        }
+
         // Get the resources
-        $objects = $this->getModel()
-            ->whereIn($attribute, $values)
-            ->get();
+        $objects = $query->whereIn($attribute, $values)->get();
 
         // Throw an error if the resource could not be found
         if( ! $objects )

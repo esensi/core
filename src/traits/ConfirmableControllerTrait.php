@@ -1,7 +1,7 @@
 <?php namespace Esensi\Core\Traits;
 
 use \Esensi\Core\Models\Collection;
-use \Illuminate\Support\Facades\Route;
+use \Illuminate\Support\Facades\Input;
 
 /**
  * Trait implementation of confirmable controller interface
@@ -66,6 +66,7 @@ trait ConfirmableControllerTrait {
         $inTrash = false;
 
         // Get the objects from the repository
+        $ids = is_null($ids) ? Input::get('ids') : $ids;
         if( ! is_null($ids) )
         {
             $ids = Collection::parseMixed($ids, [',', '+', ' '])->all();
@@ -111,8 +112,15 @@ trait ConfirmableControllerTrait {
             $confirm = $isBulk ? 'confirmBulk' : 'confirm';
 
             // Prepare action and parameters to pass to confirm method
-            $action = $isBulk ? snake_case(Route::current()->getParameter('action')) : snake_case($callable);
-            array_unshift($parameters, $action);
+            $action = snake_case($callable);
+            if( $action == 'bulk_action' )
+            {
+                $parameters = [ 'bulk_' . end($parameters) ];
+            }
+            else
+            {
+                array_unshift($parameters, $action);
+            }
 
             // Call the confirmation method
             return call_user_func_array([ $this, $confirm ], $parameters);

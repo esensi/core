@@ -1,7 +1,7 @@
 <?php namespace Esensi\Core\Traits;
 
 use \Esensi\Core\Models\Collection;
-use \Esensi\Support\Facades\DB;
+use \Illuminate\Support\Facades\DB;
 
 /**
  * Trait implementation of bulk action repository interface
@@ -26,7 +26,7 @@ trait BulkActionRepositoryTrait {
         DB::transaction(function() use ($collection, $action)
         {
             // Iterate over the resources performing the action on each
-            $collection->each(function($id)
+            $collection->each(function($id) use ($action)
             {
                 // Repository@<action>($id)
                 call_user_func_array([$this, studly_case($action)], [$id]);

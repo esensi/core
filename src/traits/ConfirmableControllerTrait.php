@@ -85,7 +85,8 @@ trait ConfirmableControllerTrait {
         }
 
         // Render confirmation modal
-        $this->modal( $action . '_confirm', $data );
+        $view = str_replace('bulk_', 'bulk.', $action) . '_confirm';
+        $this->modal( $view, $data );
     }
 
     /**

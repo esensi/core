@@ -221,4 +221,67 @@ class ApiController extends Controller implements
             ->recover();
     }
 
+    /**
+     * Perform a bulk action on an array of resources.
+     *
+     * @param string $action
+     * @return integer
+     * @throws BadMethodCallException
+     */
+    public function bulkAction($action)
+    {
+        // Get the bulk action to be called
+        $class = get_called_class();
+        $method = 'bulk' . ucfirst(studly_case($action));
+
+        // Handle missing bulk actions
+        if( ! method_exists($class, $method) )
+        {
+            throw new BadMethodCallException('Method ' . $method . ' does not exist on called class '. $class . '.');
+        }
+
+        // Call the bulk action and pass in the resource's IDs
+        $ids = Input::get('ids', []);
+        $response = call_user_func_array([$class, $method], [$ids]);
+
+        // Redirect back with message
+        return $response;
+    }
+
+    /**
+     * Bulk delete the specified resources in storage.
+     *
+     * @param string|array $ids
+     * @return integer
+     */
+    public function bulkDelete($ids)
+    {
+        return $this->getRepository()
+            ->bulkDelete($ids);
+    }
+
+    /**
+     * Bulk delete the specified resources in storage.
+     *
+     * @param string|array $ids
+     * @return integer
+     */
+    public function bulkRestore($ids)
+    {
+        return $this->getRepository()
+            ->bulkRestore($ids);
+    }
+
+    /**
+     * Bulk delete the specified resources in storage.
+     *
+     * @param string|array $ids
+     * @return integer
+     */
+    public function bulkTrash($ids)
+    {
+        return $this->getRepository()
+            ->bulkTrash($ids);
+    }
+
 }

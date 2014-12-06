@@ -141,12 +141,13 @@ return [
         // Admin partials
         'admin' => [
 
-            'account' => 'esensi/core::core.admin.partials.dropdown',
-            'drawer'  => 'esensi/core::core.admin.partials.drawer',
-            'errors'  => 'esensi/core::core.admin.partials.errors',
-            'footer'  => 'esensi/core::core.admin.partials.footer',
-            'header'  => 'esensi/core::core.admin.partials.header',
-            'logout'  => 'esensi/core::core.admin.partials.logout',
+            'account'      => 'esensi/core::core.admin.partials.dropdown',
+            'drawer'       => 'esensi/core::core.admin.partials.drawer',
+            'errors'       => 'esensi/core::core.admin.partials.errors',
+            'footer'       => 'esensi/core::core.admin.partials.footer',
+            'header'       => 'esensi/core::core.admin.partials.header',
+            'logout'       => 'esensi/core::core.admin.partials.logout',
+            'bulk_actions' => 'esensi/core::core.admin.partials.bulk-actions',
         ],
     ],
 

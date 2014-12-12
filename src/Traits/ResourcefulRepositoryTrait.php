@@ -71,7 +71,8 @@ trait ResourcefulRepositoryTrait{
 
         // Force delete all the resources
         $result = $this->getModel()
-            ->forceDelete();
+            ->query()
+            ->delete();
 
         // Throw an error if resources could not be deleted
         if( ! $result )

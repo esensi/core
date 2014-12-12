@@ -58,4 +58,31 @@ trait ResourcefulRepositoryTrait{
         return $this->delete($id);
     }
 
+    /**
+     * Remove all resources from storage.
+     *
+     * @throws \Esensi\Core\Exceptions\RepositoryException
+     * @return boolean
+     */
+    public function truncate()
+    {
+        // Fire before listeners
+        $this->eventUntil('truncating');
+
+        // Force delete all the resources
+        $result = $this->getModel()
+            ->forceDelete();
+
+        // Throw an error if resources could not be deleted
+        if( ! $result )
+        {
+            $this->throwException( [], $this->error('truncate') );
+        }
+
+        // Fire after listeners
+        $this->eventFire('truncated');
+
+        return $result;
+    }
+
 }

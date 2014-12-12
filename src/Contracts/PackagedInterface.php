@@ -8,6 +8,51 @@
 interface PackagedInterface{
 
     /**
+     * Get the package name
+     *
+     * @return string
+     */
+    public function getPackage();
+
+    /**
+     * Set the package name
+     *
+     * @param string $package
+     * @return void
+     */
+    public function setPackage( $package );
+
+    /**
+     * Get the UI name
+     *
+     * @return string
+     */
+    public function getUI();
+
+    /**
+     * Set the UI name
+     *
+     * @param string $ui
+     * @return void
+     */
+    public function setUI( $ui );
+
+    /**
+     * Get the namespace name
+     *
+     * @return string
+     */
+    public function getNamespacing();
+
+    /**
+     * Set the namespace name
+     *
+     * @param string $namespace
+     * @return void
+     */
+    public function setNamespacing( $namespace );
+
+    /**
      * Generate a subview for the layout
      *
      * @param string $key to view config

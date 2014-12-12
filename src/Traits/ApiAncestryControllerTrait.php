@@ -22,6 +22,23 @@ trait ApiAncestryControllerTrait{
         $class = get_parent_class();
         $parent = App::make($class);
 
+        // Copy over the packaged properties
+        if( $this instanceof PackagedInterface )
+        {
+            $parent->setUI( $this->getUI() );
+            $parent->setPackage( $this->getPackage() );
+            $parent->setNamespacing( $this->getNamespacing() );
+        }
+
+        // Copy over the injected repositories
+        if( $this instanceof RepositoryInjectedInterface )
+        {
+            foreach($this->repositories as $name => $repository)
+            {
+                $parent->setRepository($repository, $name);
+            }
+        }
+
         // Return first ApiController ancestor found
         if( str_contains($class, 'ApiController'))
         {

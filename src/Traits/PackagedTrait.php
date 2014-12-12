@@ -50,6 +50,69 @@ trait PackagedTrait{
     }
 
     /**
+     * Get the package name
+     *
+     * @return string
+     */
+    public function getPackage()
+    {
+        return $this->package;
+    }
+
+    /**
+     * Set the package name
+     *
+     * @param string $package
+     * @return void
+     */
+    public function setPackage( $package )
+    {
+        $this->package = $package;
+    }
+
+    /**
+     * Get the UI name
+     *
+     * @return string
+     */
+    public function getUI()
+    {
+        return $this->ui;
+    }
+
+    /**
+     * Set the UI name
+     *
+     * @param string $ui
+     * @return void
+     */
+    public function setUI( $ui )
+    {
+        $this->ui = $ui;
+    }
+
+    /**
+     * Get the namespace name
+     *
+     * @return string
+     */
+    public function getNamespacing()
+    {
+        return $this->namespacing;
+    }
+
+    /**
+     * Set the namespace name
+     *
+     * @param string $namespace
+     * @return void
+     */
+    public function setNamespacing( $namespace )
+    {
+        $this->namespacing = $namespace;
+    }
+
+    /**
      * Get the package namespace
      *
      * @return string

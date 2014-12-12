@@ -24,6 +24,7 @@ return [
         'restore'             => 'El objeto no podía ser restaurada.',
         'purge'               => 'Los objetos no pueden ser purgados de la basura.',
         'recover'             => 'Los objetos no pueden ser recuperados de la basura.',
+        'truncate'            => 'Los objetos no pueden ser truncar.',
         'not_related'         => 'El objeto no tiene una :relationship relacionado.',
         'rate_limit_exceeded' => 'No tan rápido Handsome One! Su límite de velocidad se ha superado por lo que ha sido puesto en un tiempo de espera :timeout minutos.',
     ],
@@ -47,6 +48,7 @@ return [
         'restored'            => 'Objetos ha sido restaurado.',
         'purged'              => 'Objetos han sido purgados de basura.',
         'recovered'           => 'Objetos han sido recuperados de la basura.',
+        'truncated'           => 'Objetos has sido truncar.',
         'no_results'          => 'No hay ningún resultado para los objetos.',
         'rate_limit_exceeded' => 'Excede el Límite de Velocidad'
     ],

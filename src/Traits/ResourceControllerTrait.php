@@ -128,4 +128,19 @@ trait ResourceControllerTrait {
         return $this->delete($id);
     }
 
+    /**
+     * Truncates the resources from storage.
+     *
+     * @return \Illuminate\Routing\Redirector
+     */
+    public function truncate()
+    {
+        // Use the parent API to truncate the resources
+        $response = parent::truncate();
+
+        // Redirect back with message
+        return $this->back('truncated' )
+            ->with('message', $this->message('truncated') );
+    }
+
 }

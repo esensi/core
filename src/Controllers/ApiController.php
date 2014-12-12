@@ -164,6 +164,17 @@ class ApiController extends Controller implements
     }
 
     /**
+     * Truncate the resources in storage.
+     *
+     * @return boolean
+     */
+    public function truncate()
+    {
+        return $this->getRepository()
+            ->truncate();
+    }
+
+    /**
      * Retrieve the specified resource out of storage.
      *
      * @param integer $id of resource to retrieve

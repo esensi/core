@@ -29,6 +29,7 @@ return [
         'rate_limit_exceeded' => 'Not so fast El Guapo! Your rate limit has been exceeded so you\'ve been put into a :timeout minute timeout.',
     ],
 
+
     /*
     |--------------------------------------------------------------------------
     | Message lines
@@ -50,7 +51,14 @@ return [
         'truncated'           => 'Objects have been deleted.',
         'no_results'          => 'Search returned no results for objects.',
         'rate_limit_exceeded' => 'Rate Limit Exceeded',
+
+        'bulk' => [
+            'deleted'   => 'Selected objects have been deleted.',
+            'restored'  => 'Selected objects have been restored.',
+            'trashed'   => 'Selected objects have been trashed.',
+        ],
     ],
+
 
     /*
     |--------------------------------------------------------------------------

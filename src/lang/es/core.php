@@ -50,7 +50,13 @@ return [
         'recovered'           => 'Objetos han sido recuperados de la basura.',
         'truncated'           => 'Objetos has sido truncar.',
         'no_results'          => 'No hay ningún resultado para los objetos.',
-        'rate_limit_exceeded' => 'Excede el Límite de Velocidad'
+        'rate_limit_exceeded' => 'Excede el Límite de Velocidad',
+
+        'bulk' => [
+            'deleted'   => 'Se han suprimido los objetos seleccionados.',
+            'restored'  => 'Los objetos seleccionados se han restaurado.',
+            'trashed'   => 'Los objetos seleccionados se han colocado en la papelera.',
+        ],
     ],
 
 

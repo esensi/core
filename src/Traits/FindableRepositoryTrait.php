@@ -15,7 +15,7 @@ trait FindableRepositoryTrait{
      */
     public function all()
     {
-        return $this->index();
+        return $this->getModel()->all();
     }
 
     /**

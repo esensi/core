@@ -30,7 +30,7 @@ trait ModalControllerTrait{
     public function edit($id)
     {
         // Get the resource
-        $object = parent::show($id);
+        $object = $this->api()->show($id);
 
         // Get the form options
         $options = method_exists($this, 'formOptions') ? $this->formOptions($object) : [ $this->package => $object ];

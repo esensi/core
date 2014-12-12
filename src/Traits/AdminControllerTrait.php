@@ -1,16 +1,24 @@
 <?php namespace Esensi\Core\Traits;
 
+use \Esensi\Core\Traits\ApiAncestryControllerTrait;
 use \Esensi\Core\Traits\ConfirmableControllerTrait;
 use \Esensi\Core\Traits\RedirectingExceptionHandlerTrait;
 use \Esensi\Core\Traits\ResourceControllerTrait;
 use \Esensi\Core\Traits\SearchableControllerTrait;
 
 /**
- * Trait that encapsulates other admin related traits
+ * Trait that encapsulates other admin controller related traits
  *
  * @author daniel <daniel@bexarcreative.com>
  */
 trait AdminControllerTrait {
+
+    /**
+     * Allow access to the API ancestor
+     *
+     * @see \Esensi\Core\Traits\ApiAncestryControllerTrait
+     */
+    use ApiAncestryControllerTrait;
 
     /**
      * Make controller use confirmation modal

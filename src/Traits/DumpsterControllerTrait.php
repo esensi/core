@@ -30,7 +30,7 @@ trait DumpsterControllerTrait {
     public function trash($id)
     {
         // Use the parent API to trash the resource
-        $response = parent::trash($id);
+        $response = $this->api()->trash($id);
 
         // Redirect back with message
         return $this->back( 'trashed' )
@@ -46,7 +46,7 @@ trait DumpsterControllerTrait {
     public function restore($id)
     {
         // Use the parent API to restore the resource
-        $response = parent::restore($id);
+        $response = $this->api()->restore($id);
 
         // Redirect back with message
         return $this->back( 'restored' )
@@ -61,7 +61,7 @@ trait DumpsterControllerTrait {
     public function purge()
     {
         // Use the parent API to purge the resource
-        $response = parent::purge();
+        $response = $this->api()->purge();
 
         // Redirect back with message
         return $this->back( 'purged' )
@@ -76,7 +76,7 @@ trait DumpsterControllerTrait {
     public function recover()
     {
         // Use the parent API to recover the resource
-        $response = parent::recover();
+        $response = $this->api()->recover();
 
         // Redirect back with message
         return $this->back( 'recovered' )

@@ -47,7 +47,7 @@ trait BulkActionControllerTrait {
     public function bulkDelete($ids)
     {
         // Use the parent API to bulk delete the resources
-        $count = parent::bulkDelete($ids);
+        $count = $this->api()->bulkDelete($ids);
 
         // Redirect back with message
         return $this->back( 'bulk.deleted' )
@@ -63,7 +63,7 @@ trait BulkActionControllerTrait {
     public function bulkRestore($ids)
     {
         // Use the parent API to bulk restore the resources
-        $count = parent::bulkRestore($ids);
+        $count = $this->api()->bulkRestore($ids);
 
         // Redirect back with message
         return $this->back( 'bulk.restored' )
@@ -79,7 +79,7 @@ trait BulkActionControllerTrait {
     public function bulkTrash($ids)
     {
         // Use the parent API to bulk trash the resources
-        $count = parent::bulkTrash($ids);
+        $count = $this->api()->bulkTrash($ids);
 
         // Redirect back with message
         return $this->back( 'bulk.trashed' )

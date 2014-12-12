@@ -34,7 +34,7 @@ trait DumpsterAdminControllerTrait {
     public function show($id)
     {
         // Get the resource using the parent API
-        $object = parent::retrieve($id);
+        $object = $this->api()->retrieve($id);
 
         // Render show view
         $this->content( 'show', [ $this->package => $object ] );

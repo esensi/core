@@ -1,6 +1,7 @@
 <?php namespace Esensi\Core\Controllers;
 
 use \EsensiCoreApiController as Controller;
+use \Esensi\Core\Contracts\ApiAncestryControllerInterface;
 use \Esensi\Core\Contracts\ConfirmableControllerInterface;
 use \Esensi\Core\Contracts\DumpsterControllerInterface;
 use \Esensi\Core\Contracts\ExceptionHandlerInterface;
@@ -16,6 +17,7 @@ use \Esensi\Core\Traits\DumpsterAdminControllerTrait;
  * @see \Esensi\Core\Traits\RedirectingExceptionHandlerTrait
  */
 class AdminController extends Controller implements
+    ApiAncestryControllerInterface,
     ConfirmableControllerInterface,
     DumpsterControllerInterface,
     ExceptionHandlerInterface,

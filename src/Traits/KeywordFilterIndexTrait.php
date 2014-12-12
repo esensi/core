@@ -25,7 +25,7 @@ trait KeywordFilterIndexTrait {
 
         // Combine the options needed by the view
         $options = compact('orderOptions', 'sortOptions', 'maxOptions');
-        
+
         // Apply default filter fallbacks for missing inputs
         $inputs  = Input::all();
         $filters = $this->getRepository()->getFilters();
@@ -52,7 +52,7 @@ trait KeywordFilterIndexTrait {
     public function index()
     {
         // Get the paginator using the parent API
-        $paginator = parent::index();
+        $paginator = $this->api()->index();
 
         // Show collection as a paginated table
         $collection = $paginator->getCollection();

@@ -16,7 +16,7 @@ trait ResourceControllerTrait {
     public function index()
     {
         // Get the paginator using the parent API
-        $paginator = parent::index();
+        $paginator = $this->api()->index();
 
         // Show collection as a paginated table
         $collection = $paginator->getCollection();
@@ -45,7 +45,7 @@ trait ResourceControllerTrait {
     public function store()
     {
         // Use the parent API to save the resource
-        $object = parent::store();
+        $object = $this->api()->store();
 
         // Redirect back with message
         return $this->redirect('created', ['id' => $object->id])
@@ -61,7 +61,7 @@ trait ResourceControllerTrait {
     public function show($id)
     {
         // Get the resource using the parent API
-        $object = parent::show($id);
+        $object = $this->api()->show($id);
 
         // Render show view
         $this->content( 'show', [ $this->package => $object ] );
@@ -76,7 +76,7 @@ trait ResourceControllerTrait {
     public function edit($id)
     {
         // Get the resource
-        $object = parent::show($id);
+        $object = $this->api()->show($id);
 
         // Get the form options
         $options = method_exists($this, 'formOptions') ? $this->formOptions($object) : [ $this->package => $object ];
@@ -94,7 +94,7 @@ trait ResourceControllerTrait {
     public function update($id)
     {
         // Use the parent API to update the resource
-        $object = parent::update($id);
+        $object = $this->api()->update($id);
 
         // Redirect back with message
         return $this->redirect('updated', ['id' => $object->id])
@@ -110,7 +110,7 @@ trait ResourceControllerTrait {
     public function delete($id)
     {
         // Use the parent API to remove the resource
-        $response = parent::delete($id);
+        $response = $this->api()->delete($id);
 
         // Redirect back with message
         return $this->redirect( 'deleted' )
@@ -136,7 +136,7 @@ trait ResourceControllerTrait {
     public function truncate()
     {
         // Use the parent API to truncate the resources
-        $response = parent::truncate();
+        $response = $this->api()->truncate();
 
         // Redirect back with message
         return $this->back('truncated' )

@@ -36,13 +36,13 @@ trait ConfirmableControllerTrait {
             if( in_array($action, $this->trashableActions)
                 && method_exists($this->getRepository(), 'retrieve') )
             {
-                $object = parent::retrieve($id);
+                $object = $this->api()->retrieve($id);
             }
 
             // Get the resource from the parent API
             else
             {
-                $object = parent::show($id);
+                $object = $this->api()->show($id);
             }
 
             // Pass obkect under the singular package named variable to the view
@@ -127,7 +127,7 @@ trait ConfirmableControllerTrait {
         }
 
         // Fall back to parent handler
-        return parent::__call($method, $parameters);
+        return $this->api()->__call($method, $parameters);
     }
 
 }

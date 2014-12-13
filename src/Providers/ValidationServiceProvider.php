@@ -2,6 +2,7 @@
 
 use Esensi\Core\Validators\ComparisonValidator;
 use Esensi\Core\Validators\DateValidator;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Validation\Factory;
 use Illuminate\Validation\ValidationServiceProvider as ServiceProvider;
 
@@ -38,20 +39,12 @@ class ValidationServiceProvider extends ServiceProvider {
             }
 
             // Add less_than_other comparison validation rule
-            $validator->extend('less_than_other', 'Esensi\Core\Validators\ComparisonValidator@validateLessThanOther');
-            $validator->replacer('less_than_other', 'Esensi\Core\Validators\ComparisonValidator@replaceLessThanOther');
-
-            // Add greater_than_other comparison validation rule
-            $validator->extend('greater_than_other', 'Esensi\Core\Validators\ComparisonValidator@validateGreaterThanOther');
-            $validator->replacer('greater_than_other', 'Esensi\Core\Validators\ComparisonValidator@replaceGreaterThanOther');
-
-            // Add before_other date validation rule
-            $validator->extend('before_other', 'Esensi\Core\Validators\DateValidator@validateBeforeOther');
-            $validator->replacer('before_other', 'Esensi\Core\Validators\DateValidator@replaceBeforeOther');
-
-            // Add after_other date validation rule
-            $validator->extend('after_other', 'Esensi\Core\Validators\DateValidator@validateAfterOther');
-            $validator->replacer('after_other', 'Esensi\Core\Validators\DateValidator@replaceAfterOther');
+            $extensions = Config::get('esensi/core::validation.extensions', []);
+            foreach( $extensions as $extension => $class)
+            {
+                $validator->extend($extension, $class . '@validate' . ucfirst(studly_case($extension)));
+                $validator->replacer($extension, $class . '@replace' . ucfirst(studly_case($extension)));
+            }
 
             return $validator;
         });

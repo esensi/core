@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Config;
 /**
  * Service provider for Esensi\Core components package
  *
- * @author diego <diego@emersonmedia.com>
  * @package Esensi\Core
  * @author daniel <dalabarge@emersonmedia.com>
  * @copyright 2014 Emerson Media LP

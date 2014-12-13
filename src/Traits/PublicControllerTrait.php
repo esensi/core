@@ -1,6 +1,6 @@
 <?php namespace Esensi\Core\Traits;
 
-use \Esensi\Core\Traits\ApiAncestryControllerInterface;
+use \Esensi\Core\Traits\ApiAncestryControllerTrait;
 use \Esensi\Core\Traits\RedirectingExceptionHandlerTrait;
 
 /**
@@ -13,9 +13,9 @@ trait PublicControllerTrait {
     /**
      * Allow access to the API ancestor
      *
-     * @see \Esensi\Core\Traits\ApiAncestryControllerInterface
+     * @see \Esensi\Core\Traits\ApiAncestryControllerTrait
      */
-    use ApiAncestryControllerInterface;
+    use ApiAncestryControllerTrait;
 
     /**
      * Make exceptions return a redirect with flash exception errors

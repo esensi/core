@@ -1,27 +1,31 @@
 <?php namespace Esensi\Core\Traits;
 
-use \Esensi\Core\Repositories\Repository;
+use Esensi\Core\Repositories\Repository;
 
 /**
- * Trait implementation of repository injection interface
+ * Trait implementation of repository injection interface.
  *
- * @author daniel <daniel@bexarcreative.com>
- * @see \Esensi\Core\Contracts\RepositoryInjectedInterface
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
+ * @see Esensi\Core\Contracts\RepositoryInjectedInterface
  */
-trait RepositoryInjectedTrait{
+trait RepositoryInjectedTrait {
 
     /**
-     * Injected repositories
-     * 
+     * Injected repositories.
+     *
      * @var array of \Esensi\Core\Repository\Repository
      */
     protected $repositories = [];
 
     /**
-     * Get the specified repository by name
+     * Get the specified repository by name.
      *
      * @param string $name (optional) of repository
-     * @return \Esensi\Core\Repository\Repository
+     * @return Esensi\Core\Repository\Repository
      */
     public function getRepository( $name = null )
     {
@@ -30,7 +34,7 @@ trait RepositoryInjectedTrait{
     }
 
     /**
-     * Set the specified repository by name
+     * Set the specified repository by name.
      *
      * @param \Esensi\Core\Repository\Repository $repository
      * @param string $name (optional) of repository
@@ -41,4 +45,5 @@ trait RepositoryInjectedTrait{
         $name = is_null( $name ) ? $this->package : $name;
         $this->repositories[ $name ] = $repository;
     }
+
 }

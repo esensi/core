@@ -1,19 +1,23 @@
 <?php namespace Esensi\Core\Traits;
 
 /**
- * Trait implementation of blockable repository interface
+ * Trait implementation of blockable repository interface.
  *
- * @author daniel <daniel@bexarcreative.com>
- * @see \Esensi\Core\Contracts\BlockableRepositoryInterface
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
+ * @see Esensi\Core\Contracts\BlockableRepositoryInterface
  */
 trait BlockableRepositoryTrait {
 
     /**
-     * Set the blocked status to true for resource
+     * Set the blocked status to true for resource.
      *
      * @param integer $id of resource to block
-     * @throws \Esensi\Core\Exceptions\RepositoryException
-     * @return \Esensi\Core\Models\Model
+     * @throws Esensi\Core\Exceptions\RepositoryException
+     * @return Esensi\Core\Models\Model
      */
     public function block($id)
     {
@@ -45,11 +49,11 @@ trait BlockableRepositoryTrait {
     }
 
     /**
-     * Set the blocked status to false for resource
+     * Set the blocked status to false for resource.
      *
      * @param integer $id of resource to unblock
-     * @throws \Esensi\Core\Exceptions\RepositoryException
-     * @return \Esensi\Core\Models\Model
+     * @throws Esensi\Core\Exceptions\RepositoryException
+     * @return Esensi\Core\Models\Model
      */
     public function unblock($id)
     {

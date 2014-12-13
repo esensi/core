@@ -1,29 +1,33 @@
 <?php namespace Esensi\Core\Traits;
 
 /**
- * Trait implementation of filterable repository interface
+ * Trait implementation of filterable repository interface.
  *
- * @author daniel <daniel@bexarcreative.com>
- * @see \Esensi\Core\Contracts\FilterableRepositoryInterface
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
+ * @see Esensi\Core\Contracts\FilterableRepositoryInterface
  */
-trait FilterableRepositoryTrait{
+trait FilterableRepositoryTrait {
 
     /**
-     * The IDs to filter resource by
+     * The IDs to filter resource by.
      *
      * @var array
      */
     protected $ids = [];
 
     /**
-     * The keywords to filter resource by
+     * The keywords to filter resource by.
      *
      * @var array
      */
     protected $keywords = [];
 
     /**
-     * The filters
+     * The filters.
      *
      * @var array
      */
@@ -35,21 +39,21 @@ trait FilterableRepositoryTrait{
     ];
 
     /**
-     * Relationships to load on resource
+     * Relationships to load on resource.
      *
      * @var array
      */
     protected $relationships = [];
 
     /**
-     * Scope closures to to filter resource by
+     * Scope closures to to filter resource by.
      *
      * @var array
      */
     protected $scopes = [];
 
     /**
-     * Search the resource using filters
+     * Search the resource using filters.
      *
      * @param object $query builder
      * @return void
@@ -93,7 +97,7 @@ trait FilterableRepositoryTrait{
     }
 
     /**
-     * Filter query with relationships
+     * Filter query with relationships.
      *
      * @param object $query builder
      * @return void
@@ -107,7 +111,7 @@ trait FilterableRepositoryTrait{
     }
 
     /**
-     * Filter query for trashed resources
+     * Filter query for trashed resources.
      *
      * @param object $query builder
      * @return void
@@ -138,7 +142,7 @@ trait FilterableRepositoryTrait{
     }
 
     /**
-     * Filter resources by IDs
+     * Filter resources by IDs.
      *
      * @param object $query builder
      * @return void
@@ -164,7 +168,7 @@ trait FilterableRepositoryTrait{
     }
 
     /**
-     * Filter resources by keywords
+     * Filter resources by keywords.
      *
      * @param object $query builder
      * @return void
@@ -199,7 +203,7 @@ trait FilterableRepositoryTrait{
     }
 
     /**
-     * Filter resources by scope closures
+     * Filter resources by scope closures.
      *
      * @param object $query builder
      * @return void
@@ -217,7 +221,7 @@ trait FilterableRepositoryTrait{
     }
 
     /**
-     * Add a scope filter
+     * Add a scope filter.
      *
      * @param string $name of scope closure
      * @param mixed $args to pass to closure
@@ -250,7 +254,7 @@ trait FilterableRepositoryTrait{
     }
 
     /**
-     * Add a boolean scope filter
+     * Add a boolean scope filter.
      *
      * @param string $name of scope closure
      * @param boolean $value to pass to closure
@@ -266,7 +270,7 @@ trait FilterableRepositoryTrait{
     }
 
     /**
-     * Get the filters
+     * Get the filters.
      *
      * @return array
      */
@@ -276,7 +280,7 @@ trait FilterableRepositoryTrait{
     }
 
     /**
-     * Set the filters
+     * Set the filters.
      *
      * @param array $filters
      * @return void
@@ -288,7 +292,7 @@ trait FilterableRepositoryTrait{
     }
 
     /**
-     * Merge the existing filters with new filters
+     * Merge the existing filters with new filters.
      *
      * @param array $filters
      * @return void
@@ -301,7 +305,7 @@ trait FilterableRepositoryTrait{
 
 
     /**
-     * Bind the filters as properties
+     * Bind the filters as properties.
      *
      * @return void
      */

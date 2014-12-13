@@ -3,14 +3,18 @@
 /**
  * Findable Repository Interface
  *
- * @author daniel <daniel@bexarcreative.com>
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
  */
 interface FindableRepositoryInterface{
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Pagination\Paginator
+     * @return Illuminate\Pagination\Paginator
      */
     public function all();
 
@@ -18,7 +22,7 @@ interface FindableRepositoryInterface{
      * Display the specified resource.
      *
      * @param integer $id of resource
-     * @return \Esensi\Core\Models\Model
+     * @return Esensi\Core\Models\Model
      */
     public function find($id);
 
@@ -26,7 +30,7 @@ interface FindableRepositoryInterface{
      * Retrieve the specified resource from trash.
      *
      * @param integer $id of resource
-     * @return \Esensi\Core\Models\Model
+     * @return Esensi\Core\Models\Model
      */
     public function findInTrash($id);
 
@@ -35,8 +39,8 @@ interface FindableRepositoryInterface{
      *
      * @param string $attribute to find by
      * @param string $value to match attribute against
-     * @throws \Esensi\Core\Exceptions\RepositoryException
-     * @return \Esensi\Core\Models\Model
+     * @throws Esensi\Core\Exceptions\RepositoryException
+     * @return Esensi\Core\Models\Model
      */
     public function findBy($attribute, $value);
 
@@ -46,7 +50,7 @@ interface FindableRepositoryInterface{
      * @param string $attribute to find by
      * @param array $values to match attribute against
      * @param boolean $inTrash (optional)
-     * @throws \Esensi\Core\Exceptions\RepositoryException
+     * @throws Esensi\Core\Exceptions\RepositoryException
      * @return array
      */
     public function findIn($attribute, array $values = [], $inTrash = false);
@@ -56,7 +60,7 @@ interface FindableRepositoryInterface{
      *
      * @param integer $id of resource
      * @param array $relationship to load on resource
-     * @return \Esensi\Core\Models\Model
+     * @return Esensi\Core\Models\Model
      */
     public function findWithRelated($id, array $relationship);
 

@@ -1,17 +1,21 @@
 <?php namespace Esensi\Core\Traits;
 
 /**
- * Trait implementation of a findable repository interface
+ * Trait implementation of a findable repository interface.
  *
- * @author daniel <daniel@bexarcreative.com>
- * @see \Esensi\Core\Contracts\FindableRepositoryInterface
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
+ * @see Esensi\Core\Contracts\FindableRepositoryInterface
  */
-trait FindableRepositoryTrait{
+trait FindableRepositoryTrait {
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Pagination\Paginator
+     * @return Illuminate\Pagination\Paginator
      */
     public function all()
     {
@@ -22,7 +26,7 @@ trait FindableRepositoryTrait{
      * Display the specified resource.
      *
      * @param integer $id of resource
-     * @return \Esensi\Core\Models\Model
+     * @return Esensi\Core\Models\Model
      */
     public function find($id)
     {
@@ -33,7 +37,7 @@ trait FindableRepositoryTrait{
      * Retrieve the specified resource from trash.
      *
      * @param integer $id of resource
-     * @return \Esensi\Core\Models\Model
+     * @return Esensi\Core\Models\Model
      */
     public function findInTrash($id)
     {
@@ -45,8 +49,8 @@ trait FindableRepositoryTrait{
      *
      * @param string $attribute to find by
      * @param string $value to match attribute against
-     * @throws \Esensi\Core\Exceptions\RepositoryException
-     * @return \Esensi\Core\Models\Model
+     * @throws Esensi\Core\Exceptions\RepositoryException
+     * @return Esensi\Core\Models\Model
      */
     public function findBy($attribute, $value)
     {
@@ -72,7 +76,7 @@ trait FindableRepositoryTrait{
      * @param string $attribute to find by
      * @param array $values to match attribute against
      * @param boolean $inTrash (optional)
-     * @throws \Esensi\Core\Exceptions\RepositoryException
+     * @throws Esensi\Core\Exceptions\RepositoryException
      * @return array
      */
     public function findIn($attribute, array $values = [], $inTrash = false)
@@ -105,7 +109,7 @@ trait FindableRepositoryTrait{
      *
      * @param integer $id of resource
      * @param array $relationship to load on resource
-     * @return \Esensi\Core\Models\Model
+     * @return Esensi\Core\Models\Model
      */
     public function findWithRelated($id, array $relationship)
     {

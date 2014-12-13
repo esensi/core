@@ -3,7 +3,11 @@
 /**
  * Packaged interface
  *
- * @author daniel <daniel@bexarcreative.com>
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
  */
 interface PackagedInterface{
 
@@ -58,7 +62,7 @@ interface PackagedInterface{
      * @param string $key to view config
      * @param array $data (optional) to be passed to view
      * @param string $name (optional) of content
-     * @return \Illuminate\View\View
+     * @return Illuminate\View\View
      */
     function content($key, array $data = [], $name = null);
 
@@ -68,7 +72,7 @@ interface PackagedInterface{
      * @param string $key to view config
      * @param array $data to be passed to view
      * @param string $name (optional) of content
-     * @return \Illuminate\View\View
+     * @return Illuminate\View\View
      */
     function modal($key, array $data = [], $name = null);
 
@@ -140,7 +144,7 @@ interface PackagedInterface{
      *
      * @param string $key to route config
      * @param array $params (optional) to construct route
-     * @return \Illuminate\Routing\Redirector
+     * @return Illuminate\Routing\Redirector
      */
     function redirect($key, array $params = []);
 
@@ -149,7 +153,7 @@ interface PackagedInterface{
      *
      * @param string $key to route config
      * @param array $params (optional) to construct route
-     * @return \Illuminate\Routing\Redirector
+     * @return Illuminate\Routing\Redirector
      */
     function back($key, array $params = []);
 

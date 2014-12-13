@@ -3,7 +3,11 @@
 /**
  * Filterable repository interface
  *
- * @author daniel <daniel@bexarcreative.com>
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
  */
 interface FilterableRepositoryInterface{
 

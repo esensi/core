@@ -1,11 +1,15 @@
 <?php namespace Esensi\Core\Traits;
 
 /**
- * Trait for displaying forms in modals
+ * Trait for displaying forms in modals.
  *
- * @author daniel <daniel@bexarcreative.com>
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
  */
-trait ModalControllerTrait{
+trait ModalControllerTrait {
 
     /**
      * Display a create form for the specified resource.

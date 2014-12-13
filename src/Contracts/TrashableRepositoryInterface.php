@@ -3,7 +3,11 @@
 /**
  * Trashable repository interface
  *
- * @author daniel <daniel@bexarcreative.com>
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
  */
 interface TrashableRepositoryInterface{
 
@@ -11,8 +15,8 @@ interface TrashableRepositoryInterface{
      * Read the specified resource from storage even if trashed.
      *
      * @param integer $id of resource
-     * @throws \Esensi\Core\Exceptions\RepositoryException
-     * @return \Esensi\Core\Models\Model
+     * @throws Esensi\Core\Exceptions\RepositoryException
+     * @return Esensi\Core\Models\Model
      */
     public function retrieve($id);
 
@@ -20,7 +24,7 @@ interface TrashableRepositoryInterface{
      * Hide the specified resource in storage.
      *
      * @param integer $id of resource to trash
-     * @throws \Esensi\Core\Exceptions\RepositoryException
+     * @throws Esensi\Core\Exceptions\RepositoryException
      * @return boolean
      */
     public function trash($id);
@@ -29,7 +33,7 @@ interface TrashableRepositoryInterface{
      * Restore the specified resource to storage.
      *
      * @param integer $id of resource to recover
-     * @throws \Esensi\Core\Exceptions\RepositoryException
+     * @throws Esensi\Core\Exceptions\RepositoryException
      * @return boolean
      */
     public function restore($id);
@@ -37,7 +41,7 @@ interface TrashableRepositoryInterface{
     /**
      * Remove all trashed resources from storage.
      *
-     * @throws \Esensi\Core\Exceptions\RepositoryException
+     * @throws Esensi\Core\Exceptions\RepositoryException
      * @return boolean
      */
     public function purge();
@@ -45,7 +49,7 @@ interface TrashableRepositoryInterface{
     /**
      * Restore all trashed resources from storage.
      *
-     * @throws \Esensi\Core\Exceptions\RepositoryException
+     * @throws Esensi\Core\Exceptions\RepositoryException
      * @return boolean
      */
     public function recover();

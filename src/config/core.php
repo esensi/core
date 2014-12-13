@@ -28,18 +28,18 @@ return [
     */
 
     'aliases' => [
-        'EsensiModel'                   => '\Esensi\Core\Models\Model',
-        'EsensiCollection'              => '\Esensi\Core\Models\Collection',
-        'EsensiCoreRepository'          => '\Esensi\Core\Repositories\Repository',
-        'EsensiCoreRepositoryException' => '\Esensi\Core\Exceptions\RepositoryException',
-        'EsensiCoreTrashableRepository' => '\Esensi\Core\Repositories\TrashableRepository',
-        'EsensiCorePublicController'    => '\Esensi\Core\Controllers\PublicController',
-        'EsensiCoreApiController'       => '\Esensi\Core\Controllers\ApiController',
-        'EsensiCoreAdminController'     => '\Esensi\Core\Controllers\AdminController',
-        'EsensiCoreSeeder'              => '\Esensi\Core\Seeders\Seeder',
-        'EsensiCorePackageProvider'     => '\Esensi\Core\Providers\PackageServiceProvider',
-        'EsensiCoreRateLimiter'         => '\Esensi\Core\Middlewares\RateLimiter',
-        'EsensiCoreRateLimiterProvider' => '\Esensi\Core\Providers\RateLimiterServiceProvider',
+        'EsensiModel'                   => 'Esensi\Core\Models\Model',
+        'EsensiCollection'              => 'Esensi\Core\Models\Collection',
+        'EsensiCoreRepository'          => 'Esensi\Core\Repositories\Repository',
+        'EsensiCoreRepositoryException' => 'Esensi\Core\Exceptions\RepositoryException',
+        'EsensiCoreTrashableRepository' => 'Esensi\Core\Repositories\TrashableRepository',
+        'EsensiCorePublicController'    => 'Esensi\Core\Controllers\PublicController',
+        'EsensiCoreApiController'       => 'Esensi\Core\Controllers\ApiController',
+        'EsensiCoreAdminController'     => 'Esensi\Core\Controllers\AdminController',
+        'EsensiCoreSeeder'              => 'Esensi\Core\Seeders\Seeder',
+        'EsensiCorePackageProvider'     => 'Esensi\Core\Providers\PackageServiceProvider',
+        'EsensiCoreRateLimiter'         => 'Esensi\Core\Middlewares\RateLimiter',
+        'EsensiCoreRateLimiterProvider' => 'Esensi\Core\Providers\RateLimiterServiceProvider',
     ],
 
     /*

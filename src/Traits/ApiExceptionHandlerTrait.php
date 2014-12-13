@@ -1,19 +1,23 @@
 <?php namespace Esensi\Core\Traits;
 
-use \EsensiCoreRepositoryException as RepositoryException;
-use \Illuminate\Support\Facades\Response;
-use \Illuminate\Support\Facades\Input;
+use EsensiCoreRepositoryException as RepositoryException;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Response;
 
 /**
  * Trait that handles redirects for API controllers
  *
- * @author daniel <daniel@bexarcreative.com>
- * @see \Esensi\Core\Contracts\ExceptionHandlerInterface
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
+ * @see Esensi\Core\Contracts\ExceptionHandlerInterface
  */
-trait ApiExceptionHandlerTrait{
+trait ApiExceptionHandlerTrait {
 
     /**
-     * Handles exceptions for API output
+     * Handles exceptions for API output.
      *
      * @param RepositoryException $exception
      * @return array

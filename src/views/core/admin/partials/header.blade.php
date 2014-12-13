@@ -13,21 +13,22 @@
     @styles('admin')
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-      <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-      <![endif]-->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
   </head>
   <body class="admin {{ str_replace('.', '-', Route::currentRouteName()) }}">
     <!--[if lt IE 9]>
-    <div class="alert alert-info">
-      <strong>Heads up!</strong> You're using an older web browser, so some parts of this site may not work properly.
-      You might want to try to <a href="http://whatbrowser.org/" class="alert-link">upgrade your browser</a>.
-      You'll find that many websites work and look better, and you'll be safer online!
-    </div>
+      <div class="alert alert-info">
+        <strong>Heads up!</strong> You're using an older web browser, so some parts of this site may not work properly.
+        You might want to try to <a href="http://whatbrowser.org/" class="alert-link">upgrade your browser</a>.
+        You'll find that many websites work and look better, and you'll be safer online!
+      </div>
     <![endif]-->
 
     @if (Auth::check())
+
       <div class="sidebar navmenu navmenu-default navmenu-fixed-left offcanvas-sm">
 
         <a class="sidebar-logo navbar-brand" href="{{ route('admin.dashboard') }}">
@@ -46,7 +47,6 @@
               @include(Config::get($package.'.dropdown.admin'))
             @endif
           @endforeach
-
         </ul>
 
         @if(Config::get('esensi/core::core.attribution.enable', true))

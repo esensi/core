@@ -1,25 +1,27 @@
 <?php namespace Esensi\Core\Controllers;
 
-use \EsensiCoreApiController as Controller;
-use \Esensi\Core\Contracts\ApiAncestryControllerInterface;
-use \Esensi\Core\Contracts\ConfirmableControllerInterface;
-use \Esensi\Core\Contracts\DumpsterControllerInterface;
-use \Esensi\Core\Contracts\ExceptionHandlerInterface;
-use \Esensi\Core\Contracts\ResourceControllerInterface;
-use \Esensi\Core\Contracts\SearchableControllerInterface;
-use \Esensi\Core\Traits\DumpsterAdminControllerTrait;
+use Esensi\Core\Contracts\ApiAncestryControllerInterface;
+use Esensi\Core\Contracts\ConfirmableControllerInterface;
+use Esensi\Core\Contracts\ExceptionHandlerInterface;
+use Esensi\Core\Contracts\ResourceControllerInterface;
+use Esensi\Core\Contracts\SearchableControllerInterface;
+use Esensi\Core\Traits\AdminControllerTrait;
+use EsensiCoreApiController as ApiController;
 
 /**
- * Admin controller for administrative GUIs
+ * Admin controller for administrative UIs
  *
- * @author daniel <daniel@bexarcreative.com>
- * @see \Esensi\Core\Controllers\ApiController
- * @see \Esensi\Core\Traits\RedirectingExceptionHandlerTrait
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
+ * @see Esensi\Core\Controllers\ApiController
+ * @see Esensi\Core\Traits\AdminControllerTrait
  */
-class AdminController extends Controller implements
+class AdminController extends ApiController implements
     ApiAncestryControllerInterface,
     ConfirmableControllerInterface,
-    DumpsterControllerInterface,
     ExceptionHandlerInterface,
     ResourceControllerInterface,
     SearchableControllerInterface {
@@ -27,9 +29,9 @@ class AdminController extends Controller implements
     /**
      * Make controller use the administrative traits
      *
-     * @see \Esensi\Core\Traits\DumpsterAdminControllerTrait
+     * @see Esensi\Core\Traits\AdminControllerTrait
      */
-    use DumpsterAdminControllerTrait;
+    use AdminControllerTrait;
 
     /**
      * The layout that should be used for responses.

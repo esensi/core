@@ -1,17 +1,21 @@
 <?php namespace Esensi\Core\Traits;
 
-use \Illuminate\Support\Facades\App;
-use \Illuminate\Support\NamespacedItemResolver as Resolver;
-use \InvalidArgumentException;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\NamespacedItemResolver as Resolver;
+use InvalidArgumentException;
 
 /**
  * Traits for helping with package configurations
  *
- * @author daniel <daniel@bexarcreative.com>
- * @author diego <diego@emersonmedia.com>
- * @see \Esensi\Core\Contracts\PackagedInterface
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @author diego <dieog@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
+ * @see Esensi\Core\Contracts\PackagedInterface
  */
-trait PackagedTrait{
+trait PackagedTrait {
 
     /**
      * The namespace that should be used by the package.
@@ -21,14 +25,14 @@ trait PackagedTrait{
     protected $namespacing = 'esensi/core';
 
     /**
-     * The package name
+     * The package name.
      *
      * @var string
      */
     protected $package = 'core';
 
     /**
-     * The UI name
+     * The UI name.
      *
      * @var string
      */
@@ -50,7 +54,7 @@ trait PackagedTrait{
     }
 
     /**
-     * Get the package name
+     * Get the package name.
      *
      * @return string
      */
@@ -60,7 +64,7 @@ trait PackagedTrait{
     }
 
     /**
-     * Set the package name
+     * Set the package name.
      *
      * @param string $package
      * @return void
@@ -71,7 +75,7 @@ trait PackagedTrait{
     }
 
     /**
-     * Get the UI name
+     * Get the UI name.
      *
      * @return string
      */
@@ -81,7 +85,7 @@ trait PackagedTrait{
     }
 
     /**
-     * Set the UI name
+     * Set the UI name.
      *
      * @param string $ui
      * @return void
@@ -92,7 +96,7 @@ trait PackagedTrait{
     }
 
     /**
-     * Get the namespace name
+     * Get the namespace name.
      *
      * @return string
      */
@@ -102,7 +106,7 @@ trait PackagedTrait{
     }
 
     /**
-     * Set the namespace name
+     * Set the namespace name.
      *
      * @param string $namespace
      * @return void
@@ -113,7 +117,7 @@ trait PackagedTrait{
     }
 
     /**
-     * Get the package namespace
+     * Get the package namespace.
      *
      * @return string
      */
@@ -123,9 +127,9 @@ trait PackagedTrait{
     }
 
     /**
-     * Resolve a namespaced line
+     * Resolve a namespaced line.
      *
-     * @param \Illuminate\Support\NamespacedItemResolver $resolver
+     * @param Illuminate\Support\NamespacedItemResolver $resolver
      * @param string $key to config line
      * @param mixed $arguments (optional)
      * @return string
@@ -158,13 +162,13 @@ trait PackagedTrait{
     }
 
     /**
-     * Generate a subview for the layout
+     * Generate a subview for the layout.
      *
      * @param string $key to view config
      * @param array $data (optional) to be passed to view
      * @param string $name (optional) of content
-     * @return \Illuminate\View\View
-     * @throws \InvalidArgumentException
+     * @return Illuminate\View\View
+     * @throws InvalidArgumentException
      */
     protected function content($key, array $data = [], $name = null)
     {
@@ -187,12 +191,12 @@ trait PackagedTrait{
     }
 
     /**
-     * Generate a modal view
+     * Generate a modal view.
      *
      * @param string $key to view config
      * @param array $data to be passed to view
      * @param string $name (optional) of content
-     * @return \Illuminate\View\View
+     * @return Illuminate\View\View
      */
     protected function modal($key, array $data = [], $name = null)
     {
@@ -212,7 +216,7 @@ trait PackagedTrait{
     }
 
     /**
-     * Get a configuration line
+     * Get a configuration line.
      *
      * @param string $key to config line
      * @param mixed $default (optional)
@@ -224,7 +228,7 @@ trait PackagedTrait{
     }
 
     /**
-     * Get a TTL configuration line
+     * Get a TTL configuration line.
      *
      * @param string $key to config line
      * @param mixed $default (optional)
@@ -236,7 +240,7 @@ trait PackagedTrait{
     }
 
     /**
-     * Get a language line
+     * Get a language line.
      *
      * @param string $key to language config line
      * @param array $replacements (optional) in language line
@@ -248,7 +252,7 @@ trait PackagedTrait{
     }
 
     /**
-     * Get an error language line
+     * Get an error language line.
      *
      * @param string $key to language config line
      * @param array $replacements (optional) in language line
@@ -260,7 +264,7 @@ trait PackagedTrait{
     }
 
     /**
-     * Get a message language line
+     * Get a message language line.
      *
      * @param string $key to language config line
      * @param array $replacements (optional) in language line
@@ -272,7 +276,7 @@ trait PackagedTrait{
     }
 
     /**
-     * Get an option language line
+     * Get an option language line.
      *
      * @param string $key to language config line
      * @param array $replacements (optional) in language line
@@ -284,7 +288,7 @@ trait PackagedTrait{
     }
 
     /**
-     * Get a subject language line
+     * Get a subject language line.
      *
      * @param string $key to language config line
      * @param array $replacements (optional) in language line
@@ -296,11 +300,11 @@ trait PackagedTrait{
     }
 
     /**
-     * Generate a redirect
+     * Generate a redirect.
      *
      * @param string $key to route config
      * @param array $params (optional) to construct route
-     * @return \Illuminate\Routing\Redirector
+     * @return Illuminate\Routing\Redirector
      */
     protected function redirect($key, array $params = [])
     {
@@ -310,11 +314,11 @@ trait PackagedTrait{
     }
 
     /**
-     * Generate a redirect back
+     * Generate a redirect back.
      *
      * @param string $key to route config
      * @param array $params (optional) to construct route
-     * @return \Illuminate\Routing\Redirector
+     * @return Illuminate\Routing\Redirector
      */
     protected function back($key, array $params = [])
     {

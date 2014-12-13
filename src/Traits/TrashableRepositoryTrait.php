@@ -1,19 +1,24 @@
 <?php namespace Esensi\Core\Traits;
 
 /**
- * Trait implementation of trashable repository interface
+ * Trait implementation of trashable repository interface.
  *
- * @author daniel <daniel@bexarcreative.com>
- * @see \Esensi\Core\Contracts\TrashableRepositoryInterface
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @author diego <dieog@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
+ * @see Esensi\Core\Contracts\TrashableRepositoryInterface
  */
-trait TrashableRepositoryTrait{
+trait TrashableRepositoryTrait {
 
     /**
      * Read the specified resource from storage even if trashed.
      *
      * @param integer $id of resource
-     * @throws \Esensi\Core\Exceptions\RepositoryException
-     * @return \Esensi\Core\Models\Model
+     * @throws Esensi\Core\Exceptions\RepositoryException
+     * @return Esensi\Core\Models\Model
      */
     public function retrieve($id)
     {
@@ -36,7 +41,7 @@ trait TrashableRepositoryTrait{
      * Hide the specified resource in storage.
      *
      * @param integer $id of resource to trash
-     * @throws \Esensi\Core\Exceptions\RepositoryException
+     * @throws Esensi\Core\Exceptions\RepositoryException
      * @return boolean
      */
     public function trash($id)
@@ -68,7 +73,7 @@ trait TrashableRepositoryTrait{
      *
      * @todo make restoration rules be part of validation
      * @param integer $id of resource to recover
-     * @throws \Esensi\Core\Exceptions\RepositoryException
+     * @throws Esensi\Core\Exceptions\RepositoryException
      * @return boolean
      */
     public function restore($id)
@@ -97,7 +102,7 @@ trait TrashableRepositoryTrait{
     /**
      * Remove all trashed resources from storage.
      *
-     * @throws \Esensi\Core\Exceptions\RepositoryException
+     * @throws Esensi\Core\Exceptions\RepositoryException
      * @return boolean
      */
     public function purge()
@@ -125,7 +130,7 @@ trait TrashableRepositoryTrait{
     /**
      * Restore all trashed resources from storage.
      *
-     * @throws \Esensi\Core\Exceptions\RepositoryException
+     * @throws Esensi\Core\Exceptions\RepositoryException
      * @return boolean
      */
     public function recover()

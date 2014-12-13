@@ -1,14 +1,18 @@
 <?php namespace Esensi\Core\Providers;
 
-use \Illuminate\Validation\ValidationServiceProvider as ServiceProvider;
-use \Illuminate\Validation\Factory;
-use \Esensi\Core\Validators\ComparisonValidator;
-use \Esensi\Core\Validators\DateValidator;
+use Esensi\Core\Validators\ComparisonValidator;
+use Esensi\Core\Validators\DateValidator;
+use Illuminate\Validation\Factory;
+use Illuminate\Validation\ValidationServiceProvider as ServiceProvider;
 
 /**
  * Service provider for custom validator.
  *
- * @author Daniel LaBarge <dalabarge@emersonmedia.com>
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
  */
 class ValidationServiceProvider extends ServiceProvider {
 

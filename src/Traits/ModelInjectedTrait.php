@@ -1,27 +1,27 @@
 <?php namespace Esensi\Core\Traits;
 
-use \Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
 /**
- * Trait implementation of model injection interface
+ * Trait implementation of model injection interface.
  *
  * @author daniel <daniel@bexarcreative.com>
- * @see \Esensi\Core\Contracts\ModelInjectedInterface
+ * @see Esensi\Core\Contracts\ModelInjectedInterface
  */
-trait ModelInjectedTrait{
+trait ModelInjectedTrait {
 
     /**
-     * Injected models
-     * 
+     * Injected models.
+     *
      * @var array of \Esensi\Core\Models\Model
      */
     protected $models = [];
 
     /**
-     * Get the specified model by name
+     * Get the specified model by name.
      *
      * @param string $name (optional) of model
-     * @return \Esensi\Core\Models\Model
+     * @return Esensi\Core\Models\Model
      */
     public function getModel( $name = null )
     {
@@ -30,7 +30,7 @@ trait ModelInjectedTrait{
     }
 
     /**
-     * Set the specified model by name
+     * Set the specified model by name/
      *
      * @param \Esensi\Core\Models\Model $model
      * @param string $name (optional) of model
@@ -41,4 +41,5 @@ trait ModelInjectedTrait{
         $name = is_null( $name ) ? $this->package : $name;
         $this->models[ $name ] = $model;
     }
+
 }

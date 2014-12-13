@@ -1,11 +1,15 @@
 <?php namespace Esensi\Core\Traits;
 
-use \InvalidArgumentException;
+use InvalidArgumentException;
 
 /**
  * Trait that implements Validator helpers.
  *
- * @author daniel <daniel@bexarcreative.com>
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
  */
 trait ValidatorTrait {
 
@@ -16,7 +20,7 @@ trait ValidatorTrait {
      * @param  array   $data
      * @param  array   $files
      * @return mixed
-     * @see \Illuminate\Validation\Validator
+     * @see Illuminate\Validation\Validator
      */
     protected function getValue($attribute, array $data = [], array $files = [])
     {
@@ -37,8 +41,8 @@ trait ValidatorTrait {
      * @param  array  $parameters
      * @param  string  $rule
      * @return void
-     * @throws \InvalidArgumentException
-     * @see \Illuminate\Validation\Validator
+     * @throws InvalidArgumentException
+     * @see Illuminate\Validation\Validator
      */
     protected function requireParameterCount($count, $parameters, $rule)
     {

@@ -1,15 +1,19 @@
 <?php namespace Esensi\Core;
 
-use \Esensi\Core\Providers\PackageServiceProvider;
-use \Illuminate\Pagination\Paginator;
-use \Illuminate\Support\Facades\HTML;
-use \Illuminate\Support\Facades\Config;
+use Esensi\Core\Providers\PackageServiceProvider;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\HTML;
+use Illuminate\Support\Facades\Config;
 
 /**
  * Service provider for Esensi\Core components package
  *
  * @author diego <diego@emersonmedia.com>
- * @author daniel <daniel@bexarcreative.com>
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
  */
 class CoreServiceProvider extends PackageServiceProvider {
 

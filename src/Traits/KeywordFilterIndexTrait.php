@@ -1,12 +1,16 @@
 <?php namespace Esensi\Core\Traits;
 
-use \Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Input;
 
 /**
  * Index method with filter options passed to the view.
  *
- * @author Daniel LaBarge <dalabarge@emersonmedia.com>
- * @see \Esensi\Core\Traits\ResourceControllerTrait
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
+ * @see Esensi\Core\Traits\ResourceControllerTrait
  */
 trait KeywordFilterIndexTrait {
 

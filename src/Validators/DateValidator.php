@@ -1,14 +1,18 @@
 <?php namespace Esensi\Core\Validators;
 
-use \Carbon\Carbon;
-use \Esensi\Core\Traits\ValidatorTrait;
-use \Illuminate\Validation\Validator;
-use \InvalidArgumentException;
+use Carbon\Carbon;
+use Esensi\Core\Traits\ValidatorTrait;
+use Illuminate\Validation\Validator;
+use InvalidArgumentException;
 
 /**
  * Validation handlers for comparing dates against other attributes.
  *
- * @author Daniel LaBarge <daniel@bexarcreative.com>
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
  * @link http://www.neontsunami.com/post/greater-than-and-less-than-validation-in-laravel-4
  * @link http://daylerees.com/codebright/validation
  */
@@ -17,7 +21,7 @@ class DateValidator {
     /**
      * Make this class behave like a Validator.
      *
-     * @see \Esensi\Core\Traits\ValidatorTrait
+     * @see Esensi\Core\Traits\ValidatorTrait
      */
     use ValidatorTrait;
 
@@ -27,7 +31,7 @@ class DateValidator {
      * @param string $attribute
      * @param  mixed $value
      * @param  array $parameters
-     * @param  \Illuminate\Validation\Validator $validator
+     * @param  Illuminate\Validation\Validator $validator
      * @return boolean
      */
     public function validateBeforeOther($attribute, $value, $parameters, Validator $validator)
@@ -67,7 +71,7 @@ class DateValidator {
      * @param string $attribute
      * @param  mixed $value
      * @param  array $parameters
-     * @param  \Illuminate\Validation\Validator $validator
+     * @param  Illuminate\Validation\Validator $validator
      * @return boolean
      */
     public function validateAfterOther($attribute, $value, $parameters, Validator $validator)

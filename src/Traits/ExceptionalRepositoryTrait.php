@@ -1,24 +1,28 @@
 <?php namespace Esensi\Core\Traits;
 
-use \Exception;
+use Exception;
 
 /**
- * Trait that permits the repository to throw a custom exception
+ * Trait that permits the repository to throw a custom exception.
  *
- * @author daniel <daniel@bexarcreative.com>
- * @see \Esensi\Core\Contracts\ExceptionalRepositoryInterface
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
+ * @see Esensi\Core\Contracts\ExceptionalRepositoryInterface
  */
-trait ExceptionalRepositoryTrait{
+trait ExceptionalRepositoryTrait {
 
     /**
-     * The exception to be thrown
+     * The exception to be thrown.
      *
      * @var \Esensi\Core\Exceptions\RepositoryException
      */
     protected $exception = '\EsensiCoreRepositoryException';
 
     /**
-     * Throw an exception for this repository
+     * Throw an exception for this repository.
      *
      * @param mixed $bag
      * @param string $message

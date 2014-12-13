@@ -1,10 +1,14 @@
 <?php namespace Esensi\Core\Traits;
 
 /**
- * Trait implementation of resource controller interface
+ * Trait implementation of resource controller interface.
  *
- * @author daniel <daniel@bexarcreative.com>
- * @see \Esensi\Core\Contracts\ResourceControllerInterface
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
+ * @see Esensi\Core\Contracts\ResourceControllerInterface
  */
 trait ResourceControllerTrait {
 
@@ -40,7 +44,7 @@ trait ResourceControllerTrait {
     /**
      * Store a newly created resource in storage.
      *
-     * @return \Illuminate\Routing\Redirector
+     * @return Illuminate\Routing\Redirector
      */
     public function store()
     {
@@ -89,7 +93,7 @@ trait ResourceControllerTrait {
      * Update the specified resource in storage.
      *
      * @param integer $id of resource to update
-     * @return \Illuminate\Routing\Redirector
+     * @return Illuminate\Routing\Redirector
      */
     public function update($id)
     {
@@ -105,7 +109,7 @@ trait ResourceControllerTrait {
      * Remove the specified resource from storage.
      *
      * @param integer $id of resource to remove
-     * @return \Illuminate\Routing\Redirector
+     * @return Illuminate\Routing\Redirector
      */
     public function delete($id)
     {
@@ -121,7 +125,7 @@ trait ResourceControllerTrait {
      * Alias for delete method
      *
      * @param integer $id of resource to remove
-     * @return \Illuminate\Routing\Redirector
+     * @return Illuminate\Routing\Redirector
      */
     public function destroy($id)
     {
@@ -131,7 +135,7 @@ trait ResourceControllerTrait {
     /**
      * Truncates the resources from storage.
      *
-     * @return \Illuminate\Routing\Redirector
+     * @return Illuminate\Routing\Redirector
      */
     public function truncate()
     {

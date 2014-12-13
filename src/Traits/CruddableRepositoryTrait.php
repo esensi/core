@@ -1,19 +1,23 @@
 <?php namespace Esensi\Core\Traits;
 
 /**
- * Trait implementation of CRUD repository
+ * Trait implementation of CRUD repository.
  *
- * @author daniel <daniel@bexarcreative.com>
- * @see \Esensi\Core\Contracts\CruddableRepositoryInterface
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
+ * @see Esensi\Core\Contracts\CruddableRepositoryInterface
  */
-trait CruddableRepositoryTrait{
+trait CruddableRepositoryTrait {
 
     /**
      * Store a newly created resource in storage.
      *
      * @param array $attributes to store on the resource
-     * @throws \Esensi\Core\Exceptions\RepositoryException
-     * @return \Esensi\Core\Models\Model
+     * @throws Esensi\Core\Exceptions\RepositoryException
+     * @return Esensi\Core\Models\Model
      */
     public function create(array $attributes)
     {
@@ -40,8 +44,8 @@ trait CruddableRepositoryTrait{
      * Read the specified resource from storage.
      *
      * @param integer $id of resource
-     * @throws \Esensi\Core\Exceptions\RepositoryException
-     * @return \Esensi\Core\Models\Model
+     * @throws Esensi\Core\Exceptions\RepositoryException
+     * @return Esensi\Core\Models\Model
      */
     public function read($id)
     {
@@ -63,8 +67,8 @@ trait CruddableRepositoryTrait{
      *
      * @param integer $id of resource to update
      * @param array $attributes to update on the resource
-     * @throws \Esensi\Core\Exceptions\RepositoryException
-     * @return \Esensi\Core\Models\Model
+     * @throws Esensi\Core\Exceptions\RepositoryException
+     * @return Esensi\Core\Models\Model
      */
     public function update($id, array $attributes)
     {
@@ -93,7 +97,7 @@ trait CruddableRepositoryTrait{
      * Remove the specified resource from storage.
      *
      * @param integer $id of resource to remove
-     * @throws \Esensi\Core\Exceptions\RepositoryException
+     * @throws Esensi\Core\Exceptions\RepositoryException
      * @return boolean
      */
     public function delete($id)

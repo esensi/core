@@ -10,7 +10,7 @@
   @yield('modal-footer')
 </div>
 
-<script type="text/javascript">
+<script type="application/javascript">
 
   Esensi.modal.init();
 

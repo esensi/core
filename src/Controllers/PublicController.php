@@ -1,25 +1,29 @@
 <?php namespace Esensi\Core\Controllers;
 
-use \EsensiCoreApiController as Controller;
-use \Esensi\Core\Contracts\ApiAncestryControllerInterface;
-use \Esensi\Core\Contracts\ExceptionHandlerInterface;
-use \Esensi\Core\Traits\PublicControllerTrait;
+use Esensi\Core\Contracts\ApiAncestryControllerInterface;
+use Esensi\Core\Contracts\ExceptionHandlerInterface;
+use Esensi\Core\Traits\PublicControllerTrait;
+use EsensiCoreApiController as ApiController;
 
 /**
- * Public controller for non-administrative GUIs
+ * Public controller for non-administrative UIs
  *
- * @author daniel <daniel@bexarcreative.com>
- * @see \Esensi\Core\Controllers\ApiController
- * @see \Esensi\Core\Traits\PublicControllerTrait
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
+ * @see Esensi\Core\Controllers\ApiController
+ * @see Esensi\Core\Traits\PublicControllerTrait
  */
-class PublicController extends Controller implements
+class PublicController extends ApiController implements
     ApiAncestryControllerInterface,
     ExceptionHandlerInterface {
 
     /**
      * Make controller use the public traits
      *
-     * @see \Esensi\Core\Traits\PublicControllerTrait
+     * @see Esensi\Core\Traits\PublicControllerTrait
      */
     use PublicControllerTrait;
 

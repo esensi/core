@@ -1,32 +1,36 @@
 <?php namespace Esensi\Core\Traits;
 
-use \Esensi\Core\Traits\AdminControllerTrait;
-use \Esensi\Core\Traits\DumpsterControllerTrait;
+use Esensi\Core\Traits\AdminControllerTrait;
+use Esensi\Core\Traits\DumpsterControllerTrait;
 
 /**
- * Trait that encapsulates other admin related traits
+ * Trait that encapsulates other admin related traits.
  *
- * @author daniel <daniel@bexarcreative.com>
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
  */
 trait DumpsterAdminControllerTrait {
 
     /**
-     * Make controller use the administrative traits
+     * Make controller use the administrative traits.
      *
-     * @see \Esensi\Core\Traits\AdminControllerTrait
+     * @see Esensi\Core\Traits\AdminControllerTrait
      */
     use AdminControllerTrait;
 
     /**
-     * Make controller use the dumster
+     * Make controller use the dumster.
      *
-     * @see \Esensi\Core\Traits\DumpsterControllerTrait
+     * @see Esensi\Core\Traits\DumpsterControllerTrait
      */
     use DumpsterControllerTrait;
 
     /**
      * Overwrite the show method to use retrieve()
-     * since some of the resources will be trashed
+     * since some of the resources will be trashed.
      *
      * @param integer $id of resource
      * @return void

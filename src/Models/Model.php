@@ -1,14 +1,18 @@
 <?php namespace Esensi\Core\Models;
 
-use \Esensi\Model\Model as BaseModel;
-use \Illuminate\Support\Facades\Lang;
-use \Illuminate\Support\Str;
+use Esensi\Model\Model as BaseModel;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Str;
 
 /**
- * Base Model
+ * Core Model
  *
- * @author daniel <daniel@bexarcreative.com>
- * @see \Esensi\Model\Model
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
+ * @see Esensi\Model\Model
  */
 class Model extends BaseModel {
 
@@ -20,7 +24,7 @@ class Model extends BaseModel {
     protected $table = 'models';
 
     /**
-     * The relationships that should be eager loaded with each query
+     * The relationships that should be eager loaded with each query.
      *
      * @var array
      */
@@ -34,7 +38,7 @@ class Model extends BaseModel {
     protected $hidden = [];
 
     /**
-     * The attributes that can be safely filled
+     * The attributes that can be safely filled.
      *
      * @var array
      */
@@ -69,21 +73,21 @@ class Model extends BaseModel {
     protected $rulesets = [];
 
     /**
-     * The attributes that can be full-text searched
+     * The attributes that can be full-text searched.
      *
      * @var array
      */
     public $searchable = [];
 
     /**
-     * The attributes to purge before saving
+     * The attributes to purge before saving.
      *
      * @var array
      */
     protected $purgeable = [];
 
     /**
-     * The attributes to hash before saving
+     * The attributes to hash before saving.
      *
      * @var array
      */
@@ -91,14 +95,14 @@ class Model extends BaseModel {
 
     /**
      * The attributes to encrypt when set and
-     * decrypt when gotten
+     * decrypt when gotten.
      *
      * @var array
      */
     protected $encryptable = [];
 
     /**
-     * Relationships that the model should set up
+     * Relationships that the model should set up.
      *
      * @var array
      */
@@ -120,7 +124,7 @@ class Model extends BaseModel {
     protected $injectUniqueIdentifier = true;
 
     /**
-     * Options for trashed status dropdowns
+     * Options for trashed status dropdowns.
      *
      * @var array
      */
@@ -131,7 +135,7 @@ class Model extends BaseModel {
     ];
 
     /**
-     * Options for order by dropdowns
+     * Options for order by dropdowns.
      *
      * @var array
      */
@@ -140,7 +144,7 @@ class Model extends BaseModel {
     ];
 
     /**
-     * Options for sorting dropdowns
+     * Options for sorting dropdowns.
      *
      * @var array
      */
@@ -150,7 +154,7 @@ class Model extends BaseModel {
     ];
 
     /**
-     * Options for results per page dropdowns
+     * Options for results per page dropdowns.
      *
      * @var array
      */
@@ -162,7 +166,7 @@ class Model extends BaseModel {
     ];
 
     /**
-     * Dynamically retrieve attributes
+     * Dynamically retrieve attributes.
      *
      * @param  string $key
      * @return mixed
@@ -194,9 +198,9 @@ class Model extends BaseModel {
     }
 
     /**
-     * Builds a query scope to return object alphabetically for a dropdown list
+     * Builds a query scope to return object alphabetically for a dropdown list.
      *
-     * @param \Illuminate\Database\Query\Builder $query
+     * @param Illuminate\Database\Query\Builder $query
      * @param string $column (optional) to order by
      * @param string $key (optional) to use in returned array
      * @param string $sort (optional) direction

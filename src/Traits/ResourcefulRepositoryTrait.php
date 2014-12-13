@@ -1,17 +1,22 @@
 <?php namespace Esensi\Core\Traits;
 
 /**
- * Trait implementation of a resource repository
+ * Trait implementation of a resource repository.
  *
- * @author daniel <daniel@bexarcreative.com>
- * @see \Esensi\Core\Contracts\ResourcefulRepositoryInterface
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @author diego <dieog@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
+ * @see Esensi\Core\Contracts\ResourcefulRepositoryInterface
  */
-trait ResourcefulRepositoryTrait{
+trait ResourcefulRepositoryTrait {
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Pagination\Paginator
+     * @return Illuminate\Pagination\Paginator
      */
     public function index()
     {
@@ -29,7 +34,7 @@ trait ResourcefulRepositoryTrait{
      * Store a newly created resource in storage.
      *
      * @param array $attributes to store on the resource
-     * @return \Esensi\Core\Models\Model
+     * @return Esensi\Core\Models\Model
      */
     public function store(array $attributes)
     {
@@ -40,7 +45,7 @@ trait ResourcefulRepositoryTrait{
      * Display the specified resource.
      *
      * @param integer $id of resource
-     * @return \Esensi\Core\Models\Model
+     * @return Esensi\Core\Models\Model
      */
     public function show($id)
     {
@@ -61,7 +66,7 @@ trait ResourcefulRepositoryTrait{
     /**
      * Remove all resources from storage.
      *
-     * @throws \Esensi\Core\Exceptions\RepositoryException
+     * @throws Esensi\Core\Exceptions\RepositoryException
      * @return boolean
      */
     public function truncate()

@@ -1,22 +1,26 @@
 <?php namespace Esensi\Core\Exceptions;
 
-use \Exception;
-use \Esensi\Core\Contracts\RepositoryExceptionInterface;
-use \Illuminate\Support\Contracts\MessageProviderInterface;
-use \Illuminate\Support\MessageBag;
+use Esensi\Core\Contracts\RepositoryExceptionInterface;
+use Exception;
+use Illuminate\Support\Contracts\MessageProviderInterface;
+use Illuminate\Support\MessageBag;
 
 /**
  * Custom exception handler for repositories
  *
- * @author daniel <daniel@bexarcreative.com>
- * @see \Esensi\Core\Contracts\RepositoryExceptionInterface
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
+ * @see Esensi\Core\Contracts\RepositoryExceptionInterface
  */
 class RepositoryException extends Exception implements RepositoryExceptionInterface{
 
     /**
      * The bag holder
      *
-     * @var \Illuminate\Support\Contracts\MessageProviderInterface
+     * @var Illuminate\Support\Contracts\MessageProviderInterface
      */
     protected $bag;
 
@@ -67,7 +71,7 @@ class RepositoryException extends Exception implements RepositoryExceptionInterf
             }
         }
 
-        // save the properties
+        // Save the properties
         $this->bag = $bag;
         $this->message = $message;
         $this->code = $code;
@@ -77,7 +81,7 @@ class RepositoryException extends Exception implements RepositoryExceptionInterf
     /**
      * Get the bag property
      *
-     * @return \Illuminate\Support\Contracts\MessageProviderInterface
+     * @return Illuminate\Support\Contracts\MessageProviderInterface
      */
     public function getBag()
     {

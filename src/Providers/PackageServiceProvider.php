@@ -1,14 +1,18 @@
 <?php namespace Esensi\Core\Providers;
 
-use \Illuminate\Foundation\AliasLoader;
-use \Illuminate\Support\Facades\Artisan;
-use \Illuminate\Support\Facades\Config;
-use \Illuminate\Support\ServiceProvider;
+use Illuminate\Foundation\AliasLoader;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\ServiceProvider;
 
 /**
  * Service provider for Esensi component packages
  *
- * @author daniel <daniel@bexarcreative.com>
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
  */
 class PackageServiceProvider extends ServiceProvider {
 
@@ -18,16 +22,6 @@ class PackageServiceProvider extends ServiceProvider {
      * @var bool
      */
     protected $defer = false;
-
-    /**
-     * Registers the resource dependencies
-     *
-     * @return void
-     */
-    public function register()
-    {
-
-    }
 
     /**
      * Bootstrap the application events.
@@ -40,7 +34,17 @@ class PackageServiceProvider extends ServiceProvider {
     }
 
     /**
-    * Add all of the component packages's aliases
+     * Register the application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+
+    }
+
+    /**
+    * Add all of the component packages's aliases.
     *
     * @param string $namespace to look for packages
     * @param mixed $packages to get config for

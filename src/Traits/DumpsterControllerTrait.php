@@ -1,12 +1,16 @@
 <?php namespace Esensi\Core\Traits;
 
-use \Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Input;
 
 /**
- * Trait implementation of dumpster controller interface
+ * Trait implementation of dumpster controller interface.
  *
- * @author daniel <daniel@bexarcreative.com>
- * @see \Esensi\Core\Contracts\DumpsterControllerInterface
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
+ * @see Esensi\Core\Contracts\DumpsterControllerInterface
  */
 trait DumpsterControllerTrait {
 
@@ -25,7 +29,7 @@ trait DumpsterControllerTrait {
      * Trash the specified resource in storage.
      *
      * @param integer $id of resource to trash
-     * @return \Illuminate\Routing\Redirector
+     * @return Illuminate\Routing\Redirector
      */
     public function trash($id)
     {
@@ -41,7 +45,7 @@ trait DumpsterControllerTrait {
      * Restore the specified resource in storage.
      *
      * @param integer $id of resource to restore
-     * @return \Illuminate\Routing\Redirector
+     * @return Illuminate\Routing\Redirector
      */
     public function restore($id)
     {
@@ -56,7 +60,7 @@ trait DumpsterControllerTrait {
     /**
      * Purge the trashed resources from storage.
      *
-     * @return \Illuminate\Routing\Redirector
+     * @return Illuminate\Routing\Redirector
      */
     public function purge()
     {
@@ -71,7 +75,7 @@ trait DumpsterControllerTrait {
     /**
      * Recover the trashed resources in storage.
      *
-     * @return \Illuminate\Routing\Redirector
+     * @return Illuminate\Routing\Redirector
      */
     public function recover()
     {

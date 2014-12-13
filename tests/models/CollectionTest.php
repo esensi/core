@@ -1,6 +1,6 @@
 <?php
 
-use \PHPUnit_Framework_TestCase as PHPUnit;
+use PHPUnit_Framework_TestCase as PHPUnit;
 use Esensi\Core\Models\Collection;
 
 /**
@@ -15,7 +15,7 @@ use Esensi\Core\Models\Collection;
 class CollectionTest extends PHPUnit {
 
     /**
-     * Setup adn prepare for the tests
+     * Setup and prepare for the tests.
      */
     public function setUp()
     {
@@ -29,9 +29,9 @@ class CollectionTest extends PHPUnit {
     }
 
     /**
-     * @test
+     * @test that parseMixed() returns a collection for a single value.
      */
-    public function it_creates_a_collection_from_single_values()
+    public function parseMixedReturnsCollectionForSingleValue()
     {
         foreach ($this->array as $elem)
         {
@@ -42,20 +42,19 @@ class CollectionTest extends PHPUnit {
     }
 
     /**
-     * @test
+     * @test that parseMixed() returns a collection from a delimited string.
      */
-    public function it_creates_a_collection_from_multiple_value_string()
+    public function parseMixedReturnsCollectionForDelimitedString()
     {
         $collection = Collection::parseMixed($this->multipleString);
-        //var_dump($collection->all());
         $this->assertInstanceOf('\Esensi\Core\Models\Collection', $collection);
         $this->assertEquals($this->expectedMultipleStringArray, $collection->all());
     }
 
     /**
-     * @test
+     * @test that parseMixed() returns a collection for an array.
      */
-    public function it_creates_a_collection_from_array()
+    public function parseMixedReturnsCollectionForArray()
     {
         $collection = Collection::parseMixed($this->array);
         $this->assertInstanceOf('\Esensi\Core\Models\Collection', $collection);
@@ -63,9 +62,9 @@ class CollectionTest extends PHPUnit {
     }
 
     /**
-     * @test
+     * @test that parseMixed() returns an empty collection for an empty value.
      */
-    public function it_creates_an_empty_collection_from_empty_string()
+    public function parseMixedReturnsEmptyCollectionForEmptyValue()
     {
         $collection = Collection::parseMixed('');
         $this->assertInstanceOf('\Esensi\Core\Models\Collection', $collection);
@@ -73,9 +72,9 @@ class CollectionTest extends PHPUnit {
     }
 
     /**
-     * @test
+     * @test that parseMixed() returns an empty collection for an empty array.
      */
-    public function it_creates_an_empty_collection_from_empty_array()
+    public function parseMixedReturnsEmptyCollectionForEmptyArray()
     {
         $collection = Collection::parseMixed([]);
         $this->assertInstanceOf('\Esensi\Core\Models\Collection', $collection);
@@ -83,9 +82,9 @@ class CollectionTest extends PHPUnit {
     }
 
     /**
-     * @test
+     * @test that parseMixed() return a collection while ignoring empty values.
      */
-    public function it_skips_blanks_and_null_elements()
+    public function parseMixedIgnoresEmptyValues()
     {
         $collection = Collection::parseMixed($this->skippedInputs);
         $this->assertInstanceOf('\Esensi\Core\Models\Collection', $collection);
@@ -97,4 +96,3 @@ class CollectionTest extends PHPUnit {
     }
 
 }
-

@@ -1,20 +1,20 @@
 <?php namespace Esensi\Core\Traits;
 
-use \Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\App;
 
 /**
- * Trait implementation of API ancestry controller interface
+ * Trait implementation of API ancestry controller interface.
  *
  * @author daniel <daniel@bexarcreative.com>
- * @see \Esensi\Core\Contracts\ApiAncestryControllerInterface
+ * @see Esensi\Core\Contracts\ApiAncestryControllerInterface
  */
-trait ApiAncestryControllerTrait{
+trait ApiAncestryControllerTrait {
 
     /**
      * Get the API ancestor controller class
      * of the current controller class.
      *
-     * @return \Esensi\Core\Controllers\ApiController
+     * @return Esensi\Core\Controllers\ApiController
      */
     public function api()
     {

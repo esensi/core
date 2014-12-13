@@ -1,13 +1,17 @@
 <?php namespace Esensi\Core\Models;
 
-use \Illuminate\Support\Collection as BaseCollection;
+use Illuminate\Support\Collection as BaseCollection;
 
 /**
  * Specialized collection class based on Laravel's Illuminate\Support\Collection.
  * Provides a utility method to parse a comma separated string into an Esensi/Collection.
  *
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
  * @author diego <diego@emersonmedia.com>
- * @author daniel <daniel@bexarcreative.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
  */
 class Collection extends BaseCollection {
 
@@ -17,7 +21,7 @@ class Collection extends BaseCollection {
      *
      * @param mixed $items The values to include as items in the collection
      * @param string|array $delimiter (optional) for array parsing
-     * @return \Esensi\Core\Models\Collection
+     * @return Esensi\Core\Models\Collection
      */
     public static function parseMixed($items, $delimiter = ',')
     {
@@ -32,30 +36,23 @@ class Collection extends BaseCollection {
             $items = explode($separator, trim($items, $separator));
         }
 
-        if (! is_array($items) )
+        // Put single element items in an array
+        if( ! is_array($items) )
         {
-            $items = [$items];
+            $items = [ $items ];
         }
 
         // Clean up any empty values
         $items = array_filter($items, function($input)
         {
-            // null and blank strings are the only ones skipped
-            if (
-                (is_null($input)) or
-                (is_string($input) and trim($input) == '' )
-            ) {
-                return false;
-            }
-
-            return true;
-
+            // Skip blank strings and nulls
+            $isBlankString = is_string($input) && trim($input) == '';
+            $isNullString = is_null($input);
+            return $isNullString || $isBlankString ? false : true;
         });
 
-
-        // Return late static binding Collection
+        // Return late static binding collection
         return new static($items);
-
     }
 
 }

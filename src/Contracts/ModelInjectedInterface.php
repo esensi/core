@@ -1,11 +1,15 @@
 <?php namespace Esensi\Core\Contracts;
 
-use \Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Interface for injecting models into a class
  *
- * @author daniel <daniel@bexarcreative.com>
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
  */
 interface ModelInjectedInterface{
 
@@ -13,7 +17,7 @@ interface ModelInjectedInterface{
      * Get the specified model by name
      *
      * @param string $name (optional) of model
-     * @return \Esensi\Core\Models\Model
+     * @return Esensi\Core\Models\Model
      */
     public function getModel( $name = null );
 

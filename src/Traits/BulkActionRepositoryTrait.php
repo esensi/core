@@ -1,13 +1,17 @@
 <?php namespace Esensi\Core\Traits;
 
-use \Esensi\Core\Models\Collection;
-use \Illuminate\Support\Facades\DB;
+use Esensi\Core\Models\Collection;
+use Illuminate\Support\Facades\DB;
 
 /**
- * Trait implementation of bulk action repository interface
+ * Trait implementation of bulk action repository interface.
  *
- * @author daniel <daniel@bexarcreative.com>
- * @see \Esensi\Core\Contracts\BulkActionRepositoryInterface
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
+ * @see Esensi\Core\Contracts\BulkActionRepositoryInterface
  */
 trait BulkActionRepositoryTrait {
 

@@ -1,14 +1,18 @@
 <?php namespace Esensi\Core\Middlewares;
 
-use \Symfony\Component\HttpKernel\HttpKernelInterface;
-use \Symfony\Component\HttpFoundation\Request as SymfonyRequest;
-use \Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * Rate limiter middleware to ban a user for
  * too many requests within a period of time.
  *
- * @author daniel <daniel@bexarcreative.com>
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
  * @see http://fideloper.com/laravel-http-middleware
  */
 class RateLimiter implements HttpKernelInterface {
@@ -46,7 +50,7 @@ class RateLimiter implements HttpKernelInterface {
      * @param  \Symfony\Component\HttpFoundation\Request  $request
      * @param  int   $type
      * @param  bool  $catch
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Symfony\Component\HttpFoundation\Response
      */
     public function handle(SymfonyRequest $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
     {
@@ -64,7 +68,7 @@ class RateLimiter implements HttpKernelInterface {
      *
      * @param  \Symfony\Component\HttpFoundation\Request  $request
      * @param  \Symfony\Component\HttpFoundation\Response $response
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Symfony\Component\HttpFoundation\Response
      */
     public function rateLimit(SymfonyRequest $request, SymfonyResponse $response)
     {

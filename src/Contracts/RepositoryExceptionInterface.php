@@ -1,12 +1,16 @@
 <?php namespace Esensi\Core\Contracts;
 
-use \Exception;
+use Exception;
 
 /**
  * Repository Exception Interface
  *
  * @author diego <diego@emersonmedia.com>
- * @author daniel <daniel@bexarcreative.com>
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
  */
 interface RepositoryExceptionInterface {
 
@@ -24,7 +28,7 @@ interface RepositoryExceptionInterface {
     /**
      * Get the bag property
      *
-     * @return \Illuminate\Support\Contracts\MessageProviderInterface
+     * @return Illuminate\Support\Contracts\MessageProviderInterface
      */
     public function getBag();
 

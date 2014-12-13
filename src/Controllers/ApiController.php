@@ -1,24 +1,27 @@
 <?php namespace Esensi\Core\Controllers;
 
-use \EsensiCoreRepository as Repository;
-use \EsensiCoreRepositoryException as RepositoryException;
-use \Esensi\Core\Contracts\ExceptionHandlerInterface;
-use \Esensi\Core\Contracts\RepositoryInjectedInterface;
-use \Esensi\Core\Contracts\PackagedInterface;
-use \Esensi\Core\Traits\ApiExceptionHandlerTrait;
-use \Esensi\Core\Traits\RepositoryInjectedTrait;
-use \Esensi\Core\Traits\PackagedTrait;
-
-use \Illuminate\Support\Facades\App;
-use \Illuminate\Support\Facades\Input;
-use \Illuminate\Support\Facades\Response;
-use \Illuminate\Routing\Controller;
+use Esensi\Core\Contracts\ExceptionHandlerInterface;
+use Esensi\Core\Contracts\PackagedInterface;
+use Esensi\Core\Contracts\RepositoryInjectedInterface;
+use Esensi\Core\Traits\ApiExceptionHandlerTrait;
+use Esensi\Core\Traits\PackagedTrait;
+use Esensi\Core\Traits\RepositoryInjectedTrait;
+use EsensiCoreRepository as Repository;
+use EsensiCoreRepositoryException as RepositoryException;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Response;
 
 /**
  * Controller for accessing repositories as an API
  *
- * @author daniel <daniel@bexarcreative.com>
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
  * @author diego <diego@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
  */
 class ApiController extends Controller implements
     ExceptionHandlerInterface,
@@ -28,21 +31,21 @@ class ApiController extends Controller implements
     /**
      * Make exceptions return a standard API exception format
      *
-     * @see \Esensi\Core\Traits\ApiExceptionHandlerTrait
+     * @see Esensi\Core\Traits\ApiExceptionHandlerTrait
      */
     use ApiExceptionHandlerTrait;
 
     /**
      * Package this controller
      *
-     * @see \Esensi\Core\Traits\PackagedTrait
+     * @see Esensi\Core\Traits\PackagedTrait
      */
     use PackagedTrait;
 
     /**
      * Make use of Repository injection
      *
-     * @see \Esensi\Core\Traits\RepositoryInjectedTrait
+     * @see Esensi\Core\Traits\RepositoryInjectedTrait
      */
     use RepositoryInjectedTrait;
 
@@ -50,7 +53,7 @@ class ApiController extends Controller implements
      * Inject dependencies
      *
      * @param \Esensi\Core\Repositories\Repository $repository
-     * @return \Esensi\Core\Controllers\ApiController
+     * @return Esensi\Core\Controllers\ApiController
      */
     public function __construct(Repository $repository)
     {
@@ -78,7 +81,7 @@ class ApiController extends Controller implements
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Pagination\Paginator
+     * @return Illuminate\Pagination\Paginator
      */
     public function index()
     {
@@ -92,7 +95,7 @@ class ApiController extends Controller implements
     /**
      * Store a newly created resource in storage.
      *
-     * @return \Esensi\Core\Models\Model
+     * @return Esensi\Core\Models\Model
      */
     public function store()
     {
@@ -104,7 +107,7 @@ class ApiController extends Controller implements
      * Display the specified resource.
      *
      * @param integer $id of resource
-     * @return \Esensi\Core\Models\Model
+     * @return Esensi\Core\Models\Model
      */
     public function show($id)
     {
@@ -119,7 +122,7 @@ class ApiController extends Controller implements
      *
      * @param integer $id of resource
      * @param  string $relationship to load on the resource
-     * @return \Esensi\Core\Models\Model
+     * @return Esensi\Core\Models\Model
      */
     public function showWithRelated($id, $relationship)
     {
@@ -132,7 +135,7 @@ class ApiController extends Controller implements
      * Update the specified resource in storage.
      *
      * @param integer $id of resource to update
-     * @return \Esensi\Core\Models\Model
+     * @return Esensi\Core\Models\Model
      */
     public function update($id)
     {
@@ -178,7 +181,7 @@ class ApiController extends Controller implements
      * Retrieve the specified resource out of storage.
      *
      * @param integer $id of resource to retrieve
-     * @return \Esensi\Core\Models\Model
+     * @return Esensi\Core\Models\Model
      */
     public function retrieve($id)
     {

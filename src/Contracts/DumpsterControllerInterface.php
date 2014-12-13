@@ -3,7 +3,11 @@
 /**
  * Dumpster controller interface
  *
- * @author daniel <daniel@bexarcreative.com>
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
  */
 interface DumpsterControllerInterface{
 
@@ -18,7 +22,7 @@ interface DumpsterControllerInterface{
      * Trash the specified resource in storage.
      *
      * @param integer $id of resource to trash
-     * @return \Illuminate\Routing\Redirector
+     * @return Illuminate\Routing\Redirector
      */
     public function trash($id);
 
@@ -26,21 +30,21 @@ interface DumpsterControllerInterface{
      * Restore the specified resource in storage.
      *
      * @param integer $id of resource to restore
-     * @return \Illuminate\Routing\Redirector
+     * @return Illuminate\Routing\Redirector
      */
     public function restore($id);
 
     /**
      * Purge the trashed resources from storage.
      *
-     * @return \Illuminate\Routing\Redirector
+     * @return Illuminate\Routing\Redirector
      */
     public function purge();
 
     /**
      * Recover the trashed resources in storage.
      *
-     * @return \Illuminate\Routing\Redirector
+     * @return Illuminate\Routing\Redirector
      */
     public function recover();
 

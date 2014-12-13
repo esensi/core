@@ -3,7 +3,11 @@
 /**
  * CRUD-based repository interface
  *
- * @author daniel <daniel@bexarcreative.com>
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
  */
 interface CruddableRepositoryInterface{
 
@@ -11,7 +15,7 @@ interface CruddableRepositoryInterface{
      * Store a newly created resource in storage.
      *
      * @param array $attributes to store on the resource
-     * @return \Esensi\Core\Models\Model
+     * @return Esensi\Core\Models\Model
      */
     public function create(array $attributes);
 
@@ -19,7 +23,7 @@ interface CruddableRepositoryInterface{
      * Read the specified resource from storage.
      *
      * @param integer $id of resource
-     * @return \Esensi\Core\Models\Model
+     * @return Esensi\Core\Models\Model
      */
     public function read($id);
 
@@ -28,7 +32,7 @@ interface CruddableRepositoryInterface{
      *
      * @param integer $id of resource to update
      * @param array $attributes to update on the resource
-     * @return \Esensi\Core\Models\Model
+     * @return Esensi\Core\Models\Model
      */
     public function update($id, array $attributes);
 

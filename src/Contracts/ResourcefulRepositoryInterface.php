@@ -3,14 +3,18 @@
 /**
  * Resourceful repository interface
  *
- * @author daniel <daniel@bexarcreative.com>
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
  */
 interface ResourcefulRepositoryInterface{
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Pagination\Paginator
+     * @return Illuminate\Pagination\Paginator
      */
     public function index();
 
@@ -18,7 +22,7 @@ interface ResourcefulRepositoryInterface{
      * Store a newly created resource in storage.
      *
      * @param array $attributes to store on the resource
-     * @return \Esensi\Core\Models\Model
+     * @return Esensi\Core\Models\Model
      */
     public function store(array $attributes);
 
@@ -26,7 +30,7 @@ interface ResourcefulRepositoryInterface{
      * Display the specified resource.
      *
      * @param integer $id of resource
-     * @return \Esensi\Core\Models\Model
+     * @return Esensi\Core\Models\Model
      */
     public function show($id);
 
@@ -35,7 +39,7 @@ interface ResourcefulRepositoryInterface{
      *
      * @param integer $id of resource to update
      * @param array $attributes to update on the resource
-     * @return \Esensi\Core\Models\Model
+     * @return Esensi\Core\Models\Model
      */
     public function update($id, array $attributes);
 

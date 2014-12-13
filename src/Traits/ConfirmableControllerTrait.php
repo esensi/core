@@ -1,18 +1,22 @@
 <?php namespace Esensi\Core\Traits;
 
-use \Esensi\Core\Models\Collection;
-use \Illuminate\Support\Facades\Input;
+use Esensi\Core\Models\Collection;
+use Illuminate\Support\Facades\Input;
 
 /**
- * Trait implementation of confirmable controller interface
+ * Trait implementation of confirmable controller interface.
  *
- * @author daniel <daniel@bexarcreative.com>
- * @see \Esensi\Core\Contracts\ConfirmableControllerInterface
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
+ * @see Esensi\Core\Contracts\ConfirmableControllerInterface
  */
 trait ConfirmableControllerTrait {
 
     /**
-     * Actions that require using retrieve instead of restore
+     * Actions that require using retrieve instead of restore.
      *
      * @var array
      */
@@ -96,7 +100,7 @@ trait ConfirmableControllerTrait {
      *
      * @param  string  $method
      * @param  array   $parameters
-     * @throws \BadMethodCallException
+     * @throws BadMethodCallException
      * @return mixed
      */
     public function __call($method, $parameters)

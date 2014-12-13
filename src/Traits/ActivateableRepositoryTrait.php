@@ -1,22 +1,26 @@
 <?php namespace Esensi\Core\Traits;
 
-use \Carbon\Carbon;
-use \Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 /**
- * Trait implementation of activateable repository interface
+ * Trait implementation of activateable repository interface.
  *
- * @author daniel <daniel@bexarcreative.com>
- * @see \Esensi\Core\Contracts\ActivateableRepositoryInterface
+ * @package Esensi\Core
+ * @author daniel <dalabarge@emersonmedia.com>
+ * @copyright 2014 Emerson Media LP
+ * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
+ * @link http://www.emersonmedia.com
+ * @see Esensi\Core\Contracts\ActivateableRepositoryInterface
  */
 trait ActivateableRepositoryTrait {
 
     /**
-     * Activate the specified resource
+     * Activate the specified resource.
      *
      * @param integer $id of resource
-     * @throws \Esensi\Core\Exceptions\RepositoryException
-     * @return \Esensi\Core\Models\Model
+     * @throws Esensi\Core\Exceptions\RepositoryException
+     * @return Esensi\Core\Models\Model
      */
     public function activate($id)
     {
@@ -49,11 +53,11 @@ trait ActivateableRepositoryTrait {
     }
 
     /**
-     * Set the activation status to false for resource
+     * Set the activation status to false for resource.
      *
      * @param integer $id of resource to deactivate
-     * @throws \Esensi\Core\Exceptions\RepositoryException
-     * @return \Esensi\Core\Models\Model
+     * @throws Esensi\Core\Exceptions\RepositoryException
+     * @return Esensi\Core\Models\Model
      */
     public function deactivate($id)
     {

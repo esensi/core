@@ -1,7 +1,6 @@
 <?php namespace Esensi\Core\Traits;
 
 use \EsensiCollection as Collection;
-use Esensi\Model\Contracts\SoftDeletingModelInterface;
 
 /**
  * Trait implementation of filterable repository interface.
@@ -122,7 +121,7 @@ trait FilterableRepositoryTrait {
     protected function filterTrashed($query)
     {
         // Enable filter if model support it
-        if ( $this->getModel() instanceof SoftDeletingModelInterface && isset($this->trashed) )
+        if ( method_exists($this->getModel(), 'softDelete') && isset($this->trashed) )
         {
             // Only include the trashed results
             if( (string) $this->trashed == 'only' )

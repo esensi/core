@@ -1,11 +1,11 @@
 <?php namespace Esensi\Core\Traits;
 
-use EsensiCoreRepositoryException as RepositoryException;
+use \EsensiCoreRepositoryException as RepositoryException;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 
 /**
- * Trait that handles redirects for API controllers
+ * Trait that handles redirects for API controllers.
  *
  * @package Esensi\Core
  * @author daniel <dalabarge@emersonmedia.com>

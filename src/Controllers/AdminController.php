@@ -1,12 +1,12 @@
 <?php namespace Esensi\Core\Controllers;
 
+use \EsensiCoreApiController as ApiController;
 use Esensi\Core\Contracts\ApiAncestryControllerInterface;
 use Esensi\Core\Contracts\ConfirmableControllerInterface;
 use Esensi\Core\Contracts\ExceptionHandlerInterface;
 use Esensi\Core\Contracts\ResourceControllerInterface;
 use Esensi\Core\Contracts\SearchableControllerInterface;
 use Esensi\Core\Traits\AdminControllerTrait;
-use EsensiCoreApiController as ApiController;
 
 /**
  * Admin controller for administrative UIs

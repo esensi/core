@@ -1,13 +1,13 @@
 <?php namespace Esensi\Core\Controllers;
 
+use \EsensiCoreRepository as Repository;
+use \EsensiCoreRepositoryException as RepositoryException;
 use Esensi\Core\Contracts\ExceptionHandlerInterface;
 use Esensi\Core\Contracts\PackagedInterface;
 use Esensi\Core\Contracts\RepositoryInjectedInterface;
 use Esensi\Core\Traits\ApiExceptionHandlerTrait;
 use Esensi\Core\Traits\PackagedTrait;
 use Esensi\Core\Traits\RepositoryInjectedTrait;
-use EsensiCoreRepository as Repository;
-use EsensiCoreRepositoryException as RepositoryException;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Input;

@@ -121,7 +121,7 @@ trait FilterableRepositoryTrait {
     protected function filterTrashed($query)
     {
         // Enable filter if model support it
-        if ( method_exists($this->getModel(), 'softDelete') && isset($this->trashed) )
+        if ( method_exists($this->getModel(), 'forceDelete') && isset($this->trashed) )
         {
             // Only include the trashed results
             if( (string) $this->trashed == 'only' )

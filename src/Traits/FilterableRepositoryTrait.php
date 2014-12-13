@@ -1,5 +1,7 @@
 <?php namespace Esensi\Core\Traits;
 
+use \EsensiCollection as Collection;
+
 /**
  * Trait implementation of filterable repository interface.
  *
@@ -156,11 +158,7 @@ trait FilterableRepositoryTrait {
         if( ! empty($this->ids) )
         {
             // Get an array of IDs
-            $ids = $this->ids;
-            if( is_string($ids) )
-            {
-                $ids = explode(',', trim($ids, ', '));
-            }
+            $ids = Collection::parseMixed($this->ids, [',', '+', ' '])->all();
 
             // Query results for the IDs
             $query->whereIn($key, $ids);
@@ -182,11 +180,7 @@ trait FilterableRepositoryTrait {
         if( ! empty($attributes) && ! empty($this->keywords) )
         {
             // Get an array of keywords
-            $keywords = $this->keywords;
-            if( is_string($keywords) )
-            {
-                $keywords = explode(',', trim($keywords, ', '));
-            }
+            $keywords = Collection::parseMixed($this->keywords, [','])->all();
 
             // Query results that have attributes containing the keywords
             $query->where(function( $query ) use ($keywords, $attributes)
@@ -234,7 +228,7 @@ trait FilterableRepositoryTrait {
         $this->scopes = array_merge($this->scopes ?: [], $scopes);
 
         // Convert mixed to array
-        $args = is_array($args) ? $args : explode(',', trim($args, ', '));
+        $args = Collection::parseMixed($args, [','])->all();
         $args = array_values($args);
         $arrs = array_filter($args, function($arg)
         {

@@ -1,5 +1,6 @@
 <?php namespace Esensi\Core\Controllers;
 
+use \EsensiCollection as Collection;
 use \EsensiCoreRepository as Repository;
 use \EsensiCoreRepositoryException as RepositoryException;
 use Esensi\Core\Contracts\ExceptionHandlerInterface;
@@ -126,7 +127,7 @@ class ApiController extends Controller implements
      */
     public function showWithRelated($id, $relationship)
     {
-        $relationship = explode('+', $relationship);
+        $relationship = Collection::parseMixed($relationship, [',', '+'])->all();
         return $this->getRepository()
             ->findWithRelated($id, $relationship);
     }

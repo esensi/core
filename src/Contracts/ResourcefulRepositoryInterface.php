@@ -51,4 +51,12 @@ interface ResourcefulRepositoryInterface{
      */
     public function destroy($id);
 
+    /**
+     * Remove all resources from storage.
+     *
+     * @throws Esensi\Core\Exceptions\RepositoryException
+     * @return boolean
+     */
+    public function truncate();
+
 }

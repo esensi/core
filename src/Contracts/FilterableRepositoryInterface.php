@@ -44,6 +44,14 @@ interface FilterableRepositoryInterface{
     function filterTrashed($query);
 
     /**
+     * Filter resources by IDs.
+     *
+     * @param object $query builder
+     * @return void
+     */
+    function filterIds($query);
+
+    /**
      * Filter resources by keywords
      *
      * @param object $query builder

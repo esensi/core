@@ -10,7 +10,7 @@
  * @link http://www.emersonmedia.com
  */
 interface ResourceControllerInterface{
-	
+
 	/**
      * Display a listing of the resource.
      *
@@ -71,5 +71,12 @@ interface ResourceControllerInterface{
      * @return Illuminate\Routing\Redirector
      */
     public function destroy($id);
+
+    /**
+     * Truncates the resources from storage.
+     *
+     * @return Illuminate\Routing\Redirector
+     */
+    public function truncate();
 
 }

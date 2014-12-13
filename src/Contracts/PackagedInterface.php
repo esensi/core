@@ -57,6 +57,23 @@ interface PackagedInterface{
     public function setNamespacing( $namespace );
 
     /**
+     * Get the package namespace.
+     *
+     * @return string
+     */
+    function namespacing();
+
+    /**
+     * Resolve a namespaced line.
+     *
+     * @param Illuminate\Support\NamespacedItemResolver $resolver
+     * @param string $key to config line
+     * @param mixed $arguments (optional)
+     * @return string
+     */
+    function resolve(Resolver $resolver, $key, $arguments = null);
+
+    /**
      * Generate a subview for the layout
      *
      * @param string $key to view config

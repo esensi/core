@@ -1,5 +1,7 @@
 <?php namespace Esensi\Core\Traits;
 
+use Esensi\Contracts\PackagedInterface;
+use Esensi\Contracts\RepositoryInjectedInterface;
 use Illuminate\Support\Facades\App;
 
 /**

@@ -19,7 +19,7 @@ trait ExceptionalRepositoryTrait {
      *
      * @var \Esensi\Core\Exceptions\RepositoryException
      */
-    protected $exception = '\EsensiCoreRepositoryException';
+    protected $exception = 'Esensi\Core\Exceptions\RepositoryException';
 
     /**
      * Throw an exception for this repository.

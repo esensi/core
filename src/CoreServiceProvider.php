@@ -1,9 +1,9 @@
 <?php namespace Esensi\Core;
 
-use Esensi\Core\Providers\PackageServiceProvider;
+use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\HTML;
-use Illuminate\Support\Facades\Config;
+use HTML;
+use Config;
 
 /**
  * Service provider for Esensi\Core components package
@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Config;
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-class CoreServiceProvider extends PackageServiceProvider {
+class CoreServiceProvider extends ServiceProvider {
 
     /**
      * Bootstrap the application events.
@@ -23,17 +23,29 @@ class CoreServiceProvider extends PackageServiceProvider {
      */
     public function boot()
     {
-        // Bind core class aliases
-        $this->package('esensi/core', 'esensi/core', __DIR__);
-        $this->addAliases('esensi/core', ['core']);
+        $namespace = 'esensi/core';
 
-        // Add core filters and route patterns
-        require __DIR__ . '/filters.php';
-        require __DIR__ . '/routes.php';
+        // Load views and language files
+        $this->loadViewsFrom($namespace, __DIR__ . '/views');
+        $this->loadTranslationsFrom($namespace, __DIR__ . '/lang');
+
+        // Load config files
+        Config::set($namespace . '::core', require __DIR__ . '/config/core.php' );
+        Config::set($namespace . '::validation', require __DIR__ . '/config/validation.php' );
 
         // Setup core HTML macros
         // @todo: there's a better, more scalable way to do this
         $this->bindHTMLMacros();
+    }
+
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        //
     }
 
     /**

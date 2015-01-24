@@ -4,46 +4,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Configuration values for Esensi\Core components package
-    |--------------------------------------------------------------------------
-    |
-    | The following lines contain the default configuration values for the
-    | Esensi\Core components package. You can publish these to your project for
-    | modification using the following Artisan command:
-    |
-    | php artisan config:publish esensi/core
-    |
-    */
-
-    /*
-    |--------------------------------------------------------------------------
-    | Application aliases
-    |--------------------------------------------------------------------------
-    |
-    | The following configuration options allow the developer to map aliases to
-    | controllers and models for easier customization of how Esensi handles
-    | requests related to this components package. These aliases are loaded by
-    | the service provider for this components package.
-    |
-    */
-
-    'aliases' => [
-        'EsensiModel'                   => 'Esensi\Core\Models\Model',
-        'EsensiCollection'              => 'Esensi\Core\Models\Collection',
-        'EsensiCoreRepository'          => 'Esensi\Core\Repositories\Repository',
-        'EsensiCoreRepositoryException' => 'Esensi\Core\Exceptions\RepositoryException',
-        'EsensiCoreTrashableRepository' => 'Esensi\Core\Repositories\TrashableRepository',
-        'EsensiCorePublicController'    => 'Esensi\Core\Controllers\PublicController',
-        'EsensiCoreApiController'       => 'Esensi\Core\Controllers\ApiController',
-        'EsensiCoreAdminController'     => 'Esensi\Core\Controllers\AdminController',
-        'EsensiCoreSeeder'              => 'Esensi\Core\Seeders\Seeder',
-        'EsensiCorePackageProvider'     => 'Esensi\Core\Providers\PackageServiceProvider',
-        'EsensiCoreRateLimiter'         => 'Esensi\Core\Middlewares\RateLimiter',
-        'EsensiCoreRateLimiterProvider' => 'Esensi\Core\Providers\RateLimiterServiceProvider',
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
     | Component packages to load
     |--------------------------------------------------------------------------
     |

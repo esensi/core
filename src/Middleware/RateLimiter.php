@@ -1,7 +1,7 @@
-<?php namespace Esensi\Core\Middlewares;
+<?php namespace Esensi\Core\Middleware;
 
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
-use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
@@ -52,7 +52,7 @@ class RateLimiter implements HttpKernelInterface {
      * @param  bool  $catch
      * @return Symfony\Component\HttpFoundation\Response
      */
-    public function handle(SymfonyRequest $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
+    public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
     {
         // Handle on passed down request
         $response = $this->app->handle($request, $type, $catch);
@@ -70,7 +70,7 @@ class RateLimiter implements HttpKernelInterface {
      * @param  \Symfony\Component\HttpFoundation\Response $response
      * @return Symfony\Component\HttpFoundation\Response
      */
-    public function rateLimit(SymfonyRequest $request, SymfonyResponse $response)
+    public function rateLimit(Request $request, Response $response)
     {
         $namespace = 'esensi/core::';
 

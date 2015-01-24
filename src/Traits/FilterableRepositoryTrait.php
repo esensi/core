@@ -1,6 +1,6 @@
 <?php namespace Esensi\Core\Traits;
 
-use \EsensiCollection as Collection;
+use Esensi\Core\Models\Collection;
 
 /**
  * Trait implementation of filterable repository interface.

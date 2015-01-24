@@ -1,6 +1,6 @@
 <?php namespace Esensi\Core\Controllers;
 
-use \EsensiCoreApiController as ApiController;
+use Esensi\Core\Controllers\ApiController as ApiController;
 use Esensi\Core\Contracts\ApiAncestryControllerInterface;
 use Esensi\Core\Contracts\ExceptionHandlerInterface;
 use Esensi\Core\Traits\PublicControllerTrait;
@@ -16,7 +16,7 @@ use Esensi\Core\Traits\PublicControllerTrait;
  * @see Esensi\Core\Controllers\ApiController
  * @see Esensi\Core\Traits\PublicControllerTrait
  */
-class PublicController extends ApiController implements
+abstract class PublicController extends ApiController implements
     ApiAncestryControllerInterface,
     ExceptionHandlerInterface {
 

@@ -1,20 +1,20 @@
 <?php namespace Esensi\Core\Seeders;
 
-use EsensiModel as Model;
-use Illuminate\Database\Seeder as LaravelSeeder;
+use Esensi\Model\Model;
+use Illuminate\Database\Seeder as BaseSeeder;
 
 /**
  * Core Seeder that adds beforeRun and afterRun methods to Laravel's Seeder.
  * Also includes a special saveOrFail() method for showing command line errors.
  *
- * @author diego <diego@emersonmedia.com>
  * @package Esensi\Core
  * @author daniel <dalabarge@emersonmedia.com>
+ * @author diego <diego@emersonmedia.com>
  * @copyright 2014 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-class Seeder extends LaravelSeeder {
+class Seeder extends BaseSeeder {
 
     /**
      * Run before the database seeds.

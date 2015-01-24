@@ -9,15 +9,15 @@
         },
         {
             "name": "Daniel LaBarge",
-            "email": "daniel@bexarcreative.com"
+            "email": "dalabarge@emersonmedia.com"
         }
     ],
     "license": "MIT",
     "require": {
         "php": ">=5.4.0",
-        "illuminate/support": "dev-master",
-        "illuminate/html": "dev-master",
-        "league/stack-robots": "~1.0",
+        "illuminate/support": "~5.0",
+        "illuminate/html": "~5.0",
+        "league/stack-robots": "~1.1.1",
         "esensi/model": "0.5.x"
     },
     "require-dev": {

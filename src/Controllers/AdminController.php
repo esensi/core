@@ -1,6 +1,6 @@
 <?php namespace Esensi\Core\Controllers;
 
-use \EsensiCoreApiController as ApiController;
+use Esensi\Core\Controllers\ApiController as ApiController;
 use Esensi\Core\Contracts\ApiAncestryControllerInterface;
 use Esensi\Core\Contracts\ConfirmableControllerInterface;
 use Esensi\Core\Contracts\ExceptionHandlerInterface;
@@ -19,7 +19,7 @@ use Esensi\Core\Traits\AdminControllerTrait;
  * @see Esensi\Core\Controllers\ApiController
  * @see Esensi\Core\Traits\AdminControllerTrait
  */
-class AdminController extends ApiController implements
+abstract class AdminController extends ApiController implements
     ApiAncestryControllerInterface,
     ConfirmableControllerInterface,
     ExceptionHandlerInterface,

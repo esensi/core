@@ -4,19 +4,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Configuration values for Esensi\Core components package
-    |--------------------------------------------------------------------------
-    |
-    | The following lines contain the default configuration values for the
-    | Esensi\Core components package. You can publish these to your project for
-    | modification using the following Artisan command:
-    |
-    | php artisan config:publish esensi/core
-    |
-    */
-
-    /*
-    |--------------------------------------------------------------------------
     | Validation Extensions
     |--------------------------------------------------------------------------
     |

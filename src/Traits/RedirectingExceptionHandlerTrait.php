@@ -1,6 +1,6 @@
 <?php namespace Esensi\Core\Traits;
 
-use Esensi\Core\Exceptions\RepositoryException;
+use Exception;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -21,10 +21,10 @@ trait RedirectingExceptionHandlerTrait {
     /**
      * Handles exceptions with redirect.
      *
-     * @param \Esensi\Core\Exceptions\RepositoryException $exception
+     * @param Exception $exception
      * @return Illuminate\Routing\Redirector
      */
-    public function handleException(RepositoryException $exception)
+    public function handleException(Exception $exception)
     {
         // Get redirect
         $referer = Request::header('referer');

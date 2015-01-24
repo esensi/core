@@ -1,8 +1,8 @@
 <?php namespace Esensi\Core\Controllers;
 
-use \EsensiCollection as Collection;
-use \EsensiCoreRepository as Repository;
-use \EsensiCoreRepositoryException as RepositoryException;
+use Esensi\Core\Models\Collection as Collection;
+use Esensi\Core\Repositories\Repository;
+use Esensi\Core\Exceptions\RepositoryException;
 use Esensi\Core\Contracts\ExceptionHandlerInterface;
 use Esensi\Core\Contracts\PackagedInterface;
 use Esensi\Core\Contracts\RepositoryInjectedInterface;
@@ -53,7 +53,7 @@ class ApiController extends Controller implements
     /**
      * Inject dependencies
      *
-     * @param \Esensi\Core\Repositories\Repository $repository
+     * @param Esensi\Core\Repositories\Repository $repository
      * @return Esensi\Core\Controllers\ApiController
      */
     public function __construct(Repository $repository)

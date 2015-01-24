@@ -1,8 +1,10 @@
 <?php namespace Esensi\Core\Middleware;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Closure;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\Middleware;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 /**
  * Rate limiter middleware to ban a user for
@@ -15,7 +17,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  * @link http://www.emersonmedia.com
  * @see http://fideloper.com/laravel-http-middleware
  */
-class RateLimiter implements HttpKernelInterface {
+class RateLimiter implements Middleware {
 
     /**
      * The status code to be returned upon rate limiting
@@ -34,10 +36,10 @@ class RateLimiter implements HttpKernelInterface {
     /**
      * Create a new RateLimiter instance.
      *
-     * @param  \Symfony\Component\HttpKernel\HttpKernelInterface  $app
+     * @param  Illuminate\Contracts\Foundation\Application  $app
      * @return void
      */
-    public function __construct(HttpKernelInterface $app)
+    public function __construct(Application $app)
     {
         $this->app = $app;
     }
@@ -45,30 +47,25 @@ class RateLimiter implements HttpKernelInterface {
     /**
      * Handle the given request and get the response.
      *
-     * @implements HttpKernelInterface::handle
-     *
-     * @param  \Symfony\Component\HttpFoundation\Request  $request
-     * @param  int   $type
-     * @param  bool  $catch
-     * @return Symfony\Component\HttpFoundation\Response
+     * @param  Illuminate\Http\Request $request
+     * @param  Closure $next
+     * @return mixed
      */
-    public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
+    public function handle($request, Closure $next)
     {
         // Handle on passed down request
-        $response = $this->app->handle($request, $type, $catch);
+        $response = $next($request);
 
         // Rate limit requests
-        $response = $this->rateLimit($request, $response);
-
-        return $response;
+        return $this->rateLimit($request, $response);
     }
 
     /**
-     * Limit the requests per minute based on IP
+     * Limit the requests per minute based on IP.
      *
-     * @param  \Symfony\Component\HttpFoundation\Request  $request
-     * @param  \Symfony\Component\HttpFoundation\Response $response
-     * @return Symfony\Component\HttpFoundation\Response
+     * @param  Illuminate\Http\Request  $request
+     * @param  Illuminate\Http\Response $response
+     * @return mixed
      */
     public function rateLimit(Request $request, Response $response)
     {

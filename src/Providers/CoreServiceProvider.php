@@ -1,4 +1,4 @@
-<?php namespace Esensi\Core;
+<?php namespace Esensi\Core\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
@@ -26,12 +26,12 @@ class CoreServiceProvider extends ServiceProvider {
         $namespace = 'esensi/core';
 
         // Load views and language files
-        $this->loadViewsFrom($namespace, __DIR__ . '/views');
-        $this->loadTranslationsFrom($namespace, __DIR__ . '/lang');
+        $this->loadViewsFrom($namespace, __DIR__ . '/../views');
+        $this->loadTranslationsFrom($namespace, __DIR__ . '/../lang');
 
         // Load config files
-        Config::set($namespace . '::core', require __DIR__ . '/config/core.php' );
-        Config::set($namespace . '::validation', require __DIR__ . '/config/validation.php' );
+        Config::set($namespace . '::core', require __DIR__ . '/../config/core.php' );
+        Config::set($namespace . '::validation', require __DIR__ . '/../config/validation.php' );
 
         // Setup core HTML macros
         // @todo: there's a better, more scalable way to do this

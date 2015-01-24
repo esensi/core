@@ -1,6 +1,6 @@
 <?php namespace Esensi\Core\Traits;
 
-use \Esensi\Core\Exceptions\RepositoryException;
+use Exception;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 
@@ -19,10 +19,10 @@ trait ApiExceptionHandlerTrait {
     /**
      * Handles exceptions for API output.
      *
-     * @param RepositoryException $exception
+     * @param Exception $exception
      * @return array
      */
-    protected function handleException(RepositoryException $exception)
+    protected function handleException(Exception $exception)
     {
         $data    = Input::all();
         $errors  = $exception->getErrors();

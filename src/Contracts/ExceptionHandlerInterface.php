@@ -1,6 +1,6 @@
 <?php namespace Esensi\Core\Contracts;
 
-use \EsensiCoreRepositoryException as RepositoryException;
+use Exception;
 
 /**
  * Exception Handler Interface
@@ -16,9 +16,9 @@ interface ExceptionHandlerInterface{
     /**
      * Handles exceptions with redirect
      *
-     * @param \Esensi\Core\Exceptions\RepositoryException $exception
+     * @param Exception $exception
      * @return mixed
      */
-    public function handleException(RepositoryException $exception);
+    public function handleException(Exception $exception);
 
 }

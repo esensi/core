@@ -1,14 +1,16 @@
 <?php namespace Esensi\Core\Controllers;
 
-use Esensi\Core\Models\Collection as Collection;
-use Esensi\Core\Repositories\Repository;
-use Esensi\Core\Exceptions\RepositoryException;
 use Esensi\Core\Contracts\ExceptionHandlerInterface;
 use Esensi\Core\Contracts\PackagedInterface;
 use Esensi\Core\Contracts\RepositoryInjectedInterface;
+use Esensi\Core\Exceptions\RepositoryException;
+use Esensi\Core\Models\Collection as Collection;
+use Esensi\Core\Repositories\Repository;
 use Esensi\Core\Traits\ApiExceptionHandlerTrait;
 use Esensi\Core\Traits\PackagedTrait;
 use Esensi\Core\Traits\RepositoryInjectedTrait;
+use Illuminate\Foundation\Bus\DispatchesCommands;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Input;
@@ -28,6 +30,20 @@ class ApiController extends Controller implements
     ExceptionHandlerInterface,
     PackagedInterface,
     RepositoryInjectedInterface {
+
+    /**
+     * Allow controller to dispatch commands.
+     *
+     * @see Illuminate\Foundation\Bus\DispatchesCommands
+     */
+    use DispatchesCommands;
+
+    /**
+     * Validate requests prior to calling the controller methods.
+     *
+     * @see Illuminate\Foundation\Validation\ValidatesRequests
+     */
+    use ValidatesRequests;
 
     /**
      * Make exceptions return a standard API exception format

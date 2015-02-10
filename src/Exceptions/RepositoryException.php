@@ -2,7 +2,7 @@
 
 use Esensi\Core\Contracts\RepositoryExceptionInterface;
 use Exception;
-use Illuminate\Support\Contracts\MessageProviderInterface;
+use Illuminate\Contracts\Support\MessageProvider;
 use Illuminate\Support\MessageBag;
 
 /**
@@ -20,7 +20,7 @@ class RepositoryException extends Exception implements RepositoryExceptionInterf
     /**
      * The bag holder
      *
-     * @var Illuminate\Support\Contracts\MessageProviderInterface
+     * @var Illuminate\Contracts\Support\MessageProvider
      */
     protected $bag;
 
@@ -59,7 +59,7 @@ class RepositoryException extends Exception implements RepositoryExceptionInterf
         }
 
         // Make sure the message bag is a message bag
-        if( !$bag instanceof MessageProviderInterface)
+        if( ! $bag instanceof MessageProvider )
         {
             if(is_array($bag))
             {
@@ -81,7 +81,7 @@ class RepositoryException extends Exception implements RepositoryExceptionInterf
     /**
      * Get the bag property
      *
-     * @return Illuminate\Support\Contracts\MessageProviderInterface
+     * @return Illuminate\Contracts\Support\MessageProvider
      */
     public function getBag()
     {

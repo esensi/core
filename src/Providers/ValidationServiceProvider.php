@@ -1,8 +1,5 @@
 <?php namespace Esensi\Core\Providers;
 
-use Esensi\Core\Validators\ComparisonValidator;
-use Esensi\Core\Validators\DateValidator;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Validation\Factory;
 use Illuminate\Validation\ValidationServiceProvider as ServiceProvider;
 
@@ -26,7 +23,7 @@ class ValidationServiceProvider extends ServiceProvider {
     {
         $this->registerPresenceVerifier();
 
-        $this->app->bindShared('validator', function($app)
+        $this->app->singleton('validator', function($app)
         {
             $validator = new Factory($app['translator'], $app);
 
@@ -38,8 +35,8 @@ class ValidationServiceProvider extends ServiceProvider {
                 $validator->setPresenceVerifier($app['validation.presence']);
             }
 
-            // Add less_than_other comparison validation rule
-            $extensions = Config::get('esensi/core::validation.extensions', []);
+            // Add validation extensions
+            $extensions = config('esensi/core::validation.extensions', []);
             foreach( $extensions as $extension => $class)
             {
                 $validator->extend($extension, $class . '@validate' . ucfirst(studly_case($extension)));

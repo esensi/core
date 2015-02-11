@@ -1,11 +1,8 @@
 <?php namespace Esensi\Core\Providers;
 
-use Config;
-use HTML;
+use Esensi\Core\Traits\ConfigLoaderTrait;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
-use InvalidArgumentException;
-use Symfony\Component\Finder\Finder;
 
 /**
  * Service provider for Esensi\Core components package
@@ -19,6 +16,13 @@ use Symfony\Component\Finder\Finder;
 class CoreServiceProvider extends ServiceProvider {
 
     /**
+     * Make use of backported namespaced configs loader.
+     *
+     * @see Esensi\Core\Traits\ConfigLoaderTrait
+     */
+    use ConfigLoaderTrait;
+
+    /**
      * Bootstrap the application events.
      *
      * @return void
@@ -26,39 +30,14 @@ class CoreServiceProvider extends ServiceProvider {
     public function boot()
     {
         $namespace = 'esensi/core';
-        $path = config_path($namespace);
 
-        // Load views and language files
+        // Load configs, views and language files
+        $this->loadConfigsFrom(__DIR__ . '/../config', $namespace);
         $this->loadViewsFrom(__DIR__ . '/../views', $namespace);
         $this->loadTranslationsFrom(__DIR__ . '/../lang', $namespace);
 
-        // Get the configs that need to be published
-        $configs = [];
-        $files = Finder::create()->files()->name('*.php')->in(__DIR__ . '/../config');
-        foreach($files as $file)
-        {
-            $configs[$file->getRealPath()] = $path . '/' . basename($file->getRealPath());
-        }
-
-        // Publish the configs to the app namespace
-        $this->publishes($configs, 'config');
-
-        // Wrapped in a try catch because Finder squawks when there is no directory
-        try{
-
-            // Load the namespaced config files
-            $files = Finder::create()->files()->name('*.php')->in($path);
-            foreach($files as $file)
-            {
-                $key = $namespace . '::' . basename($file->getRealPath(), '.php');
-                $this->app['config']->set($key, require $file->getRealPath());
-            }
-
-        } catch( InvalidArgumentException $e){}
-
         // Setup core HTML macros
-        // @todo: there's a better, more scalable way to do this
-        $this->bindHTMLMacros();
+        $this->extendHtml();
     }
 
     /**
@@ -75,9 +54,8 @@ class CoreServiceProvider extends ServiceProvider {
      * Bind the HTML macros
      *
      * @return void
-     * @todo refactor this out somewhere else
      */
-    protected function bindHTMLMacros()
+    protected function extendHtml()
     {
         /**
          * Bind paginationURL() for use with paginated links
@@ -88,7 +66,7 @@ class CoreServiceProvider extends ServiceProvider {
          * @param integer $page number
          * @return string
          */
-        HTML::macro('paginationUrl',
+        $this->app['html']->macro('paginationUrl',
             function(Paginator $paginator, array $args = [], $page = 1)
             {
                 $newPaginator = clone $paginator;

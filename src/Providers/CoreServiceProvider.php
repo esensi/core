@@ -32,9 +32,9 @@ class CoreServiceProvider extends ServiceProvider {
         $namespace = 'esensi/core';
 
         // Load configs, views and language files
-        $this->loadConfigsFrom(__DIR__ . '/../config', $namespace);
-        $this->loadViewsFrom(__DIR__ . '/../views', $namespace);
-        $this->loadTranslationsFrom(__DIR__ . '/../lang', $namespace);
+        $this->loadConfigsFrom(__DIR__ . '/../../config', $namespace);
+        $this->loadViewsFrom(__DIR__ . '/../../resources/views', $namespace);
+        $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang', $namespace);
 
         // Setup core HTML macros
         $this->extendHtml();

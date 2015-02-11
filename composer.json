@@ -15,10 +15,10 @@
     "license": "MIT",
     "require": {
         "php": ">=5.4.0",
-        "illuminate/support": "~5.0.0",
+        "esensi/model": "0.5.x",
         "illuminate/html": "~5.0.0",
-        "league/stack-robots": "~1.1.1",
-        "esensi/model": "0.5.x"
+        "illuminate/support": "~5.0.0",
+        "league/stack-robots": "~1.1.1"
     },
     "require-dev": {
         "phpunit/phpunit": "4.0.*",
@@ -29,7 +29,7 @@
     },
     "autoload": {
         "classmap": [
-            "src/migrations"
+            "database/migrations"
         ],
         "psr-4": {
             "Esensi\\Core\\": "src/"

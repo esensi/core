@@ -1,9 +1,11 @@
 <?php namespace Esensi\Core\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Pagination\Paginator;
-use HTML;
 use Config;
+use HTML;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\ServiceProvider;
+use InvalidArgumentException;
+use Symfony\Component\Finder\Finder;
 
 /**
  * Service provider for Esensi\Core components package
@@ -24,14 +26,35 @@ class CoreServiceProvider extends ServiceProvider {
     public function boot()
     {
         $namespace = 'esensi/core';
+        $path = config_path($namespace);
 
         // Load views and language files
-        $this->loadViewsFrom($namespace, __DIR__ . '/../views');
-        $this->loadTranslationsFrom($namespace, __DIR__ . '/../lang');
+        $this->loadViewsFrom(__DIR__ . '/../views', $namespace);
+        $this->loadTranslationsFrom(__DIR__ . '/../lang', $namespace);
 
-        // Load config files
-        Config::set($namespace . '::core', require __DIR__ . '/../config/core.php' );
-        Config::set($namespace . '::validation', require __DIR__ . '/../config/validation.php' );
+        // Get the configs that need to be published
+        $configs = [];
+        $files = Finder::create()->files()->name('*.php')->in(__DIR__ . '/../config');
+        foreach($files as $file)
+        {
+            $configs[$file->getRealPath()] = $path . '/' . basename($file->getRealPath());
+        }
+
+        // Publish the configs to the app namespace
+        $this->publishes($configs, 'config');
+
+        // Wrapped in a try catch because Finder squawks when there is no directory
+        try{
+
+            // Load the namespaced config files
+            $files = Finder::create()->files()->name('*.php')->in($path);
+            foreach($files as $file)
+            {
+                $key = $namespace . '::' . basename($file->getRealPath(), '.php');
+                $this->app['config']->set($key, require $file->getRealPath());
+            }
+
+        } catch( InvalidArgumentException $e){}
 
         // Setup core HTML macros
         // @todo: there's a better, more scalable way to do this

@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    @foreach( Config::get('esensi/core::core.metadata', []) as $name => $value)
+    @foreach( config('esensi/core::core.metadata', []) as $name => $value)
       <meta name="{{ $name }}" content="{{ $value }}">
     @endforeach
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
-    <title>{{ Config::get('esensi/core::core.metadata.author', 'Esensi') }}</title>
+    <title>{{ config('esensi/core::core.metadata.author', 'Esensi') }}</title>
 
     @styles('public')
 
@@ -29,7 +29,7 @@
     <div class="container">
       <div class="row">
         <div class="logo">
-          <img src="http://placehold.it/300x100/FFFFFF/D9E4E3&text={{ Config::get('esensi/core::core.metadata.author', 'Esensi') }}" alt="{{ Config::get('esensi/core::core.metadata.author', 'Esensi') }}" />
+          <img src="http://placehold.it/300x100/FFFFFF/D9E4E3&text={{ config('esensi/core::core.metadata.author', 'Esensi') }}" alt="{{ config('esensi/core::core.metadata.author', 'Esensi') }}" />
         </div>
       </div>
     </div>

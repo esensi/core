@@ -74,8 +74,9 @@ class ApiController extends Controller implements
      */
     public function __construct(Repository $repository)
     {
+        $this->setupLayout();
         $this->setRepository($repository);
-        $this->beforeFilter('@filterRequest');
+        //$this->beforeFilter('@filterRequest');
     }
 
     /**

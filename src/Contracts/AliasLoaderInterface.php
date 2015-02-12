@@ -1,7 +1,7 @@
 <?php namespace Esensi\Core\Contracts;
 
 /**
- * API Ancestry Controller Interface
+ * Alias Loader Interface
  *
  * @package Esensi\Core
  * @author daniel <dalabarge@emersonmedia.com>
@@ -9,14 +9,15 @@
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-interface ApiAncestryControllerInterface{
+interface AliasLoaderInterface {
 
     /**
-     * Get the API ancestor controller class
-     * of the current controller class.
+     * Load the alias found in configs from a path under a namespace.
      *
-     * @return Esensi\Core\Http\Controllers\ApiController
+     * @param string $path
+     * @param string $namespace
+     * @return void
      */
-    public function api();
+    public function loadAliasesFrom($path, $namespace);
 
 }

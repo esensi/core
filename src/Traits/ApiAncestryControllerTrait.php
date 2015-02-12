@@ -16,7 +16,7 @@ trait ApiAncestryControllerTrait {
      * Get the API ancestor controller class
      * of the current controller class.
      *
-     * @return Esensi\Core\Controllers\ApiController
+     * @return Esensi\Core\Http\Controllers\ApiController
      */
     public function api()
     {

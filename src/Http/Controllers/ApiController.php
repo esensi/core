@@ -1,4 +1,4 @@
-<?php namespace Esensi\Core\Controllers;
+<?php namespace Esensi\Core\Http\Controllers;
 
 use Esensi\Core\Contracts\ExceptionHandlerInterface;
 use Esensi\Core\Contracts\PackagedInterface;
@@ -70,7 +70,7 @@ class ApiController extends Controller implements
      * Inject dependencies
      *
      * @param Esensi\Core\Repositories\Repository $repository
-     * @return Esensi\Core\Controllers\ApiController
+     * @return Esensi\Core\Http\Controllers\ApiController
      */
     public function __construct(Repository $repository)
     {

@@ -1,4 +1,4 @@
-<?php namespace Esensi\Core\Middleware;
+<?php namespace Esensi\Core\Http\Middleware;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;

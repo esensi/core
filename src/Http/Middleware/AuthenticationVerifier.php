@@ -1,4 +1,4 @@
-<?php namespace Esensi\Core\Middleware;
+<?php namespace Esensi\Core\Http\Middleware;
 
 use Activity;
 use Closure;

@@ -1,5 +1,6 @@
 <?php namespace Esensi\Core\Providers;
 
+use Esensi\Core\Traits\AliasLoaderTrait;
 use Esensi\Core\Traits\ConfigLoaderTrait;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
@@ -23,6 +24,13 @@ class CoreServiceProvider extends ServiceProvider {
     use ConfigLoaderTrait;
 
     /**
+     * Load namespace aliases from the config files.
+     *
+     * @see Esensi\Core\Traits\AliasLoaderTrait
+     */
+    use AliasLoaderTrait;
+
+    /**
      * Bootstrap the application events.
      *
      * @return void
@@ -35,6 +43,7 @@ class CoreServiceProvider extends ServiceProvider {
         $this->loadConfigsFrom(__DIR__ . '/../../config', $namespace);
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', $namespace);
         $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang', $namespace);
+        $this->loadAliasesFrom(config_path($namespace), $namespace);
 
         // Setup core HTML macros
         $this->extendHtml();

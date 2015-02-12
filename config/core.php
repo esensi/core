@@ -4,6 +4,46 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Configuration values for Esensi\Core components package
+    |--------------------------------------------------------------------------
+    |
+    | The following lines contain the default configuration values for the
+    | Esensi\Core components package. You can publish these to your project for
+    | modification using the following Artisan command:
+    |
+    | php artisan config:publish esensi/core
+    |
+    */
+
+    /*
+    |--------------------------------------------------------------------------
+    | Application aliases
+    |--------------------------------------------------------------------------
+    |
+    | The following configuration options allow the developer to map aliases to
+    | controllers and models for easier customization of how Esensi handles
+    | requests related to this components package. These aliases are loaded by
+    | the service provider for this components package. If your app actually
+    | makes use of a class by the same alias then simply comment out the
+    | alias here so that the local class may be used instead.
+    |
+    */
+    'aliases' => [
+        'App\Exceptions\RepositoryException'    => 'Esensi\Core\Exceptions\RepositoryException',
+        'App\Http\Controllers\AdminController'  => 'Esensi\Core\Http\Controllers\AdminController',
+        'App\Http\Controllers\ApiController'    => 'Esensi\Core\Http\Controllers\ApiController',
+        'App\Http\Controllers\PublicController' => 'Esensi\Core\Http\Controllers\PublicController',
+        'App\Http\Middleware\RateLimiter'       => 'Esensi\Core\Http\Middlewares\RateLimiter',
+        'App\Models\Collection'                 => 'Esensi\Core\Models\Collection',
+        'App\Models\Model'                      => 'Esensi\Core\Models\Model',
+        'App\Providers\RateLimiterProvider'     => 'Esensi\Core\Providers\RateLimiterServiceProvider',
+        'App\Repositories\Repository'           => 'Esensi\Core\Repositories\Repository',
+        'App\Repositories\TrashableRepository'  => 'Esensi\Core\Repositories\TrashableRepository',
+        'App\Seeders\Seeder'                    => 'Esensi\Core\Seeders\Seeder',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Component packages to load
     |--------------------------------------------------------------------------
     |

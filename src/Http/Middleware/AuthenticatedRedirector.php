@@ -1,4 +1,4 @@
-<?php namespace Esensi\Core\Middleware;
+<?php namespace Esensi\Core\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;

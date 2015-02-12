@@ -42,7 +42,6 @@ return [
         'App\Models\Collection'                       => 'Esensi\Core\Models\Collection',
         'App\Models\Model'                            => 'Esensi\Core\Models\Model',
         'App\Models\SoftModel'                        => 'Esensi\Core\Models\SoftModel',
-        'App\Providers\RateLimiterProvider'           => 'Esensi\Core\Providers\RateLimiterServiceProvider',
         'App\Repositories\Repository'                 => 'Esensi\Core\Repositories\Repository',
         'App\Repositories\TrashableRepository'        => 'Esensi\Core\Repositories\TrashableRepository',
         'App\Seeders\Seeder'                          => 'Esensi\Core\Seeders\Seeder',

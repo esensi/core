@@ -1,7 +1,7 @@
 <?php namespace Esensi\Core\Repositories;
 
+use App\Repositories\Repository;
 use Esensi\Core\Contracts\TrashableRepositoryInterface;
-use Esensi\Core\Repositories\Repository;
 use Esensi\Core\Traits\TrashableRepositoryTrait;
 
 /**

@@ -1,4 +1,4 @@
-<?php namespace Esensi\Core\Requests;
+<?php namespace Esensi\Core\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 

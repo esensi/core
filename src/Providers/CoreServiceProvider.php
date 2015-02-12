@@ -17,18 +17,18 @@ use Illuminate\Support\ServiceProvider;
 class CoreServiceProvider extends ServiceProvider {
 
     /**
-     * Make use of backported namespaced configs loader.
-     *
-     * @see Esensi\Core\Traits\ConfigLoaderTrait
-     */
-    use ConfigLoaderTrait;
-
-    /**
      * Load namespace aliases from the config files.
      *
      * @see Esensi\Core\Traits\AliasLoaderTrait
      */
     use AliasLoaderTrait;
+
+    /**
+     * Make use of backported namespaced configs loader.
+     *
+     * @see Esensi\Core\Traits\ConfigLoaderTrait
+     */
+    use ConfigLoaderTrait;
 
     /**
      * Bootstrap the application events.

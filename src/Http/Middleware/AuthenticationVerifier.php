@@ -1,6 +1,6 @@
 <?php namespace Esensi\Core\Http\Middleware;
 
-use Activity;
+use App\Models\Activity;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Lang;

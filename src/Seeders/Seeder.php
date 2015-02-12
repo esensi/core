@@ -1,6 +1,6 @@
 <?php namespace Esensi\Core\Seeders;
 
-use Esensi\Model\Model;
+use App\Models\Model;
 use Illuminate\Database\Seeder as BaseSeeder;
 
 /**

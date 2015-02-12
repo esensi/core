@@ -1,6 +1,6 @@
 <?php namespace Esensi\Core\Http\Controllers;
 
-use Esensi\Core\Http\Controllers\ApiController as ApiController;
+use App\Http\Controllers\ApiController;
 use Esensi\Core\Contracts\ApiAncestryControllerInterface;
 use Esensi\Core\Contracts\ConfirmableControllerInterface;
 use Esensi\Core\Contracts\ExceptionHandlerInterface;

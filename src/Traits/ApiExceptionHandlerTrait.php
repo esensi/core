@@ -22,7 +22,7 @@ trait ApiExceptionHandlerTrait {
      * @param Exception $exception
      * @return array
      */
-    protected function handleException(Exception $exception)
+    public function handleException(Exception $exception)
     {
         $data    = Input::all();
         $errors  = $exception->getErrors();

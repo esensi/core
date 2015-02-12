@@ -1,5 +1,6 @@
 <?php namespace Esensi\Core\Repositories;
 
+use App\Models\Model;
 use Esensi\Core\Contracts\CruddableRepositoryInterface;
 use Esensi\Core\Contracts\ExceptionalRepositoryInterface;
 use Esensi\Core\Contracts\FilterableRepositoryInterface;
@@ -8,7 +9,6 @@ use Esensi\Core\Contracts\ModelInjectedInterface;
 use Esensi\Core\Contracts\PackagedInterface;
 use Esensi\Core\Contracts\RepositoryInjectedInterface;
 use Esensi\Core\Contracts\ResourcefulRepositoryInterface;
-use Esensi\Core\Models\Model;
 use Esensi\Core\Traits\CruddableRepositoryTrait;
 use Esensi\Core\Traits\ExceptionalRepositoryTrait;
 use Esensi\Core\Traits\FilterableRepositoryTrait;

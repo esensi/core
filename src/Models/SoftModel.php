@@ -1,6 +1,6 @@
 <?php namespace Esensi\Core\Models;
 
-use Esensi\Core\Models\Model as Model;
+use App\Models\Model;
 use Esensi\Model\Contracts\SoftDeletingModelInterface;
 use Esensi\Model\Traits\SoftDeletingModelTrait;
 

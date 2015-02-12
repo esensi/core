@@ -1,6 +1,6 @@
 <?php namespace Esensi\Core\Traits;
 
-use Esensi\Core\Repositories\Repository;
+use App\Repositories\Repository;
 
 /**
  * Trait implementation of repository injection interface.

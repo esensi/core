@@ -185,8 +185,7 @@ trait PackagedTrait {
         // Nest the view into the layout
         $view = App::make('view')->make($line, $data);
         $this->layout->$name = $view;
-
-        return $view;
+        return $this->layout;
     }
 
     /**

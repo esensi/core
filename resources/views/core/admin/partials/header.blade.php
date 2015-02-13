@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    @foreach( Config::get('esensi/core::core.metadata', []) as $name => $value)
+    @foreach( config('esensi/core::core.metadata', []) as $name => $value)
       <meta name="{{ $name }}" content="{{ $value }}">
     @endforeach
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
-    <title>{{ Config::get('esensi/core::core.metadata.author', 'Esensi') }} – Administration</title>
+    <title>{{ config('esensi/core::core.metadata.author', 'Esensi') }} – Administration</title>
 
     @styles('admin')
 
@@ -32,26 +32,26 @@
       <div class="sidebar navmenu navmenu-default navmenu-fixed-left offcanvas-sm">
 
         <a class="sidebar-logo navbar-brand" href="{{ route('admin.dashboard') }}">
-          {{ Config::get('esensi/core::core.metadata.author', 'Esensi')}}
+          {{ config('esensi/core::core.metadata.author', 'Esensi')}}
         </a>
 
         <ul id="sidebarMenu" class="sidebar-menu nav navmenu-nav">
-          @if(Config::get('esensi/core::core.dashboard', true))
+          @if(config('esensi/core::core.dashboard', true))
             <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
           @endif
 
-          @foreach(Config::get('esensi/core::core.packages') as $package)
+          @foreach(config('esensi/core::core.packages') as $package)
             @if(Config::has('esensi/'.$package . '::'.$package.'.dropdown.admin'))
-              @include(Config::get('esensi/'.$package . '::'.$package.'.dropdown.admin'))
+              @include(config('esensi/'.$package . '::'.$package.'.dropdown.admin'))
             @elseif(Config::has($package.'.dropdown.admin'))
-              @include(Config::get($package.'.dropdown.admin'))
+              @include(config($package.'.dropdown.admin'))
             @endif
           @endforeach
         </ul>
 
-        @if(Config::get('esensi/core::core.attribution.enable', true))
+        @if(config('esensi/core::core.attribution.enable', true))
           <div class="sidebar-attribution">
-            <a href="{{ Config::get('esensi/core::core.attribution.url', 'http://esen.si') }}" target="_blank">{{ Config::get('esensi/core::core.attribution.name', 'Powered by Esensi') }}</a>
+            <a href="{{ config('esensi/core::core.attribution.url', 'http://esen.si') }}" target="_blank">{{ config('esensi/core::core.attribution.name', 'Powered by Esensi') }}</a>
           </div>
         @endif
 
@@ -72,11 +72,11 @@
               {{ Auth::user()->display_name }}
             </a>
 
-            @include(Config::get('esensi/core::core.partials.admin.account'))
+            @include(config('esensi/core::core.partials.admin.account'))
 
           </li>
 
-          @include(Config::get('esensi/core::core.partials.admin.logout'))
+          @include(config('esensi/core::core.partials.admin.logout'))
 
         </ul>
       </div>

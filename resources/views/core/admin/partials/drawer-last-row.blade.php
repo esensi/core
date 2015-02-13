@@ -3,19 +3,19 @@
     <div class="col-sm-3">
       <div class="form-group">
         <label>Order By</label>
-        {{ Form::select('order', $orderOptions, $order, ['class' => 'form-control']) }}
+        {!! Form::select('order', $orderOptions, $order, ['class' => 'form-control']) !!}
       </div>
     </div>
     <div class="col-sm-3">
       <div class="form-group">
         <label>Sort Results</label>
-        {{ Form::select('sort', $sortOptions, $sort, ['class' => 'form-control']) }}
+        {!! Form::select('sort', $sortOptions, $sort, ['class' => 'form-control']) !!}
       </div>
     </div>
     <div class="col-sm-3">
       <div class="form-group">
         <label>Max Results</label>
-        {{ Form::select('max', $maxOptions, $max, ['class' => 'form-control']) }}
+        {!! Form::select('max', $maxOptions, $max, ['class' => 'form-control']) !!}
       </div>
     </div>
     <div class="col-sm-3">

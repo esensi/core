@@ -6,7 +6,7 @@
       <div class="panel panel-default">
         <div class="panel-body">
           <p class="lead text-center">n. <em>essence</em>, an awesome Laravel boilerplate application</p>
-          @include(Config::get('esensi/core::core.partials.public.errors'))
+          @include(config('esensi/core::core.partials.public.errors'))
         </div>
       </div>
     </div>

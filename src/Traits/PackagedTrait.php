@@ -38,21 +38,6 @@ trait PackagedTrait {
     protected $ui = 'public';
 
     /**
-     * Setup the layout used by the controller.
-     * This is part of Laravel's internal controller
-     * layout handlers. It should stay here.
-     *
-     * @return void
-     */
-    protected function setupLayout()
-    {
-        if ( ! is_null($this->layout))
-        {
-            $this->layout = App::make('view')->make($this->layout);
-        }
-    }
-
-    /**
      * Get the package name.
      *
      * @return string

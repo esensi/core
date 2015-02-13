@@ -79,6 +79,21 @@ class ApiController extends Controller implements
     }
 
     /**
+     * Setup the layout used by the controller.
+     * This is part of Laravel's internal controller
+     * layout handlers. It should stay here.
+     *
+     * @return void
+     */
+    protected function setupLayout()
+    {
+        if ( isset($this->layout) && ! is_null($this->layout))
+        {
+            $this->layout = App::make('view')->make($this->layout);
+        }
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return Illuminate\Pagination\Paginator

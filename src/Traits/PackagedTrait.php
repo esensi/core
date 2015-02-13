@@ -1,7 +1,6 @@
 <?php namespace Esensi\Core\Traits;
 
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\NamespacedItemResolver as Resolver;
 use InvalidArgumentException;
 
 /**
@@ -129,12 +128,12 @@ trait PackagedTrait {
     /**
      * Resolve a namespaced line.
      *
-     * @param Illuminate\Support\NamespacedItemResolver $resolver
+     * @param mixed $resolver
      * @param string $key to config line
      * @param mixed $arguments (optional)
      * @return string
      */
-    protected function resolve(Resolver $resolver, $key, $arguments = null)
+    protected function resolve($resolver, $key, $arguments = null)
     {
         // Get the package namespace
         $namespace = stripos($key, '::') === false ? $this->namespacing() : '';

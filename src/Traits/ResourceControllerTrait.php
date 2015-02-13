@@ -15,7 +15,7 @@ trait ResourceControllerTrait {
 	/**
      * Display a listing of the resource.
      *
-     * @return void
+     * @return Illuminate\View\View
      */
     public function index()
     {
@@ -24,13 +24,13 @@ trait ResourceControllerTrait {
 
         // Show collection as a paginated table
         $collection = $paginator->getCollection();
-        $this->content('index', compact('paginator', 'collection'));
+        return $this->content('index', compact('paginator', 'collection'));
     }
 
     /**
      * Display a create form for the specified resource.
      *
-     * @return void
+     * @return Illuminate\View\View
      */
     public function create()
     {
@@ -38,7 +38,7 @@ trait ResourceControllerTrait {
         $options = method_exists($this, 'formOptions') ? $this->formOptions() : [];
 
         // Render create view
-        $this->content( 'create', $options);
+        return $this->content( 'create', $options);
     }
 
     /**
@@ -60,7 +60,7 @@ trait ResourceControllerTrait {
      * Display the specified resource.
      *
      * @param integer $id of resource
-     * @return void
+     * @return Illuminate\View\View
      */
     public function show($id)
     {
@@ -68,14 +68,14 @@ trait ResourceControllerTrait {
         $object = $this->api()->show($id);
 
         // Render show view
-        $this->content( 'show', [ $this->package => $object ] );
+        return $this->content( 'show', [ $this->package => $object ] );
     }
 
     /**
      * Display an edit form for the specified resource.
      *
      * @param integer $id of resource
-     * @return void
+     * @return Illuminate\View\View
      */
     public function edit($id)
     {
@@ -86,7 +86,7 @@ trait ResourceControllerTrait {
         $options = method_exists($this, 'formOptions') ? $this->formOptions($object) : [ $this->package => $object ];
 
         // Render edit view
-        $this->content( 'edit', $options );
+        return $this->content( 'edit', $options );
     }
 
     /**

@@ -33,7 +33,7 @@ trait DumpsterAdminControllerTrait {
      * since some of the resources will be trashed.
      *
      * @param integer $id of resource
-     * @return void
+     * @return Illuminate\View\View
      */
     public function show($id)
     {
@@ -41,7 +41,7 @@ trait DumpsterAdminControllerTrait {
         $object = $this->api()->retrieve($id);
 
         // Render show view
-        $this->content( 'show', [ $this->package => $object ] );
+        return $this->content( 'show', [ $this->package => $object ] );
     }
 
 }

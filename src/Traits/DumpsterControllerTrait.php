@@ -17,12 +17,12 @@ trait DumpsterControllerTrait {
     /**
      * Display a listing of the trashed resources.
      *
-     * @return void
+     * @return Illuminate\View\View
      */
     public function dumpster()
     {
         Input::merge(['trashed' => 'only']);
-        $this->index();
+        return $this->index();
     }
 
     /**

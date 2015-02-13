@@ -14,7 +14,7 @@ trait ModalControllerTrait {
     /**
      * Display a create form for the specified resource.
      *
-     * @return void
+     * @return Illuminate\View\View
      */
     public function create()
     {
@@ -22,14 +22,14 @@ trait ModalControllerTrait {
         $options = method_exists($this, 'formOptions') ? $this->formOptions() : [];
 
         // Render create view
-        $this->modal( 'create', $options);
+        return $this->modal( 'create', $options);
     }
 
     /**
      * Display an edit form for the specified resource.
      *
      * @param integer $id of resource
-     * @return void
+     * @return Illuminate\View\View
      */
     public function edit($id)
     {
@@ -40,7 +40,7 @@ trait ModalControllerTrait {
         $options = method_exists($this, 'formOptions') ? $this->formOptions($object) : [ $this->package => $object ];
 
         // Render edit view
-        $this->modal( 'edit', $options );
+        return $this->modal( 'edit', $options );
     }
 
 }

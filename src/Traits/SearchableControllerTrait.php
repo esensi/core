@@ -21,7 +21,7 @@ trait SearchableControllerTrait {
     public function search()
     {
         // Render search view
-        $this->modal( 'search' );
+        return $this->modal( 'search' );
     }
 
 }

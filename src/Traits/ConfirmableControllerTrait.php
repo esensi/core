@@ -27,7 +27,7 @@ trait ConfirmableControllerTrait {
      *
      * @param string $action
      * @param integer $id (optional)
-     * @return void
+     * @return Illuminate\View\View
      */
     public function confirm($action, $id = null)
     {
@@ -54,7 +54,7 @@ trait ConfirmableControllerTrait {
         }
 
         // Render confirmation modal
-        $this->modal( $action . '_confirm', $data );
+        return $this->modal( $action . '_confirm', $data );
     }
 
     /**
@@ -62,7 +62,7 @@ trait ConfirmableControllerTrait {
      *
      * @param string $action
      * @param string|array $ids (optional)
-     * @return void
+     * @return Illuminate\View\View
      */
     public function confirmBulk($action, $ids = null)
     {
@@ -92,7 +92,7 @@ trait ConfirmableControllerTrait {
 
         // Render confirmation modal
         $view = str_replace('bulk_', 'bulk.', $action) . '_confirm';
-        $this->modal( $view, $data );
+        return $this->modal( $view, $data );
     }
 
     /**

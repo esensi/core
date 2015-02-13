@@ -51,7 +51,7 @@ trait KeywordFilterIndexTrait {
     /**
      * Display a listing of the resource.
      *
-     * @return void
+     * @return Illuminate\View\View
      */
     public function index()
     {
@@ -62,7 +62,7 @@ trait KeywordFilterIndexTrait {
         $collection = $paginator->getCollection();
         $options = $this->keywordFilterOptions();
         $data = array_merge($options, compact('paginator', 'collection'));
-        $this->content('index', $data);
+        return $this->content('index', $data);
     }
 
 }

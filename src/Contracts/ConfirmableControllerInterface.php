@@ -16,7 +16,7 @@ interface ConfirmableControllerInterface{
      *
      * @param string $action
      * @param integer $id (optional)
-     * @return void
+     * @return Illuminate\View\View
      */
     public function confirm($action, $id = null);
 
@@ -25,7 +25,7 @@ interface ConfirmableControllerInterface{
      *
      * @param string $action
      * @param string|array $ids (optional)
-     * @return void
+     * @return Illuminate\View\View
      */
     public function confirmBulk($action, $ids = null);
 

@@ -14,7 +14,7 @@ interface ResourceControllerInterface{
 	/**
      * Display a listing of the resource.
      *
-     * @return void
+     * @return Illuminate\View\View
      */
     public function index();
 

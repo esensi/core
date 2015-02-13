@@ -14,7 +14,7 @@ interface DumpsterControllerInterface{
     /**
      * Display a listing of the trashed resources.
      *
-     * @return void
+     * @return Illuminate\View\View
      */
     public function dumpster();
 

@@ -4,7 +4,7 @@ use Closure;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\Middleware;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Rate limiter middleware to ban a user for
@@ -29,9 +29,72 @@ class RateLimiter implements Middleware {
     /**
      * The wrapped kernel implementation.
      *
-     * @var \Symfony\Component\HttpKernel\HttpKernelInterface
+     * @var Illuminate\Contracts\Foundation\Application
      */
     protected $app;
+
+    /**
+     * The cache manager service.
+     *
+     * @var Illuminate\Contracts\Cache\Repository
+     */
+    protected $cache;
+
+    /**
+     * The config loader service.
+     *
+     * @var Illuminate\Contracts\Config\Repository
+     */
+    protected $config;
+
+    /**
+     * The event dispatcher service.
+     *
+     * @var Illuminate\Contracts\Events\Dispatcher
+     */
+    protected $events;
+
+    /**
+     * The router service.
+     *
+     * @var Illuminate\Routing\Router
+     */
+    protected $router;
+
+    /**
+     * The translator service.
+     *
+     * @var Illuminate\Translation\Translator
+     */
+    protected $translator;
+
+    /**
+     * The namespace that should be used by the rate limiter.
+     *
+     * @var string
+     */
+    protected $namespace = 'esensi/core';
+
+    /**
+     * The tag used by the rate limiter.
+     *
+     * @var string
+     */
+    protected $tag;
+
+    /**
+     * The counter used by the rate limiter.
+     *
+     * @var integer
+     */
+    protected $counter = 0;
+
+    /**
+     * The timeout state of the client.
+     *
+     * @var boolean
+     */
+    protected $inTimeout = false;
 
     /**
      * Create a new RateLimiter instance.
@@ -41,7 +104,11 @@ class RateLimiter implements Middleware {
      */
     public function __construct(Application $app)
     {
-        $this->app = $app;
+        $this->cache      = $app['cache'];
+        $this->config     = $app['config'];
+        $this->events      = $app['events'];
+        $this->router     = $app['router'];
+        $this->translator = $app['translator'];
     }
 
     /**
@@ -53,134 +120,229 @@ class RateLimiter implements Middleware {
      */
     public function handle($request, Closure $next)
     {
-        // Handle on passed down request
+        // Process the next request first because otherwise
+        // the dispatcher for routing won't have completed
+        // and therefore the current route will not be available
+        // later when we actually limit the request.
         $response = $next($request);
 
-        // Rate limit requests
-        return $this->rateLimit($request, $response);
+        // Initialize the rate limiting on this client request
+        $request = $this->limitRequest($request);
+
+        // Show an error as rate limits are exceeded
+        if( $this->isLimitEnabled() && $this->isLimitExceeded() )
+        {
+            $response = $this->render($request);
+        }
+
+        // Add the rate limit headers to the response
+        return $this->addHeaders($response);
     }
 
     /**
-     * Limit the requests per minute based on IP.
+     * Check if rate limiting is enabled.
+     *
+     * @return true
+     */
+    public function isLimitEnabled()
+    {
+        return $this->config->get($this->namespace . '::core.rates.enabled');
+    }
+
+    /**
+     * Check if client is in timeout.
+     *
+     * @return  boolean
+     */
+    public function isInTimeout()
+    {
+        return $this->inTimeout;
+    }
+
+    /**
+     * Check if rate limit is exceeded.
+     *
+     * @return  boolean
+     */
+    public function isLimitExceeded()
+    {
+        return $this->isInTimeout() || $this->getCounter() >= $this->getLimit();
+    }
+
+    /**
+     * Get the tag for rate limiting.
+     *
+     * @return  string
+     */
+    public function getTag()
+    {
+        return $this->tag;
+    }
+
+    /**
+     * Get the counter for rate limiting.
+     *
+     * @return  integer
+     */
+    public function getCounter()
+    {
+        return (int) $this->counter;
+    }
+
+    /**
+     * Get the limit for rate limiting.
+     *
+     * @return  integer
+     */
+    public function getLimit()
+    {
+        return (int) $this->config->get($this->namespace . '::core.rates.limit', 10);
+    }
+
+    /**
+     * Get the period for rate limiting.
+     *
+     * @return  integer
+     */
+    public function getPeriod()
+    {
+        return (int) $this->config->get($this->namespace . '::core.rates.period', 1);
+    }
+
+    /**
+     * Get the timeout for rate limiting.
+     *
+     * @return  integer
+     */
+    public function getTimeout()
+    {
+        return (int) $this->config->get($this->namespace . '::core.rates.timeout', 10);
+    }
+
+    /**
+     * Limit the HTTP request according to the rates.
      *
      * @param  Illuminate\Http\Request  $request
-     * @param  Illuminate\Http\Response $response
-     * @return mixed
+     * @return Illuminate\Http\Request
      */
-    public function rateLimit(Request $request, Response $response)
+    public function limitRequest(Request $request)
     {
-        $namespace = 'esensi/core::';
-
-        // Only rate limit if enabled
-        if( ! $this->app['config']->get($namespace.'core.rates.enabled') )
-        {
-            return $response;
-        }
-
         // Remember the old cache settings to reset later
-        $oldDriver = $this->app['config']->get('cache.driver');
-        $oldTable = $this->app['config']->get('cache.table');
+        $oldDriver = $this->config->get('cache.driver');
+        $oldTable = $this->config->get('cache.table');
 
         // Setup cache to use cache table
-        $driver = $this->app['config']->get($namespace . 'core.rates.cache.driver', 'database');
-        $table = $this->app['config']->get($namespace . 'core.rates.cache.table', 'cache');
-        $this->app['config']->set('cache.driver', $driver);
-        $this->app['config']->set('cache.table', $table);
-
-        // Get requests limit from config
-        $limit = $this->app['config']->get($namespace . 'core.rates.limit', 10);
-        $period = $this->app['config']->get($namespace . 'core.rates.period', 1);
-
-        // Get request timeout from config
-        $timeout = $this->app['config']->get($namespace . 'core.rates.cache.timeout', 10);
+        $driver = $this->config->get($this->namespace . '::core.rates.cache.driver', 'database');
+        $table = $this->config->get($this->namespace . '::core.rates.cache.table', 'cache');
+        $this->config->set('cache.driver', $driver);
+        $this->config->set('cache.table', $table);
 
         // Rate limit by IP address
-        $tag = $this->app['config']->get($namespace . 'core.rates.cache.tag', 'xrate:');
+        $tag = $this->config->get($this->namespace . '::core.rates.cache.tag', 'xrate:');
         $tag = sprintf($tag . ':%s', $request->getClientIp());
 
         // Rate limit by route address
-        if( $this->app['router']->current() && $this->app['config']->get($namespace . 'core.rates.routes') )
+        if( $this->config->get($this->namespace . '::core.rates.routes') && $this->router->current() )
         {
             // Add the route name to the rate tag
-            $tag = sprintf($tag . ':%s', $this->app['router']->currentRouteName());
+            $tag = sprintf($tag . ':%s', $this->router->currentRouteName());
 
             // Add the route parameters to the rate tag
-            $parameters = $this->app['router']->current()->parameters();
-            if( ! empty($parameters) && $this->app['config']->get($namespace . 'core.rates.parameters'))
+            $parameters = $this->router->current()->parameters();
+            if( ! empty($parameters) && $this->config->get($this->namespace . '::core.rates.parameters'))
             {
                 $tag = sprintf($tag . ':%s', implode(',', $parameters));
             }
         }
 
+        // Set the tag that is used
+        $this->tag = $tag;
+
         // Prime rate limiter as a tagged cache
-        $this->app['cache']->add($tag, 0, $period);
+        $this->cache->add($tag, 0, $this->getPeriod());
 
         // Increment rate limiter count for current request
-        $counter = (int) $this->app['cache']->get($tag);
+        $this->counter = (int) $this->cache->get($tag);
 
         // Increment counter
-        if($counter < $limit)
+        if($this->getCounter() < $this->getLimit())
         {
-            $counter++;
-            $this->app['cache']->put($tag, $counter, $period);
+            $this->counter++;
+            $this->cache->put($tag, $this->getCounter(), $this->getPeriod());
         }
 
         // Put request in timeout if not already in timeout
-        elseif( ! $this->app['cache']->has($tag.':timeout') )
+        elseif( ! $this->cache->has($tag.':timeout') )
         {
             // Add timeout
-            $this->app['cache']->add($tag.':timeout', true, $timeout);
+            $this->cache->add($tag.':timeout', true, $this->getTimeout());
 
             // Fire event listener
             $ip    = $request->getClientIp();
-            $route = $this->app['router']->currentRouteName();
-            Event::fire('esensi.core.rate_exceeded', compact('ip', 'route', 'limit', 'timeout'));
+            $route = $this->router->currentRouteName();
+            $this->events->fire('esensi.core.rate_exceeded', compact('ip', 'route', 'limit', 'timeout'));
         }
 
         // Determine if request is in timeout
-        $inTimeout = $this->app['cache']->has($tag.':timeout');
+        $this->inTimeout = $this->cache->has($tag.':timeout');
 
         // Reset cache settings
-        $this->app['config']->set('cache.driver', $oldDriver);
-        $this->app['config']->set('cache.table', $oldTable);
+        $this->config->set('cache.driver', $oldDriver);
+        $this->config->set('cache.table', $oldTable);
 
-        // Check if counter exceeds rate limit
-        if( $counter >= $limit || $inTimeout )
+        return $request;
+    }
+
+    /**
+     * Render the error response when a rate limit is exceeded.
+     *
+     * @param  Illuminate\Http\Request  $request
+     * @return Symfony\Component\HttpFoundation\Response $response
+     */
+    public function render(Request $request)
+    {
+        // Get rate exceeded message
+        $message = $this->translator->get($this->namespace . '::core.messages.rate_limit_exceeded');
+        $error = $this->translator->get($this->namespace . '::core.errors.rate_limit_exceeded', ['timeout' => $this->getTimeout()]);
+        $code = self::RATE_LIMIT_STATUS_CODE;
+        $data = compact('message', 'error', 'code');
+
+        // Provide a JSON response to API controllers
+        if( $request->ajax() || $request->wantsJson() )
         {
-            // Get rate exceeded message
-            $message = $this->app['translator']->get($namespace . 'core.messages.rate_limit_exceeded');
-            $error = $this->app['translator']->get($namespace . 'core.errors.rate_limit_exceeded', ['timeout' => $timeout]);
-            $code = self::RATE_LIMIT_STATUS_CODE;
-            $data = compact('message', 'error', 'code');
-
-            // Set status code
-            $response->setStatusCode($code);
-
-            // Provide a JSON response to API controllers
-            if( $request->ajax() || $request->wantsJson() )
-            {
-                $response->headers->set('Content-Type', 'application/json');
-                $response->setContent(json_encode($data));
-            }
-
-            // Provide an HTML response to UI controllers
-            else
-            {
-                $template = $this->app['config']->get($namespace . 'core.views.public.whoops', 'whoops');
-                $namespace = $this->app['config']->get($namespace.'core.namespace');
-                $response->headers->set('Content-Type', 'text/html');
-                $response->setContent( $this->app['view']->make($namespace . $template, $data) );
-            }
+            $content = json_encode($data);
+            $contentType = 'application/json';
         }
 
+        // Provide an HTML response to UI controllers
+        else
+        {
+            $template = $this->config->get($this->namespace . '::core.views.public.whoops', 'whoops');
+            $content = view($template, $data);
+            $contentType = 'text/html';
+        }
+
+        // Make a new response
+        return response($content, $code)
+            ->header('Content-Type', $contentType);
+    }
+
+    /**
+     * Add rate limit headers to the response.
+     *
+     * @param  Symfony\Component\HttpFoundation\Response $response
+     * @return Symfony\Component\HttpFoundation\Response
+     */
+    public function addHeaders(Response $response)
+    {
         // Set X-RateLimit headers
-        $response->headers->set('X-Ratelimit-Limit', $limit, false);
-        $response->headers->set('X-Ratelimit-Remaining', $limit - (int) $counter, false);
+        $response->headers->set('X-Ratelimit-Limit', $this->getLimit(), false);
+        $response->headers->set('X-Ratelimit-Remaining', $this->getLimit() - $this->getCounter(), false);
 
         // Enable X-RateLimit-Tag header in debug mode
-        if($this->app['config']->get('app.debug') == true)
+        if($this->config->get('app.debug') == true)
         {
-            $response->headers->set('X-Ratelimit-Tag', $tag, false);
+            $response->headers->set('X-Ratelimit-Tag', $this->getTag(), false);
         }
 
         return $response;

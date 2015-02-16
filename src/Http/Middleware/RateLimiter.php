@@ -1,6 +1,7 @@
 <?php namespace Esensi\Core\Http\Middleware;
 
 use Closure;
+use Esensi\Core\Contracts\RateLimiterInterface;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\Middleware;
 use Illuminate\Http\Request;
@@ -17,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @link http://www.emersonmedia.com
  * @see http://fideloper.com/laravel-http-middleware
  */
-class RateLimiter implements Middleware {
+class RateLimiter implements Middleware, RateLimiterInterface {
 
     /**
      * The status code to be returned upon rate limiting
@@ -106,7 +107,7 @@ class RateLimiter implements Middleware {
     {
         $this->cache      = $app['cache'];
         $this->config     = $app['config'];
-        $this->events      = $app['events'];
+        $this->events     = $app['events'];
         $this->router     = $app['router'];
         $this->translator = $app['translator'];
     }
@@ -120,6 +121,13 @@ class RateLimiter implements Middleware {
      */
     public function handle($request, Closure $next)
     {
+        // @todo limit() should be refactored so as to not
+        // rely on Route::current(). This will help get around a
+        // limitation with middleware. Right now this handler is
+        // not great since it still processes the request even
+        // though it responds with a 429. This wastes server
+        // resources and could be the vector of a DoS attack.
+
         // Process the next request first because otherwise
         // the dispatcher for routing won't have completed
         // and therefore the current route will not be available
@@ -127,10 +135,10 @@ class RateLimiter implements Middleware {
         $response = $next($request);
 
         // Initialize the rate limiting on this client request
-        $request = $this->limitRequest($request);
+        $request = $this->limit($request);
 
         // Show an error as rate limits are exceeded
-        if( $this->isLimitEnabled() && $this->isLimitExceeded() )
+        if( $this->isEnabled() && $this->isLimitExceeded() )
         {
             $response = $this->render($request);
         }
@@ -144,7 +152,7 @@ class RateLimiter implements Middleware {
      *
      * @return true
      */
-    public function isLimitEnabled()
+    public function isEnabled()
     {
         return $this->config->get($this->namespace . '::core.rates.enabled');
     }
@@ -170,7 +178,7 @@ class RateLimiter implements Middleware {
     }
 
     /**
-     * Get the tag for rate limiting.
+     * Get the cache tag for rate limiting.
      *
      * @return  string
      */
@@ -225,7 +233,7 @@ class RateLimiter implements Middleware {
      * @param  Illuminate\Http\Request  $request
      * @return Illuminate\Http\Request
      */
-    public function limitRequest(Request $request)
+    public function limit(Request $request)
     {
         // Remember the old cache settings to reset later
         $oldDriver = $this->config->get('cache.driver');
@@ -317,8 +325,8 @@ class RateLimiter implements Middleware {
         // Provide an HTML response to UI controllers
         else
         {
-            $template = $this->config->get($this->namespace . '::core.views.public.whoops', 'whoops');
-            $content = view($template, $data);
+            $view = $this->config->get($this->namespace . '::core.views.public.429', 'errors.429');
+            $content = view($view, $data);
             $contentType = 'text/html';
         }
 
@@ -347,4 +355,5 @@ class RateLimiter implements Middleware {
 
         return $response;
     }
+
 }

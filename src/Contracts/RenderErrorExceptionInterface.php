@@ -1,9 +1,9 @@
 <?php namespace Esensi\Core\Contracts;
 
-use App\Exceptions\RepositoryException;
+use ErrorException;
 
 /**
- * Render Repository Exception Interface
+ * Render Error Exception Interface
  *
  * @package Esensi\Core
  * @author daniel <dalabarge@emersonmedia.com>
@@ -11,15 +11,15 @@ use App\Exceptions\RepositoryException;
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-interface RenderRepositoryExceptionInterface {
+interface RenderErrorExceptionInterface {
 
     /**
      * Render a Repository Exception into an HTTP respons.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  \App\Exceptions\RepositoryException $e
+     * @param  \ErrorException $e
      * @return \Illuminate\Http\Response
      */
-    public function renderRepositoryException($request, RepositoryException $e);
+    public function renderErrorException($request, ErrorException $e);
 
 }

@@ -119,10 +119,13 @@ return [
         'public' => [
 
             'index'       => 'esensi/core::core.public.index',
-            'missing'     => 'esensi/core::core.public.missing',
-            'whoops'      => 'esensi/core::core.public.whoops',
             'modal'       => 'esensi/core::core.admin.modal',
-            'maintenance' => 'esensi/core::core.public.maintenance',
+
+            // Error views
+            '404' => 'esensi/core::core.public.missing',
+            '429' => 'esensi/core::core.public.whoops',
+            '500' => 'esensi/core::core.public.whoops',
+            '503' => 'esensi/core::core.public.maintenance',
         ],
 
         // Admin views

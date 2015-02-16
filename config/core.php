@@ -58,7 +58,8 @@ return [
     */
 
     'packages' => [
-        'user'
+        'user',
+        'activity',
     ],
 
     /*

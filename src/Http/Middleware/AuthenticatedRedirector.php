@@ -2,7 +2,7 @@
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Contracts\Routing\Middleware;
 
 /**
  * Guest Filter to Allow Only Guest Users
@@ -13,7 +13,7 @@ use Illuminate\Http\RedirectResponse;
  * @license https://github.com/esensi/esensi/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-class AuthenticatedRedirector {
+class AuthenticatedRedirector implements Middleware {
 
     /**
      * The Guard implementation.
@@ -44,7 +44,7 @@ class AuthenticatedRedirector {
     {
         if ($this->auth->check())
         {
-            return new RedirectResponse(route('index'));
+            return redirect(route('index'));
         }
 
         return $next($request);

@@ -3,6 +3,7 @@
 use App\Models\Activity;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Contracts\Routing\Middleware;
 use Illuminate\Support\Facades\Lang;
 
 /**
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\Lang;
  * @license https://github.com/esensi/esensi/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-class AuthenticationVerifier {
+class AuthenticationVerifier implements Middleware {
 
     /**
      * The Guard implementation.

@@ -3,6 +3,7 @@
 use Closure;
 use Esensi\Core\Contracts\RateLimiterInterface;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Contracts\Routing\Middleware;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;

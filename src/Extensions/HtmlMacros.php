@@ -32,7 +32,7 @@ class HtmlMacros {
         parse_str($query_str, $queries);
 
         // Reverse the sort order if already ordered
-        if(isset($args['order']) && $queries['order'] == $args['order'])
+        if(isset($args['order']) && isset($queries['order']) && $queries['order'] == $args['order'])
         {
             $args['sort'] = ($queries['sort'] == 'asc') ? 'desc' : 'asc';
         }

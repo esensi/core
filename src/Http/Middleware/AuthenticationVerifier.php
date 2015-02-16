@@ -1,6 +1,6 @@
 <?php namespace Esensi\Core\Http\Middleware;
 
-use App\Models\Activity;
+use App\Repositories\ActivityRepository as Activity;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Routing\Middleware;

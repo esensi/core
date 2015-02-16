@@ -2,7 +2,6 @@
 
 use App\Exceptions\RepositoryException;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Route;
 
 /**
  * Trait that renders RepositoryExceptions
@@ -26,8 +25,8 @@ trait RenderRepositoryExceptionTrait {
     public function renderRepositoryException($request, RepositoryException $e)
     {
         // Get the controller that handled the request
-        $action = Route::currentRouteAction();
-        if(! empty($action))
+        $action = $request->route()->getAction();
+        if( ! empty($action) )
         {
             // Render the exception according to the controller preference
             $action = explode('@', $action);

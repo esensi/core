@@ -325,7 +325,7 @@ class RateLimiter implements Middleware, RateLimiterInterface {
         // Provide an HTML response to UI controllers
         else
         {
-            $view = $this->config->get($this->namespace . '::core.views.public.429', 'errors.429');
+            $view = $this->config->get($this->namespace . '::core.views.public.' . $code, 'errors.' . $code);
             $content = view($view, $data);
             $contentType = 'text/html';
         }

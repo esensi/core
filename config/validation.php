@@ -16,12 +16,12 @@ return [
     'extensions' => [
 
         // Before / after date comparison based on another value
-        'after_other'        => 'Esensi\Core\Validators\DateValidator',
-        'before_other'       => 'Esensi\Core\Validators\DateValidator',
+        'after_other'        => 'Esensi\Core\Extensions\DateValidator',
+        'before_other'       => 'Esensi\Core\Extensions\DateValidator',
 
         // Greater than / less than comparison based on another value
-        'greater_than_other' => 'Esensi\Core\Validators\ComparisonValidator',
-        'less_than_other'    => 'Esensi\Core\Validators\ComparisonValidator',
+        'greater_than_other' => 'Esensi\Core\Extensions\ComparisonValidator',
+        'less_than_other'    => 'Esensi\Core\Extensions\ComparisonValidator',
     ],
 
 ];

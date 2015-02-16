@@ -1,4 +1,4 @@
-<?php namespace Esensi\Core\Validators;
+<?php namespace Esensi\Core\Extensions;
 
 use Carbon\Carbon;
 use Esensi\Core\Traits\ValidatorTrait;

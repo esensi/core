@@ -227,7 +227,7 @@ return [
     | The following configuration option specifies whether or not the rate
     | limiter should be enabled and how it should behave. The default behavior
     | is that it is enabled and set to reasonable levels to control potential
-    | hacking threats. More than 100 requests to the same page without a cool
+    | hacking threats. More than 60 requests to the same page without a cool
     | down period of at least 1 minute will generate a 10 minute timeout for
     | that IP address.
     |
@@ -245,7 +245,7 @@ return [
         'parameters'  => true,
 
         // Request per period
-        'limit'   => 100,
+        'limit'   => 60,
 
         // Period duration in minutes
         'period'  => 1,

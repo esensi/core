@@ -278,8 +278,10 @@ class RateLimiter implements Middleware, RateLimiterInterface {
             $this->cache->add($tag.':timeout', true, $this->getTimeout());
 
             // Fire event listener
-            $ip    = $request->getClientIp();
-            $route = $this->router->currentRouteName();
+            $ip      = $request->getClientIp();
+            $route   = $this->router->currentRouteName();
+            $limit   = $this->getLimit();
+            $timeout = $this->getTimeout();
             $this->events->fire('esensi.core.rate_exceeded', compact('ip', 'route', 'limit', 'timeout'));
         }
 

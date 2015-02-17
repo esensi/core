@@ -1,6 +1,5 @@
 <?php namespace Esensi\Core\Models;
 
-use App\Models\Model;
 use Esensi\Model\Contracts\SoftDeletingModelInterface;
 use Esensi\Model\Traits\SoftDeletingModelTrait;
 
@@ -15,7 +14,7 @@ use Esensi\Model\Traits\SoftDeletingModelTrait;
  * @see Esensi\Core\Models\Model
  * @see Esensi\Model\Contracts\SoftDeletingModelInterface
  */
-class SoftModel extends Model implements SoftDeletingModelInterface {
+class SoftModel extends \App\Models\Model implements SoftDeletingModelInterface {
 
     /**
      * Make model use soft deletes.

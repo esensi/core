@@ -37,6 +37,7 @@ return [
         'App\Http\Middleware\AuthenticationVerifier'  => 'Esensi\Core\Http\Middleware\AuthenticationVerifier',
         'App\Http\Middleware\CsrfTokenVerifier'       => 'Esensi\Core\Http\Middleware\CsrfTokenVerifier',
         'App\Http\Middleware\RateLimiter'             => 'Esensi\Core\Http\Middleware\RateLimiter',
+        'App\Http\Middleware\RobotsIndexer'           => 'Esensi\Core\Http\Middleware\RobotsIndexer',
         'App\Http\Requests\Request'                   => 'Esensi\Core\Http\Requestss\Request',
         'App\Models\Collection'                       => 'Esensi\Core\Models\Collection',
         'App\Models\Model'                            => 'Esensi\Core\Models\Model',

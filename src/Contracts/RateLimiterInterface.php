@@ -80,7 +80,7 @@ interface RateLimiterInterface {
     /**
      * Render the error response when a rate limit is exceeded.
      *
-     * @param  Illuminate\Http\Request  $request
+     * @param  Illuminate\Http\Request $request
      * @return Symfony\Component\HttpFoundation\Response $response
      */
     public function render(Request $request);

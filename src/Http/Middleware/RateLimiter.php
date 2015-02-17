@@ -3,7 +3,6 @@
 use Closure;
 use Esensi\Core\Contracts\RateLimiterInterface;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Contracts\Routing\Middleware;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +16,6 @@ use Symfony\Component\HttpFoundation\Response;
  * @copyright 2014 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
- * @see http://fideloper.com/laravel-http-middleware
  */
 class RateLimiter implements Middleware, RateLimiterInterface {
 
@@ -27,13 +25,6 @@ class RateLimiter implements Middleware, RateLimiterInterface {
      * @var integer
      */
     const RATE_LIMIT_STATUS_CODE = 429;
-
-    /**
-     * The wrapped kernel implementation.
-     *
-     * @var Illuminate\Contracts\Foundation\Application
-     */
-    protected $app;
 
     /**
      * The cache manager service.
@@ -231,7 +222,7 @@ class RateLimiter implements Middleware, RateLimiterInterface {
     /**
      * Limit the HTTP request according to the rates.
      *
-     * @param  Illuminate\Http\Request  $request
+     * @param  Illuminate\Http\Request $request
      * @return Illuminate\Http\Request
      */
     public function limit(Request $request)

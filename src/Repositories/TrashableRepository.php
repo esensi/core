@@ -1,6 +1,6 @@
 <?php namespace Esensi\Core\Repositories;
 
-use App\Repositories\Repository;
+use App\Repositories\Repository as BaseRepository;
 use Esensi\Core\Contracts\TrashableRepositoryInterface;
 use Esensi\Core\Traits\TrashableRepositoryTrait;
 
@@ -13,7 +13,7 @@ use Esensi\Core\Traits\TrashableRepositoryTrait;
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-class TrashableRepository extends Repository implements TrashableRepositoryInterface {
+class TrashableRepository extends BaseRepository implements TrashableRepositoryInterface {
 
     /**
      * Make this repository use trashable models.

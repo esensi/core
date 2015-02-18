@@ -7,6 +7,7 @@
     @foreach( config('esensi/core::core.metadata', []) as $name => $value)
       <meta name="{{ $name }}" content="{{ $value }}">
     @endforeach
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     <title>{{ config('esensi/core::core.metadata.author', 'Esensi') }} – Administration</title>
 

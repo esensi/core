@@ -217,7 +217,6 @@ return [
         'description' => 'Esensi is an awesome boilerplate application.',
         'author'      => 'Esensi',
         'generator'   => gethostname(),
-        'csrf-token'  => csrf_token(),
     ],
 
     /*

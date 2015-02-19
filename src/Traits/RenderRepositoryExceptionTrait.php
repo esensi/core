@@ -25,7 +25,8 @@ trait RenderRepositoryExceptionTrait {
     public function renderRepositoryException($request, RepositoryException $e)
     {
         // Get the controller that handled the request
-        $action = $request->route()->getAction();
+        $options = $request->route()->getAction();
+        $action = array_get($options, 'uses');
         if( ! empty($action) )
         {
             // Render the exception according to the controller preference

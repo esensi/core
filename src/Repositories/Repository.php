@@ -17,6 +17,7 @@ use Esensi\Core\Traits\ModelInjectedTrait;
 use Esensi\Core\Traits\PackagedTrait;
 use Esensi\Core\Traits\RepositoryInjectedTrait;
 use Esensi\Core\Traits\ResourcefulRepositoryTrait;
+use Illuminate\Foundation\Bus\DispatchesCommands;
 
 /**
  * Complete implementation of repository interfaces.
@@ -35,6 +36,13 @@ class Repository implements
     ModelInjectedInterface,
     PackagedInterface,
     ResourcefulRepositoryInterface {
+
+    /**
+     * Allow controller to dispatch commands.
+     *
+     * @see Illuminate\Foundation\Bus\DispatchesCommands
+     */
+    use DispatchesCommands;
 
     /**
      * Make this repository use a CRUD interface.

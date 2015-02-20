@@ -65,8 +65,7 @@ class RobotsIndexer implements Middleware {
      */
     public function render($request)
     {
-        return response("User-Agent: *\nDisallow: /", 200)
-            ->header('Content-Type', 'text/plain');
+        return response("User-Agent: *\nDisallow: /", 200)->headers->set('Content-Type', 'text/plain', true);
     }
 
     /**
@@ -77,7 +76,7 @@ class RobotsIndexer implements Middleware {
      */
     public function addHeaders(Response $response)
     {
-        return $response->header('X-Robots-Tag', 'noindex, nofollow, noarchive');
+        return $response->headers->set('X-Robots-Tag', 'noindex, nofollow, noarchive', true);
     }
 
     /**

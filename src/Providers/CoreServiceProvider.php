@@ -1,8 +1,6 @@
 <?php namespace Esensi\Core\Providers;
 
-use Esensi\Core\Traits\AliasLoaderTrait;
-use Esensi\Core\Traits\ConfigLoaderTrait;
-use Illuminate\Support\ServiceProvider;
+use Esensi\Loaders\Providers\ServiceProvider;
 
 /**
  * Service provider for Esensi\Core components package
@@ -16,18 +14,11 @@ use Illuminate\Support\ServiceProvider;
 class CoreServiceProvider extends ServiceProvider {
 
     /**
-     * Load namespace aliases from the config files.
+     * The namespace of the loaded config files.
      *
-     * @see Esensi\Core\Traits\AliasLoaderTrait
+     * @var string
      */
-    use AliasLoaderTrait;
-
-    /**
-     * Make use of backported namespaced configs loader.
-     *
-     * @see Esensi\Core\Traits\ConfigLoaderTrait
-     */
-    use ConfigLoaderTrait;
+    protected $namespace = 'esensi/loader';
 
     /**
      * Bootstrap the application events.
@@ -36,10 +27,10 @@ class CoreServiceProvider extends ServiceProvider {
      */
     public function boot()
     {
-        $namespace = 'esensi/core';
+        $namespace = $this->getNamespace();
 
         // Load configs, views and language files
-        $this->loadConfigsFrom(__DIR__ . '/../../config', $namespace);
+        $this->loadConfigsFrom(__DIR__ . '/../../config', $namespace, $this->publish);
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', $namespace);
         $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang', $namespace);
         $this->loadAliasesFrom(config_path($namespace), $namespace);

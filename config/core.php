@@ -29,6 +29,7 @@ return [
     |
     */
     'aliases' => [
+        'App\Commands\Command'                        => 'Esensi\Core\Commands\Command',
         'App\Exceptions\RepositoryException'          => 'Esensi\Core\Exceptions\RepositoryException',
         'App\Http\Controllers\AdminController'        => 'Esensi\Core\Http\Controllers\AdminController',
         'App\Http\Controllers\ApiController'          => 'Esensi\Core\Http\Controllers\ApiController',

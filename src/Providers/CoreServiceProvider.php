@@ -18,7 +18,7 @@ class CoreServiceProvider extends ServiceProvider {
      *
      * @var string
      */
-    protected $namespace = 'esensi/loader';
+    protected $namespace = 'esensi/core';
 
     /**
      * Bootstrap the application events.

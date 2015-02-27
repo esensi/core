@@ -71,7 +71,7 @@ interface PackagedInterface{
      * @param string $name (optional) of content
      * @return Illuminate\View\View
      */
-    function content($key, array $data = [], $name = null);
+    public function content($key, array $data = [], $name = null);
 
     /**
      * Generate a modal view
@@ -81,7 +81,7 @@ interface PackagedInterface{
      * @param string $name (optional) of content
      * @return Illuminate\View\View
      */
-    function modal($key, array $data = [], $name = null);
+    public function modal($key, array $data = [], $name = null);
 
     /**
      * Get a configuration line
@@ -90,7 +90,7 @@ interface PackagedInterface{
      * @param mixed $default (optional)
      * @return mixed
      */
-    function config($key, $default = null);
+    public function config($key, $default = null);
 
     /**
      * Get a TTL configuration line
@@ -99,7 +99,7 @@ interface PackagedInterface{
      * @param mixed $default (optional)
      * @return mixed
      */
-    function ttl($key, $default = null);
+    public function ttl($key, $default = null);
 
     /**
      * Get a language line
@@ -108,7 +108,7 @@ interface PackagedInterface{
      * @param array $replacements (optional) in language line
      * @return string
      */
-    function language($key, array $replacements = []);
+    public function language($key, array $replacements = []);
 
     /**
      * Get an error language line
@@ -117,7 +117,7 @@ interface PackagedInterface{
      * @param array $replacements (optional) in language line
      * @return string
      */
-    function error($key, array $replacements = []);
+    public function error($key, array $replacements = []);
 
     /**
      * Get a message language line
@@ -126,7 +126,7 @@ interface PackagedInterface{
      * @param array $replacements (optional) in language line
      * @return string
      */
-    function message($key, array $replacements = []);
+    public function message($key, array $replacements = []);
 
     /**
      * Get an option language line
@@ -135,7 +135,7 @@ interface PackagedInterface{
      * @param array $replacements (optional) in language line
      * @return string
      */
-    function option($key, array $replacements = []);
+    public function option($key, array $replacements = []);
 
     /**
      * Get an subject language line
@@ -144,7 +144,7 @@ interface PackagedInterface{
      * @param array $replacements (optional) in language line
      * @return string
      */
-    function subject($key, array $replacements = []);
+    public function subject($key, array $replacements = []);
 
     /**
      * Generate a redirect
@@ -153,7 +153,7 @@ interface PackagedInterface{
      * @param array $params (optional) to construct route
      * @return Illuminate\Routing\Redirector
      */
-    function redirect($key, array $params = []);
+    public function redirect($key, array $params = []);
 
     /**
      * Generate a redirect back
@@ -162,7 +162,7 @@ interface PackagedInterface{
      * @param array $params (optional) to construct route
      * @return Illuminate\Routing\Redirector
      */
-    function back($key, array $params = []);
+    public function back($key, array $params = []);
 
     /**
      * Fire a namespaced event until the first non-null response.
@@ -171,7 +171,7 @@ interface PackagedInterface{
      * @param array $arguments (optional) to pass to event
      * @return mixed
      */
-    function eventUntil($name, array $arguments = []);
+    public function eventUntil($name, array $arguments = []);
 
     /**
      * Fire a namespaced event.
@@ -180,7 +180,7 @@ interface PackagedInterface{
      * @param array $arguments (optional) to pass to event
      * @return mixed
      */
-    function eventFire($name, array $arguments = []);
+    public function eventFire($name, array $arguments = []);
 
     /**
      * Queue a namespaced event.
@@ -189,7 +189,7 @@ interface PackagedInterface{
      * @param array $arguments (optional) to pass to event
      * @return mixed
      */
-    function eventQueue($name, array $arguments = []);
+    public function eventQueue($name, array $arguments = []);
 
     /**
      * Flush namespaced events.
@@ -197,6 +197,6 @@ interface PackagedInterface{
      * @param string $name of event to flush
      * @return mixed
      */
-    function eventFlush($name);
+    public function eventFlush($name);
 
 }

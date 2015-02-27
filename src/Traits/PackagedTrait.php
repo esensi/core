@@ -154,7 +154,7 @@ trait PackagedTrait {
      * @return Illuminate\View\View
      * @throws InvalidArgumentException
      */
-    protected function content($key, array $data = [], $name = null)
+    public function content($key, array $data = [], $name = null)
     {
         // Assign a default content name
         $name = is_null($name) ? 'content' : $name;
@@ -181,7 +181,7 @@ trait PackagedTrait {
      * @param string $name (optional) of content
      * @return Illuminate\View\View
      */
-    protected function modal($key, array $data = [], $name = null)
+    public function modal($key, array $data = [], $name = null)
     {
         // Check to see if the config line is defined
         $line = $this->config('views.' . $this->ui . '.modal');
@@ -205,7 +205,7 @@ trait PackagedTrait {
      * @param mixed $default (optional)
      * @return mixed
      */
-    protected function config($key, $default = null)
+    public function config($key, $default = null)
     {
         return $this->resolve(App::make('config'), $key, $default);
     }
@@ -217,7 +217,7 @@ trait PackagedTrait {
      * @param mixed $default (optional)
      * @return mixed
      */
-    protected function ttl($key, $default = null)
+    public function ttl($key, $default = null)
     {
         return $this->config('ttl.' . $key, $default);
     }
@@ -229,7 +229,7 @@ trait PackagedTrait {
      * @param array $replacements (optional) in language line
      * @return string
      */
-    protected function language($key, array $replacements = [])
+    public function language($key, array $replacements = [])
     {
         return $this->resolve(App::make('translator'), $key, $replacements);
     }
@@ -241,7 +241,7 @@ trait PackagedTrait {
      * @param array $replacements (optional) in language line
      * @return string
      */
-    protected function error($key, array $replacements = [])
+    public function error($key, array $replacements = [])
     {
         return $this->language('errors.' . $key, $replacements);
     }
@@ -253,7 +253,7 @@ trait PackagedTrait {
      * @param array $replacements (optional) in language line
      * @return string
      */
-    protected function message($key, array $replacements = [])
+    public function message($key, array $replacements = [])
     {
         return $this->language('messages.' . $key, $replacements);
     }
@@ -265,7 +265,7 @@ trait PackagedTrait {
      * @param array $replacements (optional) in language line
      * @return string
      */
-    protected function option($key, array $replacements = [])
+    public function option($key, array $replacements = [])
     {
         return $this->language('options.' . $key, $replacements);
     }
@@ -277,7 +277,7 @@ trait PackagedTrait {
      * @param array $replacements (optional) in language line
      * @return string
      */
-    protected function subject($key, array $replacements = [])
+    public function subject($key, array $replacements = [])
     {
         return $this->language('subjects.' . $key, $replacements);
     }
@@ -289,7 +289,7 @@ trait PackagedTrait {
      * @param array $params (optional) to construct route
      * @return Illuminate\Routing\Redirector
      */
-    protected function redirect($key, array $params = [])
+    public function redirect($key, array $params = [])
     {
         // Redirect to intended route
         $route = $this->config('redirects.' . $this->ui . '.' . $key);
@@ -303,7 +303,7 @@ trait PackagedTrait {
      * @param array $params (optional) to construct route
      * @return Illuminate\Routing\Redirector
      */
-    protected function back($key, array $params = [])
+    public function back($key, array $params = [])
     {
         // Short circuit to referrer URL or follow redirect
         $referer = App::make('request')->header('referer');
@@ -319,7 +319,7 @@ trait PackagedTrait {
      * @param string $name of event
      * @return string
      */
-    protected function getNamespacedEventName($name)
+    public function getNamespacedEventName($name)
     {
         $namespace = head(explode('\\', strtolower(get_called_class())));
         return $namespace . '.' . $this->package . '.' . $name;
@@ -332,7 +332,7 @@ trait PackagedTrait {
      * @param array $arguments (optional) to pass to event
      * @return mixed
      */
-    protected function eventUntil($name, array $arguments = [])
+    public function eventUntil($name, array $arguments = [])
     {
         return App::make('events')->until($this->getNamespacedEventName($name), $arguments);
     }
@@ -344,7 +344,7 @@ trait PackagedTrait {
      * @param array $arguments (optional) to pass to event
      * @return mixed
      */
-    protected function eventFire($name, array $arguments = [])
+    public function eventFire($name, array $arguments = [])
     {
         return App::make('events')->fire($this->getNamespacedEventName($name), $arguments);
     }
@@ -356,7 +356,7 @@ trait PackagedTrait {
      * @param array $arguments (optional) to pass to event
      * @return mixed
      */
-    protected function eventQueue($name, array $arguments = [])
+    public function eventQueue($name, array $arguments = [])
     {
         return App::make('events')->queue($this->getNamespacedEventName($name), $arguments);
     }
@@ -367,7 +367,7 @@ trait PackagedTrait {
      * @param string $name of event to flush
      * @return mixed
      */
-    protected function eventFlush($name)
+    public function eventFlush($name)
     {
         return App::make('events')->flush($this->getNamespacedEventName($name));
     }

@@ -1,5 +1,6 @@
 @if( $errors->any() || Session::has('message'))
-  <div class="alert alert-{{ Session::get('code', 200) }}">
+  <div class="alert alert-{{ Session::get('code', 200) }} alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     @if ($errors->any())
       @if ($errors->first() != Session::get('message'))
         {{ Session::get('message') }}

@@ -28,10 +28,16 @@ trait RedirectingExceptionHandlerTrait {
     {
         // Get redirect
         $referer = Request::header('referer');
-        $redirect = empty($referer) ? Redirect::route('users.signin') : Redirect::back();
+        $url = empty($referer) ? route('users.signin') : $referer;
+
+        // Add the fragment if defined on the route
+        $options = Request::route()->getAction();
+        $fragment = array_get($options, 'fragment');
+        $url = $fragment ? $url . '#' . $fragment : $url;
 
         // Send redirect
-        return $redirect->with('message', $exception->getMessage())
+        return Redirect::to($url)
+            ->with('message', $exception->getMessage())
             ->with('code', $exception->getCode())
             ->withErrors($exception->getBag())
             ->withInput();

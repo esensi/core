@@ -60,7 +60,11 @@ class AuthenticationVerifier implements Middleware {
             }
 
             // Redirect to a safe route
-            return redirect()->guest(route('users.login'));
+            $options = $request->route()->getAction();
+            $fragment = array_get($options, 'fragment');
+            $url = route('users.login');
+            $url = $fragment ? $url . '#' . $fragment : $url;
+            return redirect()->guest($url);
         }
 
         return $next($request);

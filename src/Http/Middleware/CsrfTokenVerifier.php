@@ -24,6 +24,15 @@ class CsrfTokenVerifier extends BaseVerifier {
      */
     public function handle($request, Closure $next)
     {
+        // Skip CSRF token verification for API calls
+        $prefix = config('esensi/core::core.prefixes.api.latest', 'api');
+        $isApi = str_contains($request->url(), $prefix);
+        if( $isApi )
+        {
+            return $next($request);
+        }
+
+        // Verify CSRF Token
         return parent::handle($request, $next);
     }
 

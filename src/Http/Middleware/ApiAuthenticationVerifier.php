@@ -1,8 +1,9 @@
 <?php namespace Esensi\Core\Http\Middleware;
 
+use App\Http\Middleware\AuthenticationVerifier;
+use App\Repositories\ActivityRepository as Activity;
 use Closure;
-use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Contracts\Routing\Middleware;
+use Illuminate\Support\Facades\Lang;
 
 /**
  * User Filter to Allow RESTful Authentication
@@ -13,25 +14,7 @@ use Illuminate\Contracts\Routing\Middleware;
  * @license https://github.com/esensi/esensi/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-class ApiAuthenticationVerifier implements Middleware {
-
-    /**
-     * The Guard implementation.
-     *
-     * @var Illuminate\Contracts\Auth\Guard
-     */
-    protected $auth;
-
-    /**
-     * Create a new filter instance.
-     *
-     * @param  Illuminate\Contracts\Auth\Guard  $auth
-     * @return void
-     */
-    public function __construct(Guard $auth)
-    {
-        $this->auth = $auth;
-    }
+class ApiAuthenticationVerifier extends AuthenticationVerifier {
 
     /**
      * Handle an incoming request.
@@ -42,7 +25,24 @@ class ApiAuthenticationVerifier implements Middleware {
      */
     public function handle($request, Closure $next)
     {
-        return $this->auth->onceBasic() ?: $next($request);
+        if( $this->auth->guest() )
+        {
+            $response = $this->auth->onceBasic();
+            if( $response )
+            {
+                // Log the action to the Activity Log
+                $message = Lang::get('esensi/activity::activity.messages.unauthorized');
+                Activity::addAction($message, [
+                    'code'  => 401,
+                    'label' => 'esensi.core.unauthorized'
+                ]);
+
+                // Block the request for AJAX
+                return $response;
+            }
+        }
+
+        return $next($request);
     }
 
 }

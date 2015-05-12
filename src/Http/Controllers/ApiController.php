@@ -100,7 +100,7 @@ class ApiController extends Controller implements
      */
     public function index()
     {
-        $filters = Input::only('max', 'order', 'sort', 'keywords', 'trashed', 'ids');
+        $filters = Input::only('max', 'order', 'sort', 'keywords', 'trashed', 'ids', 'relationships');
         $repository = $this->getRepository();
         $repository->mergeFilters($filters);
         $paginator = $repository->index();

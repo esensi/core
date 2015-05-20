@@ -8,9 +8,9 @@ use Illuminate\Database\Seeder as BaseSeeder;
  * Also includes a special saveOrFail() method for showing command line errors.
  *
  * @package Esensi\Core
- * @author daniel <dalabarge@emersonmedia.com>
+ * @author daniel <daniel@emersonmedia.com>
  * @author diego <diego@emersonmedia.com>
- * @copyright 2014 Emerson Media LP
+ * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */

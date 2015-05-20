@@ -7,9 +7,9 @@ use InvalidArgumentException;
  * Traits for helping with package configurations
  *
  * @package Esensi\Core
- * @author daniel <dalabarge@emersonmedia.com>
+ * @author daniel <daniel@emersonmedia.com>
  * @author diego <dieog@emersonmedia.com>
- * @copyright 2014 Emerson Media LP
+ * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  * @see Esensi\Core\Contracts\PackagedInterface

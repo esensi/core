@@ -7,9 +7,9 @@ use Illuminate\Support\Collection as BaseCollection;
  * Provides a utility method to parse a comma separated string into an Esensi/Collection.
  *
  * @package Esensi\Core
- * @author daniel <dalabarge@emersonmedia.com>
+ * @author daniel <daniel@emersonmedia.com>
  * @author diego <diego@emersonmedia.com>
- * @copyright 2014 Emerson Media LP
+ * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */

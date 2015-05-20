@@ -11,7 +11,7 @@ return [
     | Esensi\Core components package. You can publish these to your project for
     | modification using the following Artisan command:
     |
-    | php artisan config:publish esensi/core
+    | php artisan vendor:publish --provider="Esensi\Core\Providers\CoreServiceProvider"
     |
     */
 

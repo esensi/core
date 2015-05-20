@@ -8,7 +8,7 @@ use Esensi\Core\Models\Collection;
  *
  * @package Esensi\Core
  * @author diego <diego@emersonmedia.com>
- * @copyright 2014 Emerson Media LP
+ * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */

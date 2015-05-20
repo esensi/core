@@ -9,8 +9,8 @@ use InvalidArgumentException;
  * Validation handlers for comparing values as greater or lesser than other values.
  *
  * @package Esensi\Core
- * @author daniel <dalabarge@emersonmedia.com>
- * @copyright 2014 Emerson Media LP
+ * @author daniel <daniel@emersonmedia.com>
+ * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  * @link http://www.neontsunami.com/post/greater-than-and-less-than-validation-in-laravel-4

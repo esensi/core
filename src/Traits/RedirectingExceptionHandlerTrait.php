@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Session;
  * Trait that handles redirects using redirects.
  *
  * @package Esensi\Core
- * @author daniel <dalabarge@emersonmedia.com>
- * @copyright 2014 Emerson Media LP
+ * @author daniel <daniel@emersonmedia.com>
+ * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  * @see Esensi\Core\Contracts\ExceptionHandlerInterface

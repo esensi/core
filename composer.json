@@ -9,14 +9,14 @@
         },
         {
             "name": "Daniel LaBarge",
-            "email": "dalabarge@emersonmedia.com"
+            "email": "daniel@emersonmedia.com"
         }
     ],
     "license": "MIT",
     "require": {
         "php": ">=5.4.0",
-        "esensi/model": "0.5.x",
-        "esensi/loaders": "0.5.x",
+        "esensi/model": "~0.5.2",
+        "esensi/loaders": "~0.5.0",
         "illuminate/html": "~5.0.0",
         "illuminate/support": "~5.0.0"
     },

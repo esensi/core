@@ -104,7 +104,7 @@ trait FilterableRepositoryTrait {
      * @param object $query builder
      * @return void
      */
-    protected function filterRelationships($query)
+    public function filterRelationships($query)
     {
         if ( isset($this->relationships) )
         {
@@ -118,7 +118,7 @@ trait FilterableRepositoryTrait {
      * @param object $query builder
      * @return void
      */
-    protected function filterTrashed($query)
+    public function filterTrashed($query)
     {
         // Enable filter if model support it
         if ( method_exists($this->getModel(), 'forceDelete') && isset($this->trashed) )
@@ -149,7 +149,7 @@ trait FilterableRepositoryTrait {
      * @param object $query builder
      * @return void
      */
-    protected function filterIds($query)
+    public function filterIds($query)
     {
         // Get the model's key name
         $key = $this->getModel()->getKeyName();
@@ -171,7 +171,7 @@ trait FilterableRepositoryTrait {
      * @param object $query builder
      * @return void
      */
-    protected function filterKeywords($query)
+    public function filterKeywords($query)
     {
         // Get the model's searchable attributes
         $attributes = $this->getModel()->searchable;
@@ -202,7 +202,7 @@ trait FilterableRepositoryTrait {
      * @param object $query builder
      * @return void
      */
-    protected function filterScopes($query)
+    public function filterScopes($query)
     {
         // Enable filter if we have scope closures
         if ( ! empty($this->scopes) )
@@ -303,7 +303,7 @@ trait FilterableRepositoryTrait {
      *
      * @return void
      */
-    protected function bindFilters()
+    public function bindFilters()
     {
         // Assign filters as properties
         foreach( $this->filters as $key => $value )

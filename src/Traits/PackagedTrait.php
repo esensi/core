@@ -105,7 +105,7 @@ trait PackagedTrait {
      *
      * @return string
      */
-    protected function namespacing()
+    public function namespacing()
     {
         return $this->namespacing ? trim($this->namespacing, '::') . '::' : '';
     }

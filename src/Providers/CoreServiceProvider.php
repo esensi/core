@@ -27,17 +27,17 @@ class CoreServiceProvider extends ServiceProvider {
      */
     public function boot()
     {
-        $namespace = $this->getNamespace();
-
         // Load configs, views and language files
-        $this->loadConfigsFrom(__DIR__ . '/../../config', $namespace, $this->publish);
-        $this->loadViewsFrom(__DIR__ . '/../../resources/views', $namespace);
-        $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang', $namespace);
-        $this->loadAliasesFrom(config_path($namespace), $namespace);
+        $this->loadConfigsFrom(__DIR__ . '/../../config', $this->namespace, $this->publish);
+        $this->loadViewsFrom(__DIR__ . '/../../resources/views', $this->namespace);
+        $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang', $this->namespace);
+        $this->loadAliasesFrom(config_path($this->namespace), $this->namespace);
     }
 
     /**
      * Register any application services.
+     * This is provided here so we don't have to redeclare
+     * and empty one on a parent class if it is not needed.
      *
      * @return void
      */

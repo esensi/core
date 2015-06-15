@@ -21,7 +21,7 @@ trait BulkActionRepositoryTrait {
      * @param string|array $ids
      * @return integer count of actions performed
      */
-    protected function bulkAction($action, $ids)
+    public function bulkAction($action, $ids)
     {
         // Get a collection of resources
         $collection = Collection::parseMixed($ids, [',', '+', ' ']);

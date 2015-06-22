@@ -48,7 +48,7 @@ trait PackagedTrait{
      * @param string $name (optional) of content
      * @return \Illuminate\View\View
      */
-    protected function content($key, array $data = [], $name = null)
+    public function content($key, array $data = [], $name = null)
     {
         // Assign a default content name
         $name = is_null($name) ? 'content' : $name;
@@ -84,7 +84,7 @@ trait PackagedTrait{
      * @param string $name (optional) of content
      * @return \Illuminate\View\View
      */
-    protected function modal($key, array $data = [], $name = null)
+    public function modal($key, array $data = [], $name = null)
     {
         // Change default layout to modal layout
         $namespace = $this->namespacing();
@@ -113,7 +113,7 @@ trait PackagedTrait{
      * @param mixed $default (optional)
      * @return mixed
      */
-    protected function config($key, $default = null)
+    public function config($key, $default = null)
     {
         // Get the config file loader
         $loader = App::make('config');
@@ -148,7 +148,7 @@ trait PackagedTrait{
      *
      * @return string
      */
-    protected function namespacing()
+    public function namespacing()
     {
         // Get the config file loader
         $loader = App::make('config');
@@ -177,7 +177,7 @@ trait PackagedTrait{
      * @param array $replacements (optional) in language line
      * @return string
      */
-    protected function language($key, array $replacements = [])
+    public function language($key, array $replacements = [])
     {
         $namespace = $this->namespacing();
         $line = str_singular($this->package) . '.' .$key;
@@ -213,7 +213,7 @@ trait PackagedTrait{
      * @param array $replacements (optional) in language line
      * @return string
      */
-    protected function error($key, array $replacements = [])
+    public function error($key, array $replacements = [])
     {
         return $this->language('errors.' . $key, $replacements);
     }
@@ -225,7 +225,7 @@ trait PackagedTrait{
      * @param array $replacements (optional) in language line
      * @return string
      */
-    protected function message($key, array $replacements = [])
+    public function message($key, array $replacements = [])
     {
         return $this->language('messages.' . $key, $replacements);
     }
@@ -237,7 +237,7 @@ trait PackagedTrait{
      * @param array $params (optional) to construct route
      * @return \Illuminate\Routing\Redirector
      */
-    protected function redirect($key, array $params = [])
+    public function redirect($key, array $params = [])
     {
         // Redirect to intended route
         $route = $this->config('redirects.' . $this->ui . '.' . $key);
@@ -251,7 +251,7 @@ trait PackagedTrait{
      * @param array $params (optional) to construct route
      * @return \Illuminate\Routing\Redirector
      */
-    protected function back($key, array $params = [])
+    public function back($key, array $params = [])
     {
         // Short circuit to referrer URL or follow redirect
         $referer = App::make('request')->header('referer');

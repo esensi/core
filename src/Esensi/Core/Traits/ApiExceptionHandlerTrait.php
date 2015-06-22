@@ -17,7 +17,7 @@ trait ApiExceptionHandlerTrait{
      * @param RepositoryException $exception
      * @return array
      */
-    protected function handleException(RepositoryException $exception)
+    public function handleException(RepositoryException $exception)
     {
         $errors = $exception->getErrors();
         $message = $exception->getMessage();

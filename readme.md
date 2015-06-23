@@ -40,10 +40,10 @@ Then add the following classes to the application's `config/app.php` config file
 
 ```php
 'providers' => [
-    'Esensi\Core\Providers\CoreServiceProvider',
-    'Esensi\Core\Providers\HtmlServiceProvider',
-    'Esensi\Core\Providers\RouteServiceProvider',
-    'Esensi\Core\Providers\ValidationServiceProvider'
+    Esensi\Core\Providers\CoreServiceProvider::class,
+    Esensi\Core\Providers\HtmlServiceProvider::class,
+    Esensi\Core\Providers\RouteServiceProvider::class,
+    Esensi\Core\Providers\ValidationServiceProvide::class',
 ]
 ```
 
@@ -101,8 +101,10 @@ This package uses [PHPUnit](http://phpunit.de) to automate the code testing proc
 ```json
 {
     "require-dev": {
-        "phpunit/phpunit": "4.1.*",
-        "mockery/mockery": "0.9.*"
+        "fzaninotto/faker": "~1.4",
+        "mockery/mockery": "0.9.*",
+        "phpunit/phpunit": "~4.0",
+        "phpspec/phpspec": "~2.1"
     }
 }
 ```

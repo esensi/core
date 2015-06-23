@@ -1,4 +1,4 @@
-<?php namespace Esensi\Core\Handlers\Events;
+<?php namespace Esensi\Core\Listeners;
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Log;
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-class EsensiHandler {
+class EsensiEventListener {
 
     /**
      * Log Esensi events to the info log.

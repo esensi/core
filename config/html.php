@@ -15,7 +15,7 @@ return [
 
     'extensions' => [
 
-        'paginationUrl' => 'Esensi\Core\Extensions\HtmlMacros',
+        'paginationUrl' => Esensi\Core\Extensions\HtmlMacros::class,
     ],
 
 ];

@@ -209,7 +209,7 @@ class Model extends BaseModel {
     public function scopeListAlphabetically($query, $column = null, $key = null, $sort = 'asc')
     {
         $column = is_null($column) ? $this->getKeyName() : $column;
-        return $query->orderBy($column, $sort)->lists($column, $key);
+        return $query->orderBy($column, $sort)->lists($column, $key)->all();
     }
 
 }

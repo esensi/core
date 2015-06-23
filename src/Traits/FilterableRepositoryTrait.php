@@ -108,6 +108,14 @@ trait FilterableRepositoryTrait {
     {
         if ( isset($this->relationships) )
         {
+            // Parse relations1,relationsN into an array
+            if( ! is_array($this->relationships) )
+            {
+                $relationships = Collection::parseMixed($this->relationships)->all();
+                $this->relationships = $relationships;
+            }
+
+            // Add relationships to the query results
             $query->with($this->relationships);
         }
     }

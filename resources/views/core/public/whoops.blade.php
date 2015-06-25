@@ -14,7 +14,7 @@
         </div>
       </div>
       <ul class="nav nav-pills nav-justified">
-        <li><a href="{{ route('index') }}">&larr; Return to Home Page</a></li>
+        <li><a href="{{ route('index') }}">&larr; Go to Home Page</a></li>
       </ul>
     </div>
   </div>

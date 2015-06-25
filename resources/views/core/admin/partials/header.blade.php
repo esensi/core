@@ -8,6 +8,7 @@
       <meta name="{{ $name }}" content="{{ $value }}">
     @endforeach
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="msapplication-config" content="{{ asset('browserconfig.xml') }}" />
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     <title>{{ config('esensi/core::core.metadata.author', 'Esensi') }} – Administration</title>
 
@@ -32,13 +33,15 @@
 
       <div class="sidebar navmenu navmenu-default navmenu-fixed-left offcanvas-sm">
 
-        <a class="sidebar-logo navbar-brand" href="{{ route('admin.dashboard') }}">
+        <a class="sidebar-logo navbar-brand" href="{{ route('admin.dashboard', 'dashboard') }}">
           {{ config('esensi/core::core.metadata.author', 'Esensi')}}
         </a>
 
         <ul id="sidebarMenu" class="sidebar-menu nav navmenu-nav">
           @if(config('esensi/core::core.dashboard', true))
-            <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+            <li class="panel dropdown @if(starts_with(Route::currentRouteName(),  ['index', 'admin.dashboard'])) active @endif">
+              <a href="{{ route('admin.dashboard', 'dashboard') }}"><i class="fa fa-fw fa-dashboard"></i> Dashboard<i class="fa fa-fw arrow"></i></a>
+            </li>
           @endif
 
           @foreach(config('esensi/core::core.packages') as $package)

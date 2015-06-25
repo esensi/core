@@ -220,6 +220,7 @@ return [
         'description' => 'Esensi is an awesome boilerplate application.',
         'author'      => 'Esensi',
         'generator'   => gethostname(),
+        'robots'      => env('APP_ENV') === 'production' ? 'Index, Follow' : 'NoIndex, NoFollow',
     ],
 
     /*

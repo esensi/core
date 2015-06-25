@@ -8,6 +8,7 @@
       <meta name="{{ $name }}" content="{{ $value }}">
     @endforeach
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="msapplication-config" content="{{ asset('browserconfig.xml') }}" />
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     <title>{{ config('esensi/core::core.metadata.author', 'Esensi') }}</title>
 
@@ -23,7 +24,9 @@
   <body class="public {{ str_replace('.', '-', Route::currentRouteName()) }}">
     <!--[if lt IE 9]>
       <div class="alert alert-info">
-        <strong>Heads up!</strong> You're using an older web browser, so some parts of this site may not work properly. You might want to try to <a href="http://whatbrowser.org/" class="alert-link">upgrade your browser</a>. You'll find that many websites work and look better, and you'll be safer online!
+        <strong>Heads up!</strong> You're using an older web browser, so some parts of this site may not work properly.
+        You might want to try to <a href="http://whatbrowser.org/" class="alert-link">upgrade your browser</a>.
+        You'll find that many websites work and look better, and you'll be safer online!
       </div>
     <![endif]-->
 

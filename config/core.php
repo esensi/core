@@ -201,7 +201,7 @@ return [
 
         'enable' => true,
         'url'    => 'http://esen.si',
-        'name'   => 'Powered by Esensi',
+        'name'   => 'Powered by esensi',
     ],
 
     /*
@@ -218,7 +218,7 @@ return [
 
         'keywords'    => 'emersonmedia esensi laravel boilerplate framework platform',
         'description' => 'Esensi is an awesome boilerplate application.',
-        'author'      => 'Esensi',
+        'author'      => 'esensi',
         'generator'   => gethostname(),
         'robots'      => env('APP_ENV') === 'production' ? 'Index, Follow' : 'NoIndex, NoFollow',
     ],

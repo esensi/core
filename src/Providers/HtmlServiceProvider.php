@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Providers;
+<?php
+
+namespace Esensi\Core\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -6,13 +8,13 @@ use Illuminate\Support\ServiceProvider;
  * Service provider for custom HTML extensions.
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-class HtmlServiceProvider extends ServiceProvider {
-
+class HtmlServiceProvider extends ServiceProvider
+{
     /**
      * Bootstrap the application events.
      *

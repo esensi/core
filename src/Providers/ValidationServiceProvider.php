@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Providers;
+<?php
+
+namespace Esensi\Core\Providers;
 
 use Illuminate\Validation\Factory;
 use Illuminate\Validation\ValidationServiceProvider as ServiceProvider;
@@ -7,13 +9,13 @@ use Illuminate\Validation\ValidationServiceProvider as ServiceProvider;
  * Service provider for custom validator.
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-class ValidationServiceProvider extends ServiceProvider {
-
+class ValidationServiceProvider extends ServiceProvider
+{
     /**
      * Register the service provider.
      *

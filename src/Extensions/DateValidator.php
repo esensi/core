@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Extensions;
+<?php
+
+namespace Esensi\Core\Extensions;
 
 use Carbon\Carbon;
 use Esensi\Core\Traits\ValidatorTrait;
@@ -9,15 +11,15 @@ use InvalidArgumentException;
  * Validation handlers for comparing dates against other attributes.
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  * @link http://www.neontsunami.com/post/greater-than-and-less-than-validation-in-laravel-4
  * @link http://daylerees.com/codebright/validation
  */
-class DateValidator {
-
+class DateValidator
+{
     /**
      * Make this class behave like a Validator.
      *

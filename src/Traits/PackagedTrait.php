@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Traits;
+<?php
+
+namespace Esensi\Core\Traits;
 
 use Illuminate\Support\Facades\App;
 use InvalidArgumentException;
@@ -7,15 +9,15 @@ use InvalidArgumentException;
  * Traits for helping with package configurations
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
- * @author diego <dieog@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
+ * @author Diego Caprioli <diego@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  * @see Esensi\Core\Contracts\PackagedInterface
  */
-trait PackagedTrait {
-
+trait PackagedTrait
+{
     /**
      * The namespace that should be used by the package.
      *

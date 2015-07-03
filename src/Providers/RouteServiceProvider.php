@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Providers;
+<?php
+
+namespace Esensi\Core\Providers;
 
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -7,13 +9,13 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
  * Route Pattern Service Provider
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-class RouteServiceProvider extends ServiceProvider {
-
+class RouteServiceProvider extends ServiceProvider
+{
     /**
      * This namespace is applied to the controller routes in your routes file.
      *

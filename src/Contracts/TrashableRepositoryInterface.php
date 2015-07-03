@@ -1,16 +1,18 @@
-<?php namespace Esensi\Core\Contracts;
+<?php
+
+namespace Esensi\Core\Contracts;
 
 /**
  * Trashable repository interface
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-interface TrashableRepositoryInterface{
-
+interface TrashableRepositoryInterface
+{
     /**
      * Read the specified resource from storage even if trashed.
      *

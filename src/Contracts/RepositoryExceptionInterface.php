@@ -1,19 +1,21 @@
-<?php namespace Esensi\Core\Contracts;
+<?php
+
+namespace Esensi\Core\Contracts;
 
 use Exception;
 
 /**
  * Repository Exception Interface
  *
- * @author diego <diego@emersonmedia.com>
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
+ * @author Diego Caprioli <diego@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-interface RepositoryExceptionInterface {
-
+interface RepositoryExceptionInterface
+{
     /**
      * Construct the exception
      *

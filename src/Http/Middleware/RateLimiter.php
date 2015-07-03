@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Http\Middleware;
+<?php
+
+namespace Esensi\Core\Http\Middleware;
 
 use Closure;
 use Esensi\Core\Contracts\RateLimiterInterface;
@@ -12,13 +14,13 @@ use Symfony\Component\HttpFoundation\Response;
  * too many requests within a period of time.
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-class RateLimiter implements Middleware, RateLimiterInterface {
-
+class RateLimiter implements Middleware, RateLimiterInterface
+{
     /**
      * The status code to be returned upon rate limiting
      *

@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Repositories;
+<?php
+
+namespace Esensi\Core\Repositories;
 
 use App\Models\Model;
 use Esensi\Core\Contracts\CruddableRepositoryInterface;
@@ -23,7 +25,7 @@ use Illuminate\Foundation\Bus\DispatchesCommands;
  * Complete implementation of repository interfaces.
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
@@ -35,8 +37,8 @@ class Repository implements
     FilterableRepositoryInterface,
     ModelInjectedInterface,
     PackagedInterface,
-    ResourcefulRepositoryInterface {
-
+    ResourcefulRepositoryInterface
+{
     /**
      * Allow controller to dispatch commands.
      *

@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Http\Middleware;
+<?php
+
+namespace Esensi\Core\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\App;
@@ -12,13 +14,13 @@ use Symfony\Component\HttpFoundation\Response;
  * file that is traditionally stored in the public path.
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-class RobotsIndexer implements Middleware {
-
+class RobotsIndexer implements Middleware
+{
     /**
      * Environments that the robots are allowed to index.
      *

@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Traits;
+<?php
+
+namespace Esensi\Core\Traits;
 
 use Exception;
 use Illuminate\Support\Facades\Input;
@@ -8,14 +10,14 @@ use Illuminate\Support\Facades\Response;
  * Trait that handles redirects for API controllers.
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  * @see Esensi\Core\Contracts\ExceptionHandlerInterface
  */
-trait ApiExceptionHandlerTrait {
-
+trait ApiExceptionHandlerTrait
+{
     /**
      * Handles exceptions for API output.
      *

@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Extensions;
+<?php
+
+namespace Esensi\Core\Extensions;
 
 use Illuminate\Pagination\AbstractPaginator;
 
@@ -6,13 +8,13 @@ use Illuminate\Pagination\AbstractPaginator;
  * Extension bindings for HTML macros.
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-class HtmlMacros {
-
+class HtmlMacros
+{
     /**
      * Bind paginationUrl() for use with paginated links
      *

@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Exceptions;
+<?php
+
+namespace Esensi\Core\Exceptions;
 
 use Esensi\Core\Contracts\RepositoryExceptionInterface;
 use Exception;
@@ -9,14 +11,14 @@ use Illuminate\Support\MessageBag;
  * Custom exception handler for repositories
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  * @see Esensi\Core\Contracts\RepositoryExceptionInterface
  */
-class RepositoryException extends Exception implements RepositoryExceptionInterface{
-
+class RepositoryException extends Exception implements RepositoryExceptionInterface
+{
     /**
      * The bag holder
      *

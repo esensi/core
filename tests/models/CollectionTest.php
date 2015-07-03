@@ -7,7 +7,7 @@ use Esensi\Core\Models\Collection;
  * Tests for the Collection class
  *
  * @package Esensi\Core
- * @author diego <diego@emersonmedia.com>
+ * @author Diego Caprioli <diego@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com

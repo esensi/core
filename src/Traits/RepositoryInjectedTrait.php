@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Traits;
+<?php
+
+namespace Esensi\Core\Traits;
 
 use App\Repositories\Repository;
 
@@ -6,14 +8,14 @@ use App\Repositories\Repository;
  * Trait implementation of repository injection interface.
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  * @see Esensi\Core\Contracts\RepositoryInjectedInterface
  */
-trait RepositoryInjectedTrait {
-
+trait RepositoryInjectedTrait
+{
     /**
      * Injected repositories.
      *

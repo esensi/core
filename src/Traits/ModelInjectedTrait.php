@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Traits;
+<?php
+
+namespace Esensi\Core\Traits;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -8,8 +10,8 @@ use Illuminate\Database\Eloquent\Model;
  * @author daniel <daniel@bexarcreative.com>
  * @see Esensi\Core\Contracts\ModelInjectedInterface
  */
-trait ModelInjectedTrait {
-
+trait ModelInjectedTrait
+{
     /**
      * Injected models.
      *

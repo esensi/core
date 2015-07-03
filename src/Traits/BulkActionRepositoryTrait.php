@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Traits;
+<?php
+
+namespace Esensi\Core\Traits;
 
 use App\Models\Collection;
 use Illuminate\Support\Facades\DB;
@@ -7,14 +9,14 @@ use Illuminate\Support\Facades\DB;
  * Trait implementation of bulk action repository interface.
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  * @see Esensi\Core\Contracts\BulkActionRepositoryInterface
  */
-trait BulkActionRepositoryTrait {
-
+trait BulkActionRepositoryTrait
+{
     /**
      * Bulk delete the specified resources in storage.
      *

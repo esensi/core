@@ -7,13 +7,13 @@ use Illuminate\Database\Schema\Blueprint;
  * Create table for failed jobs.
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-class CreateFailedJobsTable extends Migration {
-
+class CreateFailedJobsTable extends Migration
+{
     /**
      * Run the migrations.
      *

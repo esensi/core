@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Http\Middleware;
+<?php
+
+namespace Esensi\Core\Http\Middleware;
 
 use App\Http\Middleware\AuthenticationVerifier;
 use App\Repositories\ActivityRepository as Activity;
@@ -9,13 +11,13 @@ use Illuminate\Support\Facades\Lang;
  * User Filter to Allow RESTful Authentication
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/esensi/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-class ApiAuthenticationVerifier extends AuthenticationVerifier {
-
+class ApiAuthenticationVerifier extends AuthenticationVerifier
+{
     /**
      * Handle an incoming request.
      *

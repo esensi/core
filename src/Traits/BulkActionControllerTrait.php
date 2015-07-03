@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Traits;
+<?php
+
+namespace Esensi\Core\Traits;
 
 use BadMethodCallException;
 use Illuminate\Support\Facades\Input;
@@ -7,14 +9,14 @@ use Illuminate\Support\Facades\Input;
  * Trait implementation of bulk action controller interface.
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  * @see Esensi\Core\Contracts\BulkActionControllerInterface
  */
-trait BulkActionControllerTrait {
-
+trait BulkActionControllerTrait
+{
     /**
      * Perform a bulk action on an array of resources.
      *

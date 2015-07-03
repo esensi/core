@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Contracts;
+<?php
+
+namespace Esensi\Core\Contracts;
 
 use ErrorException;
 
@@ -6,13 +8,13 @@ use ErrorException;
  * Render Error Exception Interface
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-interface RenderErrorExceptionInterface {
-
+interface RenderErrorExceptionInterface
+{
     /**
      * Render a Repository Exception into an HTTP respons.
      *

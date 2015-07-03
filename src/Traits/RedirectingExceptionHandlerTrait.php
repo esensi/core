@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Traits;
+<?php
+
+namespace Esensi\Core\Traits;
 
 use Exception;
 use Illuminate\Support\Facades\Input;
@@ -10,14 +12,14 @@ use Illuminate\Support\Facades\Session;
  * Trait that handles redirects using redirects.
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  * @see Esensi\Core\Contracts\ExceptionHandlerInterface
  */
-trait RedirectingExceptionHandlerTrait {
-
+trait RedirectingExceptionHandlerTrait
+{
     /**
      * Handles exceptions with redirect.
      *

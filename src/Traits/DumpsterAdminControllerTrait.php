@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Traits;
+<?php
+
+namespace Esensi\Core\Traits;
 
 use Esensi\Core\Traits\AdminControllerTrait;
 use Esensi\Core\Traits\DumpsterControllerTrait;
@@ -7,13 +9,13 @@ use Esensi\Core\Traits\DumpsterControllerTrait;
  * Trait that encapsulates other admin related traits.
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-trait DumpsterAdminControllerTrait {
-
+trait DumpsterAdminControllerTrait
+{
     /**
      * Make controller use the administrative traits.
      *

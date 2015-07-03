@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Contracts;
+<?php
+
+namespace Esensi\Core\Contracts;
 
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -7,13 +9,13 @@ use Symfony\Component\HttpFoundation\Response;
  * Robots Indexer Interface
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-interface RobotsIndexerInterface {
-
+interface RobotsIndexerInterface
+{
     /**
      * Render the robots.txt file as an HTTP response.
      *

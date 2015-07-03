@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Contracts;
+<?php
+
+namespace Esensi\Core\Contracts;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -6,13 +8,13 @@ use Illuminate\Database\Eloquent\Model;
  * Interface for injecting models into a class
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-interface ModelInjectedInterface{
-
+interface ModelInjectedInterface
+{
     /**
      * Get the specified model by name
      *

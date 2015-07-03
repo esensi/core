@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Http\Middleware;
+<?php
+
+namespace Esensi\Core\Http\Middleware;
 
 use Closure;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as BaseVerifier;
@@ -7,14 +9,14 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as BaseVerifier;
  * Verify the CSRF token.
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  * @see http://fideloper.com/laravel-http-middleware
  */
-class CsrfTokenVerifier extends BaseVerifier {
-
+class CsrfTokenVerifier extends BaseVerifier
+{
     /**
      * Handle an incoming request.
      *

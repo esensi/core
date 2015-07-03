@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Models;
+<?php
+
+namespace Esensi\Core\Models;
 
 use Esensi\Model\Model as BaseModel;
 use Illuminate\Support\Facades\Lang;
@@ -8,14 +10,14 @@ use Illuminate\Support\Str;
  * Core Model
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  * @see Esensi\Model\Model
  */
-class Model extends BaseModel {
-
+class Model extends BaseModel
+{
     /**
      * The database table used by the model.
      *

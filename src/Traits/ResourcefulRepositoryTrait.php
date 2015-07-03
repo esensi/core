@@ -1,18 +1,20 @@
-<?php namespace Esensi\Core\Traits;
+<?php
+
+namespace Esensi\Core\Traits;
 
 /**
  * Trait implementation of a resource repository.
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
- * @author diego <dieog@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
+ * @author Diego Caprioli <diego@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  * @see Esensi\Core\Contracts\ResourcefulRepositoryInterface
  */
-trait ResourcefulRepositoryTrait {
-
+trait ResourcefulRepositoryTrait
+{
     /**
      * Display a listing of the resource.
      *

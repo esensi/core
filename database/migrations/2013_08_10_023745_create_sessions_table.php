@@ -7,13 +7,13 @@ use Illuminate\Database\Schema\Blueprint;
  * Create store table for sessions (database driver)
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-class CreateSessionsTable extends Migration {
-
+class CreateSessionsTable extends Migration
+{
     /**
      * Run the migrations.
      *

@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Traits;
+<?php
+
+namespace Esensi\Core\Traits;
 
 use ErrorException;
 
@@ -6,14 +8,14 @@ use ErrorException;
  * Trait that renders ErrorExceptions
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  * @see Esensi\Core\Contracts\RenderErrorExceptionInterface
  */
-trait RenderErrorExceptionTrait {
-
+trait RenderErrorExceptionTrait
+{
     /**
      * Render an error exception into an HTTP response.
      *

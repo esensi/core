@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Http\Middleware;
+<?php
+
+namespace Esensi\Core\Http\Middleware;
 
 use App\Repositories\ActivityRepository as Activity;
 use Closure;
@@ -10,13 +12,13 @@ use Illuminate\Support\Facades\Lang;
  * User Filter to Allow Only Authenticated Users
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/esensi/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-class AuthenticationVerifier implements Middleware {
-
+class AuthenticationVerifier implements Middleware
+{
     /**
      * The Guard implementation.
      *

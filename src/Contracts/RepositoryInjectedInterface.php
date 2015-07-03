@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Contracts;
+<?php
+
+namespace Esensi\Core\Contracts;
 
 use Esensi\Core\Repositories\Repository;
 
@@ -6,13 +8,13 @@ use Esensi\Core\Repositories\Repository;
  * Interface for injecting repositories into a class
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-interface RepositoryInjectedInterface{
-
+interface RepositoryInjectedInterface
+{
     /**
      * Get the specified repository by name
      *

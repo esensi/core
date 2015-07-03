@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Traits;
+<?php
+
+namespace Esensi\Core\Traits;
 
 use Esensi\Contracts\PackagedInterface;
 use Esensi\Contracts\RepositoryInjectedInterface;
@@ -10,8 +12,8 @@ use Illuminate\Support\Facades\App;
  * @author daniel <daniel@bexarcreative.com>
  * @see Esensi\Core\Contracts\ApiAncestryControllerInterface
  */
-trait ApiAncestryControllerTrait {
-
+trait ApiAncestryControllerTrait
+{
     /**
      * Get the API ancestor controller class
      * of the current controller class.

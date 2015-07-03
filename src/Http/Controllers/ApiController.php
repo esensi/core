@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Http\Controllers;
+<?php
+
+namespace Esensi\Core\Http\Controllers;
 
 use App\Exceptions\RepositoryException;
 use App\Models\Collection;
@@ -20,8 +22,8 @@ use Illuminate\Support\Facades\Response;
  * Controller for accessing repositories as an API
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
- * @author diego <diego@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
+ * @author Diego Caprioli <diego@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
@@ -29,8 +31,8 @@ use Illuminate\Support\Facades\Response;
 class ApiController extends Controller implements
     ExceptionHandlerInterface,
     PackagedInterface,
-    RepositoryInjectedInterface {
-
+    RepositoryInjectedInterface
+{
     /**
      * Allow controller to dispatch commands.
      *

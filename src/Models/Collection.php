@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Models;
+<?php
+
+namespace Esensi\Core\Models;
 
 use Illuminate\Support\Collection as BaseCollection;
 
@@ -7,14 +9,14 @@ use Illuminate\Support\Collection as BaseCollection;
  * Provides a utility method to parse a comma separated string into an Esensi/Collection.
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
- * @author diego <diego@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
+ * @author Diego Caprioli <diego@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-class Collection extends BaseCollection {
-
+class Collection extends BaseCollection
+{
     /**
      * Creates a new Collection from a mixed variable.
      * Strings are assumed to be delimeter separated and are converted to arrays.

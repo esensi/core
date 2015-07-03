@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Traits;
+<?php
+
+namespace Esensi\Core\Traits;
 
 use Esensi\Core\Traits\ApiAncestryControllerTrait;
 use Esensi\Core\Traits\ConfirmableControllerTrait;
@@ -10,13 +12,13 @@ use Esensi\Core\Traits\SearchableControllerTrait;
  * Trait that encapsulates other admin controller related traits.
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-trait AdminControllerTrait {
-
+trait AdminControllerTrait
+{
     /**
      * Allow access to the API ancestor.
      *

@@ -1,4 +1,6 @@
-<?php namespace Esensi\Core\Traits;
+<?php
+
+namespace Esensi\Core\Traits;
 
 use App\Exceptions\RepositoryException;
 use Illuminate\Support\Facades\App;
@@ -7,14 +9,14 @@ use Illuminate\Support\Facades\App;
  * Trait that renders RepositoryExceptions
  *
  * @package Esensi\Core
- * @author daniel <daniel@emersonmedia.com>
+ * @author Daniel LaBarge <daniel@emersonmedia.com>
  * @copyright 2015 Emerson Media LP
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  * @see Esensi\Core\Contracts\RenderRepositoryExceptionInterface
  */
-trait RenderRepositoryExceptionTrait {
-
+trait RenderRepositoryExceptionTrait
+{
     /**
      * Render a Repository Exception into an HTTP respons.
      *

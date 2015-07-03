@@ -1,6 +1,10 @@
-<?php namespace Esensi\Core\Seeders;
+<?php
+
+namespace Esensi\Core\Seeders;
 
 use App\Models\Model;
+use Esensi\Core\Contracts\SaveOrFailInterface;
+use Esensi\Core\Traits\SaveOrFailTrait;
 use Illuminate\Database\Seeder as BaseSeeder;
 
 /**
@@ -14,7 +18,14 @@ use Illuminate\Database\Seeder as BaseSeeder;
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-class Seeder extends BaseSeeder {
+class Seeder extends BaseSeeder implements SaveOrFailInterface
+{
+    /**
+     * Use the model saving console helper methods.
+     *
+     * @see Esensi\Core\Traits\SaveOrFailTrait
+     */
+    use SaveOrFailTrait;
 
     /**
      * Run before the database seeds.
@@ -44,29 +55,6 @@ class Seeder extends BaseSeeder {
     public function afterRun()
     {
         Model::reguard();
-    }
-
-    /**
-     * Save model or fail by showing errors.
-     *
-     * @param \Esensi\Core\Models\Model $model
-     * @return void
-     */
-    public function saveOrFail(Model $model)
-    {
-        if( ! $model->save() )
-        {
-            $class = class_basename($model);
-
-            $errors = implode("\n- ", $model->getErrors()->all());
-            $this->command->error("\n$class could not be seeded:");
-            $this->command->line('- '.$errors);
-
-            $this->command->comment("\n$class attributes:");
-            $this->command->line($model->toJson(JSON_PRETTY_PRINT));
-
-            exit();
-        }
     }
 
 }

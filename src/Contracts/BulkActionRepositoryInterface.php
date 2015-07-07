@@ -16,6 +16,7 @@ interface BulkActionRepositoryInterface
     /**
      * Bulk delete the specified resources in storage.
      *
+     * @param string $action to perform
      * @param string|array $ids
      * @return integer count of actions performed
      */

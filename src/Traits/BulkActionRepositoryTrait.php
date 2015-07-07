@@ -20,6 +20,7 @@ trait BulkActionRepositoryTrait
     /**
      * Bulk delete the specified resources in storage.
      *
+     * @param string $action to perform
      * @param string|array $ids
      * @return integer count of actions performed
      */
@@ -28,14 +29,18 @@ trait BulkActionRepositoryTrait
         // Get a collection of resources
         $collection = Collection::parseMixed($ids, [',', '+', ' ']);
 
+        // Get any extra arguments passed
+        $arguments = array_slice(func_get_args(), 2);
+
         // Run in a transaction for all or nothing behavior
-        DB::transaction(function() use ($collection, $action)
+        DB::transaction(function() use ($collection, $action, $arguments)
         {
             // Iterate over the resources performing the action on each
-            $collection->each(function($id) use ($action)
+            $collection->each(function($id) use ($action, $arguments)
             {
                 // Repository@<action>($id)
-                call_user_func_array([$this, studly_case($action)], [$id]);
+                array_unshift($arguments, $id);
+                call_user_func_array([$this, studly_case($action)], $arguments);
             });
         });
 

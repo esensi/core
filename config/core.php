@@ -48,6 +48,7 @@ return [
         'App\Repositories\Repository'                   => Esensi\Core\Repositories\Repository::class,
         'App\Repositories\TrashableRepository'          => Esensi\Core\Repositories\TrashableRepository::class,
         'App\Seeders\Seeder'                            => Esensi\Core\Seeders\Seeder::class,
+        'App\Services\SpreadsheetExporter'              => Esensi\Core\Services\SpreadsheetExporter::class,
     ],
 
     /*

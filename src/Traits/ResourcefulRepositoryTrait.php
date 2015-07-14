@@ -22,14 +22,8 @@ trait ResourcefulRepositoryTrait
      */
     public function index()
     {
-        // Get a new query builder
-        $query = $this->getModel()->query();
-
-        // Filter the resources
-        $this->filter($query);
-
         // Paginate the resources
-        return $this->paginate($query);
+        return $this->query()->paginate($query);
     }
 
     /**

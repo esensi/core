@@ -23,7 +23,8 @@ trait ResourcefulRepositoryTrait
     public function index()
     {
         // Paginate the resources
-        return $this->query()->paginate($query);
+        $query = $this->query();
+        return $this->paginate($query);
     }
 
     /**

@@ -16,9 +16,10 @@ interface ResourcefulRepositoryInterface
     /**
      * Display a listing of the resource.
      *
+     * @param  array $filters (optional)
      * @return Illuminate\Pagination\Paginator
      */
-    public function index();
+    public function index(array $filters = []);
 
     /**
      * Store a newly created resource in storage.

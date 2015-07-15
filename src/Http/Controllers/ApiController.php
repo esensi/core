@@ -108,7 +108,7 @@ class ApiController extends Controller implements
             'keywords',
             'max',
             'order',
-            'relationships'
+            'relationships',
             'sort',
             'trashed',
         ]);

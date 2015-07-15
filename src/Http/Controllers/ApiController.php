@@ -104,13 +104,13 @@ class ApiController extends Controller implements
     {
         // Get the filters from input
         $filters = Input::only([
+            'ids',
+            'keywords',
             'max',
             'order',
-            'sort',
-            'keywords',
-            'trashed',
-            'ids',
             'relationships'
+            'sort',
+            'trashed',
         ]);
 
         // Get paginated, filtered results from the repository

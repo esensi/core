@@ -114,7 +114,7 @@ class ApiController extends Controller implements
         ]);
 
         // Get paginated, filtered results from the repository
-        return $this->getRepository()->index($filter);
+        return $this->getRepository()->index($filters);
     }
 
     /**

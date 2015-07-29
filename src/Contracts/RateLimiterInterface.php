@@ -91,8 +91,8 @@ interface RateLimiterInterface
      * Add rate limit headers to the response.
      *
      * @param  Symfony\Component\HttpFoundation\Response $response
-     * @return Symfony\Component\HttpFoundation\Response
+     * @return Symfony\Component\HttpFoundation\Response|void
      */
-    public function addHeaders(Response $response);
+    public function addHeaders(Response $response = null);
 
 }

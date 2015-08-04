@@ -305,7 +305,10 @@ trait FilterableRepositoryTrait
      */
     public function mergeFilters(array $filters = [])
     {
-        $this->filters = array_merge($this->filters, array_filter($filters));
+        $filters = array_filter($filters, function($value) {
+            return ! is_null($value) && $value !== '';
+        });
+        $this->filters = array_merge($this->filters, $filters);
         $this->bindFilters();
     }
 

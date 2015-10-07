@@ -60,7 +60,7 @@ trait FilterableRepositoryTrait
      * Search the resource using filters.
      *
      * @param object $query builder
-     * @return void
+     * @return Illuminate\Database\Query\Builder
      */
     public function filter($query)
     {
@@ -86,6 +86,8 @@ trait FilterableRepositoryTrait
         $this->filterScopes($query);
 
         $query->orderBy($this->order, $this->sort);
+
+        return $query;
     }
 
     /**

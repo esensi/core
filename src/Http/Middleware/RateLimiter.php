@@ -335,10 +335,14 @@ class RateLimiter implements Middleware, RateLimiterInterface
      * Add rate limit headers to the response.
      *
      * @param  Symfony\Component\HttpFoundation\Response $response
-     * @return Symfony\Component\HttpFoundation\Response
+     * @return Symfony\Component\HttpFoundation\Response|void
      */
-    public function addHeaders(Response $response)
+    public function addHeaders(Response $response = null)
     {
+        // Short circuit
+        if( is_null($response) )
+            return;
+
         // Set X-RateLimit headers
         $response->headers->set('X-Ratelimit-Limit', $this->getLimit(), false);
         $response->headers->set('X-Ratelimit-Remaining', $this->getLimit() - $this->getCounter(), false);

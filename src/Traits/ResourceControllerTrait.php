@@ -14,7 +14,6 @@ namespace Esensi\Core\Traits;
  */
 trait ResourceControllerTrait
 {
-
 	/**
      * Display a listing of the resource.
      *

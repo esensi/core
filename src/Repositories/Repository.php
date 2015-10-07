@@ -9,14 +9,15 @@ use Esensi\Core\Contracts\FilterableRepositoryInterface;
 use Esensi\Core\Contracts\FindableRepositoryInterface;
 use Esensi\Core\Contracts\ModelInjectedInterface;
 use Esensi\Core\Contracts\PackagedInterface;
+use Esensi\Core\Contracts\QueriedRepositoryInterface;
 use Esensi\Core\Contracts\RepositoryInjectedInterface;
 use Esensi\Core\Contracts\ResourcefulRepositoryInterface;
 use Esensi\Core\Traits\CruddableRepositoryTrait;
 use Esensi\Core\Traits\ExceptionalRepositoryTrait;
-use Esensi\Core\Traits\FilterableRepositoryTrait;
 use Esensi\Core\Traits\FindableRepositoryTrait;
 use Esensi\Core\Traits\ModelInjectedTrait;
 use Esensi\Core\Traits\PackagedTrait;
+use Esensi\Core\Traits\QueriedRepositoryTrait;
 use Esensi\Core\Traits\RepositoryInjectedTrait;
 use Esensi\Core\Traits\ResourcefulRepositoryTrait;
 use Illuminate\Foundation\Bus\DispatchesCommands;
@@ -37,6 +38,7 @@ class Repository implements
     FilterableRepositoryInterface,
     ModelInjectedInterface,
     PackagedInterface,
+    QueriedRepositoryInterface,
     ResourcefulRepositoryInterface
 {
     /**
@@ -61,13 +63,6 @@ class Repository implements
     use ExceptionalRepositoryTrait;
 
     /**
-     * Make this repository use filter methods.
-     *
-     * @see Esensi\Core\Traits\FilterableRepositoryTrait
-     */
-    use FilterableRepositoryTrait;
-
-    /**
      * Make this repository use find aliases.
      *
      * @see Esensi\Core\Traits\FindableRepositoryTrait
@@ -87,6 +82,13 @@ class Repository implements
      * @see Esensi\Core\Traits\PackagedTrait
      */
     use PackagedTrait;
+
+    /**
+     * Make this repository able to be queried.
+     *
+     * @see Esensi\Core\Traits\QueriedRepositoryTrait
+     */
+    use QueriedRepositoryTrait;
 
     /**
      * Make this repository use injected repositories

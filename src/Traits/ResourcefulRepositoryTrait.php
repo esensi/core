@@ -18,17 +18,13 @@ trait ResourcefulRepositoryTrait
     /**
      * Display a listing of the resource.
      *
+     * @param  array $filters (optional)
      * @return Illuminate\Pagination\Paginator
      */
-    public function index()
+    public function index(array $filters = [])
     {
-        // Get a new query builder
-        $query = $this->getModel()->query();
-
-        // Filter the resources
-        $this->filter($query);
-
         // Paginate the resources
+        $query = $this->query($filters);
         return $this->paginate($query);
     }
 

@@ -25,7 +25,7 @@ class RouteServiceProvider extends CoreRouteServiceProvider
      */
     protected $controllers = [
         'admin'  => 'App\Http\Controllers\Admin',
-        'public' => 'App\Http\Controllers\Public',
+        'public' => 'App\Http\Controllers',
     ];
 
     /**

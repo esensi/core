@@ -30,10 +30,6 @@
       </div>
     <![endif]-->
 
-    <div class="container">
-      <div class="row">
-        <div class="logo">
-          <img src="http://placehold.it/300x100/FFFFFF/D9E4E3&text={{ config('esensi/core::core.metadata.author', 'Esensi') }}" alt="{{ config('esensi/core::core.metadata.author', 'Esensi') }}" />
-        </div>
-      </div>
+    <div class="logo">
+      <img src="https://placeholdit.imgix.net/~text?txtsize=25&bg=ffffff&txtclr=d9e4e3&w=300&h=100&txt={{ config('esensi/core::core.metadata.author', 'Esensi') }}" alt="{{ config('esensi/core::core.metadata.author', 'Esensi') }}" />
     </div>

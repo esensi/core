@@ -154,7 +154,7 @@ return [
         // Admin partials
         'admin' => [
 
-            'account'      => 'esensi/core::core.admin.partials.dropdown',
+            'account'      => 'esensi/core::core.admin.partials.account',
             'drawer'       => 'esensi/core::core.admin.partials.drawer',
             'errors'       => 'esensi/core::core.admin.partials.errors',
             'footer'       => 'esensi/core::core.admin.partials.footer',

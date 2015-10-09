@@ -1,5 +1,13 @@
 @if(config('esensi/core::core.logout', false))
-  <li><a href="{{ route('users.logout') }}"><i class="fa fa-power-off fa-fw"></i></a></li>
+  <li class="logout-menu">
+    <a href="{{ route('users.logout') }}">
+      <span class="sr-only">Log Out</span>
+    </a>
+  </li>
 @else
-  <li><a href="{{ route('index') }}"><i class="fa fa-sign-out fa-fw"></i></a></li>
+  <li class="redirect-menu">
+    <a href="{{ route('index') }}">
+      <span class="sr-only">Public Site</span>
+    </a>
+  </li>
 @endif

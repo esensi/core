@@ -1,14 +1,10 @@
 @section('content')
 
-<div class="container">
-  <div class="row">
-    <div class="panel-container">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          @include(config('esensi/core::core.partials.public.errors'))
-          <p class="lead text-center" style="margin-bottom:0;">n. <em>essence</em>, an awesome Laravel boilerplate application</p>
-        </div>
-      </div>
+<div class="card-container">
+  <div class="card card-intro">
+    <div class="card-block">
+      @include(config('esensi/core::core.partials.public.errors'))
+      <p class="card-text lead text-center">n. <em>essence</em>, an awesome Laravel boilerplate application</p>
     </div>
   </div>
 </div>

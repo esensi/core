@@ -1,5 +1,8 @@
 <div class="modal-header">
-  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+    <span class="sr-only">Close</span>
+  </button>
   <h4 class="modal-title" id="esensiModalTitle">@yield('modal-title')</h4>
 </div>
 <div class="modal-body">
@@ -11,7 +14,5 @@
 </div>
 
 <script type="application/javascript">
-
   Esensi.modal.init();
-
 </script>

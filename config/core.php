@@ -28,7 +28,7 @@ return [
     | alias here so that the local class may be used instead.
     |
     */
-    'aliases'     => [
+    'aliases' => [
         'App\Console\Commands\Command'                  => Esensi\Core\Console\Commands\Command::class,
         'App\Exceptions\RepositoryException'            => Esensi\Core\Exceptions\RepositoryException::class,
         'App\Http\Apis\Api'                             => Esensi\Core\Http\Apis\Api::class,
@@ -62,7 +62,7 @@ return [
     |
     */
 
-    'packages'    => [
+    'packages' => [
         'user',
         'activity',
     ],
@@ -77,7 +77,7 @@ return [
     |
     */
 
-    'prefixes'    => [
+    'prefixes' => [
         'admin'  => 'admin',
         'public' => '',
         'api'    => [
@@ -98,13 +98,13 @@ return [
     */
 
     // UIs
-    'ui'          => [
+    'ui' => [
         'admin'  => true,
         'public' => true,
     ],
 
     // APIs
-    'api'         => [
+    'api' => [
         'public' => true,
         'admin'  => true,
     ],
@@ -119,7 +119,7 @@ return [
     |
     */
 
-    'views'       => [
+    'views' => [
 
         // Public views
         'public' => [
@@ -128,20 +128,20 @@ return [
             'modal' => 'esensi/core::core.admin.modal',
 
             // Error views
-            '404'   => 'esensi/core::core.public.missing',
-            '429'   => 'esensi/core::core.public.whoops',
-            '500'   => 'esensi/core::core.public.whoops',
-            '503'   => 'esensi/core::core.public.maintenance',
+            '404' => 'esensi/core::core.public.missing',
+            '429' => 'esensi/core::core.public.whoops',
+            '500' => 'esensi/core::core.public.whoops',
+            '503' => 'esensi/core::core.public.maintenance',
         ],
 
         // Admin views
-        'admin'  => [
+        'admin' => [
 
             'modal' => 'esensi/core::core.admin.modal',
         ],
     ],
 
-    'partials'    => [
+    'partials' => [
 
         // Public partials
         'public' => [
@@ -152,9 +152,9 @@ return [
         ],
 
         // Admin partials
-        'admin'  => [
+        'admin' => [
 
-            'account'      => 'esensi/core::core.admin.partials.dropdown',
+            'account'      => 'esensi/core::core.admin.partials.account',
             'drawer'       => 'esensi/core::core.admin.partials.drawer',
             'errors'       => 'esensi/core::core.admin.partials.errors',
             'footer'       => 'esensi/core::core.admin.partials.footer',
@@ -174,7 +174,7 @@ return [
     |
     */
 
-    'dashboard'   => false,
+    'dashboard' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -186,7 +186,7 @@ return [
     |
     */
 
-    'logout'      => false,
+    'logout' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -238,32 +238,32 @@ return [
     |
     */
 
-    'rates'       => [
+    'rates' => [
 
         // Should the limiter be enabled?
-        'enabled'    => true,
+        'enabled' => true,
 
         // Should limits be based on unique routes?
-        'routes'     => true,
+        'routes' => true,
 
         // Should route uniqueness be based on the route parameters?
         'parameters' => true,
 
         // Request per period
-        'limit'      => 60,
+        'limit' => 60,
 
         // Period duration in minutes
-        'period'     => 1,
+        'period' => 1,
 
         // Cache settings
-        'cache'      => [
+        'cache' => [
 
             // Namespace for tags
-            'tag'     => 'xrate',
+            'tag' => 'xrate',
 
             // Cache storage settings
-            'driver'  => 'file',
-            'table'   => 'cache',
+            'driver' => 'file',
+            'table'  => 'cache',
 
             // Timeout (in minutes) an IP should be blocked
             'timeout' => 10,

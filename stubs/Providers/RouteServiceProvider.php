@@ -3,7 +3,7 @@
 namespace Esensi\{Package}\Providers;
 
 use Illuminate\Routing\Router;
-use Esensi\Core\Providers\RouteServiceProvider as CoreRouteServiceProvider;
+use Esensi\Core\Providers\RouteServiceProvider as ServiceProvider;
 
 /**
  * Route Pattern Service Provider
@@ -14,12 +14,10 @@ use Esensi\Core\Providers\RouteServiceProvider as CoreRouteServiceProvider;
  * @license   https://github.com/{vendor}/{package}/blob/master/LICENSE.txt {License} License
  * @link      {URL}
  */
-class RouteServiceProvider extends CoreRouteServiceProvider
+class RouteServiceProvider extends ServiceProvider
 {
     /**
-     * The namespaces is applied to all UI controller routes.
-     *
-     * In addition, it is set as the URL generator's root namespace.
+     * The namespaces to be applied to all UI controller routes.
      *
      * @var array
      */
@@ -29,14 +27,14 @@ class RouteServiceProvider extends CoreRouteServiceProvider
     ];
 
     /**
-     * This namespace is applied to all API routes.
+     * The namespace to be applied to all API routes.
      *
      * @var string
      */
     protected $apis = 'App\Http\Apis';
 
     /**
-     * Any custom patterns the package should set to avoid collisions.
+     * Custom patterns for routes used by this package.
      *
      * @var array
      */

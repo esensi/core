@@ -31,8 +31,8 @@ return [
     'aliases'     => [
         'App\Console\Commands\Command'                  => Esensi\Core\Console\Commands\Command::class,
         'App\Exceptions\RepositoryException'            => Esensi\Core\Exceptions\RepositoryException::class,
-        'App\Http\Controllers\Admin\Controller'         => Esensi\Core\Http\Controllers\Admin\Controller::class,
         'App\Http\Apis\Api'                             => Esensi\Core\Http\Apis\Api::class,
+        'App\Http\Controllers\Admin\Controller'         => Esensi\Core\Http\Controllers\Admin\Controller::class,
         'App\Http\Controllers\Controller'               => Esensi\Core\Http\Controllers\Controller::class,
         'App\Http\Middleware\ApiAuthenticationVerifier' => Esensi\Core\Http\Middleware\ApiAuthenticationVerifier::class,
         'App\Http\Middleware\AuthenticatedRedirector'   => Esensi\Core\Http\Middleware\AuthenticatedRedirector::class,

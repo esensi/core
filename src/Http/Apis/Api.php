@@ -1,6 +1,6 @@
 <?php
 
-namespace Esensi\Core\Http\Controllers;
+namespace Esensi\Core\Http\Apis;
 
 use App\Exceptions\RepositoryException;
 use App\Models\Collection;
@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Response;
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-class ApiController extends Controller implements
+class Api extends Controller implements
     ExceptionHandlerInterface,
     PackagedInterface,
     RepositoryInjectedInterface
@@ -64,15 +64,15 @@ class ApiController extends Controller implements
     /**
      * Make use of Repository injection
      *
-     * @see Esensi\Core\Traits\RepositoryInjectedTrait
+     * @see \Esensi\Core\Traits\RepositoryInjectedTrait
      */
     use RepositoryInjectedTrait;
 
     /**
      * Inject dependencies
      *
-     * @param Esensi\Core\Repositories\Repository $repository
-     * @return Esensi\Core\Http\Controllers\ApiController
+     * @param \Esensi\Core\Repositories\Repository $repository
+     * @return \Esensi\Core\Http\Apis\Api
      */
     public function __construct(Repository $repository)
     {

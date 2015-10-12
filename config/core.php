@@ -28,12 +28,12 @@ return [
     | alias here so that the local class may be used instead.
     |
     */
-    'aliases' => [
+    'aliases'     => [
         'App\Console\Commands\Command'                  => Esensi\Core\Console\Commands\Command::class,
         'App\Exceptions\RepositoryException'            => Esensi\Core\Exceptions\RepositoryException::class,
-        'App\Http\Controllers\AdminController'          => Esensi\Core\Http\Controllers\AdminController::class,
-        'App\Http\Controllers\ApiController'            => Esensi\Core\Http\Controllers\ApiController::class,
-        'App\Http\Controllers\PublicController'         => Esensi\Core\Http\Controllers\PublicController::class,
+        'App\Http\Apis\Api'                             => Esensi\Core\Http\Apis\Api::class,
+        'App\Http\Controllers\Admin\Controller'         => Esensi\Core\Http\Controllers\Admin\Controller::class,
+        'App\Http\Controllers\Controller'               => Esensi\Core\Http\Controllers\Controller::class,
         'App\Http\Middleware\ApiAuthenticationVerifier' => Esensi\Core\Http\Middleware\ApiAuthenticationVerifier::class,
         'App\Http\Middleware\AuthenticatedRedirector'   => Esensi\Core\Http\Middleware\AuthenticatedRedirector::class,
         'App\Http\Middleware\AuthenticationVerifier'    => Esensi\Core\Http\Middleware\AuthenticationVerifier::class,
@@ -62,7 +62,7 @@ return [
     |
     */
 
-    'packages' => [
+    'packages'    => [
         'user',
         'activity',
     ],
@@ -77,12 +77,12 @@ return [
     |
     */
 
-    'prefixes' => [
-        'admin'         => 'admin',
-        'public'        => '',
-        'api' => [
-            'latest'    => 'api',
-            'v1'        => 'api/v1',
+    'prefixes'    => [
+        'admin'  => 'admin',
+        'public' => '',
+        'api'    => [
+            'latest' => 'api',
+            'v1'     => 'api/v1',
         ]
     ],
 
@@ -98,13 +98,13 @@ return [
     */
 
     // UIs
-    'ui' => [
+    'ui'          => [
         'admin'  => true,
         'public' => true,
     ],
 
     // APIs
-    'api' => [
+    'api'         => [
         'public' => true,
         'admin'  => true,
     ],
@@ -119,40 +119,40 @@ return [
     |
     */
 
-    'views' => [
+    'views'       => [
 
         // Public views
         'public' => [
 
-            'index'       => 'esensi/core::core.public.index',
-            'modal'       => 'esensi/core::core.admin.modal',
+            'index' => 'esensi/core::core.public.index',
+            'modal' => 'esensi/core::core.admin.modal',
 
             // Error views
-            '404' => 'esensi/core::core.public.missing',
-            '429' => 'esensi/core::core.public.whoops',
-            '500' => 'esensi/core::core.public.whoops',
-            '503' => 'esensi/core::core.public.maintenance',
+            '404'   => 'esensi/core::core.public.missing',
+            '429'   => 'esensi/core::core.public.whoops',
+            '500'   => 'esensi/core::core.public.whoops',
+            '503'   => 'esensi/core::core.public.maintenance',
         ],
 
         // Admin views
-        'admin' => [
+        'admin'  => [
 
-            'modal'   => 'esensi/core::core.admin.modal',
+            'modal' => 'esensi/core::core.admin.modal',
         ],
     ],
 
-    'partials' => [
+    'partials'    => [
 
         // Public partials
         'public' => [
 
-            'errors'  => 'esensi/core::core.admin.partials.errors',
-            'footer'  => 'esensi/core::core.public.partials.footer',
-            'header'  => 'esensi/core::core.public.partials.header',
+            'errors' => 'esensi/core::core.admin.partials.errors',
+            'footer' => 'esensi/core::core.public.partials.footer',
+            'header' => 'esensi/core::core.public.partials.header',
         ],
 
         // Admin partials
-        'admin' => [
+        'admin'  => [
 
             'account'      => 'esensi/core::core.admin.partials.dropdown',
             'drawer'       => 'esensi/core::core.admin.partials.drawer',
@@ -174,7 +174,7 @@ return [
     |
     */
 
-    'dashboard' => false,
+    'dashboard'   => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -186,7 +186,7 @@ return [
     |
     */
 
-    'logout' => false,
+    'logout'      => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -215,7 +215,7 @@ return [
     |
     */
 
-    'metadata' => [
+    'metadata'    => [
 
         'keywords'    => 'emersonmedia esensi laravel boilerplate framework platform',
         'description' => 'Esensi is an awesome boilerplate application.',
@@ -238,25 +238,25 @@ return [
     |
     */
 
-    'rates' => [
+    'rates'       => [
 
         // Should the limiter be enabled?
-        'enabled' => true,
+        'enabled'    => true,
 
         // Should limits be based on unique routes?
-        'routes'  => true,
+        'routes'     => true,
 
         // Should route uniqueness be based on the route parameters?
-        'parameters'  => true,
+        'parameters' => true,
 
         // Request per period
-        'limit'   => 60,
+        'limit'      => 60,
 
         // Period duration in minutes
-        'period'  => 1,
+        'period'     => 1,
 
         // Cache settings
-        'cache' => [
+        'cache'      => [
 
             // Namespace for tags
             'tag'     => 'xrate',

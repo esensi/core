@@ -18,7 +18,7 @@ trait ApiAncestryControllerTrait
      * Get the API ancestor controller class
      * of the current controller class.
      *
-     * @return Esensi\Core\Http\Controllers\ApiController
+     * @return \Esensi\Core\Http\Apis\Api
      */
     public function api()
     {
@@ -44,7 +44,7 @@ trait ApiAncestryControllerTrait
         }
 
         // Return first ApiController ancestor found
-        if( str_contains($class, 'ApiController'))
+        if( str_contains($class, 'Api'))
         {
             return $parent;
         }

@@ -2,7 +2,6 @@
 
 namespace Esensi\{Package}\Providers;
 
-use Illuminate\Routing\Router;
 use Esensi\Core\Providers\RouteServiceProvider as ServiceProvider;
 
 /**

@@ -40,7 +40,7 @@
         <ul class="sidebar-menu">
           @if(config('esensi/core::core.dashboard', true))
             <li class="dashboard-menu @if(starts_with(Route::currentRouteName(),  ['index', 'admin.dashboard'])) active @endif">
-              <a href="{{ route('admin.dashboard', 'dashboard') }}">Dashboard</a>
+              <a href="{{ route('admin.dashboard') }}">Dashboard</a>
             </li>
           @endif
 

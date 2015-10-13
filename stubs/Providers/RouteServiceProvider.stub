@@ -1,18 +1,17 @@
 <?php
 
-namespace Esensi\{Package}\Providers;
+namespace Esensi\{{Package}}\Providers;
 
-use Illuminate\Routing\Router;
 use Esensi\Core\Providers\RouteServiceProvider as ServiceProvider;
 
 /**
  * Route Pattern Service Provider
  *
- * @package   {Vendor}\{Package}
- * @author    {Developer} <{Email}>
- * @copyright {Year} {Company}
- * @license   https://github.com/{vendor}/{package}/blob/master/LICENSE.txt {License} License
- * @link      {URL}
+ * @package   {{Vendor}}\{{Package}}
+ * @author    {{Developer}} <{{Email}}>
+ * @copyright {{Year}} {{Company}}
+ * @license   https://github.com/{{vendor}}/{{package}}/blob/master/LICENSE.txt {{License}} License
+ * @link      {{URL}}
  */
 class RouteServiceProvider extends ServiceProvider
 {

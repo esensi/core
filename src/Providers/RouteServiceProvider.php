@@ -4,6 +4,7 @@ namespace Esensi\Core\Providers;
 
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use \ReflectionClass;
 
 /**
  * Route Pattern Service Provider
@@ -94,10 +95,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapControllers(Router $router)
     {
+        $path = $this->routesPath();
         foreach ($this->controllers as $ui => $namespace) {
-            $router->group(['namespace' => $namespace], function ($router) use ($ui) {
-                require_once __DIR__ . '/../Http/Routes/' . $ui . '.php';
-            });
+            $this->groupRoutesByNamespace($router, $namespace, $ui);
         }
     }
 
@@ -110,9 +110,34 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapApis(Router $router)
     {
         if( $this->apis !== null ) {
-            $router->group(['namespace' => $this->apis], function ($router) {
-                require_once __DIR__ . '/../Http/Routes/api.php';
-            });
+            $this->groupRoutesByNamespace($router, $this->apis, 'api');
         }
+    }
+
+    /**
+     * Group all the routes in a file by a controller namespace.
+     *
+     * @param \Illuminate\Routing\Router $router
+     * @param string $namespace
+     * @param string $file name
+     * @return void
+     */
+    protected function groupRoutesByNamespace(Router $router, $namespace, $file)
+    {
+        $path = $this->routesPath();
+        $router->group(['namespace' => $namespace], function ($router) use ($path, $file) {
+            require $path . $file . '.php';
+        });
+    }
+
+    /**
+     * Get the path to the routes based on the called class file path.
+     *
+     * @return string
+     */
+    protected function routesPath()
+    {
+        $reflector = new ReflectionClass(get_class($this));
+        return dirname($reflector->getFileName()) . '/../Http/Routes/';
     }
 }

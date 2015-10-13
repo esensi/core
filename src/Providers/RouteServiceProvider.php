@@ -126,7 +126,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         $path = $this->routesPath();
         $router->group(['namespace' => $namespace], function ($router) use ($path, $file) {
-            require_once $path . $file . '.php';
+            require $path . $file . '.php';
         });
     }
 

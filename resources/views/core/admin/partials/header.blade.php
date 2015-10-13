@@ -40,7 +40,7 @@
         <ul id="sidebarMenu" class="sidebar-menu nav navmenu-nav">
           @if(config('esensi/core::core.dashboard', true))
             <li class="panel dropdown @if(starts_with(Route::currentRouteName(),  ['index', 'admin.dashboard'])) active @endif">
-              <a href="{{ route('admin.dashboard', 'dashboard') }}"><i class="fa fa-fw fa-dashboard"></i> Dashboard<i class="fa fa-fw arrow"></i></a>
+              <a href="{{ route('admin.dashboard') }}"><i class="fa fa-fw fa-dashboard"></i> Dashboard<i class="fa fa-fw arrow"></i></a>
             </li>
           @endif
 

@@ -1,26 +1,26 @@
 <?php
 
-namespace {Vendor}\{Package}\Providers;
+namespace {{Vendor}}\{{Package}}\Providers;
 
 use Esensi\Loaders\Providers\ServiceProvider;
 
 /**
- * Service provider for {Vendor}\{Package} components package.
+ * Service provider for {{Vendor}}\{{Package}} components package.
  *
- * @package {Vendor}\{Package}
- * @author {Developer} <{Email}>
- * @copyright {Year} {Company}
- * @license https://github.com/{vendor}/{package}/blob/master/LICENSE.txt {License} License
- * @link {URL}
+ * @package {{Vendor}}\{{Package}}
+ * @author {{Developer}} <{{Email}}>
+ * @copyright {{Year}} {{Company}}
+ * @license https://github.com/{{vendor}}/{{package}}/blob/master/LICENSE.txt {{License}} License
+ * @link {{URL}}
  */
-class {Package}ServiceProvider extends ServiceProvider
+class {{Package}}ServiceProvider extends ServiceProvider
 {
     /**
      * The namespace of the loaded config files.
      *
      * @var string
      */
-    protected $namespace = '{vendor}/{package}';
+    protected $namespace = '{{vendor}}/{{package}}';
 
     /**
      * Bootstrap the application events.

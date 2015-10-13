@@ -37,7 +37,7 @@
           {{ config('esensi/core::core.metadata.author', 'Esensi')}}
         </a>
 
-        <ul class="sidebar-menu">
+        <ul id="sidebarMenu" class="sidebar-menu">
           @if(config('esensi/core::core.dashboard', true))
             <li class="dashboard-menu @if(starts_with(Route::currentRouteName(),  ['index', 'admin.dashboard'])) active @endif">
               <a href="{{ route('admin.dashboard') }}">Dashboard</a>

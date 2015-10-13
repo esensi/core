@@ -3,11 +3,11 @@
 namespace Esensi\Core\Exceptions;
 
 use App\Exceptions\PermissionVerifierException;
+use App\Exceptions\RepositoryException as RepoException;
 use App\Repositories\ActivityRepository as Activity;
 use ErrorException;
 use Esensi\Core\Contracts\RenderErrorExceptionInterface;
 use Esensi\Core\Contracts\RenderRepositoryExceptionInterface;
-use Esensi\Core\Exceptions\RepositoryException;
 use Esensi\Core\Traits\RenderErrorExceptionTrait;
 use Esensi\Core\Traits\RenderRepositoryExceptionTrait;
 use Esensi\User\Contracts\RenderPermissionVerifierExceptionInterface;
@@ -53,7 +53,7 @@ class Handler extends ExceptionHandler implements
      */
     protected $dontReport = [
         HttpException::class,
-        RepositoryException::class,
+        RepoException::class,
     ];
 
     /**

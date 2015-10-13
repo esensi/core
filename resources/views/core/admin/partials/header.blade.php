@@ -33,7 +33,7 @@
 
       <div class="sidebar">
 
-        <a class="logo" href="{{ route('admin.dashboard', 'dashboard') }}">
+        <a class="logo" href="{{ route('admin.dashboard') }}">
           {{ config('esensi/core::core.metadata.author', 'Esensi')}}
         </a>
 

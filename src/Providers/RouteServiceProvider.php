@@ -4,6 +4,7 @@ namespace Esensi\Core\Providers;
 
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use \ReflectionClass;
 
 /**
  * Route Pattern Service Provider
@@ -136,7 +137,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function routesPath()
     {
-        $reflector = new \ReflectionClass(get_class($this));
+        $reflector = new ReflectionClass(get_class($this));
         return dirname($reflector->getFileName()) . '/../Http/Routes/';
     }
 }

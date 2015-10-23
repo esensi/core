@@ -37,10 +37,10 @@
           <span>{{ config('esensi/core::core.metadata.author', 'Esensi')}}</span>
         </a>
 
-        <ul id="sidebarMenu" class="sidebar-menu">
+        <ul id="sidebarMenu" class="sidebar-menu nav nav-stacked nav-pills">
           @if(config('esensi/core::core.dashboard', true))
-            <li class="dashboard-menu @if(starts_with(Route::currentRouteName(),  ['index', 'admin.dashboard'])) active @endif">
-              <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+            <li class="dashboard-menu nav-item @if(starts_with(Route::currentRouteName(),  ['index', 'admin.dashboard'])) active @endif">
+              <a href="{{ route('admin.dashboard') }}" class="nav-link">Dashboard</a>
             </li>
           @endif
 
@@ -68,9 +68,9 @@
           <span class="sr-only">Toggle Menu</span>
         </button>
 
-        <ul class="header-menu">
-          <li class="account-menu">
-            <a href="{{ route('admin.users.account') }}" class="account-menu-toggle" data-toggle="dropdown">
+        <ul class="header-menu nav nav-pills">
+          <li class="account-menu nav-item">
+            <a href="{{ route('admin.users.account') }}" class="account-menu-toggle nav-link" data-toggle="dropdown">
               {{ Auth::user()->display_name }}
             </a>
             @include(config('esensi/core::core.partials.admin.account'))

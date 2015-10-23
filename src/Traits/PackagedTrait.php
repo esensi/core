@@ -294,7 +294,7 @@ trait PackagedTrait
     public function redirect($key, array $params = [])
     {
         // Redirect to intended route
-        $route = $this->config('redirects.' . $this->ui . '.' . $key);
+        $route = $this->config('redirects.' . $this->ui . '.' . $key, $key);
         return App::make('redirect')->route($route, $params);
     }
 

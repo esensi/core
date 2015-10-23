@@ -56,7 +56,7 @@ trait BulkActionControllerTrait
         $count = $this->api()->bulkDelete($ids);
 
         // Redirect back with message
-        return $this->redirect( 'bulk.deleted' )
+        return $this->back( 'bulk.deleted' )
             ->with('message', $this->message('bulk.deleted', [ 'count' => $count ]) );
     }
 
@@ -72,7 +72,7 @@ trait BulkActionControllerTrait
         $count = $this->api()->bulkRestore($ids);
 
         // Redirect back with message
-        return $this->redirect( 'bulk.restored' )
+        return $this->back( 'bulk.restored' )
             ->with('message', $this->message('bulk.restored', [ 'count' => $count ]) );
     }
 
@@ -88,7 +88,7 @@ trait BulkActionControllerTrait
         $count = $this->api()->bulkTrash($ids);
 
         // Redirect back with message
-        return $this->redirect( 'bulk.trashed' )
+        return $this->back( 'bulk.trashed' )
             ->with('message', $this->message('bulk.trashed', [ 'count' => $count ]) );
     }
 

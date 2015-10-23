@@ -1,8 +1,7 @@
-@extends('esensi/core::core.public.default')
+@extends('esensi/core::core.public.centered')
 
-@section('content')
+@section('card')
 
-<div class="card-container">
   <div class="card card-missing">
     <div class="card-header text-center">
       <h3>Page Not Found</h3>
@@ -12,6 +11,5 @@
       <a class="card-link" href="{{ route('index') }}">Go to Home Page</a>
     </div>
   </div>
-</div>
 
 @stop

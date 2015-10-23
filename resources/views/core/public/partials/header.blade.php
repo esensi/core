@@ -29,7 +29,3 @@
         You'll find that many websites work and look better, and you'll be safer online!
       </div>
     <![endif]-->
-
-    <div class="logo">
-      <img src="https://placeholdit.imgix.net/~text?txtsize=25&bg=ffffff&txtclr=d9e4e3&w=300&h=100&txt={{ config('esensi/core::core.metadata.author', 'Esensi') }}" alt="{{ config('esensi/core::core.metadata.author', 'Esensi') }}" />
-    </div>

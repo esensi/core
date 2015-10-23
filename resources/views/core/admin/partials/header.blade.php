@@ -34,7 +34,7 @@
       <div class="sidebar">
 
         <a class="logo" href="{{ route('admin.dashboard') }}">
-          {{ config('esensi/core::core.metadata.author', 'Esensi')}}
+          <span>{{ config('esensi/core::core.metadata.author', 'Esensi')}}</span>
         </a>
 
         <ul id="sidebarMenu" class="sidebar-menu">

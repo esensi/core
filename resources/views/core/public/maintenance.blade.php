@@ -1,8 +1,7 @@
-@extends('esensi/core::core.public.default')
+@extends('esensi/core::core.public.centered')
 
-@section('content')
+@section('card')
 
-<div class="card-container">
   <div class="card card-maintenance">
     <div class="card-header text-center">
       <h3>We'll Be Right Back</h3>
@@ -12,6 +11,5 @@
       <a class="card-link" href="mailto:{{ Config::get('mail.from.address') }}">Contact Support</a>
     </div>
   </div>
-</div>
 
 @stop

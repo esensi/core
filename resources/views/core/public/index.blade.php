@@ -1,12 +1,12 @@
-@section('content')
+@extends('esensi/core::core.public.centered')
 
-<div class="card-container">
+@section('card')
+
   <div class="card card-intro">
     <div class="card-block">
       @include(config('esensi/core::core.partials.public.errors'))
-      <p class="card-text lead text-center">n. <em>essence</em>, an awesome Laravel boilerplate application</p>
+      <p class="card-text lead text-center">Build Better Laravel Apps</p>
     </div>
   </div>
-</div>
 
 @stop

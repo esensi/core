@@ -11,7 +11,8 @@ use Esensi\Core\Contracts\RepositoryInjectedInterface;
 use Esensi\Core\Traits\ApiExceptionHandlerTrait;
 use Esensi\Core\Traits\PackagedTrait;
 use Esensi\Core\Traits\RepositoryInjectedTrait;
-use Illuminate\Foundation\Bus\DispatchesCommands;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\App;
@@ -34,11 +35,18 @@ class Api extends Controller implements
     RepositoryInjectedInterface
 {
     /**
+     * Authorizes requests prior to calling the controller methods.
+     *
+     * @see Illuminate\Foundation\Auth\Access\AuthorizesRequests
+     */
+    use AuthorizesRequests;
+
+    /**
      * Allow controller to dispatch commands.
      *
-     * @see Illuminate\Foundation\Bus\DispatchesCommands
+     * @see Illuminate\Foundation\Bus\DispatchesJobs
      */
-    use DispatchesCommands;
+    use DispatchesJobs;
 
     /**
      * Validate requests prior to calling the controller methods.

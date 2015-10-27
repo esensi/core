@@ -13,11 +13,13 @@ use Esensi\Core\Traits\RenderRepositoryExceptionTrait;
 use Esensi\User\Contracts\RenderPermissionVerifierExceptionInterface;
 use Esensi\User\Traits\RenderPermissionVerifierExceptionTrait;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler implements
    RenderErrorExceptionInterface,
@@ -53,6 +55,8 @@ class Handler extends ExceptionHandler implements
      */
     protected $dontReport = [
         HttpException::class,
+        ModelNotFoundException::class,
+        NotFoundHttpException::class,
         RepoException::class,
     ];
 
@@ -90,6 +94,11 @@ class Handler extends ExceptionHandler implements
      */
     public function render($request, Exception $e)
     {
+        if( $e instanceof ModelNotFoundException )
+        {
+            $e = new NotFoundHttpException($e->getMessage(), $e);
+        }
+
         // Shortcut for JSON request
         if( $request->ajax() || $request->wantsJson() )
         {

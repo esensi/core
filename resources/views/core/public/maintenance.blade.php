@@ -8,7 +8,7 @@
     </div>
     <div class="card-block">
       <p class="card-text">We are conducting a bit of maintenance right now. This web application will be back just as soon as we're finished!</p>
-      <a class="card-link" href="mailto:{{ Config::get('mail.from.address') }}">Contact Support</a>
+      <a class="btn btn-primary" href="mailto:{{ Config::get('mail.from.address') }}">Contact Support</a>
     </div>
   </div>
 

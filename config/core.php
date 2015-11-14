@@ -38,6 +38,7 @@ return [
         'App\Http\Middleware\AuthenticatedRedirector'   => Esensi\Core\Http\Middleware\AuthenticatedRedirector::class,
         'App\Http\Middleware\AuthenticationVerifier'    => Esensi\Core\Http\Middleware\AuthenticationVerifier::class,
         'App\Http\Middleware\CsrfTokenVerifier'         => Esensi\Core\Http\Middleware\CsrfTokenVerifier::class,
+        'App\Http\Middleware\LocaleSetter'              => Esensi\Core\Http\Middleware\LocaleSetter::class,
         'App\Http\Middleware\RateLimiter'               => Esensi\Core\Http\Middleware\RateLimiter::class,
         'App\Http\Middleware\RobotsIndexer'             => Esensi\Core\Http\Middleware\RobotsIndexer::class,
         'App\Http\Requests\Request'                     => Esensi\Core\Http\Requests\Request::class,

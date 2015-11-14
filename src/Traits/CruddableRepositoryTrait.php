@@ -31,7 +31,7 @@ trait CruddableRepositoryTrait
         if( $object instanceof ResettableModelInterface ) {
             $object->resetAttributes();
         }
-        $object->fill(array_filter(array_only($attributes, $model->getFillable())));
+        $object->fill(array_only($attributes, $model->getFillable()));
 
         // Fire before listeners
         $this->eventUntil('creating', [ $object ] );
@@ -90,7 +90,7 @@ trait CruddableRepositoryTrait
         if( $object instanceof ResettableModelInterface ) {
             $object->resetAttributes();
         }
-        $object->fill( array_filter(array_only($attributes, $object->getFillable())) );
+        $object->fill( array_only($attributes, $object->getFillable()) );
 
         // Throw an error if the resource could not be updated
         if( ! $object->save() )

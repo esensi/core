@@ -2,6 +2,8 @@
 
 namespace Esensi\Core\Traits;
 
+use Esensi\Core\Contracts\ResettableModelInterface;
+
 /**
  * Trait implementation of CRUD repository.
  *
@@ -25,7 +27,11 @@ trait CruddableRepositoryTrait
     {
         // Fill the model attributes
         $model = $this->getModel();
-        $object = new $model( array_only($attributes, $model->getFillable()) );
+        $object = new $model;
+        if( $object instanceof ResettableModelInterface ) {
+            $object->resetAttributes();
+        }
+        $object->fill(array_filter(array_only($attributes, $model->getFillable())));
 
         // Fire before listeners
         $this->eventUntil('creating', [ $object ] );
@@ -81,7 +87,10 @@ trait CruddableRepositoryTrait
         $this->eventUntil('updating', [ $object ] );
 
         // Fill the attributes
-        $object->fill( array_only($attributes, $object->getFillable()) );
+        if( $object instanceof ResettableModelInterface ) {
+            $object->resetAttributes();
+        }
+        $object->fill( array_filter(array_only($attributes, $object->getFillable())) );
 
         // Throw an error if the resource could not be updated
         if( ! $object->save() )

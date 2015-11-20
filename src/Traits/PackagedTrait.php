@@ -314,17 +314,16 @@ trait PackagedTrait
     }
 
     /**
-     * Make the name of the event from the called class.
-     *
-     * @example "Esensi/Class/Foo" returns "esensi"
+     * Combine the event name with the namespace of the package.
      *
      * @param string $name of event
      * @return string
      */
     public function getNamespacedEventName($name)
     {
-        $namespace = head(explode('\\', strtolower(get_called_class())));
-        return $namespace . '.' . $this->package . '.' . $name;
+        $namespace = trim($this->namespacing(), '::');
+        $namespace = ! empty($namespace) ? $namespace . '.' : '';
+        return strtolower($namespace . $this->package . '.' . $name);
     }
 
     /**

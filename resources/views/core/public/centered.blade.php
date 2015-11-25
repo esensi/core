@@ -12,7 +12,7 @@
     @if(config('esensi/core::core.attribution.enable', true))
       <div class="attribution">
         <a href="{{ config('esensi/core::core.attribution.url', 'http://esen.si') }}" target="_blank">
-          {{ config('esensi/core::core.attribution.name') }}
+          {!! config('esensi/core::core.attribution.name') !!}
         </a>
       </div>
     @endif

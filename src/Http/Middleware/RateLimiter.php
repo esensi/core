@@ -327,7 +327,8 @@ class RateLimiter implements Middleware, RateLimiterInterface
         }
 
         // Make a new response
-        $response = response($content, $code)->headers->set('Content-Type', $contentType, true);
+        $response = response($content, $code);
+        $response->headers->set('Content-Type', $contentType, true);
         return $response;
     }
 

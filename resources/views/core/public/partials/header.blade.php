@@ -21,7 +21,7 @@
       <script src="http://cdnjs.cloudflare.com/ajax/libs/es5-shim/2.0.8/es5-shim.min.js">
     <![endif]-->
   </head>
-  <body class="public {{ str_replace('.', '-', Route::currentRouteName()) }}">
+  <body class="public {{ str_replace('.', '-', Route::currentRouteName()) }} {{ isset($code) && $code !== 200 ? 'status-' . $code : null }}">
     <!--[if lt IE 9]>
       <div class="alert alert-info">
         <strong>Heads up!</strong> You're using an older web browser, so some parts of this site may not work properly.

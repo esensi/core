@@ -20,7 +20,7 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body class="admin {{ str_replace('.', '-', Route::currentRouteName()) }}">
+  <body class="admin {{ str_replace('.', '-', Route::currentRouteName()) }} {{ isset($code) && $code !== 200 ? 'status-' . $code : null }}">
     <!--[if lt IE 9]>
       <div class="alert alert-info">
         <strong>Heads up!</strong> You're using an older web browser, so some parts of this site may not work properly.
@@ -56,7 +56,7 @@
         @if(config('esensi/core::core.attribution.enable', true))
           <div class="attribution">
             <a href="{{ config('esensi/core::core.attribution.url', 'http://esen.si') }}" target="_blank">
-              {{ config('esensi/core::core.attribution.name', 'Powered by Esensi') }}
+              {!! config('esensi/core::core.attribution.name', 'Powered by Esensi') !!}
             </a>
           </div>
         @endif

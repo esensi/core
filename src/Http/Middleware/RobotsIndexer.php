@@ -78,7 +78,7 @@ class RobotsIndexer implements Middleware
      */
     public function addHeaders(Response $response)
     {
-        $response->header('X-Robots-Tag', 'noindex, nofollow, noarchive', true);
+        $response->headers->set('X-Robots-Tag', 'noindex, nofollow, noarchive', true);
         return $response;
     }
 

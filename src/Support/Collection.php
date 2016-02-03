@@ -1,13 +1,13 @@
 <?php
 
-namespace Esensi\Core\Models;
+namespace Esensi\Core\Support;
 
 use Esensi\Core\Traits\ParseMixedCollectionTrait;
-use Illuminate\Database\Eloquent\Collection as BaseCollection;
+use Illuminate\Support\Collection as BaseCollection;
 
 /**
- * Specialized collection class based on Laravel's Illuminate\Database\Eloquent\Collection.
- * Provides extra utility methods into an Esensi/Collection.
+ * Specialized collection class based on Laravel's Illuminate\Support\Collection.
+ * Provides extra utility methods an Esensi/Collection.
  *
  * @package Esensi\Core
  * @author Daniel LaBarge <daniel@emersonmedia.com>

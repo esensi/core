@@ -2,7 +2,7 @@
 
 namespace Esensi\Core\Traits;
 
-use App\Models\Collection;
+use App\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 /**

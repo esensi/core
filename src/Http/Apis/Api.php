@@ -3,7 +3,7 @@
 namespace Esensi\Core\Http\Apis;
 
 use App\Exceptions\RepositoryException;
-use App\Models\Collection;
+use App\Support\Collection;
 use App\Repositories\Repository;
 use Esensi\Core\Contracts\ExceptionHandlerInterface;
 use Esensi\Core\Contracts\PackagedInterface;

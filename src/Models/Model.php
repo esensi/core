@@ -2,6 +2,7 @@
 
 namespace Esensi\Core\Models;
 
+use Esensi\Core\Traits\NewCollectionModelTrait;
 use Esensi\Model\Model as BaseModel;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Str;
@@ -18,6 +19,11 @@ use Illuminate\Support\Str;
  */
 class Model extends BaseModel
 {
+    /**
+     * Converts all returned collections into \App\Models\Collection.
+     */
+    use NewCollectionModelTrait;
+
     /**
      * The database table used by the model.
      *

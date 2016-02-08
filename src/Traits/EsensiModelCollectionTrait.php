@@ -2,7 +2,7 @@
 
 namespace Esensi\Core\Traits;
 
-use Esensi\Core\Models\Collection;
+use App\Models\Collection;
 
 trait EsensiModelCollectionTrait
 {

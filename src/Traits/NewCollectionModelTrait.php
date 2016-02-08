@@ -4,7 +4,7 @@ namespace Esensi\Core\Traits;
 
 use App\Models\Collection;
 
-trait EsensiModelCollectionTrait
+trait NewCollectionModelTrait
 {
     /**
      * Converts all returned eloquent collections from Illuminate\Database\Eloquent\Collection

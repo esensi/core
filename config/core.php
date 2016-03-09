@@ -40,7 +40,7 @@ return [
         'App\Http\Middleware\CsrfTokenVerifier'         => Esensi\Core\Http\Middleware\CsrfTokenVerifier::class,
         'App\Http\Middleware\RateLimiter'               => Esensi\Core\Http\Middleware\RateLimiter::class,
         'App\Http\Middleware\RobotsIndexer'             => Esensi\Core\Http\Middleware\RobotsIndexer::class,
-        'App\Http\Requests\Request'                     => Esensi\Core\Http\Requestss\Request::class,
+        'App\Http\Requests\Request'                     => Esensi\Core\Http\Requests\Request::class,
         'App\Jobs\Job'                                  => Esensi\Core\Jobs\Job::class,
         'App\Models\Collection'                         => Esensi\Core\Models\Collection::class,
         'App\Models\Model'                              => Esensi\Core\Models\Model::class,

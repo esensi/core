@@ -41,8 +41,18 @@ class ValidationServiceProvider extends ServiceProvider
             $extensions = config('esensi/core::validation.extensions', []);
             foreach( $extensions as $extension => $class)
             {
-                $validator->extend($extension, $class . '@validate' . ucfirst(studly_case($extension)));
-                $validator->replacer($extension, $class . '@replace' . ucfirst(studly_case($extension)));
+                $method = ucfirst(studly_case($extension));
+                $validator->extend($extension, $class . '@validate' . $method);
+                $validator->replacer($extension, $class . '@replace' . $method);
+            }
+
+            // Add validation implicit extensions
+            $extensions = config('esensi/core::validation.implicit_extensions', []);
+            foreach( $extensions as $extension => $class)
+            {
+                $method = ucfirst(studly_case($extension));
+                $validator->extendImplicit($extension, $class . '@validate' . $method);
+                $validator->replacer($extension, $class . '@replace' . $method);
             }
 
             return $validator;

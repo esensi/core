@@ -24,4 +24,8 @@ return [
         'less_than_other'    => Esensi\Core\Extensions\ComparisonValidator::class,
     ],
 
+    'implicit_extensions' => [
+
+    ],
+
 ];

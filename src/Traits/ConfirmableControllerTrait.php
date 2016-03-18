@@ -22,7 +22,7 @@ trait ConfirmableControllerTrait
      *
      * @var array
      */
-    protected $trashableActions = [ 'restore', 'delete', 'bulkRestore', 'bulkDelete' ];
+    protected $trashableActions = [ 'restore', 'delete', 'bulk_restore', 'bulk_delete' ];
 
     /**
      * Display a confirmation modal for the specified resource action.
@@ -86,7 +86,7 @@ trait ConfirmableControllerTrait
 
             // Get the resources as a collection
             $collection = $this->getRepository()
-                ->findIn('id', $ids);
+                ->findIn('id', $ids, $inTrash);
 
             // Pass collection under the plural package named variable to the view
             $data = [ str_plural($this->package) => $collection, 'ids' => $ids ];

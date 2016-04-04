@@ -5,6 +5,7 @@ namespace Esensi\Core\Http\Apis;
 use App\Exceptions\RepositoryException;
 use App\Support\Collection;
 use App\Repositories\Repository;
+use BadMethodCallException;
 use Esensi\Core\Contracts\ExceptionHandlerInterface;
 use Esensi\Core\Contracts\PackagedInterface;
 use Esensi\Core\Contracts\RepositoryInjectedInterface;

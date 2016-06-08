@@ -23,7 +23,7 @@ Email us at [sales@emersonmedia.com](http://emersonmedia.com/contact), or call 1
 Add the `esensi/core` package as a dependency to the Laravel application. Using [Composer](https://getcomposer.org), this can be done from the command line:
 
 ```bash
-composer require esensi/core 0.5.*
+composer require esensi/core 0.6.*
 ```
 
 It can alternatively be added manually. Be sure to run `composer update` to update the dependencies after adding the following to `composer.json`:
@@ -31,7 +31,7 @@ It can alternatively be added manually. Be sure to run `composer update` to upda
 ```json
 {
     "require": {
-        "esensi/core": "0.5.*"
+        "esensi/core": "0.6.*"
     }
 }
 ```
@@ -92,7 +92,7 @@ Furthermore middle-ware classes could be used to handle response formatting furt
 
 ## Unit Testing
 
-The [Esensi](http://github.com/esensi) platform includes other great packages just like this [Esensi/Core](http://github.com/esensi/core) package. This package is currently tagged as `0.5.x` because the other platform packages are not ready for public release. While the others may still be under development, this package already includes features that are mature enough for use in real-world applications.
+The [Esensi](http://github.com/esensi) platform includes other great packages just like this [Esensi/Core](http://github.com/esensi/core) package. This package is currently tagged as `0.6.x` because the other platform packages are not ready for public release. While the others may still be under development, this package already includes features that are mature enough for use in real-world applications.
 
 ### Running the Unit Tests
 
@@ -127,6 +127,6 @@ phpunit ./tests
 
 ## Licensing
 
-Copyright (c) 2015 [Emerson Media, LP](http://www.emersonmedia.com)
+Copyright (c) 2016 [Emerson Media, LP](http://www.emersonmedia.com)
 
 This package is released under the MIT license. Please see the [LICENSE.txt](https://github.com/esensi/model/blob/master/LICENSE.txt) file distributed with every copy of the code for commercial licensing terms.

@@ -4,6 +4,7 @@ namespace Esensi\Core\Traits;
 
 use Esensi\Core\Traits\AdminControllerTrait;
 use Esensi\Core\Traits\DumpsterControllerTrait;
+use Illuminate\Support\Str;
 
 /**
  * Trait that encapsulates other admin related traits.
@@ -43,7 +44,8 @@ trait DumpsterAdminControllerTrait
         $object = $this->api()->retrieve($id);
 
         // Render show view
-        return $this->content( 'show', [ $this->package => $object ] );
+        $data = [ Str::camel($this->package) => $object ];
+        return $this->content( 'show', $data );
     }
 
 }

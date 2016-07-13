@@ -4,6 +4,7 @@ namespace Esensi\Core\Traits;
 
 use App\Support\Collection;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Str;
 
 /**
  * Trait implementation of confirmable controller interface.
@@ -52,7 +53,7 @@ trait ConfirmableControllerTrait
             }
 
             // Pass obkect under the singular package named variable to the view
-            $data = [ $this->package => $object, 'id' => $id ];
+            $data = [ Str::camel($this->package) => $object, 'id' => $id ];
         }
 
         // Render confirmation modal
@@ -89,7 +90,7 @@ trait ConfirmableControllerTrait
                 ->findIn('id', $ids, $inTrash);
 
             // Pass collection under the plural package named variable to the view
-            $data = [ str_plural($this->package) => $collection, 'ids' => $ids ];
+            $data = [ Str::plural(Str::camel($this->package)) => $collection, 'ids' => $ids ];
         }
 
         // Render confirmation modal
@@ -108,7 +109,7 @@ trait ConfirmableControllerTrait
     public function __call($method, $parameters)
     {
         // Determine confirmation action
-        $callable = lcfirst(studly_case(str_replace('Confirm', '', $method)));
+        $callable = Str::camel(str_replace('Confirm', '', $method));
 
         // Re-route call to a confirmation method
         if( substr($method, -7, 7) == 'Confirm' && method_exists($this, $callable) )

@@ -1,4 +1,4 @@
-@extends('esensi/core::core.public.centered')
+@extends('esensi/core::core.public.centered', ['code' => isset($code) ? $code : 500])
 
 @section('card')
 

@@ -2,9 +2,8 @@
 
 namespace Esensi\Core\Traits;
 
-use App\Support\Collection;
+use App\Models\Collection;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Str;
 
 /**
  * Trait implementation of confirmable controller interface.
@@ -23,19 +22,18 @@ trait ConfirmableControllerTrait
      *
      * @var array
      */
-    protected $trashableActions = [ 'restore', 'delete', 'bulk_restore', 'bulk_delete' ];
+    protected $trashableActions = [ 'restore', 'delete', 'bulkRestore', 'bulkDelete' ];
 
     /**
      * Display a confirmation modal for the specified resource action.
      *
      * @param string $action
      * @param integer $id (optional)
+     * @param array $data
      * @return Illuminate\View\View
      */
-    public function confirm($action, $id = null)
+    public function confirm($action, $id = null, array $data = [])
     {
-        $data = [];
-
         // Get the object from the parent API
         if( ! is_null($id) )
         {
@@ -53,7 +51,7 @@ trait ConfirmableControllerTrait
             }
 
             // Pass obkect under the singular package named variable to the view
-            $data = [ Str::camel($this->package) => $object, 'id' => $id ];
+            $data = array_merge($data, [ $this->package => $object, 'id' => $id ]);
         }
 
         // Render confirmation modal
@@ -65,11 +63,11 @@ trait ConfirmableControllerTrait
      *
      * @param string $action
      * @param string|array $ids (optional)
+     * @param array $data
      * @return Illuminate\View\View
      */
-    public function confirmBulk($action, $ids = null)
+    public function confirmBulk($action, $ids = null, array $data = [])
     {
-        $data = [];
         $inTrash = false;
 
         // Get the objects from the repository
@@ -87,10 +85,10 @@ trait ConfirmableControllerTrait
 
             // Get the resources as a collection
             $collection = $this->getRepository()
-                ->findIn('id', $ids, $inTrash);
+                ->findIn('id', $ids);
 
             // Pass collection under the plural package named variable to the view
-            $data = [ Str::plural(Str::camel($this->package)) => $collection, 'ids' => $ids ];
+            $data = array_merge($data, [ str_plural($this->package) => $collection, 'ids' => $ids ]);
         }
 
         // Render confirmation modal
@@ -109,7 +107,7 @@ trait ConfirmableControllerTrait
     public function __call($method, $parameters)
     {
         // Determine confirmation action
-        $callable = Str::camel(str_replace('Confirm', '', $method));
+        $callable = lcfirst(studly_case(str_replace('Confirm', '', $method)));
 
         // Re-route call to a confirmation method
         if( substr($method, -7, 7) == 'Confirm' && method_exists($this, $callable) )

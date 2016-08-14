@@ -201,6 +201,26 @@ trait PackagedTrait
     }
 
     /**
+     * Resolve the template name for an email.
+     *
+     * @param string $key to view config
+     * @return string
+     * @throws InvalidArgumentException
+     */
+    public function emailTemplate($key)
+    {
+        // Get the confg line for the view
+        $config = 'emails.' . $this->ui . '.' . $key;
+        $line = $this->config($config);
+        if( is_null($line) )
+        {
+            throw new InvalidArgumentException('Email config line ['.$config.'] not found.');
+        }
+
+        return $line;
+    }
+
+    /**
      * Get a configuration line.
      *
      * @param string $key to config line

@@ -86,6 +86,15 @@ interface PackagedInterface
     public function modal($key, array $data = [], $name = null);
 
     /**
+     * Resolve the template name for an email.
+     *
+     * @param string $key to view config
+     * @return string
+     * @throws InvalidArgumentException
+     */
+    public function emailTemplate($key);
+
+    /**
      * Get a configuration line
      *
      * @param string $key to config line

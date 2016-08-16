@@ -28,6 +28,21 @@ trait ModalControllerTrait
     }
 
     /**
+     * Store a newly created resource in storage.
+     *
+     * @return Illuminate\Routing\Redirector
+     */
+    public function store()
+    {
+        // Use the parent API to save the resource
+        $object = $this->api()->store();
+
+        // Redirect back with message
+        return $this->back('created', ['id' => $object->id])
+            ->with('message', $this->message('created') );
+    }
+
+    /**
      * Display an edit form for the specified resource.
      *
      * @param integer $id of resource
@@ -45,4 +60,19 @@ trait ModalControllerTrait
         return $this->modal( 'edit', $options );
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param integer $id of resource to update
+     * @return Illuminate\Routing\Redirector
+     */
+    public function update($id)
+    {
+        // Use the parent API to update the resource
+        $object = $this->api()->update($id);
+
+        // Redirect back with message
+        return $this->back('updated', ['id' => $object->id])
+            ->with('message', $this->message('updated') );
+    }
 }

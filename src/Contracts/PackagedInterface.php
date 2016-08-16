@@ -87,13 +87,13 @@ interface PackagedInterface
     public function modal($key, array $data = [], $name = null);
 
     /**
-     * Resolve the templates for a mail template.
+     * Resolve the templates for a email template.
      *
      * @param string $key to view config
      * @return string|array
      * @throws InvalidArgumentException
      */
-    public function mail($key);
+    public function email($key);
 
     /**
      * Get a configuration line

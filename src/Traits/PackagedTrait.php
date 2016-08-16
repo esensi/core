@@ -201,13 +201,13 @@ trait PackagedTrait
     }
 
     /**
-     * Resolve the templates for a mail template.
+     * Resolve the templates for an email template.
      *
      * @param string $key to view config
      * @return string|array
      * @throws InvalidArgumentException
      */
-    public function mail($key)
+    public function email($key)
     {
         // Get the confg line for the view
         $config = 'emails.' . $this->ui . '.' . $key;

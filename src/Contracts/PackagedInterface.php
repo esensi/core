@@ -72,6 +72,7 @@ interface PackagedInterface
      * @param array $data (optional) to be passed to view
      * @param string $name (optional) of content
      * @return Illuminate\View\View
+     * @throws InvalidArgumentException
      */
     public function content($key, array $data = [], $name = null);
 
@@ -86,13 +87,13 @@ interface PackagedInterface
     public function modal($key, array $data = [], $name = null);
 
     /**
-     * Resolve the template name for an email.
+     * Resolve the templates for a mail template.
      *
      * @param string $key to view config
-     * @return string
+     * @return string|array
      * @throws InvalidArgumentException
      */
-    public function emailTemplate($key);
+    public function mail($key);
 
     /**
      * Get a configuration line

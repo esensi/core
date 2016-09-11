@@ -75,4 +75,20 @@ trait ModalControllerTrait
         return $this->back('updated', ['id' => $object->id])
             ->with('message', $this->message('updated') );
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param integer $id of resource to remove
+     * @return Illuminate\Routing\Redirector
+     */
+    public function delete($id)
+    {
+        // Use the parent API to remove the resource
+        $response = $this->api()->delete($id);
+
+        // Redirect back with message
+        return $this->back( 'deleted' )
+            ->with('message', $this->message('deleted') );
+    }
 }

@@ -115,8 +115,8 @@ trait FindableRepositoryTrait
      */
     public function findWithRelated($id, array $relationship)
     {
-        // Get the resource
-        $object = $this->read($id);
+        // Get the resource; since we're explicitly loading relationships, make sure to get a fresh copy from the DB
+        $object = $this->read($id, true);
 
         // Throw an exception if the relationship is not related
         foreach($relationship as $related)

@@ -3,6 +3,7 @@
 namespace Esensi\Core\Traits;
 
 use Esensi\Core\Contracts\ResettableModelInterface;
+use Esensi\Core\Models\Model;
 
 /**
  * Trait implementation of CRUD repository.
@@ -16,6 +17,13 @@ use Esensi\Core\Contracts\ResettableModelInterface;
  */
 trait CruddableRepositoryTrait
 {
+    /**
+     * Cache of model instances
+     *
+     * @var Esensi\Core\Models\Model[]
+     */
+    protected $models = [];
+
     /**
      * Store a newly created resource in storage.
      *
@@ -51,12 +59,28 @@ trait CruddableRepositoryTrait
     /**
      * Read the specified resource from storage.
      *
-     * @param integer $id of resource
+     * @param integer|Esensi\Core\Models\Model $id of resource or instance
+     * @param boolean                          $refresh force loading a fresh copy of resource from the DB
+     *
      * @throws Esensi\Core\Exceptions\RepositoryException
+     *
      * @return Esensi\Core\Models\Model
      */
-    public function read($id)
+    public function read($id, $refresh = false)
     {
+        if ($id instanceof Model) {
+            // We already have a model, pass it straight through
+            return $id;
+        }
+
+        // Look for instance of model in our local cache
+        $object = array_get($this->models, $id);
+
+        if ( ! is_null($object) && ! $refresh) {
+            // Model's already been loaded from DB, no need to query it again
+            return $object;
+        }
+
         // Get the resource
         $object = $this->getModel()
             ->find( $id );
@@ -66,6 +90,8 @@ trait CruddableRepositoryTrait
         {
             $this->throwException( $this->error('read'), null, 404);
         }
+
+        $this->models[$id] = $object;
 
         return $object;
     }

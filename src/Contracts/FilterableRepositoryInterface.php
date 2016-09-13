@@ -117,4 +117,34 @@ interface FilterableRepositoryInterface
      */
     function bindFilters();
 
+    /**
+     * Get the extra selects.
+     *
+     * @return array
+     */
+    public function getSelects();
+
+    /**
+     * Add an extra select.
+     *
+     * @param  mixed $select statement
+     * @return self
+     */
+    public function addSelect($select);
+
+    /**
+     * Set the extra selects.
+     *
+     * @param array
+     * @return void
+     */
+    public function setSelects(array $selects = []);
+
+    /**
+     * Bind the selects to the query.
+     *
+     * @param  object $query builder
+     * @return Illuminate\Database\Query\Builder
+     */
+    public function bindSelects($query);
 }

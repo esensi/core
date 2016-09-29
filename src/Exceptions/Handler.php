@@ -5,7 +5,6 @@ namespace Esensi\Core\Exceptions;
 use App\Exceptions\PermissionVerifierException;
 use App\Exceptions\RepositoryException as RepoException;
 use App\Repositories\ActivityRepository as Activity;
-use ErrorException;
 use Esensi\Core\Contracts\RenderErrorExceptionInterface;
 use Esensi\Core\Contracts\RenderRepositoryExceptionInterface;
 use Esensi\Core\Traits\RenderErrorExceptionTrait;
@@ -143,7 +142,7 @@ class Handler extends ExceptionHandler implements
         }
 
         // Use esensi/core namespaced whoops error view when not in debug mode.
-        if( $e instanceof ErrorException)
+        if( $e instanceof Exception)
         {
             return $this->renderErrorException($request, $e);
         }

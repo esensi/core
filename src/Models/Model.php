@@ -184,8 +184,8 @@ class Model extends BaseModel
         // Dynamically get time since attributes
         $normalized = Str::snake( $key );
         $attribute = str_replace(['time_since_', 'time_till_'], ['', ''], $normalized);
-        if ( ( Str::startsWith( $normalized, 'time_since_' ) || Str::startsWith( $normalized, 'time_till_' ) )
-            && in_array( $attribute . '_at', $this->getDates() ) )
+        if ( in_array( $attribute . '_at', $this->getDates() )
+            &&  ( Str::startsWith( $normalized, 'time_since_' ) || Str::startsWith( $normalized, 'time_till_' ) ) )
         {
             // Convert the attribute to a Carbon date
             $value = $this->getAttributeFromArray( $attribute . '_at');

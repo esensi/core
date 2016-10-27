@@ -22,7 +22,7 @@ trait CruddableRepositoryTrait
      *
      * @var Esensi\Core\Models\Model[]
      */
-    protected $models = [];
+    protected $modelInstances = [];
 
     /**
      * Store a newly created resource in storage.
@@ -74,7 +74,7 @@ trait CruddableRepositoryTrait
         }
 
         // Look for instance of model in our local cache
-        $object = array_get($this->models, $id);
+        $object = array_get($this->modelInstances, $id);
 
         if ( ! is_null($object) && ! $refresh) {
             // Model's already been loaded from DB, no need to query it again
@@ -91,7 +91,7 @@ trait CruddableRepositoryTrait
             $this->throwException( $this->error('read'), null, 404);
         }
 
-        $this->models[$id] = $object;
+        $this->modelInstances[$id] = $object;
 
         return $object;
     }

@@ -34,7 +34,9 @@ trait RenderRepositoryExceptionTrait
             // Render the exception according to the controller preference
             $action = explode('@', $action);
             $class = App::make(head($action));
-            return $class->handleException($e);
+            if( method_exists($class, 'handleException') ) {
+                return $class->handleException($e);
+            }
         }
 
         // If this was a console command then no route/controller was used

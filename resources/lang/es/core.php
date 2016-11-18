@@ -87,6 +87,7 @@ return [
         'of'                     => 'de',
         'updated'                => 'Actualizado',
         'trash_can'              => 'Papelera',
+        'actions'                => 'Acciones',
     ],
 
     'buttons' => [
@@ -115,15 +116,11 @@ return [
     ],
 
     'table-headings' => [
-        'actions'       => 'Acciones',
         'id'            => 'ID',
         'name'          => 'Nombre',
         'updated'       => 'Actualizado',
         'email'         => 'Email',
         'status'        => 'Estado',
-        'users'         => 'Usuarios',
-        'groups'        => 'Grupos',
-        'permissions'   => 'Permisos',
     ],
 
     'cards' => [

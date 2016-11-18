@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ App::getLocale() }}">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,7 +21,7 @@
       <script src="http://cdnjs.cloudflare.com/ajax/libs/es5-shim/2.0.8/es5-shim.min.js">
     <![endif]-->
   </head>
-  <body class="public {{ str_replace('.', '-', Route::currentRouteName()) }}">
+  <body class="public {{ str_replace('.', '-', Route::currentRouteName()) }} {{ isset($code) && $code !== 200 ? 'status-' . $code : null }}">
     <!--[if lt IE 9]>
       <div class="alert alert-info">
         <strong>Heads up!</strong> You're using an older web browser, so some parts of this site may not work properly.
@@ -29,11 +29,3 @@
         You'll find that many websites work and look better, and you'll be safer online!
       </div>
     <![endif]-->
-
-    <div class="container">
-      <div class="row">
-        <div class="logo">
-          <img src="http://placehold.it/300x100/FFFFFF/D9E4E3&text={{ config('esensi/core::core.metadata.author', 'Esensi') }}" alt="{{ config('esensi/core::core.metadata.author', 'Esensi') }}" />
-        </div>
-      </div>
-    </div>

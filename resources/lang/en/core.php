@@ -77,6 +77,69 @@ return [
         'never_authenticated'    => 'Never Logged In',
         'never_activated'        => 'Never Activated',
         'never_password_updated' => 'Never Set',
+        'order_by'               => 'Order By',
+        'sort_results'           => 'Sort Results',
+        'max_results'            => 'Max Results',
+        'cancel'                 => 'Cancel',
+        'dashboard'              => 'Dashboard',
+        'showing'                => 'Showing',
+        'to'                     => 'to',
+        'of'                     => 'of',
+        'updated'                => 'Updated',
+        'trash_can'              => 'Trash Can',
+    ],
+
+    'buttons' => [
+        'cancel'          => 'Cancel',
+        'delete'          => 'Delete',
+        'delete_all'      => 'Delete All',
+        'filter'          => 'Filter',
+        'new'             => 'New',
+        'edit'            => 'Edit',
+        'recover'         => 'Recover',
+        'restore'         => 'Restore',
+        'save'            => 'Save',
+        'trash'           => 'Trash',
+        'view'            => 'View',
+        'toggle_dropdown' => 'Toggle Dropdown',
+        'toggle_menu'     => 'Toggle Menu',
+        'empty_trash'     => 'Empty Trash',
+        'search'          => 'Search',
+        'close'           => 'Close',
+        'log_out'         => 'Log Out',
+        'public_site'     => 'Public Site',
+    ],
+
+    'drawer' => [
+        'keyword_search'    => 'Keyword Search',
+    ],
+
+    'table-headings' => [
+        'actions'       => 'Actions',
+        'id'            => 'ID',
+        'name'          => 'Name',
+        'updated'       => 'Updated',
+        'email'         => 'Email',
+        'status'        => 'Status',
+        'users'         => 'Users',
+        'groups'        => 'Groups',
+        'permissions'   => 'Permissions',
+    ],
+
+    'cards' => [
+        'maintenance' => [
+            'title'     => 'We\'ll Be Right Back',
+            'message'   => 'We are conducting a bit of maintenance right now. This web application will be back just as soon as we\'re finished!',
+            'button'    => 'Contact Support'
+        ],
+        'missing' => [
+            'title'     => 'Page Not Found',
+            'message'   => '',
+        ],
+        'whoops' => [
+            'title'     => '',
+            'message'   => '',
+        ],
     ],
 
 ];

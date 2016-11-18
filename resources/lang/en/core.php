@@ -86,6 +86,7 @@ return [
     'buttons' => [
         'cancel'          => 'Cancel',
         'delete'          => 'Delete',
+        'delete_all'      => 'Delete All',
         'filter'          => 'Filter',
         'new'             => 'New',
         'edit'            => 'Edit',

@@ -85,6 +85,7 @@ return [
     'buttons' => [
         'cancel'          => 'Cancelar',
         'delete'          => 'Eliminar',
+        'delete_all'      => 'Eliminar Todos',
         'filter'          => 'Filtrar',
         'new'             => 'Nuevo',
         'edit'            => 'Editar',

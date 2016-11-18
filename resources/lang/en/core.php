@@ -80,7 +80,13 @@ return [
         'order_by'               => 'Order By',
         'sort_results'           => 'Sort Results',
         'max_results'            => 'Max Results',
-
+        'cancel'                 => 'Cancel',
+        'dashboard'              => 'Dashboard',
+        'showing'                => 'Showing',
+        'to'                     => 'to',
+        'of'                     => 'of',
+        'updated'                => 'Updated',
+        'trash_can'              => 'Trash Can',
     ],
 
     'buttons' => [
@@ -106,18 +112,6 @@ return [
 
     'drawer' => [
         'keyword_search'    => 'Keyword Search',
-    ],
-
-    'breadcrumbs' => [
-        'cancel'        => 'Cancel',
-        'dashboard'     => 'Dashboard',
-        'users'         => 'Contacts',
-        'groups'        => 'Groups',
-        'showing'       => 'Showing',
-        'to'            => 'to',
-        'of'            => 'of',
-        'updated'       => 'Updated',
-        'trash_can'     => 'Trash Can',
     ],
 
     'table-headings' => [

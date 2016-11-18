@@ -41,7 +41,7 @@
           @if(config('esensi/core::core.dashboard', true))
             <li class="dashboard-menu nav-item @if(starts_with(Route::currentRouteName(),  ['index', 'admin.dashboard'])) active @endif">
               <a href="{{ route('admin.dashboard') }}" class="nav-link">
-                @lang('esensi/core::core.breadcrumbs.dashboard')
+                @lang('esensi/core::core.labels.dashboard')
               </a>
             </li>
           @endif

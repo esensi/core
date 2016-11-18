@@ -80,6 +80,13 @@ return [
         'order_by'               => 'Ordenar Por',
         'sort_results'           => 'Ordenar Resultados',
         'max_results'            => 'Max Resultados',
+        'cancel'                 => 'Cancelar',
+        'dashboard'              => 'Dashboard',
+        'showing'                => 'Mostrando',
+        'to'                     => 'a',
+        'of'                     => 'de',
+        'updated'                => 'Actualizado',
+        'trash_can'              => 'Papelera',
     ],
 
     'buttons' => [
@@ -95,6 +102,7 @@ return [
         'trash'           => 'Papelera',
         'view'            => 'Ver',
         'toggle_dropdown' => 'Mostrar/Ocultar Dropdown',
+        'toggle_menu'     => 'Mostrar/Ocultar Menú',
         'empty_trash'     => 'Vaciar Papelera',
         'search'          => 'Buscar',
         'close'           => 'Cerrar',
@@ -104,18 +112,6 @@ return [
 
     'drawer' => [
         'keyword_search'    => 'Búsqueda por Palabra Clave',
-    ],
-
-    'breadcrumbs' => [
-        'cancel'        => 'Cancelar',
-        'dashboard'     => 'Dashboard',
-        'users'         => 'Contactos',
-        'groups'        => 'Grupos',
-        'showing'       => 'Mostrando',
-        'to'            => 'a',
-        'of'            => 'de',
-        'updated'       => 'Actualizado',
-        'trash_can'     => 'Papelera',
     ],
 
     'table-headings' => [
@@ -134,7 +130,7 @@ return [
         'maintenance' => [
             'title'     => 'Volveremos en seguida',
             'message'   => 'Estamos realizando un poco de mantenimiento en este momento. Este aplicación web volverá apenas terminemos!',
-            'button'    => 'Contact Support'
+            'button'    => 'Contactar Soporte'
         ],
         'missing' => [
             'title'     => 'Página no Econtrada',

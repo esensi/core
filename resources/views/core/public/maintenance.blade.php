@@ -1,23 +1,17 @@
-@extends('esensi/core::core.public.default')
+@extends('esensi/core::core.public.centered')
 
-@section('content')
+@section('card')
 
-<div class="container">
-  <div class="row">
-    <div class="panel-container">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title text-center">We'll Be Right Back</h3>
-        </div>
-        <div class="panel-body">
-          <p>We are conducting a bit of maintenance right now. This web application will be back just as soon as we're finished!</p>
-        </div>
-      </div>
-      <ul class="nav nav-pills nav-justified">
-        <li><a href="mailto:{{ Config::get('mail.from.address') }}"><i class="fa fa-fw fa-envelope"></i> Contact Support</a></li>
-      </ul>
+  <div class="card card-maintenance">
+    <div class="card-header text-center">
+      <h3>@lang('esensi/core::core.cards.maintenance.title')</h3>
+    </div>
+    <div class="card-block">
+      <p class="card-text">
+        @lang('esensi/core::core.cards.maintenance.message')
+      </p>
+      <a class="btn btn-primary" href="mailto:{{ Config::get('mail.from.address') }}">@lang('esensi/core::core.cards.maintenance.button')</a>
     </div>
   </div>
-</div>
 
 @stop

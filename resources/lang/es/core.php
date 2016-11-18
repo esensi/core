@@ -13,20 +13,20 @@ return [
     */
 
     'errors' => [
-        'create'              => 'Objeto no podía ser almacenado.',
-        'read'                => 'El objeto no se pudo encontrar.',
-        'update'              => 'Objeto no pudo actualizarse.',
-        'delete'              => 'Objeto no pudo ser eliminado.',
+        'create'              => 'El objeto no pudo ser almacenado.',
+        'read'                => 'No se pudo encontrar el objeto.',
+        'update'              => 'No se pudo actualizar el objeto.',
+        'delete'              => 'No se pudo eliminar el objeto.',
         'find_by'             => 'El objeto no se pudo encontrar por :attribute.',
-        'find_in'             => 'Los objetos no se podían encontrar por :attribute.',
-        'retrieve'            => 'El objeto no se pudo encontrar en la basura.',
-        'trash'               => 'Objeto no podía ser colocado en la papelera.',
-        'restore'             => 'El objeto no podía ser restaurada.',
-        'purge'               => 'Los objetos no pueden ser purgados de la basura.',
-        'recover'             => 'Los objetos no pueden ser recuperados de la basura.',
-        'truncate'            => 'Los objetos no pueden ser truncar.',
-        'not_related'         => 'El objeto no tiene una :relationship relacionado.',
-        'rate_limit_exceeded' => 'No tan rápido Handsome One! Su límite de velocidad se ha superado por lo que ha sido puesto en un tiempo de espera :timeout minutos.',
+        'find_in'             => 'Los objetos no se pudieron encontrar por :attribute.',
+        'retrieve'            => 'El objeto no se pudo encontrar en la papelera.',
+        'trash'               => 'El objeto no pudo ser trasladado a la papelera.',
+        'restore'             => 'El objeto no pudo ser restaurado.',
+        'purge'               => 'No se pudieron eliminar los obejtos de la papelera.',
+        'recover'             => 'No se pudieron recuperar los objetos de la papelera.',
+        'truncate'            => 'Los objetos no pueden ser eliminados.',
+        'not_related'         => 'El objeto no tiene una :relationship relación.',
+        'rate_limit_exceeded' => '¡No tan rápido Guapo! Has excedido tu límite de velocidad por lo que has sido puesto en un tiempo de espera :timeout minutos.',
     ],
 
 
@@ -41,24 +41,23 @@ return [
     */
 
     'messages' => [
-        'created'             => 'Objeto ha sido creado.',
-        'updated'             => 'Objetos ha sido actualizado.',
-        'deleted'             => 'Se ha eliminado objeto.',
-        'trashed'             => 'Objetos ha sido colocado en la papelera.',
-        'restored'            => 'Objetos ha sido restaurado.',
-        'purged'              => 'Objetos han sido purgados de basura.',
-        'recovered'           => 'Objetos han sido recuperados de la basura.',
-        'truncated'           => 'Objetos has sido truncar.',
-        'no_results'          => 'No hay ningún resultado para los objetos.',
-        'rate_limit_exceeded' => 'Excede el Límite de Velocidad',
+        'created'             => 'El objeto ha sido creado.',
+        'updated'             => 'El objeto ha sido actualizado.',
+        'deleted'             => 'El objeto ha sido eliminado.',
+        'trashed'             => 'Se ha trasladado el objeto a la papelera.',
+        'restored'            => 'Se ha restaurado el objeto.',
+        'purged'              => 'Se han eliminado los objetos de la papelera.',
+        'recovered'           => 'Se han recuperado los objetos de la papelera.',
+        'truncated'           => 'Se han eliminado los objetos.',
+        'no_results'          => 'La búsqueda no arrojó resultados para los objetos.',
+        'rate_limit_exceeded' => 'Se ha excedido el límite de velocidad',
 
         'bulk' => [
-            'deleted'   => 'Se han suprimido los objetos seleccionados.',
-            'restored'  => 'Los objetos seleccionados se han restaurado.',
-            'trashed'   => 'Los objetos seleccionados se han colocado en la papelera.',
+            'deleted'   => 'Se han eliminado los objetos seleccionados.',
+            'restored'  => 'Los objetos seleccionados han sido restaurados.',
+            'trashed'   => 'Los objetos seleccionados se han enviado a la papelera.',
         ],
     ],
-
 
     /*
     |--------------------------------------------------------------------------
@@ -74,10 +73,76 @@ return [
         'never_expires'          => 'Nunca Caduca',
         'never_updated'          => 'Nunca Actualizado',
         'never_created'          => 'Nunca Creado',
-        'never_deleted'          => 'Nunca Suprimido',
-        'never_authenticated'    => 'Nunca Conectado',
+        'never_deleted'          => 'Nunca Eliminado',
+        'never_authenticated'    => 'Nunca ha Iniciado Sesión',
         'never_activated'        => 'Nunca Activado',
-        'never_password_updated' => 'Nunca Ajuste',
+        'never_password_updated' => 'Nunca Establecido',
+        'order_by'               => 'Ordenar Por',
+        'sort_results'           => 'Ordenar Resultados',
+        'max_results'            => 'Max Resultados',
+    ],
+
+    'buttons' => [
+        'cancel'          => 'Cancelar',
+        'delete'          => 'Eliminar',
+        'filter'          => 'Filtrar',
+        'new'             => 'Nuevo',
+        'edit'            => 'Editar',
+        'recover'         => 'Recuperar',
+        'restore'         => 'Restaurar',
+        'save'            => 'Guardar',
+        'trash'           => 'Papelera',
+        'view'            => 'Ver',
+        'toggle_dropdown' => 'Mostrar/Ocultar Dropdown',
+        'empty_trash'     => 'Vaciar Papelera',
+        'search'          => 'Buscar',
+        'close'           => 'Cerrar',
+        'log_out'         => 'Cerrar Sesión',
+        'public_site'     => 'Sitio Público',
+    ],
+
+    'drawer' => [
+        'keyword_search'    => 'Búsqueda por Palabra Clave',
+    ],
+
+    'breadcrumbs' => [
+        'cancel'        => 'Cancelar',
+        'dashboard'     => 'Dashboard',
+        'users'         => 'Contactos',
+        'groups'        => 'Grupos',
+        'showing'       => 'Mostrando',
+        'to'            => 'a',
+        'of'            => 'de',
+        'updated'       => 'Actualizado',
+        'trash_can'     => 'Papelera',
+    ],
+
+    'table-headings' => [
+        'actions'       => 'Acciones',
+        'id'            => 'ID',
+        'name'          => 'Nombre',
+        'updated'       => 'Actualizado',
+        'email'         => 'Email',
+        'status'        => 'Estado',
+        'users'         => 'Usuarios',
+        'groups'        => 'Grupos',
+        'permissions'   => 'Permisos',
+    ],
+
+    'cards' => [
+        'maintenance' => [
+            'title'     => 'Volveremos en seguida',
+            'message'   => 'Estamos realizando un poco de mantenimiento en este momento. Este aplicación web volverá apenas terminemos!',
+            'button'    => 'Contact Support'
+        ],
+        'missing' => [
+            'title'     => 'Página no Econtrada',
+            'message'   => '',
+        ],
+        'whoops' => [
+            'title'     => '',
+            'message'   => '',
+        ],
     ],
 
 ];

@@ -171,7 +171,7 @@ trait FilterableRepositoryTrait
     public function filterIds($query)
     {
         // Get the model's key name
-        $key = $this->getModel()->getKeyName();
+        $key = $this->getModel()->getTable() . '.' . $this->getModel()->getKeyName();
 
         // Enable filter if model has IDs
         if( ! empty($this->ids) )

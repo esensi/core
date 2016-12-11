@@ -29,7 +29,7 @@ class Model extends BaseModel
      *
      * @var string
      */
-    protected $table = 'models';
+    protected $table;
 
     /**
      * The relationships that should be eager loaded with each query.

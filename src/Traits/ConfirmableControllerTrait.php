@@ -22,7 +22,7 @@ trait ConfirmableControllerTrait
      *
      * @var array
      */
-    protected $trashableActions = [ 'restore', 'delete', 'bulkRestore', 'bulkDelete' ];
+    protected $trashableActions = [ 'restore', 'delete', 'bulkRestore', 'bulkDelete', 'bulk_restore', 'bulk_delete' ];
 
     /**
      * Display a confirmation modal for the specified resource action.

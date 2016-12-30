@@ -85,7 +85,7 @@ trait ConfirmableControllerTrait
 
             // Get the resources as a collection
             $collection = $this->getRepository()
-                ->findIn('id', $ids);
+                ->findIn('id', $ids, $inTrash);
 
             // Pass collection under the plural package named variable to the view
             $data = array_merge($data, [ str_plural($this->package) => $collection, 'ids' => $ids ]);

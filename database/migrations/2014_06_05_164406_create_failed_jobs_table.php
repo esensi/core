@@ -28,7 +28,7 @@ class CreateFailedJobsTable extends Migration
                 ->index();
             $table->string('queue', 128)
                 ->index();
-            $table->text('payload');
+            $table->longText('payload');
             $table->timestamp('failed_at')
                 ->index();
         });

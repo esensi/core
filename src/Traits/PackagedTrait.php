@@ -373,13 +373,29 @@ trait PackagedTrait
     /**
      * Queue a namespaced event.
      *
+     * @deprecated In favor of `eventPush()` so we can maintain parity with Laravel's API.
+     *
      * @param string $name of event to queue
      * @param array $arguments (optional) to pass to event
+     *
      * @return mixed
      */
     public function eventQueue($name, array $arguments = [])
     {
-        return App::make('events')->queue($this->getNamespacedEventName($name), $arguments);
+        return $this->eventPush($name, $arguments);
+    }
+
+    /**
+     * Push a namespaced event onto the queue.
+     *
+     * @param string $name of event to queue
+     * @param array $arguments (optional) to pass to event
+     *
+     * @return mixed
+     */
+    public function eventPush($name, array $arguments = [])
+    {
+        return App::make('events')->push($this->getNamespacedEventName($name), $arguments);
     }
 
     /**

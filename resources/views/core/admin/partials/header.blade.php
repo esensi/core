@@ -10,7 +10,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="msapplication-config" content="{{ asset('browserconfig.xml') }}" />
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
-    <title>{{ config('esensi/core::core.metadata.author', 'Esensi') }} – Administration</title>
+    <title>{{ config('esensi/core::core.metadata.author', 'Esensi') }} – @lang('esensi/core::core.labels.administration')</title>
 
     @styles('admin')
 
@@ -40,7 +40,9 @@
         <ul id="sidebarMenu" class="sidebar-menu nav nav-stacked nav-pills">
           @if(config('esensi/core::core.dashboard', true))
             <li class="dashboard-menu nav-item @if(starts_with(Route::currentRouteName(),  ['index', 'admin.dashboard'])) active @endif">
-              <a href="{{ route('admin.dashboard') }}" class="nav-link">Dashboard</a>
+              <a href="{{ route('admin.dashboard') }}" class="nav-link">
+                @lang('esensi/core::core.labels.dashboard')
+              </a>
             </li>
           @endif
 
@@ -65,7 +67,9 @@
 
       <div class="header">
         <button type="button" class="sidebar-toggle" data-toggle="offcanvas" data-target=".sidebar" data-canvas="body">
-          <span class="sr-only">Toggle Menu</span>
+          <span class="sr-only">
+            @lang('esensi/core::core.buttons.toggle_menu')
+          </span>
         </button>
 
         <ul class="header-menu nav nav-pills">

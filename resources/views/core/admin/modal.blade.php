@@ -2,7 +2,9 @@
   <h4 class="modal-title" id="esensiModalTitle">@yield('modal-title')</h4>
   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
     <span aria-hidden="true">&times;</span>
-    <span class="sr-only">Close</span>
+    <span class="sr-only">
+      @lang('esensi/core::core.buttons.close')
+    </span>
   </button>
 </div>
 <div class="modal-body">

@@ -2,7 +2,9 @@
   {!! Form::open([ 'route' => isset($route) ? $route : Route::currentRouteName() , 'method' => 'GET']) !!}
     <div class="drawer-row">
       <div class="drawer-col drawer-col-keywords">
-        <label>Keyword Search</label>
+        <label>
+          @lang('esensi/core::core.labels.search')
+        </label>
         {!! Form::text('keywords', $keywords, ['class' => 'form-control esensi-tags']) !!}
       </div>
     </div>

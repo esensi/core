@@ -81,6 +81,7 @@ return [
         'search'      => 'Search',
         'toggle_menu' => 'Toggle Menu',
         'trash'       => 'Trash',
+        'truncate'    => 'Delete All',
         'view'        => 'View',
     ],
 

@@ -144,7 +144,7 @@ class Handler extends ExceptionHandler implements
         }
 
         // Use esensi/core namespaced whoops error view when not in debug mode.
-        if( $e instanceof Exception)
+        if ($e instanceof Exception)
         {
             return $this->renderErrorException($request, $e);
         }

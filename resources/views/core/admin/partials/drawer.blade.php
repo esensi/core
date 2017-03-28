@@ -3,7 +3,7 @@
     <div class="drawer-row">
       <div class="drawer-col drawer-col-keywords">
         <label>
-          @lang('esensi/core::core.labels.search')
+          @lang('esensi/core::core.labels.keywords')
         </label>
         {!! Form::text('keywords', $keywords, ['class' => 'form-control esensi-tags']) !!}
       </div>

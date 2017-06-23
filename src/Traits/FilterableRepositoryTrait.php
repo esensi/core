@@ -2,7 +2,7 @@
 
 namespace Esensi\Core\Traits;
 
-use App\Models\Collection;
+use App\Support\Collection;
 
 /**
  * Trait implementation of filterable repository interface.
@@ -57,6 +57,13 @@ trait FilterableRepositoryTrait
     protected $scopes = [];
 
     /**
+     * Selects to add to the query when filtered.
+     *
+     * @var array
+     */
+    protected $selects = [];
+
+    /**
      * Search the resource using filters.
      *
      * @param object $query builder
@@ -67,8 +74,8 @@ trait FilterableRepositoryTrait
         // Bind filters in case it wasn't already done
         $this->bindFilters();
 
-        // Set primary selection to the model's table
-        $query->select([$query->getModel()->getTable().'.*']);
+        // Bind the selects to the query
+        $query = $this->bindSelects($query);
 
         // Filter with relationships
         $this->filterRelationships($query);
@@ -164,7 +171,7 @@ trait FilterableRepositoryTrait
     public function filterIds($query)
     {
         // Get the model's key name
-        $key = $this->getModel()->getKeyName();
+        $key = $this->getModel()->getTable() . '.' . $this->getModel()->getKeyName();
 
         // Enable filter if model has IDs
         if( ! empty($this->ids) )
@@ -312,7 +319,6 @@ trait FilterableRepositoryTrait
         $this->bindFilters();
     }
 
-
     /**
      * Bind the filters as properties.
      *
@@ -333,4 +339,53 @@ trait FilterableRepositoryTrait
         $this->max = max(0, (integer) $this->max);
     }
 
+    /**
+     * Get the extra selects.
+     *
+     * @return array
+     */
+    public function getSelects()
+    {
+        return $this->selects;
+    }
+
+    /**
+     * Add an extra select.
+     *
+     * @param  mixed $select statement
+     * @return self
+     */
+    public function addSelect($select)
+    {
+        $this->setSelects(array_merge($this->getSelects(), [$select]));
+        return $this;
+    }
+
+    /**
+     * Set the extra selects.
+     *
+     * @param array
+     * @return void
+     */
+    public function setSelects(array $selects = [])
+    {
+        $this->selects = $selects;
+    }
+
+    /**
+     * Bind the selects to the query.
+     *
+     * @param  object $query builder
+     * @return Illuminate\Database\Query\Builder
+     */
+    public function bindSelects($query)
+    {
+        $query->select(array_merge(
+            // Set primary selection to the model's table
+            [$query->getModel()->getTable().'.*'],
+            $this->getSelects()
+        ));
+
+        return $query;
+    }
 }

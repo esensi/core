@@ -2,6 +2,7 @@
 
 namespace Esensi\Core\Models;
 
+use Esensi\Core\Traits\NewCollectionModelTrait;
 use Esensi\Model\Model as BaseModel;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Str;
@@ -19,11 +20,16 @@ use Illuminate\Support\Str;
 class Model extends BaseModel
 {
     /**
+     * Converts all returned collections into \App\Models\Collection.
+     */
+    use NewCollectionModelTrait;
+
+    /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'models';
+    protected $table;
 
     /**
      * The relationships that should be eager loaded with each query.
@@ -178,8 +184,8 @@ class Model extends BaseModel
         // Dynamically get time since attributes
         $normalized = Str::snake( $key );
         $attribute = str_replace(['time_since_', 'time_till_'], ['', ''], $normalized);
-        if ( ( Str::startsWith( $normalized, 'time_since_' ) || Str::startsWith( $normalized, 'time_till_' ) )
-            && in_array( $attribute . '_at', $this->getDates() ) )
+        if ( in_array( $attribute . '_at', $this->getDates() )
+            &&  ( Str::startsWith( $normalized, 'time_since_' ) || Str::startsWith( $normalized, 'time_till_' ) ) )
         {
             // Convert the attribute to a Carbon date
             $value = $this->getAttributeFromArray( $attribute . '_at');

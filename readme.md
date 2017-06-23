@@ -23,7 +23,7 @@ Email us at [sales@emersonmedia.com](http://emersonmedia.com/contact), or call 1
 Add the `esensi/core` package as a dependency to the Laravel application. Using [Composer](https://getcomposer.org), this can be done from the command line:
 
 ```bash
-composer require esensi/core 0.5.*
+composer require esensi/core 0.6.*
 ```
 
 It can alternatively be added manually. Be sure to run `composer update` to update the dependencies after adding the following to `composer.json`:
@@ -31,7 +31,7 @@ It can alternatively be added manually. Be sure to run `composer update` to upda
 ```json
 {
     "require": {
-        "esensi/core": "0.5.*"
+        "esensi/core": "0.6.*"
     }
 }
 ```
@@ -77,11 +77,11 @@ A CLI client executed `php artisan make:post`. This command is dispatched by Lar
 
 ### API Controller
 
-A mobile app client requests `POST /api/posts`. This request is routed by Laravel to the `App\Http\Controllers\PostApi@store` controller method. The API controller is only concerned with the request and not at all concerned about how the framework will handle converting the return value into a JSON response. The API controller maps the request parameters as arguments to a repository method such as `App\Repositories\PostRepository@store`. At this point all of the business logic is reused down the call chain as the client request has been mapped to the repository as defined previously. Once the `App\Models\Post` model is returned from `App\Repositories\PostRepository` the model is simply returned back to the Laravel framework for default conversion into a JSON response. APIs can have all the domain logic organized in the repositories but as a front-end or mobile app friendly RESTful JSON representation.
+A mobile app client requests `POST /api/posts`. This request is routed by Laravel to the `App\Http\Apis\PostApi@store` controller method. The API controller is only concerned with the request and not at all concerned about how the framework will handle converting the return value into a JSON response. The API controller maps the request parameters as arguments to a repository method such as `App\Repositories\PostRepository@store`. At this point all of the business logic is reused down the call chain as the client request has been mapped to the repository as defined previously. Once the `App\Models\Post` model is returned from `App\Repositories\PostRepository` the model is simply returned back to the Laravel framework for default conversion into a JSON response. APIs can have all the domain logic organized in the repositories but as a front-end or mobile app friendly RESTful JSON representation.
 
 ### UI Controller
 
-A web browser client requests `POST /admin/posts`. This request is routed by Laravel to the `App\Http\Controllers\PostController@store` controller method. This controller is only concerned with responses so it immediately makes a call to it's parent `App\Http\Controllers\PostApi@store` controller method. At this point all of the business logic is reused down the call chain as the client request has been mapped to the API controller as defined previously. Once the `App\Models\Post` model is returned from the `App\Http\Controllers\PostApi` the model is then passed off to a Blade view for HTML presentation formatting. The Laravel view is then returned by the `PostController` to the framework where it is rendered as an HTML response back to the client. Web UIs can have all the same ability as their API counterparts and all business logic can remain DRY as it is organized in the domain layer.
+A web browser client requests `POST /admin/posts`. This request is routed by Laravel to the `App\Http\Controllers\PostController@store` controller method. This controller is only concerned with responses so it immediately makes a call to it's parent `App\Http\Apis\PostApi@store` controller method. At this point all of the business logic is reused down the call chain as the client request has been mapped to the API controller as defined previously. Once the `App\Models\Post` model is returned from the `App\Http\Apis\PostApi` the model is then passed off to a Blade view for HTML presentation formatting. The Laravel view is then returned by the `PostController` to the framework where it is rendered as an HTML response back to the client. Web UIs can have all the same ability as their API counterparts and all business logic can remain DRY as it is organized in the domain layer.
 
 ### Parametization
 
@@ -92,7 +92,7 @@ Furthermore middle-ware classes could be used to handle response formatting furt
 
 ## Unit Testing
 
-The [Esensi](http://github.com/esensi) platform includes other great packages just like this [Esensi/Core](http://github.com/esensi/core) package. This package is currently tagged as `0.5.x` because the other platform packages are not ready for public release. While the others may still be under development, this package already includes features that are mature enough for use in real-world applications.
+The [Esensi](http://github.com/esensi) platform includes other great packages just like this [Esensi/Core](http://github.com/esensi/core) package. This package is currently tagged as `0.6.x` because the other platform packages are not ready for public release. While the others may still be under development, this package already includes features that are mature enough for use in real-world applications.
 
 ### Running the Unit Tests
 
@@ -127,6 +127,6 @@ phpunit ./tests
 
 ## Licensing
 
-Copyright (c) 2015 [Emerson Media, LP](http://www.emersonmedia.com)
+Copyright (c) 2016 [Emerson Media, LP](http://www.emersonmedia.com)
 
 This package is released under the MIT license. Please see the [LICENSE.txt](https://github.com/esensi/model/blob/master/LICENSE.txt) file distributed with every copy of the code for commercial licensing terms.

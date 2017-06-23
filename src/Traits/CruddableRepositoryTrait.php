@@ -2,6 +2,9 @@
 
 namespace Esensi\Core\Traits;
 
+use Esensi\Core\Contracts\ResettableModelInterface;
+use Esensi\Core\Models\Model;
+
 /**
  * Trait implementation of CRUD repository.
  *
@@ -15,6 +18,13 @@ namespace Esensi\Core\Traits;
 trait CruddableRepositoryTrait
 {
     /**
+     * Cache of model instances
+     *
+     * @var Esensi\Core\Models\Model[]
+     */
+    protected $modelInstances = [];
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param array $attributes to store on the resource
@@ -25,7 +35,11 @@ trait CruddableRepositoryTrait
     {
         // Fill the model attributes
         $model = $this->getModel();
-        $object = new $model( array_only($attributes, $model->getFillable()) );
+        $object = new $model;
+        if( $object instanceof ResettableModelInterface ) {
+            $object->resetAttributes();
+        }
+        $object->fill(array_only($attributes, $model->getFillable()));
 
         // Fire before listeners
         $this->eventUntil('creating', [ $object ] );
@@ -45,12 +59,28 @@ trait CruddableRepositoryTrait
     /**
      * Read the specified resource from storage.
      *
-     * @param integer $id of resource
+     * @param integer|Esensi\Core\Models\Model $id of resource or instance
+     * @param boolean                          $refresh force loading a fresh copy of resource from the DB
+     *
      * @throws Esensi\Core\Exceptions\RepositoryException
+     *
      * @return Esensi\Core\Models\Model
      */
-    public function read($id)
+    public function read($id, $refresh = false)
     {
+        if ($id instanceof Model) {
+            // We already have a model, pass it straight through
+            return $id;
+        }
+
+        // Look for instance of model in our local cache
+        $object = array_get($this->modelInstances, $id);
+
+        if ( ! is_null($object) && ! $refresh) {
+            // Model's already been loaded from DB, no need to query it again
+            return $object;
+        }
+
         // Get the resource
         $object = $this->getModel()
             ->find( $id );
@@ -60,6 +90,8 @@ trait CruddableRepositoryTrait
         {
             $this->throwException( $this->error('read'), null, 404);
         }
+
+        $this->modelInstances[$id] = $object;
 
         return $object;
     }
@@ -81,7 +113,12 @@ trait CruddableRepositoryTrait
         $this->eventUntil('updating', [ $object ] );
 
         // Fill the attributes
-        $object->fill( array_only($attributes, $object->getFillable()) );
+        if( $object instanceof ResettableModelInterface ) {
+            $object->resetAttributes();
+            $object->fill( array_filter(array_only($attributes, $object->getFillable())) );
+        } else {
+            $object->fill( array_only($attributes, $object->getFillable()) );
+        }
 
         // Throw an error if the resource could not be updated
         if( ! $object->save() )

@@ -3,7 +3,7 @@
 namespace Esensi\Core\Contracts;
 
 /**
- * API Ancestry Controller Interface
+ * Resettable Model Interface
  *
  * @package Esensi\Core
  * @author Daniel LaBarge <daniel@emersonmedia.com>
@@ -11,14 +11,13 @@ namespace Esensi\Core\Contracts;
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-interface ApiAncestryControllerInterface
+interface ResettableModelInterface
 {
     /**
-     * Get the API ancestor controller class
-     * of the current controller class.
+     * Reset a model prior to filling it with attributes.
      *
-     * @return \Esensi\Core\Http\Apis\Api
+     * @return Esensi\Core\Models\Model
      */
-    public function api();
+    public function resetAttributes();
 
 }

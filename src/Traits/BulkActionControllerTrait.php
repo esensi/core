@@ -38,7 +38,7 @@ trait BulkActionControllerTrait
 
         // Call the bulk action and pass in the resource's IDs
         $ids = Input::get('ids', []);
-        $response = call_user_func_array([$class, $method], $ids);
+        $response = call_user_func_array([$class, $method], [$ids]);
 
         // Redirect back with message
         return $response;

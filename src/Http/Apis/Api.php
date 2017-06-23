@@ -1,17 +1,19 @@
 <?php
 
-namespace Esensi\Core\Http\Controllers;
+namespace Esensi\Core\Http\Apis;
 
 use App\Exceptions\RepositoryException;
-use App\Models\Collection;
+use App\Support\Collection;
 use App\Repositories\Repository;
+use BadMethodCallException;
 use Esensi\Core\Contracts\ExceptionHandlerInterface;
 use Esensi\Core\Contracts\PackagedInterface;
 use Esensi\Core\Contracts\RepositoryInjectedInterface;
 use Esensi\Core\Traits\ApiExceptionHandlerTrait;
 use Esensi\Core\Traits\PackagedTrait;
 use Esensi\Core\Traits\RepositoryInjectedTrait;
-use Illuminate\Foundation\Bus\DispatchesCommands;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\App;
@@ -28,17 +30,24 @@ use Illuminate\Support\Facades\Response;
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-class ApiController extends Controller implements
+class Api extends Controller implements
     ExceptionHandlerInterface,
     PackagedInterface,
     RepositoryInjectedInterface
 {
     /**
+     * Authorizes requests prior to calling the controller methods.
+     *
+     * @see Illuminate\Foundation\Auth\Access\AuthorizesRequests
+     */
+    use AuthorizesRequests;
+
+    /**
      * Allow controller to dispatch commands.
      *
-     * @see Illuminate\Foundation\Bus\DispatchesCommands
+     * @see Illuminate\Foundation\Bus\DispatchesJobs
      */
-    use DispatchesCommands;
+    use DispatchesJobs;
 
     /**
      * Validate requests prior to calling the controller methods.
@@ -64,15 +73,15 @@ class ApiController extends Controller implements
     /**
      * Make use of Repository injection
      *
-     * @see Esensi\Core\Traits\RepositoryInjectedTrait
+     * @see \Esensi\Core\Traits\RepositoryInjectedTrait
      */
     use RepositoryInjectedTrait;
 
     /**
      * Inject dependencies
      *
-     * @param Esensi\Core\Repositories\Repository $repository
-     * @return Esensi\Core\Http\Controllers\ApiController
+     * @param \Esensi\Core\Repositories\Repository $repository
+     * @return \Esensi\Core\Http\Apis\Api
      */
     public function __construct(Repository $repository)
     {

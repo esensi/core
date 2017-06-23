@@ -22,19 +22,18 @@ trait ConfirmableControllerTrait
      *
      * @var array
      */
-    protected $trashableActions = [ 'restore', 'delete', 'bulk_restore', 'bulk_delete' ];
+    protected $trashableActions = [ 'restore', 'delete', 'bulkRestore', 'bulkDelete', 'bulk_restore', 'bulk_delete' ];
 
     /**
      * Display a confirmation modal for the specified resource action.
      *
      * @param string $action
      * @param integer $id (optional)
+     * @param array $data
      * @return Illuminate\View\View
      */
-    public function confirm($action, $id = null)
+    public function confirm($action, $id = null, array $data = [])
     {
-        $data = [];
-
         // Get the object from the parent API
         if( ! is_null($id) )
         {
@@ -52,7 +51,7 @@ trait ConfirmableControllerTrait
             }
 
             // Pass obkect under the singular package named variable to the view
-            $data = [ $this->package => $object, 'id' => $id ];
+            $data = array_merge($data, [ $this->package => $object, 'id' => $id ]);
         }
 
         // Render confirmation modal
@@ -64,11 +63,11 @@ trait ConfirmableControllerTrait
      *
      * @param string $action
      * @param string|array $ids (optional)
+     * @param array $data
      * @return Illuminate\View\View
      */
-    public function confirmBulk($action, $ids = null)
+    public function confirmBulk($action, $ids = null, array $data = [])
     {
-        $data = [];
         $inTrash = false;
 
         // Get the objects from the repository
@@ -89,7 +88,7 @@ trait ConfirmableControllerTrait
                 ->findIn('id', $ids, $inTrash);
 
             // Pass collection under the plural package named variable to the view
-            $data = [ str_plural($this->package) => $collection, 'ids' => $ids ];
+            $data = array_merge($data, [ str_plural($this->package) => $collection, 'ids' => $ids ]);
         }
 
         // Render confirmation modal

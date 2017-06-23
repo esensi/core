@@ -201,6 +201,26 @@ trait PackagedTrait
     }
 
     /**
+     * Resolve the templates for an email template.
+     *
+     * @param string $key to view config
+     * @return string|array
+     * @throws InvalidArgumentException
+     */
+    public function email($key)
+    {
+        // Get the confg line for the view
+        $config = 'emails.' . $this->ui . '.' . $key;
+        $lines = $this->config($config);
+        if( is_null($lines) )
+        {
+            throw new InvalidArgumentException('Email config line ['.$config.'] not found.');
+        }
+
+        return $lines;
+    }
+
+    /**
      * Get a configuration line.
      *
      * @param string $key to config line
@@ -314,17 +334,16 @@ trait PackagedTrait
     }
 
     /**
-     * Make the name of the event from the called class.
-     *
-     * @example "Esensi/Class/Foo" returns "esensi"
+     * Combine the event name with the namespace of the package.
      *
      * @param string $name of event
      * @return string
      */
     public function getNamespacedEventName($name)
     {
-        $namespace = head(explode('\\', strtolower(get_called_class())));
-        return $namespace . '.' . $this->package . '.' . $name;
+        $namespace = trim($this->namespacing(), '::');
+        $namespace = ! empty($namespace) ? $namespace . '.' : '';
+        return strtolower($namespace . $this->package . '.' . $name);
     }
 
     /**
@@ -354,13 +373,29 @@ trait PackagedTrait
     /**
      * Queue a namespaced event.
      *
+     * @deprecated In favor of `eventPush()` so we can maintain parity with Laravel's API.
+     *
      * @param string $name of event to queue
      * @param array $arguments (optional) to pass to event
+     *
      * @return mixed
      */
     public function eventQueue($name, array $arguments = [])
     {
-        return App::make('events')->queue($this->getNamespacedEventName($name), $arguments);
+        return $this->eventPush($name, $arguments);
+    }
+
+    /**
+     * Push a namespaced event onto the queue.
+     *
+     * @param string $name of event to queue
+     * @param array $arguments (optional) to pass to event
+     *
+     * @return mixed
+     */
+    public function eventPush($name, array $arguments = [])
+    {
+        return App::make('events')->push($this->getNamespacedEventName($name), $arguments);
     }
 
     /**

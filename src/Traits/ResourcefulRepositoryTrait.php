@@ -42,12 +42,14 @@ trait ResourcefulRepositoryTrait
     /**
      * Display the specified resource.
      *
-     * @param integer $id of resource
+     * @param integer|Esensi\Core\Models\Model $id of resource or instance
+     * @param boolean                          $refresh force loading a fresh copy of resource from the DB
+     *
      * @return Esensi\Core\Models\Model
      */
-    public function show($id)
+    public function show($id, $refresh = false)
     {
-        return $this->read($id);
+        return $this->read($id, $refresh);
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace Esensi\Core\Traits;
 
+use Illuminate\Support\Str;
+
 /**
  * Trait implementation of resource controller interface.
  *
@@ -70,7 +72,8 @@ trait ResourceControllerTrait
         $object = $this->api()->show($id);
 
         // Render show view
-        return $this->content( 'show', [ $this->package => $object ] );
+        $data = [ Str::camel($this->package) => $object ];
+        return $this->content( 'show', $data );
     }
 
     /**

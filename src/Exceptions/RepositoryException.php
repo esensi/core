@@ -74,10 +74,8 @@ class RepositoryException extends Exception implements RepositoryExceptionInterf
         }
 
         // Save the properties
+        parent::__construct($message, $code, $previous);
         $this->bag = $bag;
-        $this->message = $message;
-        $this->code = $code;
-        $this->previous = $previous;
     }
 
     /**

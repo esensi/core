@@ -36,9 +36,10 @@ if ( ! function_exists('build_assets'))
      * @param array $dependencies
      * @param string $key
      * @param string $extension
+     * @param array $attributes
      * @return string
      */
-    function build_assets($dependencies = [], $key, $extension)
+    function build_assets($dependencies = [], $key, $extension, $attributes=[])
     {
         $assets = [];
 
@@ -70,7 +71,7 @@ if ( ! function_exists('build_assets'))
                 switch($key)
                 {
                     case 'styles':
-                        $assets[] = '<link rel="stylesheet" href="' . $builds_url . '/' . $revision .'">';
+                        $assets[] = '<link rel="stylesheet" media="'.array_get($attributes, 'media', 'all').'" href="' . $builds_url . '/' . $revision .'">';
                         break;
 
                     case 'scripts':

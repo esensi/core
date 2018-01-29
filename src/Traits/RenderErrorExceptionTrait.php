@@ -2,7 +2,7 @@
 
 namespace Esensi\Core\Traits;
 
-use ErrorException;
+use Exception;
 
 /**
  * Trait that renders ErrorExceptions
@@ -20,10 +20,10 @@ trait RenderErrorExceptionTrait
      * Render an error exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \ErrorException  $e
+     * @param  \Exception  $e
      * @return \Illuminate\Http\Response
      */
-    public function renderErrorException($request, ErrorException $e)
+    public function renderErrorException($request, Exception $e)
     {
         // Skip custom error views when in debug mode
         if( config('app.debug') )

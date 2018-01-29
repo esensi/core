@@ -2,7 +2,7 @@
 
 namespace Esensi\Core\Contracts;
 
-use ErrorException;
+use Exception;
 
 /**
  * Render Error Exception Interface
@@ -19,9 +19,9 @@ interface RenderErrorExceptionInterface
      * Render a Repository Exception into an HTTP respons.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  \ErrorException $e
+     * @param  \Exception $e
      * @return \Illuminate\Http\Response
      */
-    public function renderErrorException($request, ErrorException $e);
+    public function renderErrorException($request, Exception $e);
 
 }

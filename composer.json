@@ -14,7 +14,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=5.6.4",
         "esensi/model": "0.6.x",
         "esensi/loaders": "0.6.x",
         "laravelcollective/html": "~5.1",

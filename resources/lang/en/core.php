@@ -8,7 +8,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | The following language lines contain the default error messages used by
-    | the Esensi\Core components package.
+    | the Core components package.
     |
     */
 
@@ -36,7 +36,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | The following language lines contain message lines used by the
-    | Esensi\Core components package models.
+    | Core components package models.
     |
     */
 
@@ -61,22 +61,64 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Button lines
+    |--------------------------------------------------------------------------
+    |
+    | The following language lines contain message lines used by the
+    | Core components package buttons.
+    |
+    */
+
+    'buttons' => [
+        'cancel'      => 'Cancel',
+        'close'       => 'Close',
+        'delete'      => 'Delete',
+        'edit'        => 'Edit',
+        'filter'      => 'Filter',
+        'new'         => 'New',
+        'public_site' => 'Public Site',
+        'restore'     => 'Restore',
+        'search'      => 'Search',
+        'toggle_menu' => 'Toggle Menu',
+        'trash'       => 'Trash',
+        'truncate'    => 'Delete All',
+        'view'        => 'View',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Label lines
     |--------------------------------------------------------------------------
     |
     | The following language lines contain label lines used by the
-    | Esensi\Core components package view.
+    | Core components package view.
     |
     */
 
     'labels' => [
-        'never_expires'          => 'Never Expires',
-        'never_updated'          => 'Never Updated',
+        'actions'                => 'Actions',
+        'administration'         => 'Administration',
+        'created'                => 'Created',
+        'dashboard'              => 'Dashboard',
+        'deleted'                => 'Deleted',
+        'display_name'           => 'Display Name',
+        'email'                  => 'Email Address',
+        'keywords'               => 'Keywords',
+        'max_results'            => 'Max Results',
+        'name'                   => 'Name',
+        'never_activated'        => 'Never Activated',
+        'never_authenticated'    => 'Never Logged In',
         'never_created'          => 'Never Created',
         'never_deleted'          => 'Never Deleted',
-        'never_authenticated'    => 'Never Logged In',
-        'never_activated'        => 'Never Activated',
+        'never_expires'          => 'Never Expires',
         'never_password_updated' => 'Never Set',
+        'never_updated'          => 'Never Updated',
+        'of'                     => 'of',
+        'order_by'               => 'Order By',
+        'showing'                => 'Showing',
+        'sort_results'           => 'Sort Results',
+        'to'                     => 'to',
+        'updated'                => 'Last Modified',
     ],
 
 ];

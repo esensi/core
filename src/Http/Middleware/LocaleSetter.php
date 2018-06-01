@@ -42,7 +42,7 @@ class LocaleSetter
         }
 
         // Save the locale to the session
-        Session::set('locale', $locale);
+        Session::put('locale', $locale);
 
         // Set the locale for the remaining requests
         App::setLocale($locale);

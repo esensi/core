@@ -5,7 +5,6 @@ namespace Esensi\Core\Http\Middleware;
 use Closure;
 use Esensi\Core\Contracts\RateLimiterInterface;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Routing\Middleware;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -19,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-class RateLimiter implements Middleware, RateLimiterInterface
+class RateLimiter implements RateLimiterInterface
 {
     /**
      * The status code to be returned upon rate limiting

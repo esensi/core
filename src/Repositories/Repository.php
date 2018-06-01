@@ -20,7 +20,7 @@ use Esensi\Core\Traits\PackagedTrait;
 use Esensi\Core\Traits\QueriedRepositoryTrait;
 use Esensi\Core\Traits\RepositoryInjectedTrait;
 use Esensi\Core\Traits\ResourcefulRepositoryTrait;
-use Illuminate\Foundation\Bus\DispatchesCommands;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 
 /**
  * Complete implementation of repository interfaces.
@@ -44,9 +44,9 @@ class Repository implements
     /**
      * Allow controller to dispatch commands.
      *
-     * @see Illuminate\Foundation\Bus\DispatchesCommands
+     * @see Illuminate\Foundation\Bus\DispatchesJobs
      */
-    use DispatchesCommands;
+    use DispatchesJobs;
 
     /**
      * Make this repository use a CRUD interface.

@@ -2,7 +2,7 @@
 
 namespace Esensi\Core\Providers;
 
-use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use \ReflectionClass;
 
@@ -51,11 +51,11 @@ class RouteServiceProvider extends ServiceProvider
      * @param  \Illuminate\Routing\Router $router
      * @return void
      */
-    public function boot(Router $router)
+    public function boot()
     {
-        $this->bindPatterns($router);
+        $this->bindPatterns();
 
-        parent::boot($router);
+        parent::boot();
     }
 
     /**
@@ -64,10 +64,10 @@ class RouteServiceProvider extends ServiceProvider
      * @param  \Illuminate\Routing\Router $router
      * @return void
      */
-    public function map(Router $router)
+    public function map()
     {
-        $this->mapControllers($router);
-        $this->mapApis($router);
+        $this->mapControllers();
+        $this->mapApis();
     }
 
     /**
@@ -76,10 +76,10 @@ class RouteServiceProvider extends ServiceProvider
      * @param \Illuminate\Routing\Router $router
      * @return void
      */
-    protected function bindPatterns(Router $router)
+    protected function bindPatterns()
     {
         foreach ($this->patterns as $name => $pattern) {
-            $router->pattern($name, $pattern);
+            Route::pattern($name, $pattern);
         }
     }
 
@@ -93,11 +93,11 @@ class RouteServiceProvider extends ServiceProvider
      * @param \Illuminate\Routing\Router $router
      * @return void
      */
-    protected function mapControllers(Router $router)
+    protected function mapControllers()
     {
         $path = $this->routesPath();
         foreach ($this->controllers as $ui => $namespace) {
-            $this->groupRoutesByNamespace($router, $namespace, $ui);
+            $this->groupRoutesByNamespace($namespace, $ui);
         }
     }
 
@@ -107,10 +107,10 @@ class RouteServiceProvider extends ServiceProvider
      * @param \Illuminate\Routing\Router $router
      * @return void
      */
-    protected function mapApis(Router $router)
+    protected function mapApis()
     {
         if( $this->apis !== null ) {
-            $this->groupRoutesByNamespace($router, $this->apis, 'api');
+            $this->groupRoutesByNamespace($this->apis, 'api');
         }
     }
 
@@ -122,10 +122,10 @@ class RouteServiceProvider extends ServiceProvider
      * @param string $file name
      * @return void
      */
-    protected function groupRoutesByNamespace(Router $router, $namespace, $file)
+    protected function groupRoutesByNamespace($namespace, $file)
     {
         $path = $this->routesPath();
-        $router->group(['namespace' => $namespace], function ($router) use ($path, $file) {
+        Route::group(['namespace' => $namespace], function ($router) use ($path, $file) {
             require $path . $file . '.php';
         });
     }

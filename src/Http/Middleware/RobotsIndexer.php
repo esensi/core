@@ -4,7 +4,6 @@ namespace Esensi\Core\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\App;
-use Illuminate\Contracts\Routing\Middleware;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -19,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-class RobotsIndexer implements Middleware
+class RobotsIndexer
 {
     /**
      * Environments that the robots are allowed to index.

@@ -4,7 +4,6 @@ namespace Esensi\Core\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Contracts\Routing\Middleware;
 
 /**
  * Guest Filter to Allow Only Guest Users
@@ -15,7 +14,7 @@ use Illuminate\Contracts\Routing\Middleware;
  * @license https://github.com/esensi/esensi/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-class AuthenticatedRedirector implements Middleware
+class AuthenticatedRedirector
 {
     /**
      * The Guard implementation.

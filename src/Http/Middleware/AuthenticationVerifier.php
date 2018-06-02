@@ -5,7 +5,6 @@ namespace Esensi\Core\Http\Middleware;
 use App\Repositories\ActivityRepository as Activity;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Contracts\Routing\Middleware;
 use Illuminate\Support\Facades\Lang;
 
 /**
@@ -17,7 +16,7 @@ use Illuminate\Support\Facades\Lang;
  * @license https://github.com/esensi/esensi/blob/master/LICENSE.txt MIT License
  * @link http://www.emersonmedia.com
  */
-class AuthenticationVerifier implements Middleware
+class AuthenticationVerifier
 {
     /**
      * The Guard implementation.

@@ -25,7 +25,8 @@ class EsensiEventListener
     {
         if( config('app.debug') )
         {
-            Log::info( Event::firing() );
+            // Log::info( Event::firing() );
+            Log::info( '' );
         }
     }
 

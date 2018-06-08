@@ -43,7 +43,7 @@ class DateValidator
 
         // Get the other value
         $otherField = $parameters[0];
-        $otherValue = $this->getValue($otherField, $validator->getData(), $validator->getFiles());
+        $otherValue = $this->getValue($otherField, $validator->getData());
 
         // Convert the values to dates if not already
         $value      = $this->asDateFromValue($value);
@@ -83,7 +83,7 @@ class DateValidator
 
         // Get the other value
         $otherField = $parameters[0];
-        $otherValue = $this->getValue($otherField, $validator->getData(), $validator->getFiles());
+        $otherValue = $this->getValue($otherField, $validator->getData());
 
         // Convert the values to dates if not already
         $value      = $this->asDateFromValue($value);

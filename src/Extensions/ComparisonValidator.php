@@ -42,7 +42,7 @@ class ComparisonValidator
         $this->requireParameterCount(1, $parameters, 'less_than_other');
 
         $otherField = $parameters[0];
-        $otherValue = $this->getValue($otherField, $validator->getData(), $validator->getFiles());
+        $otherValue = $this->getValue($otherField, $validator->getData());
         return isset($otherValue) && is_numeric($value) && is_numeric($otherValue) && $value <= $otherValue;
     }
 
@@ -75,7 +75,7 @@ class ComparisonValidator
         $this->requireParameterCount(1, $parameters, 'greater_than_other');
 
         $otherField = $parameters[0];
-        $otherValue = $this->getValue($otherField, $validator->getData(), $validator->getFiles());
+        $otherValue = $this->getValue($otherField, $validator->getData());
         return isset($otherValue) && is_numeric($value) && is_numeric($otherValue) && $value >= $otherValue;
     }
 

@@ -11,12 +11,6 @@ use Illuminate\Database\Seeder as BaseSeeder;
  * Core Seeder that adds beforeRun and afterRun methods to Laravel's Seeder.
  * Also includes a special saveOrFail() method for showing command line errors.
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @author Diego Caprioli <diego@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  */
 class Seeder extends BaseSeeder implements SaveOrFailInterface
 {

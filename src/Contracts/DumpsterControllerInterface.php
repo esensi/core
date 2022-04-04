@@ -5,11 +5,6 @@ namespace Esensi\Core\Contracts;
 /**
  * Dumpster controller interface
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  */
 interface DumpsterControllerInterface
 {
@@ -23,7 +18,7 @@ interface DumpsterControllerInterface
     /**
      * Trash the specified resource in storage.
      *
-     * @param integer $id of resource to trash
+     * @param  integer  $id of resource to trash
      * @return Illuminate\Routing\Redirector
      */
     public function trash($id);
@@ -31,7 +26,7 @@ interface DumpsterControllerInterface
     /**
      * Restore the specified resource in storage.
      *
-     * @param integer $id of resource to restore
+     * @param  integer  $id of resource to restore
      * @return Illuminate\Routing\Redirector
      */
     public function restore($id);

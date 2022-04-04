@@ -10,11 +10,6 @@ use InvalidArgumentException;
 /**
  * Validation handlers for comparing values as greater or lesser than other values.
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  * @link http://www.neontsunami.com/post/greater-than-and-less-than-validation-in-laravel-4
  * @link http://daylerees.com/codebright/validation
  */
@@ -30,10 +25,10 @@ class ComparisonValidator
     /**
      * Validate that the value is less than another attribute
      *
-     * @param string $attribute
-     * @param  mixed $value
-     * @param  array $parameters
-     * @param  Illuminate\Validation\Validator $validator
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @param  array  $parameters
+     * @param  Illuminate\Validation\Validator  $validator
      * @return boolean
      */
     public function validateLessThanOther($attribute, $value, $parameters, Validator $validator)
@@ -42,17 +37,17 @@ class ComparisonValidator
         $this->requireParameterCount(1, $parameters, 'less_than_other');
 
         $otherField = $parameters[0];
-        $otherValue = $this->getValue($otherField, $validator->getData(), $validator->getFiles());
+        $otherValue = $this->getValue($otherField, $validator->getData());
         return isset($otherValue) && is_numeric($value) && is_numeric($otherValue) && $value <= $otherValue;
     }
 
     /**
      * Replace the :other placeholder with the other attribute name
      *
-     * @param string $message
-     * @param string $attribute
-     * @param  string $rule
-     * @param  array $parameters
+     * @param  string  $message
+     * @param  string  $attribute
+     * @param  string  $rule
+     * @param  array  $parameters
      * @return string
      */
     public function replaceLessThanOther($message, $attribute, $rule, $parameters)
@@ -63,10 +58,10 @@ class ComparisonValidator
     /**
      * Validate that the value is greater than another attribute
      *
-     * @param string $attribute
-     * @param  mixed $value
-     * @param  array $parameters
-     * @param  Illuminate\Validation\Validator $validator
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @param  array  $parameters
+     * @param  Illuminate\Validation\Validator  $validator
      * @return boolean
      */
     public function validateGreaterThanOther($attribute, $value, $parameters, Validator $validator)
@@ -82,10 +77,10 @@ class ComparisonValidator
     /**
      * Replace the :other placeholder with the other attribute name
      *
-     * @param string $message
-     * @param string $attribute
-     * @param  string $rule
-     * @param  array $parameters
+     * @param  string  $message
+     * @param  string  $attribute
+     * @param  string  $rule
+     * @param  array  $parameters
      * @return string
      */
     public function replaceGreaterThanOther($message, $attribute, $rule, $parameters)

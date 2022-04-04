@@ -5,12 +5,6 @@ namespace Esensi\Core\Traits;
 /**
  * Trait implementation of searchable controller interface.
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @author Diego Caprioli <diego@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  * @see Esensi\Core\Contracts\SearchableControllerInterface
  */
 trait SearchableControllerTrait
@@ -23,7 +17,7 @@ trait SearchableControllerTrait
     public function search()
     {
         // Render search view
-        return $this->modal( 'search' );
+        return $this->modal('search');
     }
 
 }

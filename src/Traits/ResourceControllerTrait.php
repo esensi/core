@@ -2,14 +2,11 @@
 
 namespace Esensi\Core\Traits;
 
+use Illuminate\Support\Str;
+
 /**
  * Trait implementation of resource controller interface.
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  * @see Esensi\Core\Contracts\ResourceControllerInterface
  */
 trait ResourceControllerTrait
@@ -40,7 +37,7 @@ trait ResourceControllerTrait
         $options = method_exists($this, 'formOptions') ? $this->formOptions() : [];
 
         // Render create view
-        return $this->content( 'create', $options);
+        return $this->content('create', $options);
     }
 
     /**
@@ -61,7 +58,7 @@ trait ResourceControllerTrait
     /**
      * Display the specified resource.
      *
-     * @param integer $id of resource
+     * @param  integer  $id of resource
      * @return Illuminate\View\View
      */
     public function show($id)
@@ -70,13 +67,14 @@ trait ResourceControllerTrait
         $object = $this->api()->show($id);
 
         // Render show view
-        return $this->content( 'show', [ $this->package => $object ] );
+        $data = [Str::camel($this->package) => $object];
+        return $this->content( 'show', $data );
     }
 
     /**
      * Display an edit form for the specified resource.
      *
-     * @param integer $id of resource
+     * @param  integer  $id of resource
      * @return Illuminate\View\View
      */
     public function edit($id)
@@ -85,7 +83,7 @@ trait ResourceControllerTrait
         $object = $this->api()->show($id);
 
         // Get the form options
-        $options = method_exists($this, 'formOptions') ? $this->formOptions($object) : [ $this->package => $object ];
+        $options = method_exists($this, 'formOptions') ? $this->formOptions($object) : [$this->package => $object];
 
         // Render edit view
         return $this->content( 'edit', $options );
@@ -94,7 +92,7 @@ trait ResourceControllerTrait
     /**
      * Update the specified resource in storage.
      *
-     * @param integer $id of resource to update
+     * @param  integer  $id of resource to update
      * @return Illuminate\Routing\Redirector
      */
     public function update($id)
@@ -110,7 +108,7 @@ trait ResourceControllerTrait
     /**
      * Remove the specified resource from storage.
      *
-     * @param integer $id of resource to remove
+     * @param  integer  $id of resource to remove
      * @return Illuminate\Routing\Redirector
      */
     public function delete($id)
@@ -119,14 +117,14 @@ trait ResourceControllerTrait
         $response = $this->api()->delete($id);
 
         // Redirect back with message
-        return $this->redirect( 'deleted' )
+        return $this->redirect('deleted')
             ->with('message', $this->message('deleted') );
     }
 
     /**
      * Alias for delete method
      *
-     * @param integer $id of resource to remove
+     * @param  integer  $id of resource to remove
      * @return Illuminate\Routing\Redirector
      */
     public function destroy($id)
@@ -145,7 +143,7 @@ trait ResourceControllerTrait
         $response = $this->api()->truncate();
 
         // Redirect back with message
-        return $this->back('truncated' )
+        return $this->back('truncated')
             ->with('message', $this->message('truncated') );
     }
 

@@ -5,19 +5,13 @@ namespace Esensi\Core\Http\Middleware;
 use App\Repositories\ActivityRepository as Activity;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Contracts\Routing\Middleware;
 use Illuminate\Support\Facades\Lang;
 
 /**
  * User Filter to Allow Only Authenticated Users
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/esensi/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  */
-class AuthenticationVerifier implements Middleware
+class AuthenticationVerifier
 {
     /**
      * The Guard implementation.
@@ -46,18 +40,16 @@ class AuthenticationVerifier implements Middleware
      */
     public function handle($request, Closure $next)
     {
-        if ($this->auth->guest())
-        {
+        if ($this->auth->guest()) {
             // Log the action to the Activity Log
             $message = Lang::get('esensi/activity::activity.messages.unauthorized');
             Activity::addAction($message, [
-                'code'  => 401,
+                'code' => 401,
                 'label' => 'esensi.core.unauthorized'
             ]);
 
             // Block the request for AJAX
-            if ($request->ajax())
-            {
+            if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             }
 

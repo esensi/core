@@ -2,17 +2,12 @@
 
 namespace Esensi\Core\Traits;
 
-use App\Models\Collection;
+use App\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 /**
  * Trait implementation of bulk action repository interface.
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  * @see Esensi\Core\Contracts\BulkActionRepositoryInterface
  */
 trait BulkActionRepositoryTrait
@@ -20,8 +15,8 @@ trait BulkActionRepositoryTrait
     /**
      * Bulk delete the specified resources in storage.
      *
-     * @param string $action to perform
-     * @param string|array $ids
+     * @param  string  $action to perform
+     * @param  string|array  $ids
      * @return integer count of actions performed
      */
     public function bulkAction($action, $ids)
@@ -36,8 +31,7 @@ trait BulkActionRepositoryTrait
         DB::transaction(function() use ($collection, $action, $arguments)
         {
             // Iterate over the resources performing the action on each
-            $collection->each(function($id) use ($action, $arguments)
-            {
+            $collection->each(function($id) use ($action, $arguments) {
                 // Repository@<action>($id)
                 array_unshift($arguments, $id);
                 call_user_func_array([$this, studly_case($action)], $arguments);
@@ -53,7 +47,7 @@ trait BulkActionRepositoryTrait
     /**
      * Bulk delete the specified resources in storage.
      *
-     * @param string|array $ids
+     * @param  string|array  $ids
      * @return integer
      */
     public function bulkDelete($ids)
@@ -64,7 +58,7 @@ trait BulkActionRepositoryTrait
     /**
      * Bulk delete the specified resources in storage.
      *
-     * @param string|array $ids
+     * @param  string|array  $ids
      * @return integer
      */
     public function bulkRestore($ids)
@@ -75,7 +69,7 @@ trait BulkActionRepositoryTrait
     /**
      * Bulk delete the specified resources in storage.
      *
-     * @param string|array $ids
+     * @param  string|array  $ids
      * @return integer
      */
     public function bulkTrash($ids)

@@ -2,15 +2,11 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 /**
  * Create store table for sessions (database driver)
- *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
+ * 
  */
 class CreateSessionsTable extends Migration
 {
@@ -21,14 +17,13 @@ class CreateSessionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sessions', function(Blueprint $table)
-        {
-            // Add table columns
-            $table->string('id')
-                ->unique();
+        Schema::create('sessions', function(Blueprint $table) {
+            $table->string('id')->primary();
+            $table->foreignId('user_id')->nullable()->index();
+            $table->string('ip_address', 45)->nullable();
+            $table->text('user_agent')->nullable();
             $table->text('payload');
-            $table->integer('last_activity')
-                ->index();
+            $table->integer('last_activity')->index();
         });
     }
 

@@ -2,16 +2,11 @@
 
 namespace Esensi\Core\Traits;
 
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request;
 
 /**
  * Trait implementation of dumpster controller interface.
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  * @see Esensi\Core\Contracts\DumpsterControllerInterface
  */
 trait DumpsterControllerTrait
@@ -23,14 +18,14 @@ trait DumpsterControllerTrait
      */
     public function dumpster()
     {
-        Input::merge(['trashed' => 'only']);
+        Request::merge(['trashed' => 'only']);
         return $this->index();
     }
 
     /**
      * Trash the specified resource in storage.
      *
-     * @param integer $id of resource to trash
+     * @param  integer  $id of resource to trash
      * @return Illuminate\Routing\Redirector
      */
     public function trash($id)
@@ -39,14 +34,14 @@ trait DumpsterControllerTrait
         $response = $this->api()->trash($id);
 
         // Redirect back with message
-        return $this->back( 'trashed' )
-            ->with('message', $this->message('trashed') );
+        return $this->back('trashed')
+            ->with('message', $this->message('trashed'));
     }
 
     /**
      * Restore the specified resource in storage.
      *
-     * @param integer $id of resource to restore
+     * @param  integer  $id of resource to restore
      * @return Illuminate\Routing\Redirector
      */
     public function restore($id)
@@ -55,7 +50,7 @@ trait DumpsterControllerTrait
         $response = $this->api()->restore($id);
 
         // Redirect back with message
-        return $this->back( 'restored' )
+        return $this->back('restored')
             ->with('message', $this->message('restored') );
     }
 
@@ -70,7 +65,7 @@ trait DumpsterControllerTrait
         $response = $this->api()->purge();
 
         // Redirect back with message
-        return $this->back( 'purged' )
+        return $this->back('purged')
             ->with('message', $this->message('purged') );
     }
 
@@ -85,7 +80,7 @@ trait DumpsterControllerTrait
         $response = $this->api()->recover();
 
         // Redirect back with message
-        return $this->back( 'recovered' )
+        return $this->back('recovered')
             ->with('message', $this->message('recovered') );
     }
 

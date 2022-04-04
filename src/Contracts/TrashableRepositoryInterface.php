@@ -5,18 +5,13 @@ namespace Esensi\Core\Contracts;
 /**
  * Trashable repository interface
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  */
 interface TrashableRepositoryInterface
 {
     /**
      * Read the specified resource from storage even if trashed.
      *
-     * @param integer $id of resource
+     * @param  integer  $id of resource
      * @throws Esensi\Core\Exceptions\RepositoryException
      * @return Esensi\Core\Models\Model
      */
@@ -25,7 +20,7 @@ interface TrashableRepositoryInterface
     /**
      * Hide the specified resource in storage.
      *
-     * @param integer $id of resource to trash
+     * @param  integer  $id of resource to trash
      * @throws Esensi\Core\Exceptions\RepositoryException
      * @return boolean
      */
@@ -34,7 +29,7 @@ interface TrashableRepositoryInterface
     /**
      * Restore the specified resource to storage.
      *
-     * @param integer $id of resource to recover
+     * @param  integer  $id of resource to recover
      * @throws Esensi\Core\Exceptions\RepositoryException
      * @return boolean
      */

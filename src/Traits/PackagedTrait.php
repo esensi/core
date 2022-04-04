@@ -8,12 +8,6 @@ use InvalidArgumentException;
 /**
  * Traits for helping with package configurations
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @author Diego Caprioli <diego@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  * @see Esensi\Core\Contracts\PackagedInterface
  */
 trait PackagedTrait
@@ -52,7 +46,7 @@ trait PackagedTrait
     /**
      * Set the package name.
      *
-     * @param string $package
+     * @param  string  $package
      * @return void
      */
     public function setPackage( $package )
@@ -73,7 +67,7 @@ trait PackagedTrait
     /**
      * Set the UI name.
      *
-     * @param string $ui
+     * @param  string  $ui
      * @return void
      */
     public function setUI( $ui )
@@ -94,7 +88,7 @@ trait PackagedTrait
     /**
      * Set the namespace name.
      *
-     * @param string $namespace
+     * @param  string  $namespace
      * @return void
      */
     public function setNamespacing( $namespace )
@@ -115,9 +109,9 @@ trait PackagedTrait
     /**
      * Resolve a namespaced line.
      *
-     * @param mixed $resolver
-     * @param string $key to config line
-     * @param mixed $arguments (optional)
+     * @param  mixed  $resolver
+     * @param  string  $key to config line
+     * @param  mixed  $arguments (optional)
      * @return string
      */
     protected function resolve($resolver, $key, $arguments = null)
@@ -130,15 +124,13 @@ trait PackagedTrait
 
         // Use package namespace line
         // @example: esensi/<package>::<package>.foo
-        if( $resolver->has($namespace . $line) )
-        {
+        if ($resolver->has($namespace . $line)) {
             return $resolver->get($namespace . $line, $arguments);
         }
 
         // Use global namespace line
         // @example: <package>.foo
-        if( $resolver->has($line) )
-        {
+        if ($resolver->has($line)) {
             return $resolver->get($line, $arguments);
         }
 
@@ -150,9 +142,9 @@ trait PackagedTrait
     /**
      * Generate a subview for the layout.
      *
-     * @param string $key to view config
-     * @param array $data (optional) to be passed to view
-     * @param string $name (optional) of content
+     * @param  string  $key to view config
+     * @param  array  $data (optional) to be passed to view
+     * @param  string  $name (optional) of content
      * @return Illuminate\View\View
      * @throws InvalidArgumentException
      */
@@ -164,8 +156,7 @@ trait PackagedTrait
         // Get the confg line for the view
         $config = 'views.' . $this->ui . '.' . $key;
         $line = $this->config($config);
-        if( is_null($line) )
-        {
+        if (is_null($line)) {
             throw new InvalidArgumentException('View config line ['.$config.'] not found.');
         }
 
@@ -178,17 +169,16 @@ trait PackagedTrait
     /**
      * Generate a modal view.
      *
-     * @param string $key to view config
-     * @param array $data to be passed to view
-     * @param string $name (optional) of content
+     * @param  string  $key to view config
+     * @param  array  $data to be passed to view
+     * @param  string  $name (optional) of content
      * @return Illuminate\View\View
      */
     public function modal($key, array $data = [], $name = null)
     {
         // Check to see if the config line is defined
         $line = $this->config('views.' . $this->ui . '.modal');
-        if (empty($line))
-        {
+        if (empty($line)) {
             // The config line is not defined, so look for it on the esensi::core package
             $line =  $this->config('esensi/core::core.views.' . $this->ui . '.modal');
         }
@@ -201,10 +191,29 @@ trait PackagedTrait
     }
 
     /**
+     * Resolve the templates for an email template.
+     *
+     * @param  string  $key to view config
+     * @return string|array
+     * @throws InvalidArgumentException
+     */
+    public function email($key)
+    {
+        // Get the confg line for the view
+        $config = 'emails.' . $this->ui . '.' . $key;
+        $lines = $this->config($config);
+        if (is_null($lines)) {
+            throw new InvalidArgumentException('Email config line ['.$config.'] not found.');
+        }
+
+        return $lines;
+    }
+
+    /**
      * Get a configuration line.
      *
-     * @param string $key to config line
-     * @param mixed $default (optional)
+     * @param  string  $key to config line
+     * @param  mixed  $default (optional)
      * @return mixed
      */
     public function config($key, $default = null)
@@ -215,8 +224,8 @@ trait PackagedTrait
     /**
      * Get a TTL configuration line.
      *
-     * @param string $key to config line
-     * @param mixed $default (optional)
+     * @param  string  $key to config line
+     * @param  mixed  $default (optional)
      * @return mixed
      */
     public function ttl($key, $default = null)
@@ -227,8 +236,8 @@ trait PackagedTrait
     /**
      * Get a language line.
      *
-     * @param string $key to language config line
-     * @param array $replacements (optional) in language line
+     * @param  string  $key to language config line
+     * @param  array  $replacements (optional) in language line
      * @return string
      */
     public function language($key, array $replacements = [])
@@ -239,8 +248,8 @@ trait PackagedTrait
     /**
      * Get an error language line.
      *
-     * @param string $key to language config line
-     * @param array $replacements (optional) in language line
+     * @param  string  $key to language config line
+     * @param  array  $replacements (optional) in language line
      * @return string
      */
     public function error($key, array $replacements = [])
@@ -251,8 +260,8 @@ trait PackagedTrait
     /**
      * Get a message language line.
      *
-     * @param string $key to language config line
-     * @param array $replacements (optional) in language line
+     * @param  string  $key to language config line
+     * @param  array  $replacements (optional) in language line
      * @return string
      */
     public function message($key, array $replacements = [])
@@ -263,8 +272,8 @@ trait PackagedTrait
     /**
      * Get an option language line.
      *
-     * @param string $key to language config line
-     * @param array $replacements (optional) in language line
+     * @param  string  $key to language config line
+     * @param  array  $replacements (optional) in language line
      * @return string
      */
     public function option($key, array $replacements = [])
@@ -275,8 +284,8 @@ trait PackagedTrait
     /**
      * Get a subject language line.
      *
-     * @param string $key to language config line
-     * @param array $replacements (optional) in language line
+     * @param  string  $key to language config line
+     * @param  array  $replacements (optional) in language line
      * @return string
      */
     public function subject($key, array $replacements = [])
@@ -287,8 +296,8 @@ trait PackagedTrait
     /**
      * Generate a redirect.
      *
-     * @param string $key to route config
-     * @param array $params (optional) to construct route
+     * @param  string  $key to route config
+     * @param  array  $params (optional) to construct route
      * @return Illuminate\Routing\Redirector
      */
     public function redirect($key, array $params = [])
@@ -301,8 +310,8 @@ trait PackagedTrait
     /**
      * Generate a redirect back.
      *
-     * @param string $key to route config
-     * @param array $params (optional) to construct route
+     * @param  string  $key to route config
+     * @param  array  $params (optional) to construct route
      * @return Illuminate\Routing\Redirector
      */
     public function back($key, array $params = [])
@@ -314,24 +323,23 @@ trait PackagedTrait
     }
 
     /**
-     * Make the name of the event from the called class.
+     * Combine the event name with the namespace of the package.
      *
-     * @example "Esensi/Class/Foo" returns "esensi"
-     *
-     * @param string $name of event
+     * @param  string  $name of event
      * @return string
      */
     public function getNamespacedEventName($name)
     {
-        $namespace = head(explode('\\', strtolower(get_called_class())));
-        return $namespace . '.' . $this->package . '.' . $name;
+        $namespace = trim($this->namespacing(), '::');
+        $namespace = ! empty($namespace) ? $namespace . '.' : '';
+        return strtolower($namespace . $this->package . '.' . $name);
     }
 
     /**
      * Fire a namespaced event until the first non-null response.
      *
-     * @param string $name of event to fire
-     * @param array $arguments (optional) to pass to event
+     * @param  string  $name of event to fire
+     * @param  array  $arguments (optional) to pass to event
      * @return mixed
      */
     public function eventUntil($name, array $arguments = [])
@@ -342,31 +350,47 @@ trait PackagedTrait
     /**
      * Fire a namespaced event.
      *
-     * @param string $name of event to fire
-     * @param array $arguments (optional) to pass to event
+     * @param  string  $name of event to fire
+     * @param  array  $arguments (optional) to pass to event
      * @return mixed
      */
     public function eventFire($name, array $arguments = [])
     {
-        return App::make('events')->fire($this->getNamespacedEventName($name), $arguments);
+        return App::make('events')->dispatch($this->getNamespacedEventName($name), $arguments);
     }
 
     /**
      * Queue a namespaced event.
      *
-     * @param string $name of event to queue
-     * @param array $arguments (optional) to pass to event
+     * @deprecated In favor of `eventPush()` so we can maintain parity with Laravel's API.
+     *
+     * @param string  $name of event to queue
+     * @param array  $arguments (optional) to pass to event
+     *
      * @return mixed
      */
     public function eventQueue($name, array $arguments = [])
     {
-        return App::make('events')->queue($this->getNamespacedEventName($name), $arguments);
+        return $this->eventPush($name, $arguments);
+    }
+
+    /**
+     * Push a namespaced event onto the queue.
+     *
+     * @param string  $name of event to queue
+     * @param array  $arguments (optional) to pass to event
+     *
+     * @return mixed
+     */
+    public function eventPush($name, array $arguments = [])
+    {
+        return App::make('events')->push($this->getNamespacedEventName($name), $arguments);
     }
 
     /**
      * Flush namespaced events.
      *
-     * @param string $name of event to flush
+     * @param  string  $name of event to flush
      * @return mixed
      */
     public function eventFlush($name)

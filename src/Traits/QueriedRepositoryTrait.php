@@ -7,11 +7,6 @@ use Esensi\Core\Traits\FilterableRepositoryTrait;
 /**
  * Trait implementation of queried repository interface.
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  * @see Esensi\Core\Contracts\QueriedRepositoryInterface
  */
 trait QueriedRepositoryTrait
@@ -26,10 +21,10 @@ trait QueriedRepositoryTrait
     /**
      * Run filters against repository query.
      *
-     * @param  array $filters (optional)
+     * @param  array  $filters (optional)
      * @return Illuminate\Database\Query\Builder
      */
-    public function query( array $filters = [] )
+    public function query(array $filters = [])
     {
         // Merge the argument filters with the base repository filters
         $this->mergeFilters($filters);

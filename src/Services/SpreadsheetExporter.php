@@ -16,11 +16,6 @@ use SplTempFileObject;
 /**
  * Exports a spreadsheet to a CSV writer instance.
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  */
 abstract class SpreadsheetExporter implements
     ModelInjectedInterface,
@@ -104,25 +99,24 @@ abstract class SpreadsheetExporter implements
     /**
      * Generate a spreadsheet by transforming 3D data into 2D data.
      *
-     * @param array $filters (optional)
+     * @param array  $filters (optional)
      * @return League\Csv\Writer
      */
-    public function generate( array $filters = [] )
+    public function generate(array $filters = [])
     {
         // Query the repository for filtered set of objects to export
-        $objects = $this->query( $filters );
+        $objects = $this->query($filters);
 
         // Insert headers
         $this->data->insertOne( $this->getHeaders() );
 
         // Add objects as rows
-        if( $objects )
-        {
+        if ($objects) {
             // Transform a 3D object into a 2D row
-            $objects->transform( [ $this, 'transform' ] );
+            $objects->transform([$this, 'transform']);
 
             // Insert all the objects as rows
-            $this->data->insertAll( $objects->toArray() );
+            $this->data->insertAll($objects->toArray());
         }
 
         return $this->data;
@@ -131,10 +125,10 @@ abstract class SpreadsheetExporter implements
     /**
      * Query for objects to export.
      *
-     * @param array $filters (optional)
+     * @param array  $filters (optional)
      * @return Illuminate\Database\Eloquent\Collection|null
      */
-    public function query( array $filters = [] )
+    public function query(array $filters = [])
     {
         return $this->getModel()
             ->newQuery()
@@ -144,7 +138,7 @@ abstract class SpreadsheetExporter implements
     /**
      * Transform a 3D object into a 2D array.
      *
-     * @param object $object model
+     * @param object  $object model
      * @return array
      */
     public function transform( $object )
@@ -154,8 +148,7 @@ abstract class SpreadsheetExporter implements
 
         // Add each of the values that corresponds with the headers
         $row = [];
-        foreach($this->getHeaders() as $attribute => $header)
-        {
+        foreach ($this->getHeaders() as $attribute => $header) {
             // Use dot array access to get the column value
             $value = array_get($attributes, $attribute);
 

@@ -1,5 +1,5 @@
-@include ( config('esensi/core::core.partials.public.header') )
+@include (config('esensi/core::core.partials.public.header'))
 
 @yield('content')
 
-@include ( config('esensi/core::core.partials.public.footer') )
+@include (config('esensi/core::core.partials.public.footer'))

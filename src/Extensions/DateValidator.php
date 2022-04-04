@@ -10,11 +10,6 @@ use InvalidArgumentException;
 /**
  * Validation handlers for comparing dates against other attributes.
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  * @link http://www.neontsunami.com/post/greater-than-and-less-than-validation-in-laravel-4
  * @link http://daylerees.com/codebright/validation
  */
@@ -30,10 +25,10 @@ class DateValidator
     /**
      * Validate that the date is before another attribute date
      *
-     * @param string $attribute
-     * @param  mixed $value
-     * @param  array $parameters
-     * @param  Illuminate\Validation\Validator $validator
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @param  array  $parameters
+     * @param  Illuminate\Validation\Validator  $validator
      * @return boolean
      */
     public function validateBeforeOther($attribute, $value, $parameters, Validator $validator)
@@ -43,10 +38,10 @@ class DateValidator
 
         // Get the other value
         $otherField = $parameters[0];
-        $otherValue = $this->getValue($otherField, $validator->getData(), $validator->getFiles());
+        $otherValue = $this->getValue($otherField, $validator->getData());
 
         // Convert the values to dates if not already
-        $value      = $this->asDateFromValue($value);
+        $value = $this->asDateFromValue($value);
         $otherValue = $this->asDateFromValue($otherValue);
 
         // Compare that the date is before the other date
@@ -56,10 +51,10 @@ class DateValidator
     /**
      * Replace the :other placeholder with the other attribute name
      *
-     * @param string $message
-     * @param string $attribute
-     * @param  string $rule
-     * @param  array $parameters
+     * @param  string  $message
+     * @param  string  $attribute
+     * @param  string  $rule
+     * @param  array  $parameters
      * @return string
      */
     public function replaceBeforeOther($message, $attribute, $rule, $parameters)
@@ -70,10 +65,10 @@ class DateValidator
     /**
      * Validate that the date is after another attribute date
      *
-     * @param string $attribute
-     * @param  mixed $value
-     * @param  array $parameters
-     * @param  Illuminate\Validation\Validator $validator
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @param  array  $parameters
+     * @param  Illuminate\Validation\Validator  $validator
      * @return boolean
      */
     public function validateAfterOther($attribute, $value, $parameters, Validator $validator)
@@ -83,10 +78,10 @@ class DateValidator
 
         // Get the other value
         $otherField = $parameters[0];
-        $otherValue = $this->getValue($otherField, $validator->getData(), $validator->getFiles());
+        $otherValue = $this->getValue($otherField, $validator->getData());
 
         // Convert the values to dates if not already
-        $value      = $this->asDateFromValue($value);
+        $value = $this->asDateFromValue($value);
         $otherValue = $this->asDateFromValue($otherValue);
 
         // Compare that the date is after the other date
@@ -96,10 +91,10 @@ class DateValidator
     /**
      * Replace the :other placeholder with the other attribute name
      *
-     * @param string $message
-     * @param string $attribute
-     * @param  string $rule
-     * @param  array $parameters
+     * @param  string  $message
+     * @param  string  $attribute
+     * @param  string  $rule
+     * @param  array  $parameters
      * @return string
      */
     public function replaceAfterOther($message, $attribute, $rule, $parameters)
@@ -110,31 +105,26 @@ class DateValidator
     /**
      * Create a Carbon date from a value that should be in the format.
      *
-     * @param  mixed $value of date
-     * @param  string $format date should be in
+     * @param  mixed  $value of date
+     * @param  string  $format date should be in
      * @return Carbon\Carbon|null
      */
     protected function asDateFromValue($value = null, $format = 'm/d/Y')
     {
-        if( $value instanceof Carbon )
-        {
+        if ($value instanceof Carbon) {
             return $value;
         }
 
-        try{
+        try {
             return Carbon::createFromFormat($format, $value)->startOfDay();
-        }
-        catch(InvalidArgumentException $e)
-        {
+        } catch (InvalidArgumentException $e) {
 
         }
 
-        try{
+        try {
             $date = new Carbon($value);
             return $date->startOfDay();
-        }
-        catch(InvalidArgumentException $e)
-        {
+        }  catch (InvalidArgumentException $e) {
             return null;
         }
     }

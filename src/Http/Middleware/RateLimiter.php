@@ -5,7 +5,6 @@ namespace Esensi\Core\Http\Middleware;
 use Closure;
 use Esensi\Core\Contracts\RateLimiterInterface;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Routing\Middleware;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -13,13 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
  * Rate limiter middleware to ban a user for
  * too many requests within a period of time.
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  */
-class RateLimiter implements Middleware, RateLimiterInterface
+class RateLimiter implements RateLimiterInterface
 {
     /**
      * The status code to be returned upon rate limiting
@@ -99,10 +93,10 @@ class RateLimiter implements Middleware, RateLimiterInterface
      */
     public function __construct(Application $app)
     {
-        $this->cache      = $app['cache'];
-        $this->config     = $app['config'];
-        $this->events     = $app['events'];
-        $this->router     = $app['router'];
+        $this->cache = $app['cache'];
+        $this->config = $app['config'];
+        $this->events = $app['events'];
+        $this->router = $app['router'];
         $this->translator = $app['translator'];
     }
 
@@ -132,8 +126,7 @@ class RateLimiter implements Middleware, RateLimiterInterface
         $request = $this->limit($request);
 
         // Show an error as rate limits are exceeded
-        if( $this->isEnabled() && $this->isLimitExceeded() )
-        {
+        if ($this->isEnabled() && $this->isLimitExceeded()) {
             $response = $this->render($request);
         }
 
@@ -224,7 +217,7 @@ class RateLimiter implements Middleware, RateLimiterInterface
     /**
      * Limit the HTTP request according to the rates.
      *
-     * @param  Illuminate\Http\Request $request
+     * @param  Illuminate\Http\Request  $request
      * @return Illuminate\Http\Request
      */
     public function limit(Request $request)
@@ -244,15 +237,13 @@ class RateLimiter implements Middleware, RateLimiterInterface
         $tag = sprintf($tag . ':%s', $request->getClientIp());
 
         // Rate limit by route address
-        if( $this->config->get($this->namespace . '::core.rates.routes') && $this->router->current() )
-        {
+        if ($this->config->get($this->namespace . '::core.rates.routes') && $this->router->current()) {
             // Add the route name to the rate tag
             $tag = sprintf($tag . ':%s', $this->router->currentRouteName());
 
             // Add the route parameters to the rate tag
             $parameters = $this->router->current()->parameters();
-            if( ! empty($parameters) && $this->config->get($this->namespace . '::core.rates.parameters'))
-            {
+            if (! empty($parameters) && $this->config->get($this->namespace . '::core.rates.parameters')) {
                 $tag = sprintf($tag . ':%s', implode(',', $parameters));
             }
         }
@@ -267,22 +258,20 @@ class RateLimiter implements Middleware, RateLimiterInterface
         $this->counter = (int) $this->cache->get($tag);
 
         // Increment counter
-        if($this->getCounter() < $this->getLimit())
-        {
+        if ($this->getCounter() < $this->getLimit()) {
             $this->counter++;
             $this->cache->put($tag, $this->getCounter(), $this->getPeriod());
         }
 
         // Put request in timeout if not already in timeout
-        elseif( ! $this->cache->has($tag.':timeout') )
-        {
+        elseif (! $this->cache->has($tag.':timeout')) {
             // Add timeout
             $this->cache->add($tag.':timeout', true, $this->getTimeout());
 
             // Fire event listener
-            $ip      = $request->getClientIp();
-            $route   = $this->router->currentRouteName();
-            $limit   = $this->getLimit();
+            $ip = $request->getClientIp();
+            $route = $this->router->currentRouteName();
+            $limit = $this->getLimit();
             $timeout = $this->getTimeout();
             $this->events->fire('esensi.core.rate_exceeded', compact('ip', 'route', 'limit', 'timeout'));
         }
@@ -301,7 +290,7 @@ class RateLimiter implements Middleware, RateLimiterInterface
      * Render the error response when a rate limit is exceeded.
      *
      * @param  Illuminate\Http\Request  $request
-     * @return Symfony\Component\HttpFoundation\Response $response
+     * @return Symfony\Component\HttpFoundation\Response  $response
      */
     public function render(Request $request)
     {
@@ -312,15 +301,13 @@ class RateLimiter implements Middleware, RateLimiterInterface
         $data = compact('message', 'error', 'code');
 
         // Provide a JSON response to API controllers
-        if( $request->ajax() || $request->wantsJson() )
-        {
+        if ($request->ajax() || $request->wantsJson()) {
             $content = json_encode($data);
             $contentType = 'application/json';
         }
 
         // Provide an HTML response to UI controllers
-        else
-        {
+        else {
             $view = $this->config->get($this->namespace . '::core.views.public.' . $code, 'errors.' . $code);
             $content = view($view, $data);
             $contentType = 'text/html';
@@ -335,13 +322,13 @@ class RateLimiter implements Middleware, RateLimiterInterface
     /**
      * Add rate limit headers to the response.
      *
-     * @param  Symfony\Component\HttpFoundation\Response $response
+     * @param  Symfony\Component\HttpFoundation\Response  $response
      * @return Symfony\Component\HttpFoundation\Response|void
      */
     public function addHeaders(Response $response = null)
     {
         // Short circuit
-        if( is_null($response) )
+        if (is_null($response))
             return;
 
         // Set X-RateLimit headers
@@ -349,8 +336,7 @@ class RateLimiter implements Middleware, RateLimiterInterface
         $response->headers->set('X-Ratelimit-Remaining', $this->getLimit() - $this->getCounter(), false);
 
         // Enable X-RateLimit-Tag header in debug mode
-        if($this->config->get('app.debug') == true)
-        {
+        if ($this->config->get('app.debug') == true) {
             $response->headers->set('X-Ratelimit-Tag', $this->getTag(), false);
         }
 

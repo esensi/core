@@ -12,7 +12,7 @@ interface SaveOrFailInterface
     /**
      * Save model or fail by showing errors.
      *
-     * @param App\Models\Model $model
+     * @param  App\Models\Model  $model
      * @return void
      */
     public function saveOrFail(Model $model);

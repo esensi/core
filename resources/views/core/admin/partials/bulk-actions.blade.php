@@ -1,20 +1,20 @@
-<div class="btn-bulk btn-group" data-toggle="bulk">
-  @if( Route::currentRouteName() == 'admin.'. $package .'.dumpster' )
-    <a data-bulk-url="{{ route('admin.'. $package .'.restore.bulk.confirm', ':ids') }}" class="btn btn-sm btn-default" data-toggle="modal" data-target="#esensiModal">
-      <i class="fa fa-fw text-success fa-refresh"></i><span class="hidden-xs"> Restore</span>
-    </a>
-    <a data-bulk-url="{{ route('admin.'. $package .'.delete.bulk.confirm', ':ids') }}" class="btn btn-sm btn-default" data-toggle="modal" data-target="#esensiModal">
-      <i class="fa fa-fw text-danger fa-trash-o"></i><span class="hidden-xs"> Delete</span>
-    </a>
-  @else
-    @if( Route::has('admin.'. $package . '.dumpster') )
-      <a data-bulk-url="{{ route('admin.'. $package .'.trash.bulk.confirm', ':ids') }}" class="btn btn-sm btn-default" data-toggle="modal" data-target="#esensiModal">
-        <i class="fa fa-fw text-danger fa-trash-o"></i><span class="hidden-xs"> Trash</span>
-      </a>
+<div class="bulk-actions btn-group" data-toggle="bulk">
+    @if (Route::currentRouteName() == 'admin.'. $package .'.dumpster')
+        <a data-bulk-url="{{ route('admin.'. $package .'.restore.bulk.confirm', ':ids') }}" class="bulk-action btn btn-restore" data-toggle="modal" data-target="#esensiModal">
+            <span>Restore</span>
+        </a>
+        <a data-bulk-url="{{ route('admin.'. $package .'.delete.bulk.confirm', ':ids') }}" class="bulk-action btn btn-delete" data-toggle="modal" data-target="#esensiModal">
+            <span>Delete</span>
+        </a>
     @else
-      <a data-bulk-url="{{ route('admin.'. $package .'.delete.bulk.confirm', ':ids') }}" class="btn btn-sm btn-default" data-toggle="modal" data-target="#esensiModal">
-        <i class="fa fa-fw text-danger fa-trash-o"></i><span class="hidden-xs"> Delete</span>
-      </a>
+        @if (Route::has('admin.'. $package . '.dumpster'))
+        <a data-bulk-url="{{ route('admin.'. $package .'.trash.bulk.confirm', ':ids') }}" class="bulk-action btn btn-trash" data-toggle="modal" data-target="#esensiModal">
+            <span>Trash</span>
+        </a>
+        @else
+        <a data-bulk-url="{{ route('admin.'. $package .'.delete.bulk.confirm', ':ids') }}" class="bulk-action btn btn-delete" data-toggle="modal" data-target="#esensiModal">
+            <span>Delete</span>
+        </a>
+        @endif
     @endif
-  @endif
 </div>

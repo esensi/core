@@ -4,7 +4,6 @@ namespace Esensi\Core\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\App;
-use Illuminate\Contracts\Routing\Middleware;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -13,13 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
  * allow or deny access to robots that index the robots.txt
  * file that is traditionally stored in the public path.
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  */
-class RobotsIndexer implements Middleware
+class RobotsIndexer
 {
     /**
      * Environments that the robots are allowed to index.
@@ -33,19 +27,17 @@ class RobotsIndexer implements Middleware
     /**
      * Handle the given request and get the response.
      *
-     * @param  Illuminate\Http\Request $request
+     * @param  Illuminate\Http\Request  $request
      * @param  Closure $next
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
         // Only allow middleware on disallowed environments
-        if( $this->isDisallowed() )
-        {
+        if ($this->isDisallowed()) {
             // Simulate requests for robots.txt and deny
             // robots access to the site.
-            if( $this->requestIsRobotsFile($request) )
-            {
+            if ($this->requestIsRobotsFile($request)) {
                 return $this->render($request);
             }
 
@@ -62,7 +54,7 @@ class RobotsIndexer implements Middleware
     /**
      * Render the robots.txt file as an HTTP response.
      *
-     * @param  Illuminate\Http\Request $request
+     * @param  Illuminate\Http\Request  $request
      * @return Symfony\Component\HttpFoundation\Response
      */
     public function render($request)
@@ -73,7 +65,7 @@ class RobotsIndexer implements Middleware
     /**
      * Add robot headers to the response.
      *
-     * @param  Symfony\Component\HttpFoundation\Response $response
+     * @param  Symfony\Component\HttpFoundation\Response  $response
      * @return Symfony\Component\HttpFoundation\Response
      */
     public function addHeaders(Response $response)
@@ -85,7 +77,7 @@ class RobotsIndexer implements Middleware
     /**
      * Check if request is for the robots.txt file.
      *
-     * @param  Illuminate\Http\Request $request
+     * @param  Illuminate\Http\Request  $request
      * @param  string  $file name
      * @return boolean
      */

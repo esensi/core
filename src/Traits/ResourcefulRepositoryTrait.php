@@ -5,12 +5,6 @@ namespace Esensi\Core\Traits;
 /**
  * Trait implementation of a resource repository.
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @author Diego Caprioli <diego@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  * @see Esensi\Core\Contracts\ResourcefulRepositoryInterface
  */
 trait ResourcefulRepositoryTrait
@@ -18,7 +12,7 @@ trait ResourcefulRepositoryTrait
     /**
      * Display a listing of the resource.
      *
-     * @param  array $filters (optional)
+     * @param  array  $filters (optional)
      * @return Illuminate\Pagination\Paginator
      */
     public function index(array $filters = [])
@@ -31,7 +25,7 @@ trait ResourcefulRepositoryTrait
     /**
      * Store a newly created resource in storage.
      *
-     * @param array $attributes to store on the resource
+     * @param  array  $attributes to store on the resource
      * @return Esensi\Core\Models\Model
      */
     public function store(array $attributes)
@@ -42,18 +36,20 @@ trait ResourcefulRepositoryTrait
     /**
      * Display the specified resource.
      *
-     * @param integer $id of resource
+     * @param integer|Esensi\Core\Models\Model  $id of resource or instance
+     * @param boolean  $refresh force loading a fresh copy of resource from the DB
+     *
      * @return Esensi\Core\Models\Model
      */
-    public function show($id)
+    public function show($id, $refresh = false)
     {
-        return $this->read($id);
+        return $this->read($id, $refresh);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param integer $id of resource to remove
+     * @param  integer  $id of resource to remove
      * @return boolean
      */
     public function destroy($id)
@@ -78,9 +74,8 @@ trait ResourcefulRepositoryTrait
             ->delete();
 
         // Throw an error if resources could not be deleted
-        if( ! $result )
-        {
-            $this->throwException( [], $this->error('truncate') );
+        if (! $result) {
+            $this->throwException([], $this->error('truncate') );
         }
 
         // Fire after listeners

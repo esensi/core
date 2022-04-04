@@ -5,12 +5,6 @@ namespace Esensi\Core\Traits;
 /**
  * Trait implementation of trashable repository interface.
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @author Diego Caprioli <diego@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  * @see Esensi\Core\Contracts\TrashableRepositoryInterface
  */
 trait TrashableRepositoryTrait
@@ -18,7 +12,7 @@ trait TrashableRepositoryTrait
     /**
      * Read the specified resource from storage even if trashed.
      *
-     * @param integer $id of resource
+     * @param  integer  $id of resource
      * @throws Esensi\Core\Exceptions\RepositoryException
      * @return Esensi\Core\Models\Model
      */
@@ -31,9 +25,8 @@ trait TrashableRepositoryTrait
             ->find($id);
 
         // Throw an error if resource is not found
-        if( ! $object )
-        {
-            $this->throwException( [], $this->error('retrieve') );
+        if (! $object) {
+            $this->throwException([], $this->error('retrieve'));
         }
 
         return $object;
@@ -42,7 +35,7 @@ trait TrashableRepositoryTrait
     /**
      * Hide the specified resource in storage.
      *
-     * @param integer $id of resource to trash
+     * @param  integer  $id of resource to trash
      * @throws Esensi\Core\Exceptions\RepositoryException
      * @return boolean
      */
@@ -52,20 +45,19 @@ trait TrashableRepositoryTrait
         $object = $this->read($id);
 
         // Fire before listeners
-        $this->eventUntil('trashing', [ $object ] );
+        $this->eventUntil('trashing', [$object]);
 
         // Soft delete a resource
         // Can't trash a trashed resource
         $result = $object->delete();
 
         // Throw an error if resource could not be deleted
-        if( ! $result )
-        {
-            $this->throwException( $object->getErrors(), $this->error('trash') );
+        if (! $result) {
+            $this->throwException($object->getErrors(), $this->error('trash'));
         }
 
         // Fire after listeners
-        $this->eventFire('trashed', [ $object ] );
+        $this->eventFire('trashed', [$object]);
 
         return $result;
     }
@@ -73,30 +65,32 @@ trait TrashableRepositoryTrait
     /**
      * Restore the specified resource to storage.
      *
-     * @todo make restoration rules be part of validation
-     * @param integer $id of resource to recover
+     * @todo   make restoration rules be part of validation
+     * @param  integer  $id of resource to recover
      * @throws Esensi\Core\Exceptions\RepositoryException
      * @return boolean
      */
     public function restore($id)
     {
         // Retrieve a trashed resource
-        $object = $this->retrieve($id);
+        $object = $this->getModel()
+                    ->query()
+                    ->withTrashed()
+                    ->where('id', $id);
 
         // Fire before listeners
-        $this->eventUntil('restoring', [ $object ] );
+        $this->eventUntil('restoring', [$object]);
 
         // Restore the object
         $result = $object->restore();
 
         // Throw an error if resource could not be restored
-        if( ! $result )
-        {
-            $this->throwException( $object->getErrors(), $this->error('restore') );
+        if (! $result) {
+            $this->throwException($object->getErrors(), $this->error('restore'));
         }
 
         // Fire after listeners
-        $this->eventFire('restored', [ $object ] );
+        $this->eventFire('restored', [$object]);
 
         return $result;
     }
@@ -118,9 +112,8 @@ trait TrashableRepositoryTrait
             ->forceDelete();
 
         // Throw an error if resources could not be deleted
-        if( ! $result )
-        {
-            $this->throwException( [], $this->error('purge') );
+        if(! $result) {
+            $this->throwException([], $this->error('purge'));
         }
 
         // Fire after listeners
@@ -146,9 +139,8 @@ trait TrashableRepositoryTrait
             ->restore();
 
         // Throw an error if resources could not be restored
-        if( ! $result )
-        {
-            $this->throwException( [], $this->error('recover') );
+        if (! $result) {
+            $this->throwException([], $this->error('recover'));
         }
 
         // Fire after listeners

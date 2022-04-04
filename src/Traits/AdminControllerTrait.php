@@ -11,11 +11,6 @@ use Esensi\Core\Traits\SearchableControllerTrait;
 /**
  * Trait that encapsulates other admin controller related traits.
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  */
 trait AdminControllerTrait
 {

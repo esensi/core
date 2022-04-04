@@ -2,6 +2,7 @@
 
 namespace Esensi\Core\Models;
 
+use Esensi\Core\Traits\NewCollectionModelTrait;
 use Esensi\Model\Model as BaseModel;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Str;
@@ -9,21 +10,21 @@ use Illuminate\Support\Str;
 /**
  * Core Model
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  * @see Esensi\Model\Model
  */
 class Model extends BaseModel
 {
     /**
+     * Converts all returned collections into \App\Models\Collection.
+     */
+    use NewCollectionModelTrait;
+
+    /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'models';
+    protected $table;
 
     /**
      * The relationships that should be eager loaded with each query.
@@ -131,9 +132,9 @@ class Model extends BaseModel
      * @var array
      */
     public $trashedOptions = [
-        1      => 'Any Trashed',
+        1 => 'Any Trashed',
         'only' => 'Trashed',
-        0      => 'Not Trashed',
+        0 => 'Not Trashed',
     ];
 
     /**
@@ -151,7 +152,7 @@ class Model extends BaseModel
      * @var array
      */
     public $sortOptions = [
-        'asc'  => 'Ascending',
+        'asc' => 'Ascending',
         'desc' => 'Descending',
     ];
 
@@ -161,9 +162,9 @@ class Model extends BaseModel
      * @var array
      */
     public $maxOptions = [
-        10  => '10 Per Page',
-        25  => '25 Per Page',
-        50  => '50 Per Page',
+        10 => '10 Per Page',
+        25 => '25 Per Page',
+        50 => '50 Per Page',
         100 => '100 Per Page',
     ];
 
@@ -178,15 +179,13 @@ class Model extends BaseModel
         // Dynamically get time since attributes
         $normalized = Str::snake( $key );
         $attribute = str_replace(['time_since_', 'time_till_'], ['', ''], $normalized);
-        if ( ( Str::startsWith( $normalized, 'time_since_' ) || Str::startsWith( $normalized, 'time_till_' ) )
-            && in_array( $attribute . '_at', $this->getDates() ) )
-        {
+        if (in_array( $attribute . '_at', $this->getDates())
+                && (Str::startsWith( $normalized, 'time_since_' ) || Str::startsWith( $normalized, 'time_till_'))) {
             // Convert the attribute to a Carbon date
             $value = $this->getAttributeFromArray( $attribute . '_at');
 
             // Show label if date has not been set
-            if( is_null($value) )
-            {
+            if (is_null($value)) {
                 return Lang::get('esensi/core::core.labels.never_' . $attribute);
             }
 
@@ -202,16 +201,16 @@ class Model extends BaseModel
     /**
      * Builds a query scope to return object alphabetically for a dropdown list.
      *
-     * @param Illuminate\Database\Query\Builder $query
-     * @param string $column (optional) to order by
-     * @param string $key (optional) to use in returned array
-     * @param string $sort (optional) direction
+     * @param  Illuminate\Database\Query\Builder  $query
+     * @param  string  $column (optional) to order by
+     * @param  string  $key (optional) to use in returned array
+     * @param  string  $sort (optional) direction
      * @return array
      */
     public function scopeListAlphabetically($query, $column = null, $key = null, $sort = 'asc')
     {
         $column = is_null($column) ? $this->getKeyName() : $column;
-        return $query->orderBy($column, $sort)->lists($column, $key)->all();
+        return $query->orderBy($column, $sort)->pluck($column, $key)->toArray();
     }
 
 }

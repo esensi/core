@@ -6,11 +6,6 @@ use Esensi\Core\Models\Collection;
 /**
  * Tests for the Collection class
  *
- * @package Esensi\Core
- * @author Diego Caprioli <diego@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  */
 class CollectionTest extends PHPUnit {
 
@@ -33,8 +28,7 @@ class CollectionTest extends PHPUnit {
      */
     public function parseMixedReturnsCollectionForSingleValue()
     {
-        foreach ($this->array as $elem)
-        {
+        foreach ($this->array as $elem) {
             $collection = Collection::parseMixed($elem);
             $this->assertInstanceOf('Esensi\Core\Models\Collection', $collection);
             $this->assertEquals([$elem], $collection->all());

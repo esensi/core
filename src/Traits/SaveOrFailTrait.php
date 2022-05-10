@@ -15,13 +15,12 @@ trait SaveOrFailTrait
     /**
      * Save model or fail by showing errors.
      *
-     * @param App\Models\Model $model
+     * @param  App\Models\Model  $model
      * @return void
      */
     public function saveOrFail(Model $model)
     {
-        if( ! $model->save() )
-        {
+        if (! $model->save()) {
             $class = class_basename($model);
             $console = $this instanceof Seeder ? $this->command : $this;
 

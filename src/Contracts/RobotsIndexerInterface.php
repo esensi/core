@@ -8,18 +8,13 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Robots Indexer Interface
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  */
 interface RobotsIndexerInterface
 {
     /**
      * Render the robots.txt file as an HTTP response.
      *
-     * @param  Illuminate\Http\Request $request
+     * @param  Illuminate\Http\Request  $request
      * @return Symfony\Component\HttpFoundation\Response
      */
     public function render($request);
@@ -27,7 +22,7 @@ interface RobotsIndexerInterface
     /**
      * Add robot headers to the response.
      *
-     * @param  Symfony\Component\HttpFoundation\Response $response
+     * @param  Symfony\Component\HttpFoundation\Response  $response
      * @return Symfony\Component\HttpFoundation\Response
      */
     public function addHeaders(Response $response);
@@ -35,7 +30,7 @@ interface RobotsIndexerInterface
     /**
      * Check if request is for the robots.txt file.
      *
-     * @param  Illuminate\Http\Request $request
+     * @param  Illuminate\Http\Request  $request
      * @param  string  $file name
      * @return boolean
      */

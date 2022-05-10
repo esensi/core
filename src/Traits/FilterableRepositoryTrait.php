@@ -2,16 +2,11 @@
 
 namespace Esensi\Core\Traits;
 
-use App\Models\Collection;
+use App\Support\Collection;
 
 /**
  * Trait implementation of filterable repository interface.
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  * @see Esensi\Core\Contracts\FilterableRepositoryInterface
  */
 trait FilterableRepositoryTrait
@@ -57,9 +52,16 @@ trait FilterableRepositoryTrait
     protected $scopes = [];
 
     /**
+     * Selects to add to the query when filtered.
+     *
+     * @var array
+     */
+    protected $selects = [];
+
+    /**
      * Search the resource using filters.
      *
-     * @param object $query builder
+     * @param  object  $query builder
      * @return Illuminate\Database\Query\Builder
      */
     public function filter($query)
@@ -67,8 +69,8 @@ trait FilterableRepositoryTrait
         // Bind filters in case it wasn't already done
         $this->bindFilters();
 
-        // Set primary selection to the model's table
-        $query->select([$query->getModel()->getTable().'.*']);
+        // Bind the selects to the query
+        $query = $this->bindSelects($query);
 
         // Filter with relationships
         $this->filterRelationships($query);
@@ -81,7 +83,7 @@ trait FilterableRepositoryTrait
 
         // Filter for resources by keyword
         $this->filterKeywords($query);
-
+        
         // Filter for resources by query scope
         $this->filterScopes($query);
 
@@ -93,7 +95,7 @@ trait FilterableRepositoryTrait
     /**
      * Paginate the specified resource in storage.
      *
-     * @param object $query builder
+     * @param  object  $query builder
      * @return array
      */
     public function paginate($query)
@@ -105,16 +107,14 @@ trait FilterableRepositoryTrait
     /**
      * Filter query with relationships.
      *
-     * @param object $query builder
+     * @param  object  $query builder
      * @return void
      */
     public function filterRelationships($query)
     {
-        if ( isset($this->relationships) )
-        {
+        if (isset($this->relationships)) {
             // Parse relations1,relationsN into an array
-            if( ! is_array($this->relationships) )
-            {
+            if (! is_array($this->relationships)) {
                 $relationships = Collection::parseMixed($this->relationships)->all();
                 $this->relationships = $relationships;
             }
@@ -133,23 +133,20 @@ trait FilterableRepositoryTrait
     public function filterTrashed($query)
     {
         // Enable filter if model support it
-        if ( method_exists($this->getModel(), 'forceDelete') && isset($this->trashed) )
-        {
+        if (method_exists($this->getModel(), 'forceDelete') && isset($this->trashed)) {
             // Only include the trashed results
-            if( (string) $this->trashed == 'only' )
+            if ((string) $this->trashed == 'only')
             {
                 $query->onlyTrashed();
             }
 
             // Include both trashed and non-trashed results
-            elseif( (boolean) $this->trashed === true )
-            {
+            elseif ((boolean) $this->trashed === true) {
                 $query->withTrashed();
             }
 
             // Exclude trashed results
-            else
-            {
+            else {
                 $query;
             }
         }
@@ -158,17 +155,16 @@ trait FilterableRepositoryTrait
     /**
      * Filter resources by IDs.
      *
-     * @param object $query builder
+     * @param  object  $query builder
      * @return void
      */
     public function filterIds($query)
     {
         // Get the model's key name
-        $key = $this->getModel()->getKeyName();
+        $key = $this->getModel()->getTable() . '.' . $this->getModel()->getKeyName();
 
         // Enable filter if model has IDs
-        if( ! empty($this->ids) )
-        {
+        if (! empty($this->ids)) {
             // Get an array of IDs
             $ids = Collection::parseMixed($this->ids, [',', '+', ' '])->all();
 
@@ -180,7 +176,7 @@ trait FilterableRepositoryTrait
     /**
      * Filter resources by keywords.
      *
-     * @param object $query builder
+     * @param  object  $query builder
      * @return void
      */
     public function filterKeywords($query)
@@ -189,18 +185,14 @@ trait FilterableRepositoryTrait
         $attributes = $this->getModel()->searchable;
 
         // Enable filter if model has searchable attributes
-        if( ! empty($attributes) && ! empty($this->keywords) )
-        {
+        if (! empty($attributes) && ! empty($this->keywords)) {
             // Get an array of keywords
             $keywords = Collection::parseMixed($this->keywords, [','])->all();
 
             // Query results that have attributes containing the keywords
-            $query->where(function( $query ) use ($keywords, $attributes)
-            {
-                foreach($attributes as $attribute)
-                {
-                    foreach($keywords as $keyword)
-                    {
+            $query->where(function( $query ) use ($keywords, $attributes) {
+                foreach ($attributes as $attribute) {
+                    foreach ($keywords as $keyword) {
                         $query->orWhere($attribute, 'LIKE', '%' . $keyword . '%');
                     }
                 }
@@ -211,16 +203,15 @@ trait FilterableRepositoryTrait
     /**
      * Filter resources by scope closures.
      *
-     * @param object $query builder
+     * @param  object  $query builder
      * @return void
      */
     public function filterScopes($query)
     {
         // Enable filter if we have scope closures
-        if ( ! empty($this->scopes) )
-        {
-            foreach( $this->scopes as $scope => $args)
-            {
+
+        if (! empty($this->scopes)) {
+            foreach ($this->scopes as $scope => $args) {
                 call_user_func_array([$query, $scope], $args);
             }
         }
@@ -229,8 +220,8 @@ trait FilterableRepositoryTrait
     /**
      * Add a scope filter.
      *
-     * @param string $name of scope closure
-     * @param mixed $args to pass to closure
+     * @param  string  $name of scope closure
+     * @param  mixed  $args to pass to closure
      * @return void
      */
     public function addScope($name, $args)
@@ -242,18 +233,15 @@ trait FilterableRepositoryTrait
         // Convert mixed to array
         $args = Collection::parseMixed($args, [','])->all();
         $args = array_values($args);
-        $arrs = array_filter($args, function($arg)
-        {
-            if( ! is_numeric($arg) && ! is_bool($arg) && empty($arg) )
-            {
+        $arrs = array_filter($args, function($arg) {
+            if (! is_numeric($arg) && ! is_bool($arg) && empty($arg)) {
                 return false;
             }
             return true;
         });
 
         // Only add the scope if the args are not empty
-        if( ! empty($args) && $args == $arrs)
-        {
+        if (! empty($args) && $args == $arrs) {
             $this->scopes[ $name ] = $arrs;
             $this->filters['scopes'] = $this->scopes;
         }
@@ -262,14 +250,13 @@ trait FilterableRepositoryTrait
     /**
      * Add a boolean scope filter.
      *
-     * @param string $name of scope closure
-     * @param boolean $value to pass to closure
+     * @param  string  $name of scope closure
+     * @param  boolean  $value to pass to closure
      * @return void
      */
     public function addBooleanScope($name, $value)
     {
-        if( (is_bool($value) || is_numeric($value)) && ($value == 0 || $value == 1))
-        {
+        if ((is_bool($value) || is_numeric($value)) && ($value == 0 || $value == 1)) {
             $this->mergeFilters([$name => $value]);
             $this->addScope('where' . studly_case($name), [(int) $value]);
         }
@@ -288,7 +275,7 @@ trait FilterableRepositoryTrait
     /**
      * Set the filters.
      *
-     * @param array $filters
+     * @param  array  $filters
      * @return void
      */
     public function setFilters(array $filters = [])
@@ -300,18 +287,17 @@ trait FilterableRepositoryTrait
     /**
      * Merge the existing filters with new filters.
      *
-     * @param array $filters
+     * @param  array  $filters
      * @return void
      */
     public function mergeFilters(array $filters = [])
     {
         $filters = array_filter($filters, function($value) {
-            return ! is_null($value) && $value !== '';
+            return !is_null($value) && $value !== '';
         });
         $this->filters = array_merge($this->filters, $filters);
         $this->bindFilters();
     }
-
 
     /**
      * Bind the filters as properties.
@@ -321,8 +307,7 @@ trait FilterableRepositoryTrait
     public function bindFilters()
     {
         // Assign filters as properties
-        foreach( $this->filters as $key => $value )
-        {
+        foreach ($this->filters as $key => $value) {
             $this->{$key} = $value;
         }
 
@@ -333,4 +318,53 @@ trait FilterableRepositoryTrait
         $this->max = max(0, (integer) $this->max);
     }
 
+    /**
+     * Get the extra selects.
+     *
+     * @return array
+     */
+    public function getSelects()
+    {
+        return $this->selects;
+    }
+
+    /**
+     * Add an extra select.
+     *
+     * @param  mixed  $select statement
+     * @return self
+     */
+    public function addSelect($select)
+    {
+        $this->setSelects(array_merge($this->getSelects(), [$select]));
+        return $this;
+    }
+
+    /**
+     * Set the extra selects.
+     *
+     * @param  array
+     * @return void
+     */
+    public function setSelects(array $selects = [])
+    {
+        $this->selects = $selects;
+    }
+
+    /**
+     * Bind the selects to the query.
+     *
+     * @param  object  $query builder
+     * @return Illuminate\Database\Query\Builder
+     */
+    public function bindSelects($query)
+    {
+        $query->select(array_merge(
+            // Set primary selection to the model's table
+            [$query->getModel()->getTable().'.*'],
+            $this->getSelects()
+        ));
+
+        return $query;
+    }
 }

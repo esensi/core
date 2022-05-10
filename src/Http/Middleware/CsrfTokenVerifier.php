@@ -8,11 +8,6 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as BaseVerifier;
 /**
  * Verify the CSRF token.
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  * @see http://fideloper.com/laravel-http-middleware
  */
 class CsrfTokenVerifier extends BaseVerifier
@@ -29,8 +24,7 @@ class CsrfTokenVerifier extends BaseVerifier
         // Skip CSRF token verification for API calls
         $prefix = config('esensi/core::core.prefixes.api.latest', 'api');
         $isApi = str_contains($request->url(), $prefix);
-        if( $isApi )
-        {
+        if ($isApi) {
             return $next($request);
         }
 

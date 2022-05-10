@@ -3,16 +3,11 @@
 namespace Esensi\Core\Traits;
 
 use BadMethodCallException;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request;
 
 /**
  * Trait implementation of bulk action controller interface.
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  * @see Esensi\Core\Contracts\BulkActionControllerInterface
  */
 trait BulkActionControllerTrait
@@ -20,7 +15,7 @@ trait BulkActionControllerTrait
     /**
      * Perform a bulk action on an array of resources.
      *
-     * @param string $action
+     * @param  string  $action
      * @return Illuminate\Routing\Redirector
      * @throws BadMethodCallException
      */
@@ -31,14 +26,13 @@ trait BulkActionControllerTrait
         $method = 'bulk' . ucfirst(studly_case($action));
 
         // Handle missing bulk actions
-        if( ! method_exists($class, $method) )
-        {
+        if (! method_exists($class, $method)) {
             throw new BadMethodCallException('Method ' . $method . ' does not exist on called class '. $class . '.');
         }
 
         // Call the bulk action and pass in the resource's IDs
-        $ids = Input::get('ids', []);
-        $response = call_user_func_array([$class, $method], $ids);
+        $ids = Request::get('ids', []);
+        $response = call_user_func_array([$class, $method], [$ids]);
 
         // Redirect back with message
         return $response;
@@ -47,7 +41,7 @@ trait BulkActionControllerTrait
     /**
      * Bulk delete the specified resources in storage.
      *
-     * @param string|array $ids
+     * @param  string|array  $ids
      * @return Illuminate\Routing\Redirector
      */
     public function bulkDelete($ids)
@@ -56,14 +50,14 @@ trait BulkActionControllerTrait
         $count = $this->api()->bulkDelete($ids);
 
         // Redirect back with message
-        return $this->back( 'bulk.deleted' )
-            ->with('message', $this->message('bulk.deleted', [ 'count' => $count ]) );
+        return $this->back('bulk.deleted')
+            ->with('message', $this->message('bulk.deleted', ['count' => $count]));
     }
 
     /**
      * Bulk delete the specified resources in storage.
      *
-     * @param string|array $ids
+     * @param  string|array  $ids
      * @return Illuminate\Routing\Redirector
      */
     public function bulkRestore($ids)
@@ -72,14 +66,14 @@ trait BulkActionControllerTrait
         $count = $this->api()->bulkRestore($ids);
 
         // Redirect back with message
-        return $this->back( 'bulk.restored' )
-            ->with('message', $this->message('bulk.restored', [ 'count' => $count ]) );
+        return $this->back('bulk.restored')
+            ->with('message', $this->message('bulk.restored', ['count' => $count]));
     }
 
     /**
      * Bulk delete the specified resources in storage.
      *
-     * @param string|array $ids
+     * @param  string|array  $ids
      * @return Illuminate\Routing\Redirector
      */
     public function bulkTrash($ids)
@@ -88,8 +82,8 @@ trait BulkActionControllerTrait
         $count = $this->api()->bulkTrash($ids);
 
         // Redirect back with message
-        return $this->back( 'bulk.trashed' )
-            ->with('message', $this->message('bulk.trashed', [ 'count' => $count ]) );
+        return $this->back('bulk.trashed')
+            ->with('message', $this->message('bulk.trashed', ['count' => $count]));
     }
 
 }

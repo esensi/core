@@ -4,18 +4,12 @@ namespace Esensi\Core\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Contracts\Routing\Middleware;
 
 /**
  * Guest Filter to Allow Only Guest Users
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/esensi/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  */
-class AuthenticatedRedirector implements Middleware
+class AuthenticatedRedirector
 {
     /**
      * The Guard implementation.
@@ -44,8 +38,7 @@ class AuthenticatedRedirector implements Middleware
      */
     public function handle($request, Closure $next)
     {
-        if ($this->auth->check())
-        {
+        if ($this->auth->check()) {
             return redirect(route('index'));
         }
 

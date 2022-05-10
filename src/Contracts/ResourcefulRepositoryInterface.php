@@ -5,18 +5,13 @@ namespace Esensi\Core\Contracts;
 /**
  * Resourceful repository interface
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  */
 interface ResourcefulRepositoryInterface
 {
     /**
      * Display a listing of the resource.
      *
-     * @param  array $filters (optional)
+     * @param  array  $filters (optional)
      * @return Illuminate\Pagination\Paginator
      */
     public function index(array $filters = []);
@@ -24,7 +19,7 @@ interface ResourcefulRepositoryInterface
     /**
      * Store a newly created resource in storage.
      *
-     * @param array $attributes to store on the resource
+     * @param  array  $attributes to store on the resource
      * @return Esensi\Core\Models\Model
      */
     public function store(array $attributes);
@@ -32,7 +27,7 @@ interface ResourcefulRepositoryInterface
     /**
      * Display the specified resource.
      *
-     * @param integer $id of resource
+     * @param  integer  $id of resource
      * @return Esensi\Core\Models\Model
      */
     public function show($id);
@@ -40,8 +35,8 @@ interface ResourcefulRepositoryInterface
     /**
      * Update the specified resource in storage.
      *
-     * @param integer $id of resource to update
-     * @param array $attributes to update on the resource
+     * @param  integer  $id of resource to update
+     * @param  array  $attributes to update on the resource
      * @return Esensi\Core\Models\Model
      */
     public function update($id, array $attributes);
@@ -49,7 +44,7 @@ interface ResourcefulRepositoryInterface
     /**
      * Remove the specified resource from storage.
      *
-     * @param integer $id of resource to remove
+     * @param  integer  $id of resource to remove
      * @return boolean
      */
     public function destroy($id);

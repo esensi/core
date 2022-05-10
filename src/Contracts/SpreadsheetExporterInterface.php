@@ -5,11 +5,6 @@ namespace Esensi\Core\Contracts;
 /**
  * Spreadsheet Exporter Service Interface
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  */
 interface SpreadsheetExporterInterface
 {
@@ -30,7 +25,7 @@ interface SpreadsheetExporterInterface
     /**
      * Generate a spreadsheet by transforming 3D data into 2D data.
      *
-     * @param array $filters (optional)
+     * @param  array  $filters (optional)
      * @return League\Csv\Writer
      */
     public function generate( array $filters = [] );
@@ -38,7 +33,7 @@ interface SpreadsheetExporterInterface
     /**
      * Query for objects to export.
      *
-     * @param array $filters (optional)
+     * @param  array  $filters (optional)
      * @return Illuminate\Database\Eloquent\Collection|null
      */
     public function query( array $filters = [] );
@@ -46,7 +41,7 @@ interface SpreadsheetExporterInterface
     /**
      * Transform a 3D object into a 2D array.
      *
-     * @param object $object model
+     * @param  object  $object model
      * @return array
      */
     public function transform( $object );

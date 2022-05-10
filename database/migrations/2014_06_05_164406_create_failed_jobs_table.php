@@ -2,15 +2,11 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 /**
  * Create table for failed jobs.
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  */
 class CreateFailedJobsTable extends Migration
 {
@@ -21,16 +17,12 @@ class CreateFailedJobsTable extends Migration
      */
     public function up()
     {
-        Schema::create('failed_jobs', function(Blueprint $table)
-        {
+        Schema::create('failed_jobs', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('connection', 128)
-                ->index();
-            $table->string('queue', 128)
-                ->index();
+            $table->string('connection', 128)->index();
+            $table->string('queue', 128)->index();
             $table->longText('payload');
-            $table->timestamp('failed_at')
-                ->index();
+            $table->timestamp('failed_at')->index();
         });
     }
 
@@ -41,7 +33,6 @@ class CreateFailedJobsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('failed_jobs');
+        Schema::dropIfExists('failed_jobs');
     }
-
 }

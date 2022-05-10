@@ -5,11 +5,6 @@ namespace Esensi\Core\Traits;
 /**
  * Trait implementation of blockable repository interface.
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  * @see Esensi\Core\Contracts\BlockableRepositoryInterface
  */
 trait BlockableRepositoryTrait
@@ -17,7 +12,7 @@ trait BlockableRepositoryTrait
     /**
      * Set the blocked status to true for resource.
      *
-     * @param integer $id of resource to block
+     * @param  integer  $id of resource to block
      * @throws Esensi\Core\Exceptions\RepositoryException
      * @return Esensi\Core\Models\Model
      */
@@ -27,25 +22,23 @@ trait BlockableRepositoryTrait
         $object = $this->find($id);
 
         // Make sure we can block
-        if( ! $object->isBlockingAllowed() )
-        {
+        if (! $object->isBlockingAllowed()) {
             $this->throwException($this->error('blocking_not_allowed'));
         }
 
         // Fire before listeners
-        $this->eventUntil('blocking', [ $object ] );
+        $this->eventUntil('blocking', [$object]);
 
         // Block
         $object->blocked = 1;
 
         // Validate the resource
-        if ( $object->isInvalid('blocking') || ! $object->save() )
-        {
+        if ($object->isInvalid('blocking') || !$object->save()) {
             $this->throwException($object->getErrors(), $this->error('block'));
         }
 
         // Fire after listeners
-        $this->eventFire('blocked', [ $object ] );
+        $this->eventFire('blocked', [$object]);
 
         return $object;
     }
@@ -53,7 +46,7 @@ trait BlockableRepositoryTrait
     /**
      * Set the blocked status to false for resource.
      *
-     * @param integer $id of resource to unblock
+     * @param  integer  $id of resource to unblock
      * @throws Esensi\Core\Exceptions\RepositoryException
      * @return Esensi\Core\Models\Model
      */
@@ -63,25 +56,23 @@ trait BlockableRepositoryTrait
         $object = $this->find($id);
 
         // Make sure we can unblock
-        if( ! $object->isUnblockingAllowed() )
-        {
+        if (! $object->isUnblockingAllowed()) {
             $this->throwException($this->error('unblocking_not_allowed'));
         }
 
         // Fire before listeners
-        $this->eventUntil('blocking', [ $object ] );
+        $this->eventUntil('blocking', [$object]);
 
         // Unblock
         $object->blocked = 0;
 
         // Validate the resource
-        if ( $object->isInvalid('unblocking') || ! $object->save() )
-        {
+        if ($object->isInvalid('unblocking') || !$object->save()) {
             $this->throwException($object->getErrors(), $this->error('unblock'));
         }
 
         // Fire after listeners
-        $this->eventFire('unblocked', [ $object ] );
+        $this->eventFire('unblocked', [$object]);
 
         return $object;
     }

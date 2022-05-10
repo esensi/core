@@ -2,16 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-/**
- * Create store table for cache (database driver)
- *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
- */
 class CreateCacheTable extends Migration
 {
     /**
@@ -21,14 +13,16 @@ class CreateCacheTable extends Migration
      */
     public function up()
     {
-        Schema::create('cache', function(Blueprint $table)
-        {
-            // Add table columns
-            $table->string('key')
-                ->unique();
-            $table->text('value');
-            $table->integer('expiration')
-                ->index();
+        Schema::create('cache', function (Blueprint $table) {
+            $table->string('key')->primary();
+            $table->mediumText('value');
+            $table->integer('expiration');
+        });
+
+        Schema::create('cache_locks', function (Blueprint $table) {
+            $table->string('key')->primary();
+            $table->string('owner');
+            $table->integer('expiration');
         });
     }
 
@@ -39,7 +33,7 @@ class CreateCacheTable extends Migration
      */
     public function down()
     {
-        Schema::drop('cache');
+        Schema::dropIfExists('cache');
+        Schema::dropIfExists('cache_locks');
     }
-
 }

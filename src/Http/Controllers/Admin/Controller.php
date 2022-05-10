@@ -1,8 +1,8 @@
 <?php
 
-namespace Esensi\Core\Http\Controllers;
+namespace Esensi\Core\Http\Controllers\Admin;
 
-use App\Http\Controllers\ApiController as Controller;
+use Esensi\Core\Http\Apis\Api;
 use Esensi\Core\Contracts\ApiAncestryControllerInterface;
 use Esensi\Core\Contracts\ConfirmableControllerInterface;
 use Esensi\Core\Contracts\ExceptionHandlerInterface;
@@ -13,15 +13,10 @@ use Esensi\Core\Traits\AdminControllerTrait;
 /**
  * Admin controller for administrative UIs
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
- * @see Esensi\Core\Http\Controllers\ApiController
+ * @see Esensi\Core\Http\Apis\Api
  * @see Esensi\Core\Traits\AdminControllerTrait
  */
-abstract class AdminController extends Controller implements
+abstract class Controller extends Api implements
     ApiAncestryControllerInterface,
     ConfirmableControllerInterface,
     ExceptionHandlerInterface,

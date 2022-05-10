@@ -1,35 +1,39 @@
 {
     "name": "esensi/core",
     "description": "The foundational components of Esensi",
-    "keywords": ["emersonmedia", "esensi", "laravel", "core"],
+    "type": "library",
+    "homepage": "https://esen.si/",
+    "support": {
+        "issues": "https://github.com/esensi/page/issues",
+        "source": "https://github.com/esensi/page"
+    },
     "authors": [
         {
-            "name": "Emerson Media, LP.",
-            "email": "wishlist@emersonmedia.com"
+            "name": "SiteRocket Labs",
+            "email": "support@siterocket.com"
         },
         {
             "name": "Daniel LaBarge",
             "email": "daniel@emersonmedia.com"
+        },
+        {
+            "name": "Abe Yandiyev",
+            "email": "abe@siterocket.com"
         }
     ],
     "license": "MIT",
     "require": {
-        "php": ">=5.5.9",
-        "esensi/model": "~0.5.2",
-        "esensi/loaders": "~0.5.2",
-        "laravelcollective/html": "~5.1.0",
-        "illuminate/support": "~5.1.0"
+        "php": "^7.3|^8.0",
+        "laravelcollective/html": "^6.3",
+        "illuminate/support": "^8.0|^9.0"
     },
     "require-dev": {
-        "fzaninotto/faker": "~1.4",
-        "mockery/mockery": "0.9.*",
-        "phpunit/phpunit": "~4.0",
-        "phpspec/phpspec": "~2.1"
+        "fakerphp/faker": "^1.9.1",
+        "mockery/mockery": "^1.4.4",
+        "phpunit/phpunit": "^9.5.10",
+        "phpspec/phpspec": "^7.2"
     },
     "autoload": {
-        "classmap": [
-            "database/migrations"
-        ],
         "psr-4": {
             "Esensi\\Core\\": "src/"
         }

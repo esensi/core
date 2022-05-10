@@ -2,16 +2,11 @@
 
 namespace Esensi\Core\Traits;
 
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request;
 
 /**
  * Index method with filter options passed to the view.
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  * @see Esensi\Core\Traits\ResourceControllerTrait
  */
 trait KeywordFilterIndexTrait
@@ -33,17 +28,15 @@ trait KeywordFilterIndexTrait
         $options = compact('orderOptions', 'sortOptions', 'maxOptions');
 
         // Apply default filter fallbacks for missing inputs
-        $inputs  = Input::all();
+        $inputs = Request::all();
         $filters = $this->getRepository()->getFilters();
-        $keys    = ['order', 'sort', 'max', 'keywords'];
-        foreach($keys as $key)
-        {
-            $options[ $key ] = array_get($inputs, $key, array_get($filters, $key, null));
+        $keys = ['order', 'sort', 'max', 'keywords'];
+        foreach ($keys as $key) {
+            $options[$key] = array_get($inputs, $key, array_get($filters, $key, null));
         }
 
         // Convert arrays used in text inputs to comma-separated values
-        if(is_array($options['keywords']))
-        {
+        if (is_array($options['keywords'])) {
             $options['keywords'] = implode(', ', $options['keywords']);
         }
 
@@ -63,8 +56,7 @@ trait KeywordFilterIndexTrait
         // Show collection as a paginated table
         $collection = $paginator->getCollection();
         $options = $this->keywordFilterOptions();
-        $data = array_merge($options, compact('paginator', 'collection'));
-        return $this->content('index', $data);
+        return $this->content('index', array_merge($options, compact('paginator', 'collection')));
     }
 
 }

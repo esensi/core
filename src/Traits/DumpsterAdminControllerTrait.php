@@ -4,15 +4,11 @@ namespace Esensi\Core\Traits;
 
 use Esensi\Core\Traits\AdminControllerTrait;
 use Esensi\Core\Traits\DumpsterControllerTrait;
+use Illuminate\Support\Str;
 
 /**
  * Trait that encapsulates other admin related traits.
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  */
 trait DumpsterAdminControllerTrait
 {
@@ -34,7 +30,7 @@ trait DumpsterAdminControllerTrait
      * Overwrite the show method to use retrieve()
      * since some of the resources will be trashed.
      *
-     * @param integer $id of resource
+     * @param  integer  $id of resource
      * @return Illuminate\View\View
      */
     public function show($id)
@@ -43,7 +39,8 @@ trait DumpsterAdminControllerTrait
         $object = $this->api()->retrieve($id);
 
         // Render show view
-        return $this->content( 'show', [ $this->package => $object ] );
+        $data = [Str::camel($this->package) => $object];
+        return $this->content('show', $data);
     }
 
 }

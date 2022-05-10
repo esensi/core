@@ -7,11 +7,6 @@ use Esensi\Loaders\Providers\ServiceProvider;
 /**
  * Service provider for Esensi\Core components package
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  */
 class CoreServiceProvider extends ServiceProvider
 {

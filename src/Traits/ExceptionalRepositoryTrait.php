@@ -7,11 +7,6 @@ use Exception;
 /**
  * Trait that permits the repository to throw a custom exception.
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  * @see Esensi\Core\Contracts\ExceptionalRepositoryInterface
  */
 trait ExceptionalRepositoryTrait
@@ -26,10 +21,10 @@ trait ExceptionalRepositoryTrait
     /**
      * Throw an exception for this repository.
      *
-     * @param mixed $bag
-     * @param string $message
-     * @param long $code
-     * @param Exception $previous exception
+     * @param  mixed  $bag
+     * @param  string  $message
+     * @param  long  $code
+     * @param  Exception  $previous exception
      * @return void
      */
     public function throwException($bag, $message = null, $code = 400, Exception $previous = null)

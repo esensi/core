@@ -5,11 +5,6 @@ namespace Esensi\Core\Contracts;
 /**
  * Resource controller interface
  *
- * @package Esensi\Core
- * @author Daniel LaBarge <daniel@emersonmedia.com>
- * @copyright 2015 Emerson Media LP
- * @license https://github.com/esensi/core/blob/master/LICENSE.txt MIT License
- * @link http://www.emersonmedia.com
  */
 interface ResourceControllerInterface
 {
@@ -37,7 +32,7 @@ interface ResourceControllerInterface
     /**
      * Display the specified resource.
      *
-     * @param integer $id of resource
+     * @param  integer  $id of resource
      * @return Illuminate\View\View
      */
     public function show($id);
@@ -45,7 +40,7 @@ interface ResourceControllerInterface
     /**
      * Display an edit form for the specified resource.
      *
-     * @param integer $id of resource
+     * @param  integer  $id of resource
      * @return Illuminate\View\View
      */
     public function edit($id);
@@ -53,7 +48,7 @@ interface ResourceControllerInterface
     /**
      * Update the specified resource in storage.
      *
-     * @param integer $id of resource to update
+     * @param  integer  $id of resource to update
      * @return Illuminate\Routing\Redirector
      */
     public function update($id);
@@ -61,7 +56,7 @@ interface ResourceControllerInterface
     /**
      * Remove the specified resource from storage.
      *
-     * @param integer $id of resource to remove
+     * @param  integer  $id of resource to remove
      * @return Illuminate\Routing\Redirector
      */
     public function delete($id);
@@ -69,7 +64,7 @@ interface ResourceControllerInterface
     /**
      * Alias for delete method
      *
-     * @param integer $id of resource to remove
+     * @param  integer  $id of resource to remove
      * @return Illuminate\Routing\Redirector
      */
     public function destroy($id);

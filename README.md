@@ -25,7 +25,7 @@ Then add the following providers to the application's config/app.php config file
     Esensi\Core\Providers\CoreServiceProvider::class,
     Esensi\Core\Providers\HtmlServiceProvider::class,
     Esensi\Core\Providers\RouteServiceProvider::class,
-    Esensi\Core\Providers\ValidationServiceProvide::class',
+    Esensi\Core\Providers\ValidationServiceProvider::class,
 ]
 ```
 

@@ -99,7 +99,7 @@ abstract class SpreadsheetExporter implements
     /**
      * Generate a spreadsheet by transforming 3D data into 2D data.
      *
-     * @param array  $filters (optional)
+     * @param  array  $filters (optional)
      * @return League\Csv\Writer
      */
     public function generate(array $filters = [])
@@ -125,7 +125,7 @@ abstract class SpreadsheetExporter implements
     /**
      * Query for objects to export.
      *
-     * @param array  $filters (optional)
+     * @param  array  $filters (optional)
      * @return Illuminate\Database\Eloquent\Collection|null
      */
     public function query(array $filters = [])
@@ -138,7 +138,7 @@ abstract class SpreadsheetExporter implements
     /**
      * Transform a 3D object into a 2D array.
      *
-     * @param object  $object model
+     * @param  object  $object model
      * @return array
      */
     public function transform( $object )

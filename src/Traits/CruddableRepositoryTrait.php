@@ -53,8 +53,8 @@ trait CruddableRepositoryTrait
     /**
      * Read the specified resource from storage.
      *
-     * @param integer|Esensi\Core\Models\Model $id of resource or instance
-     * @param boolean  $refresh force loading a fresh copy of resource from the DB
+     * @param  integer|Esensi\Core\Models\Model  $id of resource or instance
+     * @param  boolean  $refresh force loading a fresh copy of resource from the DB
      * @throws Esensi\Core\Exceptions\RepositoryException
      * @return Esensi\Core\Models\Model
      */

@@ -3,7 +3,6 @@
 namespace Esensi\Core\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\App;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -93,7 +92,7 @@ class RobotsIndexer
      */
     public function isDisallowed()
     {
-        return ! $this->isAllowed();
+        return !$this->isAllowed();
     }
 
     /**
@@ -103,7 +102,7 @@ class RobotsIndexer
      */
     public function isAllowed()
     {
-        return in_array(App::environment(), $this->environments);
+        return in_array(app()->environment(), $this->environments);
     }
 
 }

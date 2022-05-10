@@ -164,7 +164,7 @@ return [
             'footer' => 'esensi/core::core.admin.partials.footer',
             'header' => 'esensi/core::core.admin.partials.header',
             'logout' => 'esensi/core::core.admin.partials.logout',
-            'bulk_actions' => 'esensi/core::core.admin.partials.bulk-actions',
+            'bulk_actions' => 'esensi/core::core.admin.partials.bulk_actions',
         ],
     ],
 
@@ -205,7 +205,7 @@ return [
     'attribution' => [
 
         'enable' => true,
-        'url' => 'http://esen.si',
+        'url' => 'https://esen.si',
         'name' => 'Powered by esensi',
     ],
 
@@ -272,6 +272,20 @@ return [
             // Timeout (in minutes) an IP should be blocked
             'timeout' => 10,
         ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Paginations
+    |--------------------------------------------------------------------------
+    |
+    | The following configuration options allow the developer to use
+    | a specific pagination template (custom, built-in).
+    |
+    */
+
+    'paginations' => [
+        'custom' => 'esensi/core::core.vendor.pagination.esensi',
     ],
 
 ];

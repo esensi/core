@@ -2,7 +2,6 @@
 
 namespace Esensi\Core\Traits;
 
-use Illuminate\Support\Facades\App;
 use InvalidArgumentException;
 
 /**
@@ -161,7 +160,7 @@ trait PackagedTrait
         }
 
         // Nest the view into the layout
-        $view = App::make('view')->make($line, $data);
+        $view = app('view')->make($line, $data);
         $this->layout->$name = $view;
         return $this->layout;
     }
@@ -218,7 +217,7 @@ trait PackagedTrait
      */
     public function config($key, $default = null)
     {
-        return $this->resolve(App::make('config'), $key, $default);
+        return $this->resolve(app('config'), $key, $default);
     }
 
     /**
@@ -242,7 +241,7 @@ trait PackagedTrait
      */
     public function language($key, array $replacements = [])
     {
-        return $this->resolve(App::make('translator'), $key, $replacements);
+        return $this->resolve(app('translator'), $key, $replacements);
     }
 
     /**
@@ -304,7 +303,7 @@ trait PackagedTrait
     {
         // Redirect to intended route
         $route = $this->config('redirects.' . $this->ui . '.' . $key, $key);
-        return App::make('redirect')->route($route, $params);
+        return app('redirect')->route($route, $params);
     }
 
     /**
@@ -317,8 +316,8 @@ trait PackagedTrait
     public function back($key, array $params = [])
     {
         // Short circuit to referrer URL or follow redirect
-        $referer = App::make('request')->header('referer');
-        $redirect = ! empty($referer) ? App::make('redirect')->back() : $this->redirect($key, $params);
+        $referer = app('request')->header('referer');
+        $redirect = ! empty($referer) ? app('redirect')->back() : $this->redirect($key, $params);
         return $redirect;
     }
 
@@ -344,7 +343,7 @@ trait PackagedTrait
      */
     public function eventUntil($name, array $arguments = [])
     {
-        return App::make('events')->until($this->getNamespacedEventName($name), $arguments);
+        return app('events')->until($this->getNamespacedEventName($name), $arguments);
     }
 
     /**
@@ -356,7 +355,7 @@ trait PackagedTrait
      */
     public function eventFire($name, array $arguments = [])
     {
-        return App::make('events')->dispatch($this->getNamespacedEventName($name), $arguments);
+        return app('events')->dispatch($this->getNamespacedEventName($name), $arguments);
     }
 
     /**
@@ -384,7 +383,7 @@ trait PackagedTrait
      */
     public function eventPush($name, array $arguments = [])
     {
-        return App::make('events')->push($this->getNamespacedEventName($name), $arguments);
+        return app('events')->push($this->getNamespacedEventName($name), $arguments);
     }
 
     /**
@@ -395,7 +394,7 @@ trait PackagedTrait
      */
     public function eventFlush($name)
     {
-        return App::make('events')->flush($this->getNamespacedEventName($name));
+        return app('events')->flush($this->getNamespacedEventName($name));
     }
 
 }

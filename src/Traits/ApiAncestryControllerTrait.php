@@ -4,7 +4,6 @@ namespace Esensi\Core\Traits;
 
 use Esensi\Contracts\PackagedInterface;
 use Esensi\Contracts\RepositoryInjectedInterface;
-use Illuminate\Support\Facades\App;
 
 /**
  * Trait implementation of API ancestry controller interface.
@@ -22,7 +21,7 @@ trait ApiAncestryControllerTrait
     {
         // Make a copy of the parent class
         $class = get_parent_class();
-        $parent = App::make($class);
+        $parent = app($class);
 
         // Copy over the packaged properties
         if ($this instanceof PackagedInterface) {

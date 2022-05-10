@@ -16,6 +16,7 @@ class ValidationServiceProvider extends ServiceProvider
      *
      * @return void
      */
+    
     public function register()
     {
         $this->registerPresenceVerifier();
@@ -32,7 +33,7 @@ class ValidationServiceProvider extends ServiceProvider
             }
 
             // Add validation extensions
-            $extensions = config('esensi/core::validation.extensions', []);
+            $extensions = config('esensi.core.validation.extensions', []);
             foreach ($extensions as $extension => $class) {
                 $method = ucfirst(studly_case($extension));
                 $validator->extend($extension, $class . '@validate' . $method);
@@ -40,7 +41,7 @@ class ValidationServiceProvider extends ServiceProvider
             }
 
             // Add validation implicit extensions
-            $extensions = config('esensi/core::validation.implicit_extensions', []);
+            $extensions = config('esensi.core.validation.implicit_extensions', []);
             foreach ($extensions as $extension => $class) {
                 $method = ucfirst(studly_case($extension));
                 $validator->extendImplicit($extension, $class . '@validate' . $method);
@@ -49,6 +50,16 @@ class ValidationServiceProvider extends ServiceProvider
 
             return $validator;
         });
+    }
+
+    /**
+     * Bootstrap the service provider.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        //
     }
 
 }

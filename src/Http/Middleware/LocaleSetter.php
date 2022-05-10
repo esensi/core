@@ -3,7 +3,6 @@
 namespace Esensi\Core\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -41,7 +40,7 @@ class LocaleSetter
         Session::put('locale', $locale);
 
         // Set the locale for the remaining requests
-        App::setLocale($locale);
+        app()->setLocale($locale);
 
         // Continue processing middlewares
         return $next($request);

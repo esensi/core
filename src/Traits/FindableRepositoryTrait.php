@@ -57,7 +57,7 @@ trait FindableRepositoryTrait
             ->first();
 
         // Throw an error if the resource could not be found
-        if (! $object )  {
+        if (! $object)  {
             $params = ['attribute' => $attribute, 'value' => $value];
             $message = $this->error('find_by', $params);
             $this->throwException( $message );
@@ -112,7 +112,7 @@ trait FindableRepositoryTrait
 
         // Throw an exception if the relationship is not related
         foreach ($relationship as $related) {
-            if (! $object->isRelationship($related) && ! method_exists($object, lcfirst(studly_case($related)))) {
+            if (!$object->isRelationship($related) && !method_exists($object, lcfirst(studly_case($related)))) {
                 $this->throwException($this->error('not_related', ['relationship' => $related]) );
             }
         }

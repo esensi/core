@@ -2,7 +2,7 @@
     "name": "esensi/core",
     "description": "The foundational components of Esensi",
     "type": "library",
-    "homepage": "http://esen.si/",
+    "homepage": "https://esen.si/",
     "support": {
         "issues": "https://github.com/esensi/page/issues",
         "source": "https://github.com/esensi/page"
@@ -10,7 +10,7 @@
     "authors": [
         {
             "name": "SiteRocket Labs",
-            "email": "info@siterocket.com"
+            "email": "support@siterocket.com"
         },
         {
             "name": "Daniel LaBarge",
@@ -24,8 +24,6 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
-        "esensi/model": "1.0.0-alpha",
-        "esensi/loaders": "1.0.0-alpha",
         "laravelcollective/html": "^6.3",
         "illuminate/support": "^8.0|^9.0"
     },

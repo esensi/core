@@ -3,7 +3,6 @@
 namespace Esensi\Core\Traits;
 
 use App\Exceptions\RepositoryException;
-use Illuminate\Support\Facades\App;
 
 /**
  * Trait that renders RepositoryExceptions
@@ -27,7 +26,7 @@ trait RenderRepositoryExceptionTrait
         if (! empty($action)) {
             // Render the exception according to the controller preference
             $action = explode('@', $action);
-            $class = App::make(head($action));
+            $class = app(head($action));
             if (method_exists($class, 'handleException')) {
                 return $class->handleException($e);
             }

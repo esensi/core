@@ -58,7 +58,6 @@ trait ActivateableRepositoryTrait
     {
         // Get the resource
         $object = $this->find($id);
-
         // Make sure we can deactivate
         if (! $object->isDeactivationAllowed()) {
             $this->throwException($this->error('deactivation_not_allowed'));
@@ -68,7 +67,7 @@ trait ActivateableRepositoryTrait
         $this->eventUntil('deactivating', [$object]);
 
         // Deactivate the resource
-        $object->active = 0;
+        $object->active = false;
         $object->activated_at = null;
 
         // Validate the resource

@@ -293,7 +293,7 @@ trait FilterableRepositoryTrait
     public function mergeFilters(array $filters = [])
     {
         $filters = array_filter($filters, function($value) {
-            return ! is_null($value) && $value !== '';
+            return !is_null($value) && $value !== '';
         });
         $this->filters = array_merge($this->filters, $filters);
         $this->bindFilters();

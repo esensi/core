@@ -12,7 +12,7 @@
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
         <title>{{ config('esensi/core::core.metadata.author', 'Esensi') }}</title>
 
-        <link rel="stylesheet" href="{{ asset('css/public-db23945121.css') }}">
+        <link rel="stylesheet" href="{{ mix('/css/public.css') }}">
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>

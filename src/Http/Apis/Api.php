@@ -16,7 +16,6 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 
@@ -92,8 +91,8 @@ class Api extends Controller implements
      */
     protected function setupLayout()
     {
-        if (isset($this->layout) && ! is_null($this->layout)) {
-            $this->layout = App::make('view')->make($this->layout);
+        if (isset($this->layout) && !is_null($this->layout)) {
+            $this->layout = app('view')->make($this->layout);
         }
     }
 

@@ -1,11 +1,11 @@
 <div class="drawer">
-    {!! Form::open([ 'route' => isset($route) ? $route : Route::currentRouteName() , 'method' => 'GET']) !!}
+    {!! Form::open(['route' => isset($route) ? $route : Route::currentRouteName() , 'method' => 'GET']) !!}
         <div class="drawer-row">
             <div class="drawer-col drawer-col-keywords">
                 <label>Keyword Search</label>
                 {!! Form::text('keywords', $keywords, ['class' => 'form-control esensi-tags']) !!}
             </div>
         </div>
-        @include('esensi/core::core.admin.partials.drawer-last-row')
+        @include('esensi/core::core.admin.partials.drawer_last_row')
     {!! Form::close() !!}
 </div>

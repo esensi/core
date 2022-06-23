@@ -3,7 +3,7 @@
 namespace Esensi\Core\Exceptions;
 
 use Esensi\Core\Contracts\RepositoryExceptionInterface;
-use Exception;
+use Throwable;
 use Illuminate\Contracts\Support\MessageProvider;
 use Illuminate\Support\MessageBag;
 
@@ -27,10 +27,10 @@ class RepositoryException extends Exception implements RepositoryExceptionInterf
      * @var    mixed  $bag
      * @var    string  $message
      * @var    integer  $code
-     * @var    Exception  $previous
+     * @var    Throwable  $previous
      * @return RepositoryException
      */
-    public function __construct($bag, $message = null, $code = 0, Exception $previous = null)
+    public function __construct($bag, $message = null, $code = 0, Throwable $previous = null)
     {
 
         // Make sure there's always a message

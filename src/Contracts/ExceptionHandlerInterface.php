@@ -2,7 +2,7 @@
 
 namespace Esensi\Core\Contracts;
 
-use Exception;
+use Throwable;
 
 /**
  * Exception Handler Interface
@@ -13,9 +13,9 @@ interface ExceptionHandlerInterface
     /**
      * Handles exceptions with redirect
      *
-     * @param  Exception  $exception
+     * @param  Throwable  $exception
      * @return mixed
      */
-    public function handleException(Exception $exception);
+    public function handleException(Throwable $exception);
 
 }

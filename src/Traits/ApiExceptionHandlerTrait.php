@@ -2,7 +2,7 @@
 
 namespace Esensi\Core\Traits;
 
-use Exception;
+use Throwable;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 
@@ -16,10 +16,10 @@ trait ApiExceptionHandlerTrait
     /**
      * Handles exceptions for API output.
      *
-     * @param  Exception  $exception
+     * @param  Throwable  $exception
      * @return array
      */
-    public function handleException(Exception $exception)
+    public function handleException(Throwable $exception)
     {
         $data = Request::all();
         $errors = $exception->getErrors();

@@ -2,7 +2,7 @@
 
 namespace Esensi\Core\Contracts;
 
-use Throwable;
+use Exception;
 
 /**
  * Repository Exception Interface
@@ -16,10 +16,10 @@ interface RepositoryExceptionInterface
      * @var    mixed  $bag
      * @var    string  $message
      * @var    integer  $code
-     * @var    Throwable  $previous
+     * @var    Exception  $previous
      * @return RepositoryException
      */
-    public function __construct($bag, $message = null, $code = 0, Throwable $previous = null);
+    public function __construct($bag, $message = null, $code = 0, Exception $previous = null);
 
     /**
      * Get the bag property

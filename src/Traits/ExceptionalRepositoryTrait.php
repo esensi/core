@@ -2,7 +2,7 @@
 
 namespace Esensi\Core\Traits;
 
-use Throwable;
+use Exception;
 
 /**
  * Trait that permits the repository to throw a custom exception.
@@ -24,10 +24,10 @@ trait ExceptionalRepositoryTrait
      * @param  mixed  $bag
      * @param  string  $message
      * @param  long  $code
-     * @param  Throwable  $previous exception
+     * @param  Exception  $previous exception
      * @return void
      */
-    public function throwException($bag, $message = null, $code = 400, Throwable $previous = null)
+    public function throwException($bag, $message = null, $code = 400, Exception $previous = null)
     {
         $exception = $this->exception;
         throw new $exception($bag, $message, $code, $previous);

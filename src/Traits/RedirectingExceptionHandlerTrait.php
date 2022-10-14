@@ -2,7 +2,7 @@
 
 namespace Esensi\Core\Traits;
 
-use ThrowExceptionable;
+use Throwable;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
@@ -17,10 +17,10 @@ trait RedirectingExceptionHandlerTrait
     /**
      * Handles exceptions with redirect.
      *
-     * @param  Exception  $exception
+     * @param  Throwable  $exception
      * @return Illuminate\Routing\Redirector
      */
-    public function handleException(Exception $exception)
+    public function handleException(Throwable $exception)
     {
         // Get redirect
         $referer = Request::header('referer');

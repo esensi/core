@@ -2,7 +2,7 @@
 
 namespace Esensi\Core\Contracts;
 
-use Exception;
+use Throwable;
 
 /**
  * Render Error Exception Interface
@@ -14,9 +14,9 @@ interface RenderErrorExceptionInterface
      * Render a Repository Exception into an HTTP respons.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $e
+     * @param  \Throwable  $e
      * @return \Illuminate\Http\Response
      */
-    public function renderErrorException($request, Exception $e);
+    public function renderErrorException($request, Throwable $e);
 
 }

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Schema;
  * Create store table for sessions (database driver)
  * 
  */
-class CreateSessionsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -37,4 +37,4 @@ class CreateSessionsTable extends Migration
         Schema::drop('sessions');
     }
 
-}
+};

@@ -76,7 +76,7 @@ class Handler extends ExceptionHandler implements
             if (class_exists(App\Repositories\ActivityRepository::class)) {
                 Activity::addException($e, $e->getCode() ? $e->getCode() : 500);
             }
-        } catch (Throwable $e) {
+        } catch (\Exception $e) {
             Log::error($e);
         }
 

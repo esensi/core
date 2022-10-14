@@ -2,7 +2,7 @@
 
 namespace Esensi\Core\Contracts;
 
-use Throwable;
+use Exception;
 
 /**
  * Exception throwing repository interface
@@ -16,9 +16,9 @@ interface ExceptionalRepositoryInterface
      * @param mixed  $bag
      * @param string  $message
      * @param long  $code
-     * @param Throwable  $previous exception
+     * @param Exception  $previous exception
      * @return void
      */
-    public function throwException($bag, $message = null, $code = 0, Throwable $previous = null);
+    public function throwException($bag, $message = null, $code = 0, Exception $previous = null);
 
 }

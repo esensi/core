@@ -1,6 +1,6 @@
 ## Esensi Core Components Package
 
-> Version 1
+> Version 3
 
 An [Esensi](https://github.com/esensi) package, coded by [SiteRocket Labs®](https://www.siterocket.com).
 
@@ -8,7 +8,7 @@ The `Esensi/Core` package is just one package that makes up [Esensi](https://git
 
 ## Note
 
-This code is specifically designed to be compatible with the [Laravel Framework](https://laravel.com) and may not be compatible as a stand-alone dependency or as part of another framework. The current release of `Esensi/Core` also has some reliance on closed source code. Contact [support@siterocket.com](https://www.siterocket.com/contact) if you would like to get access to these other repositories.
+This code is specifically designed to be compatible with the [Laravel Framework ^10](https://laravel.com) and may not be compatible as a stand-alone dependency or as part of another framework. The current release of `Esensi/Core` also has some reliance on closed source code. Contact [support@siterocket.com](https://www.siterocket.com/contact) if you would like to get access to these other repositories.
 
 ## Quick Start
 

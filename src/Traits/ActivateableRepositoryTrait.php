@@ -71,7 +71,7 @@ trait ActivateableRepositoryTrait
         $object->activated_at = null;
 
         // Validate the resource
-        if ($object->isInvalid('deactivating') || !$object->save()) {
+        if ($object->isInvalid('deactivating') || !$object->saveQuietly()) {
             $this->throwException($object->getErrors(), $this->error('deactivate'));
         }
 

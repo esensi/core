@@ -86,10 +86,12 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapControllers()
     {
-        $path = $this->routesPath();
-        foreach ($this->controllers as $ui => $namespace) {
-            $this->groupRoutesByNamespace($namespace, $ui);
-        }
+        Route::middleware('web')
+            ->group(function () {
+                foreach ($this->controllers as $ui => $namespace) {
+                    $this->groupRoutesByNamespace($namespace, $ui);
+                }
+            });
     }
 
     /**

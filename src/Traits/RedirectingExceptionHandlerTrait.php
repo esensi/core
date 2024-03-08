@@ -2,10 +2,11 @@
 
 namespace Esensi\Core\Traits;
 
-use Throwable;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Session;
+use Throwable;
+use Illuminate\Support\Facades\Request;
 
 /**
  * Trait that handles redirects using redirects.
@@ -14,11 +15,10 @@ use Illuminate\Support\Facades\Session;
  */
 trait RedirectingExceptionHandlerTrait
 {
+
     /**
-     * Handles exceptions with redirect.
-     *
-     * @param  Throwable  $exception
-     * @return Illuminate\Routing\Redirector
+     * @param Throwable $exception
+     * @return \Illuminate\Foundation\Application|RedirectResponse|Redirector
      */
     public function handleException(Throwable $exception)
     {
@@ -32,7 +32,7 @@ trait RedirectingExceptionHandlerTrait
         $url = $fragment ? $url . '#' . $fragment : $url;
 
         // Send redirect
-        return Redirect::to($url)
+        return redirect($url)
             ->with('message', $exception->getMessage())
             ->with('code', $exception->getCode())
             ->withErrors($exception->getBag())

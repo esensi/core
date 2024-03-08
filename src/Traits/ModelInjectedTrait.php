@@ -44,4 +44,13 @@ trait ModelInjectedTrait
         $this->models[$name] = $model;
     }
 
+    /**
+     * @param string $name
+     * @return bool
+     */
+    public function hasModel(string $name)
+    {
+        return isset($this->models[$name]);
+    }
+
 }

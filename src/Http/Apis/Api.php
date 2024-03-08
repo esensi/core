@@ -104,7 +104,7 @@ class Api extends Controller implements
     public function index()
     {
         // Get the filters from request
-        $filters = Request::only([
+        $filters = Request::onlyWithNulls([
             'ids',
             'keywords',
             'max',

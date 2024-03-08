@@ -12,7 +12,11 @@
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     <title>{{ config('esensi/core::core.metadata.author', 'Esensi') }} - Administration</title>
 
-    <link href="{{ mix('/css/admin.css') }}" rel="stylesheet" type="text/css">
+    @if(config('esensi/core::html.asset_compiler') === 'webpack')
+        <link href="{{ mix('/css/admin.css') }}" rel="stylesheet" type="text/css">
+    @else
+        @styles('admin')
+    @endif
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>

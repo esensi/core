@@ -29,6 +29,14 @@ Then add the following providers to the application's config/app.php config file
 ]
 ```
 
+As well, add the following alias to the app.php config file:
+
+```php
+'aliases' => [
+    'HTML' => Collective\Html\HtmlFacade::class,
+]
+```
+
 Next, publish the vendor resources, configs, and other publishable files for further customization:
 
 ```bash

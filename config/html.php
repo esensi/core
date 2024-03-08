@@ -17,4 +17,18 @@ return [
         'paginationUrl' => Esensi\Core\Extensions\HtmlMacros::class,
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Asset Compilation Tool
+    |--------------------------------------------------------------------------
+    |
+    | This option controls the asset compilation tool the application will use
+    | for processing and bundling its assets.
+    |
+    | Supported: "gulp", "webpack"
+    |
+    */
+
+    'asset_compiler' => "webpack",
+
 ];

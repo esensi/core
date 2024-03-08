@@ -3,6 +3,7 @@
 namespace Esensi\Core\Providers;
 
 use Esensi\Loaders\Providers\ServiceProvider;
+use Illuminate\Support\Facades\Request;
 
 /**
  * Service provider for Esensi\Core components package
@@ -29,6 +30,7 @@ class CoreServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', $this->namespace);
         $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang', $this->namespace);
         $this->loadAliasesFrom(config_path($this->namespace), $this->namespace);
+        $this->loadMacros();
     }
 
     /**
@@ -41,6 +43,22 @@ class CoreServiceProvider extends ServiceProvider
     public function register()
     {
 
+    }
+
+    /**
+     * @return void
+     */
+    private function loadMacros(): void
+    {
+        Request::macro('onlyWithNulls', function ($keys) {
+            $keys = is_array($keys) ? $keys : func_get_args();
+            $all = Request::all();
+            $result = [];
+            foreach ((array) $keys as $key) {
+                $result[$key] = $all[$key] ?? null;
+            }
+            return $result;
+        });
     }
 
 }

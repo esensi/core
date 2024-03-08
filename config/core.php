@@ -256,8 +256,8 @@ return [
         // Request per period
         'limit' => 60,
 
-        // Period duration in minutes
-        'period' => 1,
+        // Period duration in seconds
+        'period' => 60,
 
         // Cache settings
         'cache' => [
@@ -269,8 +269,8 @@ return [
             'driver' => 'file',
             'table' => 'cache',
 
-            // Timeout (in minutes) an IP should be blocked
-            'timeout' => 10,
+            // Timeout (in seconds) an IP should be blocked
+            'timeout' => 10*60,
         ],
     ],
 

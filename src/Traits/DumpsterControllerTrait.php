@@ -34,7 +34,7 @@ trait DumpsterControllerTrait
         $response = $this->api()->trash($id);
 
         // Redirect back with message
-        return $this->back('trashed')
+        return $this->redirect('trashed')
             ->with('message', $this->message('trashed'));
     }
 

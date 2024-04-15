@@ -83,7 +83,7 @@ trait ModalControllerTrait
         $response = $this->api()->delete($id);
 
         // Redirect back with message
-        return $this->back('deleted')
+        return $this->redirect('deleted')
             ->with('message', $this->message('deleted') );
     }
 }

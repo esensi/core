@@ -3,6 +3,7 @@
 namespace Esensi\Core\Http\Middleware;
 
 use Closure;
+use Esensi\Activity\Events\EsensiRateExceeded;
 use Esensi\Core\Contracts\RateLimiterInterface;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\Request;
@@ -273,7 +274,7 @@ class RateLimiter implements RateLimiterInterface
             $route = $this->router->currentRouteName();
             $limit = $this->getLimit();
             $timeout = $this->getTimeout();
-            $this->events->fire('esensi.core.rate_exceeded', compact('ip', 'route', 'limit', 'timeout'));
+            $this->events->dispatch(new EsensiRateExceeded(...compact('ip', 'route', 'limit', 'timeout')));
         }
 
         // Determine if request is in timeout

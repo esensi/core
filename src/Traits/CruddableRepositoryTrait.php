@@ -44,6 +44,8 @@ trait CruddableRepositoryTrait
             $this->throwException($object->getErrors(), $this->error('create'));
         }
 
+        $this->modelInstances[$object->id] = $object;
+
         // Fire after listeners
         $this->eventFire('created', [$object]);
 
@@ -117,6 +119,8 @@ trait CruddableRepositoryTrait
             $this->throwException($object->getErrors(), $this->error('update'));
         }
 
+        $this->modelInstances[$id] = $object;
+
         // Fire after listeners
         $this->eventFire('updated', [$object]);
 
@@ -167,6 +171,8 @@ trait CruddableRepositoryTrait
         if ($result === false) {
             $this->throwException($this->error('delete'));
         }
+
+        unset($this->modelInstances[$id]);
 
         // Fire after listeners
         $this->eventFire('deleted', [$object]);

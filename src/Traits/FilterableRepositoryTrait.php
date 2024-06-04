@@ -38,6 +38,15 @@ trait FilterableRepositoryTrait
     ];
 
     /**
+     * Filter properties
+     */
+    public $order;
+    public $sort;
+    public $max;
+    public $trashed;
+    public $status;
+
+    /**
      * Relationships to load on resource.
      *
      * @var array

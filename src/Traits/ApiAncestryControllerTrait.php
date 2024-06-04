@@ -20,7 +20,7 @@ trait ApiAncestryControllerTrait
     public function api()
     {
         // Make a copy of the parent class
-        $class = get_parent_class();
+        $class = get_parent_class($this);
         $parent = app($class);
 
         // Copy over the packaged properties

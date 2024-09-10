@@ -11,6 +11,7 @@ use Esensi\Core\Traits\RenderErrorExceptionTrait;
 use Esensi\Core\Traits\RenderRepositoryExceptionTrait;
 use Esensi\User\Contracts\RenderPermissionVerifierExceptionInterface;
 use Esensi\User\Traits\RenderPermissionVerifierExceptionTrait;
+use Illuminate\Auth\Access\AuthorizationException;
 use Throwable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -120,8 +121,15 @@ class Handler extends ExceptionHandler implements
         // Use esensi/core namespaced error views before app namespace. This is
         // not abstracted as a trait because the parent renderHttpException
         // method will still be used and it will if we just let it cascade.
-        if ($e instanceof HttpException) {
-            $status = $e->getStatusCode();
+        if (
+            $e instanceof HttpException
+                ||
+            $e instanceof AuthorizationException
+        ) {
+            $status = match (true) {
+                $e instanceof HttpException => $e->getStatusCode(),
+                $e instanceof AuthorizationException => $e->status(),
+            };
             $line = 'esensi/core::core.views.public.' . $status;
             $view = config($line);
             if (view()->exists($view)) {

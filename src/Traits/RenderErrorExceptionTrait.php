@@ -3,6 +3,7 @@
 namespace Esensi\Core\Traits;
 
 use Throwable;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Trait that renders ErrorExceptions
@@ -22,7 +23,11 @@ trait RenderErrorExceptionTrait
     {
         $response = null;
 
-        if (!config('app.debug')) {
+        if (
+            !($e instanceof ValidationException)
+                &&
+            !config('app.debug')
+        ) {
             $statusCode = 500;
             $view = config("esensi/core::core.views.public.{$statusCode}");
 
@@ -37,5 +42,4 @@ trait RenderErrorExceptionTrait
 
         return $response;
     }
-
 }

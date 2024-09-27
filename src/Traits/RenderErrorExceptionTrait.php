@@ -3,6 +3,7 @@
 namespace Esensi\Core\Traits;
 
 use Throwable;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Trait that renders ErrorExceptions
@@ -20,18 +21,25 @@ trait RenderErrorExceptionTrait
      */
     public function renderErrorException($request, Throwable $e)
     {
-        // Skip custom error views when in debug mode
-        if (config('app.debug')) {
-            return parent::render($request, $e);
+        $response = null;
+
+        if (
+            !($e instanceof ValidationException)
+                &&
+            !config('app.debug')
+        ) {
+            $statusCode = 500;
+            $view = config("esensi/core::core.views.public.{$statusCode}");
+
+            if (view()->exists($view)) {
+                $response = response()->view($view, [], $statusCode);
+            }
         }
 
-        // Render as an opaque 500 internal server error
-        $status = 500;
-        $line = 'esensi/core::core.views.public.' . $status;
-        $view = config($line);
-        if (view()->exists($view)) {
-            return response()->view($view, [], $status);
+        if (is_null($response)) {
+            $response = parent::render($request, $e);
         }
+
+        return $response;
     }
-
 }

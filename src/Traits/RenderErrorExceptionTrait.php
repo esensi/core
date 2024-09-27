@@ -20,16 +20,22 @@ trait RenderErrorExceptionTrait
      */
     public function renderErrorException($request, Throwable $e)
     {
-        if (config('app.debug')) {
-            return parent::render($request, $e);
+        $response = null;
+
+        if (!config('app.debug')) {
+            $statusCode = 500;
+            $view = config("esensi/core::core.views.public.{$statusCode}");
+
+            if (view()->exists($view)) {
+                $response = response()->view($view, [], $statusCode);
+            }
         }
 
-        $statusCode = 500;
-        $view = config("esensi/core::core.views.public.{$statusCode}");
-
-        if (view()->exists($view)) {
-            return response()->view($view, [], $statusCode);
+        if (is_null($response)) {
+            $response = parent::render($request, $e);
         }
+
+        return $response;
     }
 
 }

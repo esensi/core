@@ -118,27 +118,24 @@ class Handler extends ExceptionHandler implements
             return $this->renderRepositoryException($request, $e);
         }
 
-        // Use esensi/core namespaced error views before app namespace. This is
-        // not abstracted as a trait because the parent renderHttpException
-        // method will still be used and it will if we just let it cascade.
-        if (
-            $e instanceof HttpException
-                ||
-            $e instanceof AuthorizationException
-        ) {
-            $status = match (true) {
-                $e instanceof HttpException => $e->getStatusCode(),
-                $e instanceof AuthorizationException => $e->status(),
-            };
-            $line = 'esensi/core::core.views.public.' . $status;
-            $view = config($line);
+        $statusCode = match (true) {
+            $e instanceof HttpException => $e->getStatusCode(),
+            $e instanceof AuthorizationException => $e->status(),
+            default => null,
+        };
+
+        if (!is_null($statusCode)) {
+            $view = config("esensi/core::core.views.public.{$statusCode}");
             if (view()->exists($view)) {
-                $args = [
-                    'code' => $e->getCode() ?: $status,
-                    'message' => $e->getMessage(),
-                    'status' => $status,
-                ];
-                return response()->view($view, $args, $status);
+                return response()->view(
+                    $view,
+                    [
+                        'code' => $e->getCode() ?: $statusCode,
+                        'message' => $e->getMessage(),
+                        'status' => $statusCode,
+                    ],
+                    $statusCode
+                );
             }
         }
 

@@ -73,6 +73,23 @@ Other API endpoints would likely point to filterable resources such as `GET /api
 
 Furthermore middle-ware classes could be used to handle response formatting further such as converting the JSON representation of a RESTful API response into an XML document or CSV export (e.g.: `?format=xml`). Restricting business logic to the domain layer sets up Esensi applications for more flexible composition choices and greater code reuse that leads to better and cheaper maintainability. Esensi/Core is just a toolbox of conventions and base classes that can be extended to continue using this composition example in Laravel applications.
 
+## Upgrade laravel 10 to 11+ (version 4.x)
+"laravelcollective/html": "^6.3" have been removed from composer.json due to support retirement
+
+- laravel/config/app.php
+
+    - remove ```Collective\Html\HtmlServiceProvider::class```
+
+    - ```'Form' => Collective\Html\FormFacade::class``` replaced with ```'Form' => Esensi\Core\Facades\FormFacade::class```
+
+    - ```'HTML' => Collective\Html\HtmlFacade::class``` replaced with ```'Html' => Esensi\Core\Facades\HtmlFacade::class```
+
+    - All uses of ```HTML::``` class have been replaced to ```Html::```
+
+- config/html.php
+
+    - Using of ```'paginationUrl' => Esensi\Core\Extensions\HtmlMacros::class``` merged to new ```Esensi\Core\Facades\FormFacade``` class, so it need to be removed.
+
 ## Contributing
 
 Thank you for considering contributing to Esensi Core!
